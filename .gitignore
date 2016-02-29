@@ -1,0 +1,5 @@
+# See example-configuration.nix for what this could be.
+configuration.nix
+
+# System-dependent and auto-generated.
+hardware-configuration.nix
