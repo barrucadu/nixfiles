@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./packages.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -28,17 +29,6 @@
 
   # Set your time zone.
   time.timeZone = "Europe/London";
-
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
-  environment.systemPackages = with pkgs; [
-    vim
-    tmux
-    git
-    mosh
-    zsh
-    stow
-  ];
 
   # List services that you want to enable:
 
