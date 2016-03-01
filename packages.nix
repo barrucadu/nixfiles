@@ -9,14 +9,18 @@ in
     allowUnfree = true;
 
     # Build emacs without X support if xserver not enabled.
-    packageOverrides = super:
-      let self = super.pkgs;
-          emacs = if haveX then self.emacs24 else self.emacs24-nox;
-	  emacsPackages = if haveX then self.emacsPackages else self.emacsNoXPackages;
+    packageOverrides = pkgs:
+      let emacs = if haveX then pkgs.emacs24 else pkgs.emacs24-nox;
+          emacsWithPackages = (pkgs.emacsPackagesNgGen emacs).emacsWithPackages;
       in {
-        emacsWithPackages = super.emacsWithPackages.override { emacs = emacs; };
-        emacsPackages = self.emacsPackagesGen emacs emacsPackages;
-	emacs = self.emacsWithPackages [];
+        emacs = emacsWithPackages (epkgs: with epkgs; [
+          auctex
+          color-theme
+          haskell-mode
+          magit
+          markdown-mode
+          org
+        ]);
       };
   };
 
