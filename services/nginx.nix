@@ -285,9 +285,5 @@ in
     # Pull in simp_le for certificate renewal of SSL enabled
     environment.systemPackages =
       if cfg.enableSSL then [ pkgs.simp_le ] else [ ];
-
-    # Set basic acme config
-    security.acme.email = "mike@barrucadu.co.uk";
-    security.acme.postRun = "systemctl reload nginx.service";
   };
 }

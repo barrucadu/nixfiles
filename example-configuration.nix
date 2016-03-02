@@ -2,13 +2,18 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./packages.nix
+
+      # Include the standard configuration.
+      ./base/default.nix
+
+      # Include other configuration.
+      #./services/nginx.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -19,16 +24,6 @@
 
   networking.hostName = "yig"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "uk";
-    defaultLocale = "en_GB.UTF-8";
-  };
-
-  # Set your time zone.
-  time.timeZone = "Europe/London";
 
   # List services that you want to enable:
 
@@ -46,20 +41,4 @@
   # Enable the KDE Desktop Environment.
   # services.xserver.displayManager.kdm.enable = true;
   # services.xserver.desktopManager.kde4.enable = true;
-
-  users.defaultUserShell = "/run/current-system/sw/bin/zsh";
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.extraUsers.barrucadu = {
-    group = "users";
-    extraGroups = [ "wheel" ];
-    home = "/home/barrucadu";
-    isNormalUser = true;
-    uid = 1000;
-    password = "breadbread";
-  };
-
-  # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "15.09";
-
 }
