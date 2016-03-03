@@ -77,4 +77,7 @@ in
         rxvt_unicode
       ];
     in common ++ (if haveX then xorg else []);
+
+  # Eable zsh use as an interactive shell
+  programs.zsh.enable = true;
 }
