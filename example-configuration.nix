@@ -14,6 +14,7 @@
 
       # Include other configuration.
       #./services/nginx.nix
+      #./services/openssh.nix
       #./services/xserver.nix
     ];
 
