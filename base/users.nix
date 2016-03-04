@@ -1,4 +1,6 @@
-{ config, ... }:
+{ config, lib, ... }:
+
+with lib;
 
 {
   # Use zsh as the default shell.
@@ -32,4 +34,9 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqFnuZJcbvP4RwgByxQ/+Sr8UxzBbAAjLhmhwuu1dhC0apcV6ou9fPmHyWvvgeNPV7t/FCOBzYRsprsuP6Lf42UgXdVe1JF9nRh+jB7q0y/YTe44usPePMV9d556M4sO1P2FcuvyZy5V6Gquz/fyj65qZL/bHgbjvVDub7tScInbYQ+jFJwrPo0DOAmDvNtybDg4betk8bb2eI7kcEWBaIA+rdNHTCNzZGNq1uOgtLb2G0b4+hQJr7tLoN613hhRIhfWH//GShTLfLH2FjndXGNv3Ly84MerlM1SCOHnrBiojSAzXa9aXSWHNBwE+Tbvw2afGx1L+sTwCG/TFFz5gF barrucadu@yig"
     ];
   };
+
+  # Give all normal users a ~/tmp
+  systemd.tmpfiles.rules =
+    let mkTmpDir = n: u: "d ${u.home}/tmp 0700 ${n} ${u.group} 7d";
+    in mapAttrsToList mkTmpDir (filterAttrs (n: u: u.isNormalUser) config.users.extraUsers);
 }
