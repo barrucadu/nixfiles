@@ -68,7 +68,6 @@ in
         clawsMail
         firefox
         gimp
-        herbstluftwm
         mpv
         scribus
         rxvt_unicode

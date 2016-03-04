@@ -8,4 +8,6 @@
   };
 
   time.timeZone = "Europe/London";
+
+  services.xserver.layout = "gb";
 }

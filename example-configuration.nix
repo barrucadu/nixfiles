@@ -14,6 +14,7 @@
 
       # Include other configuration.
       #./services/nginx.nix
+      #./services/xserver.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -32,13 +33,4 @@
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
-
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.kdm.enable = true;
-  # services.xserver.desktopManager.kde4.enable = true;
 }
