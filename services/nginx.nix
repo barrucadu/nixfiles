@@ -277,8 +277,9 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     services.nginx = {
+      enable = true;
       config = nginxConfig;
     };
 
