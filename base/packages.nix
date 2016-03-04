@@ -45,10 +45,10 @@ in
         vim
 
         # Development
-        gnumake
-        gcc
         clang
+        gcc
         ghc
+        gnumake
         stack
 
         # Version control
@@ -58,6 +58,7 @@ in
         # Miscellaneous
         file
         gnupg
+        imagemagick
         mosh
         stow
         tmux
