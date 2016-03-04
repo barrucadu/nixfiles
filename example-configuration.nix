@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -34,4 +34,14 @@
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
+
+  # Holgate wifi issue
+  #boot.kernelPackages = pkgs.linuxPackages_4_4;
+  #nixpkgs.config.packageOverrides = pkgs: {
+  #  linux_4_4 = pkgs.linux_4_4.override {
+  #    kernelPatches = pkgs.linux_4_4.kernelPatches ++ [
+  #      { patch = patches/wifi.patch; name = "wifi.patch"; }
+  #    ];
+  #  };
+  #};
 }
