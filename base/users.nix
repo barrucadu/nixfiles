@@ -2,6 +2,7 @@
 
 {
   # Use zsh as the default shell.
+  programs.zsh.enable = true;
   users.defaultUserShell = "/run/current-system/sw/bin/zsh";
 
   # Enable passwd and co.

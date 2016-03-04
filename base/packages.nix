@@ -55,9 +55,6 @@ in
         git
         gitAndTools.gitAnnex
 
-        # Shells
-        zsh
-
         # Miscellaneous
         file
         gnupg
@@ -77,7 +74,4 @@ in
         rxvt_unicode
       ];
     in common ++ (if haveX then xorg else []);
-
-  # Eable zsh use as an interactive shell
-  programs.zsh.enable = true;
 }
