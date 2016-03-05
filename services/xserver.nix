@@ -11,4 +11,16 @@
 
   # Use lightdm instead of slim
   services.xserver.displayManager.lightdm.enable = true;
+
+  # Sane font defaults
+  fonts = {
+    enableFontDir = true;
+    enableGhostscriptFonts = true;
+    fontconfig.cache32Bit = true;
+
+    fonts = with pkgs; [
+      terminus_font
+      source-code-pro
+    ];
+  };
 }
