@@ -67,6 +67,7 @@ in
         clawsMail
         firefox
         gimp
+        mirage
         mpv
         scribus
         rxvt_unicode
