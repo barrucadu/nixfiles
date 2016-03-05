@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [ mpd ncmpcpp ];
+  environment.systemPackages = with pkgs; [ mpc_cli mpd ncmpcpp ];
 
   # User service - copied from the unit file in Arch.
   systemd.user.services.mpd = {
