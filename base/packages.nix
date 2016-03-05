@@ -40,28 +40,25 @@ in
   environment.systemPackages = with pkgs;
     let
       common = [
-        # Editors
-        emacs
-        vim
-
-        # Development
         clang
+        emacs
+        file
         gcc
         ghc
-        gnumake
-        stack
-
-        # Version control
         git
         gitAndTools.gitAnnex
-
-        # Miscellaneous
-        file
+        gnumake
         gnupg
+        gnupg1compat
+        gnupg
+        haskellPackages.hlint
+        htop
         imagemagick
         mosh
+        stack
         stow
         tmux
+        vim
       ];
 
       xorg = [
