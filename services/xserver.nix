@@ -8,4 +8,7 @@
 
   # Enable C-M-Bksp to kill X
   services.xserver.enableCtrlAltBackspace = true;
+
+  # Use lightdm instead of slim
+  services.xserver.displayManager.lightdm.enable = true;
 }
