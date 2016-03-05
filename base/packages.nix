@@ -49,12 +49,13 @@ in
         gitAndTools.gitAnnex
         gnumake
         gnupg
-        gnupg1compat
         gnupg
+        gnupg1compat
         haskellPackages.hlint
         htop
         imagemagick
         mosh
+        psmisc
         stack
         stow
         tmux
