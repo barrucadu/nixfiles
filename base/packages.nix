@@ -44,11 +44,11 @@ in
         emacs
         file
         gcc
+        gdb
         ghc
         git
         gitAndTools.gitAnnex
         gnumake
-        gnupg
         gnupg
         gnupg1compat
         haskellPackages.hlint
@@ -59,6 +59,7 @@ in
         stack
         stow
         tmux
+        valgrind
         vim
       ];
 
