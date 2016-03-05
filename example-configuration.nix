@@ -13,6 +13,7 @@
       ./base/default.nix
 
       # Include other configuration.
+      #./services/mpd.nix
       #./services/nginx.nix
       #./services/openssh.nix
       #./services/xserver.nix
