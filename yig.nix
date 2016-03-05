@@ -15,11 +15,6 @@
       ./services/xserver.nix
     ];
 
-  # Use GRUB 2.
-  boot.loader.grub.enable  = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device  = "/dev/sda";
-
   # Enable pulseaudio
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true;
