@@ -1,8 +1,3 @@
-{config, ...}:
-
-let
-  cfg = config.services.openssh;
-in
 {
   services.openssh = {
     enable = true;
