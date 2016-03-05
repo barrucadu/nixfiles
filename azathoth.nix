@@ -62,6 +62,14 @@ in
   # Enable wifi
   networking.wireless.enable = true;
 
+  # Enable redshift
+  services.redshift = {
+    enable = true;
+    # York
+    latitude  = "53.953";
+    longitude = "-1.0391";
+  };
+
   # Nyarlathotep
   networking.interfaces.enp6s0.ipAddress = "10.1.1.2";
   networking.interfaces.enp6s0.prefixLength = 24;
