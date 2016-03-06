@@ -16,7 +16,7 @@ let
         listen [::]:443 ssl spdy;
 
         ssl_certificate ${certdir}/${certname}/fullchain.pem;
-        ssl_certificate_key ${certdir}/${certname}/privkey.pem;
+        ssl_certificate_key ${certdir}/${certname}/key.pem;
       ''
       else ''
         listen 80;
@@ -57,13 +57,22 @@ let
     {
       hostname ? "localhost",
       certname ? null,
-      to       ? (if cfg.enableSSL && certname != null then "http://${hostname}" else "https://${hostname}")
+      to       ? (if cfg.enableSSL && certname != null then "http://${hostname}" else "https://${hostname}"),
+      config   ? "",
+      httpAlso ? false
     }:
     makeHost {
-      domain = domain;
-      ssl    = ssl;
-      host   = ".${domain}";
-      config = "return 301 ${to}$request_uri;";
+      hostname = ".${hostname}";
+      certname = certname;
+      config = ''
+	${if cfg.enableSSL && certname != null && httpAlso then "listen 80; listen [::]:80;" else ""}
+
+        ${config}
+
+        location / {
+          return 301 ${to}$request_uri;
+        }
+      '';
     };
 
   gzipConfig = ''
@@ -139,7 +148,7 @@ let
       
     ssl_stapling on;
     ssl_stapling_verify on;
-    ${if cfg.dhparamFile == null then "" else "ssl_dhparam ${copyPathToStore cfg.dhparamFile}"};
+    ${if cfg.dhparamFile == null then "" else "ssl_dhparam ${copyPathToStore cfg.dhparamFile};"}
  '';
 
   nginxConfig = ''
@@ -198,6 +207,13 @@ let
       # Default character encoding
       charset utf-8;
 
+      # Store temporary files in /var/spool
+      client_body_temp_path /var/spool/nginx/client_body_temp 1 2;
+      fastcgi_temp_path     /var/spool/nginx/fastcgi_temp     1 2;
+      proxy_temp_path       /var/spool/nginx/proxy_temp       1 2;
+      scgi_temp_path        /var/spool/nginx/scgi_temp        1 2;
+      uwsgi_temp_path       /var/spool/nginx/uwsgi_temp       1 2;
+
       # Pull in gzip config if enabled
       ${if cfg.enableGzip then gzipConfig else ""}
 
@@ -230,7 +246,7 @@ in
       };
 
       logdir = mkOption {
-        default = "/var/log/nginx";
+        default = "/var/spool/nginx/logs";
         type = types.str;
         description = "Directory for all log files.";
       };
@@ -265,6 +281,12 @@ in
         description = "Custom ssl_dhparam file to override the openssl default.";
       };
 
+      enablePHP = mkOption {
+        default = false;
+        type = types.bool;
+        description = "Enable PHP scripts.";
+      };
+
       hosts = mkOption {
         default = [];
         description = "List of hosts, in the format { hostname :: str, certname :: option str, webdir :: option str, config :: option str }";
@@ -278,13 +300,29 @@ in
   };
 
   config = {
-    services.nginx = {
-      enable = true;
-      config = nginxConfig;
-    };
+    services.nginx =
+      { enable = true
+      ; config = nginxConfig
+      ; } ;
 
-    # Pull in simp_le for certificate renewal of SSL enabled
-    environment.systemPackages =
-      if cfg.enableSSL then [ pkgs.simp_le ] else [ ];
+    # Pull in simp_le for certificate renewal if SSL enabled.
+    environment.systemPackages = with pkgs;
+      if cfg.enableSSL then [ nginx simp_le ] else [ nginx ];
+
+    # Configure PHP-FPM if PHP enabled.
+    services.phpfpm.poolConfigs =
+      let pool = ''
+        user = nginx
+        group = nginx
+        listen = /run/php-fpm/php-fpm.sock
+        listen.owner = nginx
+        listen.group = nginx
+        pm = dynamic
+        pm.max_children = 5
+        pm.start_servers = 2
+        pm.min_spare_servers = 1
+        pm.max_spare_servers = 3
+      '';
+      in if cfg.enablePHP then { nginx = pool; } else { };
   };
 }
