@@ -61,6 +61,7 @@ in
         tmux
         valgrind
         vim
+        wget
       ];
 
       xorg = [
