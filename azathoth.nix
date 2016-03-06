@@ -81,5 +81,6 @@ in
   # Extra packages
   environment.systemPackages = with pkgs; [
     abcde
+    keybase
   ];
 }
