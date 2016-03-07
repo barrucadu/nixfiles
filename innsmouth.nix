@@ -68,10 +68,10 @@ in
     [ { domain = "barrucadu.co.uk"
       ; config = ''
         location /bookdb/style.css {
-          alias /srv/http/barrucadu.co.uk/bookdb/style.css;
+          alias /srv/http/barrucadu.co.uk/bookdb/static/style.css;
         }
         location /bookdb/script.js {
-          alias /srv/http/barrucadu.co.uk/bookdb/script.js;
+          alias /srv/http/barrucadu.co.uk/bookdb/static/script.js;
         }
         location /bookdb/covers/ {
           alias /srv/http/barrucadu.co.uk/bookdb/covers/;
