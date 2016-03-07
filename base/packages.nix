@@ -56,6 +56,7 @@ in
         imagemagick
         mosh
         psmisc
+        python3
         stack
         stow
         tmux
