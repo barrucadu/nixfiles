@@ -55,6 +55,7 @@ in
         htop
         imagemagick
         mosh
+        pkgconfig
         psmisc
         python3
         stack
@@ -68,6 +69,7 @@ in
       xorg = [
         chromium
         clawsMail
+        evince
         firefox
         gimp
         mirage
