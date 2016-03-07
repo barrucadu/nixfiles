@@ -67,10 +67,10 @@ in
   services.nginx.hosts = map vHost
     [ { domain = "barrucadu.co.uk"
       ; config = ''
-        location /bookdb/style.css {
+        location = /bookdb/style.css {
           alias /srv/http/barrucadu.co.uk/bookdb/static/style.css;
         }
-        location /bookdb/script.js {
+        location = /bookdb/script.js {
           alias /srv/http/barrucadu.co.uk/bookdb/static/script.js;
         }
         location /bookdb/covers/ {
@@ -95,9 +95,6 @@ in
           expires 30d;
         }
         location ~* style.css {
-          expires 30d;
-        }
-        location ~* fontawesome/css/font-awesome.min.css {
           expires 30d;
         }
         location ~* \.(woff|woff2)$ {
