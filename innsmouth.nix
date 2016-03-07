@@ -176,5 +176,6 @@ in
   environment.systemPackages = with pkgs; [
     irssi
     perl
+    python3Packages.pygments
   ];
 }
