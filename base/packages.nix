@@ -75,6 +75,7 @@ in
         mirage
         mpv
         scribus
+        scrot
         rxvt_unicode
       ];
     in common ++ (if haveX then xorg else []);
