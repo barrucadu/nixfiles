@@ -82,5 +82,7 @@ in
   environment.systemPackages = with pkgs; [
     abcde
     keybase
+    (texlive.combine
+      { inherit (texlive) scheme-medium comment fontawesome moderncv; })
   ];
 }
