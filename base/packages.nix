@@ -40,6 +40,7 @@ in
   environment.systemPackages = with pkgs;
     let
       common = [
+        cabal-install
         clang
         emacs
         file
