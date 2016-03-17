@@ -41,10 +41,10 @@ in
   hardware.opengl.driSupport32Bit = true;
 
   # Holgate wifi issue
-  boot.kernelPackages = pkgs.linuxPackages_4_4;
+  boot.kernelPackages = pkgs.linuxPackages_4_5;
   nixpkgs.config.packageOverrides = pkgs: {
-    linux_4_4 = pkgs.linux_4_4.override {
-      kernelPatches = pkgs.linux_4_4.kernelPatches ++ [
+    linux_4_5 = pkgs.linux_4_5.override {
+      kernelPatches = pkgs.linux_4_5.kernelPatches ++ [
         { patch = patches/wifi.patch; name = "wifi.patch"; }
       ];
     };
