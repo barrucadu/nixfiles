@@ -12,7 +12,7 @@ let
     }
   '';
 
-  vHost = { domain, subdomain ? "www", config }:
+  vHost = { domain, subdomain ? "www", config ? "" }:
     { hostname = "${subdomain}.${domain}"
     ; certname = domain
     ; webdir = "${domain}/${subdomain}"
@@ -107,6 +107,10 @@ in
       ; }
 
       { domain = "barrucadu.co.uk"
+      ; subdomain = "docs"
+      ; }
+
+      { domain = "barrucadu.co.uk"
       ; subdomain = "go"
       ; config = "include ${config.services.nginx.webroot}/barrucadu.co.uk/go.conf;"
       ; }
@@ -149,13 +153,14 @@ in
       ; }
 
       # Redirects http to https
+      { hostname = "docs.barrucadu.co.uk"; config = acmeconf; }
       { hostname = "go.barrucadu.co.uk";   config = acmeconf; }
       { hostname = "misc.barrucadu.co.uk"; config = acmeconf; }
     ];
 
   # SSL certificates
   security.acme.certs =
-    { "barrucadu.co.uk" = cert [ "www.barrucadu.co.uk" "go.barrucadu.co.uk" "misc.barrucadu.co.uk" ]
+    { "barrucadu.co.uk" = cert [ "www.barrucadu.co.uk" "docs.barrucadu.co.uk" "go.barrucadu.co.uk" "misc.barrucadu.co.uk" ]
     ; "barrucadu.com"   = cert [ "www.barrucadu.com" ]
     ; "mawalker.me.uk"  = cert [ "www.mawalker.me.uk" ]
     ; "nagato.moe"      = cert [ "www.nagato.moe" ]
