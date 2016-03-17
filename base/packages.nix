@@ -52,7 +52,10 @@ in
         gnumake
         gnupg
         gnupg1compat
+        haskellPackages.cpphs
+        haskellPackages.haddock
         haskellPackages.hlint
+        haskellPackages.hscolour
         htop
         imagemagick
         mosh
@@ -64,6 +67,7 @@ in
         tmux
         valgrind
         vim
+        which
         wget
       ];
 
