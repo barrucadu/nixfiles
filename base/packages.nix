@@ -77,6 +77,7 @@ in
         clawsMail
         evince
         firefox
+        ghostscript
         gimp
         mirage
         mpv
