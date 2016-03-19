@@ -59,6 +59,7 @@ in
         htop
         imagemagick
         mosh
+        m4
         pkgconfig
         psmisc
         python3
