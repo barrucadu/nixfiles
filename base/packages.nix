@@ -63,6 +63,7 @@ in
         pkgconfig
         psmisc
         python3
+        python3Packages.pygments
         stack
         stow
         tmux
