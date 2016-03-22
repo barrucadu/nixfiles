@@ -81,8 +81,10 @@ in
   # Extra packages
   environment.systemPackages = with pkgs; [
     abcde
+    gphoto2
     keybase
     libreoffice
+    optipng
     (texlive.combine
       { inherit (texlive) scheme-medium comment fontawesome moderncv; })
   ];
