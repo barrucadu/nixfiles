@@ -94,13 +94,10 @@ in
         location ~* \.html$ {
           expires 30d;
         }
-        location ~* style.css {
+        location ~* (cv.pdf|robots.txt|style.css)$ {
           expires 30d;
         }
-        location ~* \.(woff|woff2)$ {
-          expires 365d;
-        }
-        location ~* favicon.ico {
+        location ~* (fonts|postfiles|publications) {
           expires 365d;
         }
       ''
