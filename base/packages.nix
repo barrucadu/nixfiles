@@ -58,6 +58,7 @@ in
         haskellPackages.hscolour
         htop
         imagemagick
+        man-pages
         mosh
         m4
         pkgconfig
