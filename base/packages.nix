@@ -65,6 +65,7 @@ in
         psmisc
         python3
         python3Packages.pygments
+        python3Packages.virtualenv
         stack
         stow
         tmux
