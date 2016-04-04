@@ -72,6 +72,7 @@ in
         valgrind
         vim
         which
+        whois
         wget
       ];
 
