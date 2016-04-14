@@ -78,6 +78,10 @@ in
   fileSystems."/home/barrucadu/nfs/images"   = nfsShare "images";
   fileSystems."/home/barrucadu/nfs/torrents" = nfsShare "torrents";
 
+  # Postgres
+  services.postgresql.enable = true;
+  services.postgresql.package = pkgs.postgresql95;
+
   # Extra packages
   environment.systemPackages = with pkgs; [
     abcde
