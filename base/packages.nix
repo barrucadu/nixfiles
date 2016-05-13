@@ -56,6 +56,7 @@ in
         haskellPackages.haddock
         haskellPackages.hlint
         haskellPackages.hscolour
+        haskellPackages.pandoc
         htop
         imagemagick
         man-pages
