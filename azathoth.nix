@@ -94,6 +94,6 @@ in
     libreoffice
     optipng
     (texlive.combine
-      { inherit (texlive) scheme-medium comment fontawesome moderncv; })
+      { inherit (texlive) scheme-medium; })
   ];
 }
