@@ -9,6 +9,9 @@
   boot.loader.grub.version = 2;
   boot.loader.grub.device  = "/dev/sda";
 
+  # Clear out /tmp after a fortnight.
+  systemd.tmpfiles.rules = [ "d /tmp 1777 root root 14d" ];
+
   # Pull in the rest of the default configuration
   imports = [
     ./locale.nix
