@@ -63,6 +63,7 @@ in
 
   # Web server
   services.nginx.enablePHP = true;
+  services.phpfpm.phpIni = "/etc/nixos/php.ini";
 
   services.nginx.hosts = map vHost
     [ { domain = "barrucadu.co.uk"
@@ -117,6 +118,22 @@ in
       ; config = "location /pub/ { autoindex on; }"
       ; }
 
+      { domain = "barrucadu.co.uk"
+      ; subdomain = "pwk"
+      ; config = ''
+        index index.html index.htm index.php;
+
+        client_max_body_size 10m;
+
+        location ~ \.php$ {
+          include ${pkgs.nginx}/conf/fastcgi_params;
+          fastcgi_pass  unix:/run/php-fpm/php-fpm.sock;
+          fastcgi_index index.php;
+          fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+        }
+      ''
+      ; }
+
       { domain = "mawalker.me.uk"
       ; config = ''
         index index.html index.htm index.php;
@@ -153,15 +170,22 @@ in
       { hostname = "docs.barrucadu.co.uk"; config = acmeconf; }
       { hostname = "go.barrucadu.co.uk";   config = acmeconf; }
       { hostname = "misc.barrucadu.co.uk"; config = acmeconf; }
+      { hostname = "pwk.barrucadu.co.uk"; config = acmeconf; }
     ];
 
   # SSL certificates
   security.acme.certs =
-    { "barrucadu.co.uk" = cert [ "www.barrucadu.co.uk" "docs.barrucadu.co.uk" "go.barrucadu.co.uk" "misc.barrucadu.co.uk" ]
+    { "barrucadu.co.uk" = cert [ "www.barrucadu.co.uk" "docs.barrucadu.co.uk" "go.barrucadu.co.uk" "misc.barrucadu.co.uk" "pwk.barrucadu.co.uk" ]
     ; "barrucadu.com"   = cert [ "www.barrucadu.com" ]
     ; "mawalker.me.uk"  = cert [ "www.mawalker.me.uk" ]
     ; "nagato.moe"      = cert [ "www.nagato.moe" ]
     ; };
+
+  # Databases
+  services.mysql =
+  { enable  = true
+  ; package = pkgs.mysql
+  ; };
 
   # Gitolite
   services.gitolite =
