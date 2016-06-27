@@ -8,21 +8,6 @@ in
   nixpkgs.config = {
     allowUnfree = true;
 
-    # Build emacs without X support if xserver not enabled.
-    packageOverrides = pkgs:
-      let emacs = if haveX then pkgs.emacs24 else pkgs.emacs24-nox;
-          emacsWithPackages = (pkgs.emacsPackagesNgGen emacs).emacsWithPackages;
-      in {
-        emacs = emacsWithPackages (epkgs: with epkgs; [
-          auctex
-          color-theme
-          haskell-mode
-          magit
-          markdown-mode
-          org
-        ]);
-      };
-
     # Enable chromium plugins.
     chromium = {
       enablePepperFlash = true; # Flash player
@@ -44,7 +29,6 @@ in
         aspellDicts.en
         cabal-install
         clang
-        emacs
         file
         gcc
         gdb
@@ -79,9 +63,14 @@ in
         wget
       ];
 
+      noxorg = [
+        emacs24-nox
+      ];
+
       xorg = [
         chromium
         clawsMail
+        emacs24
         evince
         firefox
         ghostscript
@@ -92,5 +81,5 @@ in
         scrot
         rxvt_unicode
       ];
-    in common ++ (if haveX then xorg else []);
+    in common ++ (if haveX then xorg else noxorg);
 }
