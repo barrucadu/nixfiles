@@ -40,6 +40,8 @@ in
   environment.systemPackages = with pkgs;
     let
       common = [
+        aspell
+        aspellDicts.en
         cabal-install
         clang
         emacs
