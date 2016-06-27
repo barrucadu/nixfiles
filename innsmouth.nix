@@ -199,5 +199,7 @@ in
   environment.systemPackages = with pkgs; [
     irssi
     perl
+    (texlive.combine
+      { inherit (texlive) scheme-medium; })
   ];
 }
