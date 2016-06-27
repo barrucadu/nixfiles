@@ -127,7 +127,7 @@ in
 
         location ~ \.php$ {
           include ${pkgs.nginx}/conf/fastcgi_params;
-          fastcgi_pass  unix:/run/php-fpm/php-fpm.sock;
+          fastcgi_pass  unix:/run/phpfpm/phpfpm.sock;
           fastcgi_index index.php;
           fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
         }

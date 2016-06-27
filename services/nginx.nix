@@ -314,7 +314,7 @@ in
       let pool = ''
         user = nginx
         group = nginx
-        listen = /run/php-fpm/php-fpm.sock
+        listen = /run/phpfpm/phpfpm.sock
         listen.owner = nginx
         listen.group = nginx
         pm = dynamic
