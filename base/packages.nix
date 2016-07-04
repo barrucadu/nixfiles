@@ -29,6 +29,7 @@ in
         aspellDicts.en
         cabal-install
         clang
+        direnv
         file
         gcc
         gdb
