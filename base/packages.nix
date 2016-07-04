@@ -54,6 +54,7 @@ in
         python3
         python3Packages.pygments
         python3Packages.virtualenv
+        rxvt_unicode.terminfo
         stack
         stow
         tmux
