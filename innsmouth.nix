@@ -187,6 +187,10 @@ in
   ; package = pkgs.mysql
   ; };
 
+  services.mongodb =
+  { enable = true
+  ; };
+
   # Gitolite
   services.gitolite =
     { enable = true
