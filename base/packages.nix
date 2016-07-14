@@ -58,6 +58,7 @@ in
         stack
         stow
         tmux
+        unzip
         valgrind
         vim
         which
