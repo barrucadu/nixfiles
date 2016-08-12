@@ -130,17 +130,12 @@ in
         }
       ''
       ; }
-
-      { domain = "nagato.moe"
-      ; config = "location /i/ { autoindex on; }"
-      ; }
     ];
 
   services.nginx.redirects =
     [ # Redirect http{s,}://foo to https://www.foo
       (wwwRedirect "barrucadu.co.uk")
       (wwwRedirect "mawalker.me.uk")
-      (wwwRedirect "nagato.moe")
 
       # Redirect barrucadu.com to barrucadu.co.uk
       { hostname = "barrucadu.com"
@@ -161,7 +156,6 @@ in
     { "barrucadu.co.uk" = cert [ "www.barrucadu.co.uk" "docs.barrucadu.co.uk" "go.barrucadu.co.uk" "misc.barrucadu.co.uk" ]
     ; "barrucadu.com"   = cert [ "www.barrucadu.com" ]
     ; "mawalker.me.uk"  = cert [ "www.mawalker.me.uk" ]
-    ; "nagato.moe"      = cert [ "www.nagato.moe" ]
     ; };
 
   # Databases
