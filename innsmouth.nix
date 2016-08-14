@@ -58,7 +58,7 @@ in
 
   # Open a bunch of ports
   networking.firewall.allowPing = true;
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 70 80 443 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
 
   # Web server
