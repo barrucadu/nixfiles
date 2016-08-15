@@ -46,6 +46,7 @@ in
         haskellPackages.pandoc
         htop
         imagemagick
+        lynx
         man-pages
         mosh
         m4
