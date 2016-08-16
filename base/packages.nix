@@ -36,6 +36,7 @@ in
         ghc
         git
         gitAndTools.gitAnnex
+        go_1_6
         gnumake
         gnupg
         gnupg1compat
