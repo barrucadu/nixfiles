@@ -106,6 +106,13 @@ in
 
       { domain = "barrucadu.co.uk"
       ; subdomain = "docs"
+      ; config = ''
+      # Serve .go files as HTML, for godoc.
+      include ${pkgs.nginx}/conf/mime.types;
+      types {
+        text/html go;
+      }
+      ''
       ; }
 
       { domain = "barrucadu.co.uk"
