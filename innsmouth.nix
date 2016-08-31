@@ -199,6 +199,32 @@ in
                 ''
                 ; }
       )
+
+      (phpSite { domain = "uzbl.org"
+               ; config = ''
+                 location = /archives.php    { rewrite ^(.*) /index.php; }
+                 location = /faq.php         { rewrite ^(.*) /index.php; }
+                 location = /readme.php      { rewrite ^(.*) /index.php; }
+                 location = /keybindings.php { rewrite ^(.*) /index.php; }
+                 location = /get.php         { rewrite ^(.*) /index.php; }
+                 location = /community.php   { rewrite ^(.*) /index.php; }
+                 location = /contribute.php  { rewrite ^(.*) /index.php; }
+                 location = /commits.php     { rewrite ^(.*) /index.php; }
+                 location = /news.php        { rewrite ^(.*) /index.php; }
+                 location /doesitwork/       { rewrite ^(.*) /index.php; }
+                 location /fosdem2010/       { rewrite ^(.*) /index.php; }
+
+                 location /wiki/ { try_files $uri $uri/ @dokuwiki; }
+                 location ~ /wiki/(data/|conf/|bin/|inc/|install.php) { deny all; }
+                 location @dokuwiki {
+                   rewrite ^/wiki/_media/(.*) /wiki/lib/exe/fetch.php?media=$1 last;
+                   rewrite ^/wiki/_detail/(.*) /wiki/lib/exe/detail.php?media=$1 last;
+                   rewrite ^/wiki/_export/([^/]+)/(.*) /wiki/doku.php?do=export_$1&id=$2 last;
+                   rewrite ^/wiki/(.*) /wiki/doku.php?id=$1&$args last;
+                 }
+               ''
+               ; }
+      )
     ];
 
   services.nginx.redirects =
@@ -206,6 +232,7 @@ in
       (wwwRedirect "barrucadu.co.uk")
       (wwwRedirect "mawalker.me.uk")
       (wwwRedirect "archhurd.org")
+      (wwwRedirect "uzbl.org")
 
       # Redirect barrucadu.com to barrucadu.co.uk
       { hostname = "barrucadu.com"
@@ -232,6 +259,7 @@ in
     ; "barrucadu.com"   = cert [ "www.barrucadu.com" ]
     ; "mawalker.me.uk"  = cert [ "www.mawalker.me.uk" ]
     ; "archhurd.org"    = cert [ "www.archhurd.org" "aur.archhurd.org" "bugs.archhurd.org" "files.archhurd.org" "lists.archhurd.org" "wiki.archhurd.org" ]
+    ; "uzbl.org"        = cert [ "www.uzbl.org" ]
     ; };
 
   # Databases
