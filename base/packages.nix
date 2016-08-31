@@ -54,6 +54,7 @@ in
         pkgconfig
         psmisc
         python3
+        python2Packages.virtualenv
         python3Packages.pygments
         python3Packages.virtualenv
         rxvt_unicode.terminfo
