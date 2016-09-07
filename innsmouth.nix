@@ -144,6 +144,10 @@ in
       ; config = "location /pub/ { autoindex on; }"
       ; }
 
+      { domain = "barrucadu.co.uk"
+      ; subdomain = "wiki"
+      ; }
+
       (phpSite { domain = "mawalker.me.uk"; })
 
       { domain = "archhurd.org"
@@ -246,6 +250,7 @@ in
       { hostname = "docs.barrucadu.co.uk"; config = acmeconf; }
       { hostname = "go.barrucadu.co.uk";   config = acmeconf; }
       { hostname = "misc.barrucadu.co.uk"; config = acmeconf; }
+      { hostname = "wiki.barrucadu.co.uk"; config = acmeconf; }
       { hostname = "aur.archhurd.org";     config = acmeconf; }
       { hostname = "bugs.archhurd.org";    config = acmeconf; }
       { hostname = "files.archhurd.org";   config = acmeconf; }
@@ -255,7 +260,7 @@ in
 
   # SSL certificates
   security.acme.certs =
-    { "barrucadu.co.uk" = cert [ "www.barrucadu.co.uk" "docs.barrucadu.co.uk" "go.barrucadu.co.uk" "misc.barrucadu.co.uk" ]
+    { "barrucadu.co.uk" = cert [ "www.barrucadu.co.uk" "docs.barrucadu.co.uk" "go.barrucadu.co.uk" "misc.barrucadu.co.uk" "wiki.barrucadu.co.uk" ]
     ; "barrucadu.com"   = cert [ "www.barrucadu.com" ]
     ; "mawalker.me.uk"  = cert [ "www.mawalker.me.uk" ]
     ; "archhurd.org"    = cert [ "www.archhurd.org" "aur.archhurd.org" "bugs.archhurd.org" "files.archhurd.org" "lists.archhurd.org" "wiki.archhurd.org" ]
