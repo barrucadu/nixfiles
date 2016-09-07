@@ -40,6 +40,7 @@ in
         gnumake
         gnupg
         gnupg1compat
+        haskellPackages.Bookshelf
         haskellPackages.cpphs
         haskellPackages.haddock
         haskellPackages.hlint
