@@ -52,6 +52,7 @@ in
         man-pages
         mosh
         m4
+        nox
         pkgconfig
         psmisc
         python3
