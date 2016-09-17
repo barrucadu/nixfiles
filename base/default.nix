@@ -2,7 +2,7 @@
 
 {
   # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "16.03pre";
+  system.stateVersion = "16.03";
 
   # Use GRUB 2, defaulting to /dev/sda1.
   boot.loader.grub.enable  = true;
