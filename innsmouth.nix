@@ -71,6 +71,11 @@ in
       ./services/vsftpd.nix
     ];
 
+  # Bootloader
+  boot.loader.grub.enable  = true;
+  boot.loader.grub.version = 2;
+  boot.loader.grub.device  = "/dev/sda";
+
   # Use the serial console (required for lish)
   boot.kernelParams = [ "console=ttyS0" ];
   boot.loader.grub.extraConfig = "serial; terminal_input serial; terminal_output serial";

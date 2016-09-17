@@ -25,6 +25,11 @@ in
       ./services/xserver.nix
     ];
 
+  # Bootloader
+  boot.loader.grub.enable  = true;
+  boot.loader.grub.version = 2;
+  boot.loader.grub.device  = "/dev/sda";
+
   # Windows
   fileSystems."/mnt/data".device = "/dev/disk/by-label/Data";
   fileSystems."/mnt/data".fsType = "ntfs";
