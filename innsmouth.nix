@@ -88,10 +88,14 @@ in
   boot.kernelParams = [ "console=ttyS0" ];
   boot.loader.grub.extraConfig = "serial; terminal_input serial; terminal_output serial";
 
-  # Open a bunch of ports
+  # Open a bunch of ports and forward some stuff
+  boot.kernel.sysctl."net.ipv4.ip_forward" = true;
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [ 21 70 80 443 873 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
+  networking.firewall.extraCommands = ''
+    iptables -t nat -A PREROUTING -i enp0s4 -p tcp --dport 70 -j DNAT --to 192.168.255.2:70
+  '';
 
   # Container configuration
   containers.archhurd  = container 1 (import ./containers/innsmouth-archhurd.nix);
@@ -102,71 +106,28 @@ in
   # Web server
   services.nginx.enablePHP = true;
 
-  services.nginx.hosts = map vHost
-    [ { domain = "barrucadu.co.uk"
-      ; config = ''
-        location = /bookdb/style.css {
-          alias /srv/http/barrucadu.co.uk/bookdb/static/style.css;
-        }
-        location = /bookdb/script.js {
-          alias /srv/http/barrucadu.co.uk/bookdb/static/script.js;
-        }
-        location /bookdb/covers/ {
-          alias /srv/http/barrucadu.co.uk/bookdb/covers/;
-        }
+  services.nginx.extraConfig = ''
+    server {
+      listen  443       ssl  spdy;
+      listen  [::]:443  ssl  spdy;
 
-        location /bookdb/ {
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
+      server_name  barrucadu.co.uk, *.barrucadu.co.uk;
 
-          proxy_read_timeout 300;
-          proxy_connect_timeout 300;
-          proxy_pass http://127.0.0.1:3000;
-        }
+      ssl_certificate      ${config.security.acme.directory}/barrucadu.co.uk/fullchain.pem;
+      ssl_certificate_key  ${config.security.acme.directory}/barrucadu.co.uk/key.pem;
 
-        location ~* index\.html$ {
-          expires 7d;
-        }
-        location ~* \.html$ {
-          expires 30d;
-        }
-        location ~* (cv.pdf|robots.txt|style.css)$ {
-          expires 30d;
-        }
-        location ~* (fonts|postfiles|publications) {
-          expires 365d;
-        }
-      ''
-      ; }
-
-      { domain = "barrucadu.co.uk"
-      ; subdomain = "docs"
-      ; config = ''
-      # Serve .go files as HTML, for godoc.
-      include ${pkgs.nginx}/conf/mime.types;
-      types {
-        text/html go;
+      location / {
+        proxy_pass        http://192.168.255.2;
+        proxy_redirect    off;
+        proxy_set_header  Host             $host;
+        proxy_set_header  X-Real-IP        $remote_addr;
+        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
       }
-      ''
-      ; }
+    }
+  '';
 
-      { domain = "barrucadu.co.uk"
-      ; subdomain = "go"
-      ; config = "include ${config.services.nginx.webroot}/barrucadu.co.uk/go.conf;"
-      ; }
-
-      { domain = "barrucadu.co.uk"
-      ; subdomain = "misc"
-      ; config = "location /pub/ { autoindex on; }"
-      ; }
-
-      { domain = "barrucadu.co.uk"
-      ; subdomain = "wiki"
-      ; }
-
-      (phpSite { domain = "mawalker.me.uk"; })
+  services.nginx.hosts = map vHost
+    [ (phpSite { domain = "mawalker.me.uk"; })
 
       { domain = "archhurd.org"
       ; config = ''
