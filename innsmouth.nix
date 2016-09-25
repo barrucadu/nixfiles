@@ -61,6 +61,27 @@ let
     ; localAddress   = "192.168.255.${toString num}"
     ; config         = config
     ; };
+
+  nginxContainer = num: domain: ''
+    server {
+      listen  443       ssl  spdy;
+      listen  [::]:443  ssl  spdy;
+
+      server_name  ${domain}, *.${domain};
+
+      ssl_certificate      ${config.security.acme.directory}/${domain}/fullchain.pem;
+      ssl_certificate_key  ${config.security.acme.directory}/${domain}/key.pem;
+
+      location / {
+        proxy_pass        http://192.168.255.${toString num};
+        proxy_redirect    off;
+        proxy_set_header  Host             $host;
+        proxy_set_header  X-Real-IP        $remote_addr;
+        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+      }
+    }
+    '';
+
 in
 
 {
@@ -107,41 +128,8 @@ in
   services.nginx.enablePHP = true;
 
   services.nginx.extraConfig = ''
-    server {
-      listen  443       ssl  spdy;
-      listen  [::]:443  ssl  spdy;
-
-      server_name  barrucadu.co.uk, *.barrucadu.co.uk;
-
-      ssl_certificate      ${config.security.acme.directory}/barrucadu.co.uk/fullchain.pem;
-      ssl_certificate_key  ${config.security.acme.directory}/barrucadu.co.uk/key.pem;
-
-      location / {
-        proxy_pass        http://192.168.255.2;
-        proxy_redirect    off;
-        proxy_set_header  Host             $host;
-        proxy_set_header  X-Real-IP        $remote_addr;
-        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
-      }
-    }
-
-    server {
-      listen  443       ssl  spdy;
-      listen  [::]:443  ssl  spdy;
-
-      server_name  mawalker.me.uk, *.mawalker.me.uk;
-
-      ssl_certificate      ${config.security.acme.directory}/mawalker.me.uk/fullchain.pem;
-      ssl_certificate_key  ${config.security.acme.directory}/mawalker.me.uk/key.pem;
-
-      location / {
-        proxy_pass        http://192.168.255.3;
-        proxy_redirect    off;
-        proxy_set_header  Host             $host;
-        proxy_set_header  X-Real-IP        $remote_addr;
-        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
-      }
-    }
+    ${nginxContainer 2 "barrucadu.co.uk"}
+    ${nginxContainer 3 "mawalker.me.uk"}
   '';
 
   services.nginx.hosts = map vHost
