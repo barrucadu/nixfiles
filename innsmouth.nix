@@ -124,12 +124,28 @@ in
         proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
       }
     }
+
+    server {
+      listen  443       ssl  spdy;
+      listen  [::]:443  ssl  spdy;
+
+      server_name  mawalker.me.uk, *.mawalker.me.uk;
+
+      ssl_certificate      ${config.security.acme.directory}/mawalker.me.uk/fullchain.pem;
+      ssl_certificate_key  ${config.security.acme.directory}/mawalker.me.uk/key.pem;
+
+      location / {
+        proxy_pass        http://192.168.255.3;
+        proxy_redirect    off;
+        proxy_set_header  Host             $host;
+        proxy_set_header  X-Real-IP        $remote_addr;
+        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+      }
+    }
   '';
 
   services.nginx.hosts = map vHost
-    [ (phpSite { domain = "mawalker.me.uk"; })
-
-      { domain = "archhurd.org"
+    [ { domain = "archhurd.org"
       ; config = ''
         location / {
           proxy_read_timeout 300;
