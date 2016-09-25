@@ -53,6 +53,14 @@ let
     ; group = "nginx"
     ; allowKeysForGroup = true
     ; };
+
+  container = num: config:
+    { autoStart      = true
+    ; privateNetwork = true
+    ; hostAddress    = "192.168.254.${toString num}"
+    ; localAddress   = "192.168.255.${toString num}"
+    ; config         = config
+    ; };
 in
 
 {
@@ -84,6 +92,12 @@ in
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [ 21 70 80 443 873 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
+
+  # Container configuration
+  containers.archhurd  = container 1 (import ./containers/innsmouth-archhurd.nix);
+  containers.barrucadu = container 2 (import ./containers/innsmouth-barrucadu.nix);
+  containers.mawalker  = container 3 (import ./containers/innsmouth-mawalker.nix);
+  containers.uzbl      = container 4 (import ./containers/innsmouth-uzbl.nix);
 
   # Web server
   services.nginx.enablePHP = true;
