@@ -87,7 +87,6 @@ in
 
   # Web server
   services.nginx.enablePHP = true;
-  services.phpfpm.phpIni = "/etc/nixos/php.ini";
 
   services.nginx.hosts = map vHost
     [ { domain = "barrucadu.co.uk"
