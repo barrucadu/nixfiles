@@ -109,14 +109,15 @@ in
   boot.kernelParams = [ "console=ttyS0" ];
   boot.loader.grub.extraConfig = "serial; terminal_input serial; terminal_output serial";
 
-  # Open a bunch of ports and forward some stuff
-  boot.kernel.sysctl."net.ipv4.ip_forward" = true;
+  # Firewall and container NAT
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [ 21 70 80 443 873 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
-  networking.firewall.extraCommands = ''
-    iptables -t nat -A PREROUTING -i enp0s4 -p tcp --dport 70 -j DNAT --to 192.168.255.2:70
-  '';
+
+  networking.nat.enable = true;
+  networking.nat.internalInterfaces = ["ve-+"];
+  networking.nat.externalInterface = "enp0s4";
+  networking.nat.forwardPorts = [ { sourcePort = 70; destination = "192.168.255.2:70"; } ];
 
   # Container configuration
   containers.archhurd  = container 1 (import ./containers/innsmouth-archhurd.nix);
