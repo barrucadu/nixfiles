@@ -131,6 +131,7 @@ in
   services.nginx.extraConfig = ''
     ${nginxContainer 2 "barrucadu.co.uk"}
     ${nginxContainer 3 "mawalker.me.uk"}
+    ${nginxContainer 4 "uzbl.org"}
   '';
 
   services.nginx.hosts = map vHost
@@ -186,32 +187,6 @@ in
                   location ^~ /cache/    { deny all;   }
                 ''
                 ; }
-      )
-
-      (phpSite { domain = "uzbl.org"
-               ; config = ''
-                 location = /archives.php    { rewrite ^(.*) /index.php; }
-                 location = /faq.php         { rewrite ^(.*) /index.php; }
-                 location = /readme.php      { rewrite ^(.*) /index.php; }
-                 location = /keybindings.php { rewrite ^(.*) /index.php; }
-                 location = /get.php         { rewrite ^(.*) /index.php; }
-                 location = /community.php   { rewrite ^(.*) /index.php; }
-                 location = /contribute.php  { rewrite ^(.*) /index.php; }
-                 location = /commits.php     { rewrite ^(.*) /index.php; }
-                 location = /news.php        { rewrite ^(.*) /index.php; }
-                 location /doesitwork/       { rewrite ^(.*) /index.php; }
-                 location /fosdem2010/       { rewrite ^(.*) /index.php; }
-
-                 location /wiki/ { try_files $uri $uri/ @dokuwiki; }
-                 location ~ /wiki/(data/|conf/|bin/|inc/|install.php) { deny all; }
-                 location @dokuwiki {
-                   rewrite ^/wiki/_media/(.*) /wiki/lib/exe/fetch.php?media=$1 last;
-                   rewrite ^/wiki/_detail/(.*) /wiki/lib/exe/detail.php?media=$1 last;
-                   rewrite ^/wiki/_export/([^/]+)/(.*) /wiki/doku.php?do=export_$1&id=$2 last;
-                   rewrite ^/wiki/(.*) /wiki/doku.php?id=$1&$args last;
-                 }
-               ''
-               ; }
       )
     ];
 
