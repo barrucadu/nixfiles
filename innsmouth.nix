@@ -12,31 +12,6 @@ let
     }
   '';
 
-  vHost = { domain, subdomain ? "www", config ? "", webdir ? "${domain}/${subdomain}" }:
-    { hostname = "${subdomain}.${domain}"
-    ; certname = domain
-    ; webdir = webdir
-    ; config = config
-    ; };
-
-  phpSite = { domain, subdomain ? "www", config ? "", webdir ? "${domain}/${subdomain}" }:
-    { domain = domain
-    ; subdomain = subdomain
-    ; webdir = webdir
-    ; config = ''
-      index index.html index.htm index.php;
-
-      location ~ \.php$ {
-        include ${pkgs.nginx}/conf/fastcgi_params;
-        fastcgi_pass  unix:/run/phpfpm/phpfpm.sock;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
-      }
-
-      ${config}
-      ''
-    ; };
-
   wwwRedirect = domain:
     { hostname = domain
     ; certname = domain
@@ -97,7 +72,6 @@ in
       # Include other configuration.
       ./services/nginx.nix
       ./services/openssh.nix
-      ./services/vsftpd.nix
     ];
 
   # Bootloader
@@ -117,7 +91,11 @@ in
   networking.nat.enable = true;
   networking.nat.internalInterfaces = ["ve-+"];
   networking.nat.externalInterface = "enp0s4";
-  networking.nat.forwardPorts = [ { sourcePort = 70; destination = "192.168.255.2:70"; } ];
+  networking.nat.forwardPorts =
+    [ { sourcePort = 21;  destination = "192.168.255.1:21"; }
+      { sourcePort = 873; destination = "192.168.255.1:873"; }
+      { sourcePort = 70;  destination = "192.168.255.2:70"; }
+    ];
 
   # Container configuration
   containers.archhurd  = container 1 (import ./containers/innsmouth-archhurd.nix);
@@ -129,66 +107,11 @@ in
   services.nginx.enablePHP = true;
 
   services.nginx.extraConfig = ''
+    ${nginxContainer 1 "archhurd.org"}
     ${nginxContainer 2 "barrucadu.co.uk"}
     ${nginxContainer 3 "mawalker.me.uk"}
     ${nginxContainer 4 "uzbl.org"}
   '';
-
-  services.nginx.hosts = map vHost
-    [ { domain = "archhurd.org"
-      ; config = ''
-        location / {
-          proxy_read_timeout 300;
-          proxy_connect_timeout 300;
-          proxy_pass http://127.0.0.1:8000;
-        }
-
-        location /static {
-          rewrite /static(.*) /$1 break;
-          root /srv/http/archhurd.org/www/archweb/collected_static;
-        }
-
-        location /media { root /srv/http/archhurd.org/www; }
-      ''
-      ; }
-
-      (phpSite { domain = "archhurd.org"
-                ; subdomain = "aur"
-                ; webdir = "archhurd.org/aur/web/html"
-                ; config = ''
-                  location /packages/ {
-                    autoindex on;
-                    rewrite /packages/(.*) /$1 break;
-                    root /srv/http/archhurd.org/aur/unsupported;
-                  }
-                ''
-                ; }
-      )
-
-      (phpSite { domain = "archhurd.org"; subdomain = "bugs"; })
-
-      { domain = "archhurd.org"
-      ; subdomain = "files"
-      ; config = "location / { autoindex on; }"
-      ; }
-
-      { domain = "archhurd.org"; subdomain = "lists"; }
-
-
-      (phpSite { domain = "archhurd.org"
-                ; subdomain = "wiki"
-                ; config = ''
-                  location /wiki {
-                    index index.php;
-                    rewrite ^/wiki/(.*)$ /index.php?title=$1&$args;
-                  }
-
-                  location /maintenance/ { return 403; }
-                  location ^~ /cache/    { deny all;   }
-                ''
-                ; }
-      )
-    ];
 
   services.nginx.redirects =
     [ # Redirect http{s,}://foo to https://www.foo
@@ -227,18 +150,8 @@ in
     ; };
 
   # Databases
-  services.mysql =
-    { enable  = true
-    ; package = pkgs.mysql
-    ; };
-
   services.mongodb =
     { enable = true
-    ; };
-
-  services.postgresql =
-    { enable = true
-    ; package = pkgs.postgresql95
     ; };
 
   # Gitolite
@@ -247,35 +160,6 @@ in
     ; user = "git"
     ; dataDir = "/srv/git"
     ; adminPubkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDILnZ0gRTqD6QnPMs99717N+j00IEESLRYQJ33bJ8mn8kjfStwFYFhXvnVg7iLV1toJ/AeSV9jkCY/nVSSA00n2gg82jNPyNtKl5LJG7T5gCD+QaIbrJ7Vzc90wJ2CVHOE9Yk+2lpEWMRdCBLRa38fp3/XCapXnt++ej71WOP3YjweB45RATM30vjoZvgw4w486OOqhoCcBlqtiZ47oKTZZ7I2VcFJA0pzx2sbArDlWZwmyA4C0d+kQLH2+rAcoId8R6CE/8gsMUp8xdjg5r0ZxETKwhlwWaMxICcowDniExFQkBo98VbpdE/5BfAUDj4fZLgs/WRGXZwYWRCtJfrL barrucadu@azathoth"
-    ; };
-
-  # FTP daemon
-  services.barrucadu-vsftpd =
-    { enable = true
-    ; anonymousUser = true
-    ; anonymousUserNoPassword = true
-    ; anonymousUserHome = "/srv/ftp"
-    ; };
-
-  # rsync daemon
-  services.rsyncd =
-    { enable = true
-    ; extraConfig = "log file = /var/spool/rsyncd.log"
-    ; modules =
-      { repos  = { path        = "/srv/rsync/repos"
-                 ; comment     = "Arch Hurd repositories"
-                 ; "read only" = "yes"
-                 ; }
-      ; livecd = { path        = "/srv/rsync/livecd"
-                 ; comment     = "Arch Hurd LiveCD collection"
-                 ; "read only" = "yes"
-                 ; }
-      ; abs    = { path        = "/srv/rsync/abs"
-                 ; comment     = "Arch Build System tree"
-                 ; exclude     = ".git .gitignore"
-                 ; "read only" = "yes"
-                 ; }
-      ; }
     ; };
 
   # Extra packages
