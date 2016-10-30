@@ -228,6 +228,9 @@ let
         return 444;
       }
 
+      # Dump in verbatim extra config
+      ${cfg.extraConfig}
+
       # Configure vhosts
       ${concatMapStringsSep "\n" makeVirtualHost cfg.hosts}
 
@@ -295,6 +298,11 @@ in
       redirects = mkOption {
         default = [];
         description = "List of redirects, in the format { hostname :: str, certname :: option str, to :: option str }";
+      };
+
+      extraConfig = mkOption {
+        default = "";
+        description = "Additional configuration";
       };
     };
   };
