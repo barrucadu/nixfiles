@@ -13,6 +13,7 @@
       ./base/default.nix
 
       # Include other configuration.
+      ./common/kernel.nix
       ./services/openssh.nix
     ];
 

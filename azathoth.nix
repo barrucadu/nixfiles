@@ -19,8 +19,8 @@ in
       ./base/default.nix
 
       # Include other configuration.
+      ./common/kernel.nix
       ./services/mpd.nix
-      #./services/nginx.nix
       ./services/openssh.nix
       ./services/xserver.nix
     ];
@@ -44,20 +44,6 @@ in
   # Enable nvidia graphics
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl.driSupport32Bit = true;
-
-  # Holgate wifi issue
-  # http://lists.science.uu.nl/pipermail/nix-dev/2016-May/020343.html
-  nixpkgs.config.packageOverrides = super: rec {
-    linux_4_5 = super.linux_4_5.override {
-      kernelPatches = [
-        { patch = ./patches/wifi.patch; name = "Holgate wifi issue"; }
-      ];
-    };
-    linuxPackages_4_5 = super.recurseIntoAttrs
-      (super.linuxPackagesFor linux_4_5 linuxPackages_4_5);
-    linuxPackages = linuxPackages_4_5;
-    linux = linuxPackages.kernel;
-  };
 
   # Enable pulseaudio
   hardware.pulseaudio.enable = true;
