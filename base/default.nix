@@ -2,7 +2,7 @@
 
 {
   # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "16.03";
+  system.stateVersion = "16.09";
 
   # Clear out /tmp after a fortnight.
   systemd.tmpfiles.rules = [ "d /tmp 1777 root root 14d" ];

@@ -17,7 +17,7 @@
     ];
 
   # UEFI
-  boot.loader.gummiboot.enable = true;
+  boot.loader.systemd-boot.enable = true;
 
   # Enable wifi
   networking.wireless.enable = true;

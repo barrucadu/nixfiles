@@ -17,7 +17,7 @@
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fontconfig.cache32Bit = true;
-    fontconfig.ultimate.rendering = pkgs.fontconfig-ultimate.rendering.osx;
+    fontconfig.ultimate.preset = "osx";
 
     fonts = with pkgs; [
       terminus_font
