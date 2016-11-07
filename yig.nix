@@ -12,6 +12,7 @@
 
       # Include other configuration.
       ./services/openssh.nix
+      ./services/syncthing.nix
       ./services/xserver.nix
     ];
 

@@ -22,6 +22,7 @@ in
       ./common/kernel.nix
       ./services/mpd.nix
       ./services/openssh.nix
+      ./services/syncthing.nix
       ./services/xserver.nix
     ];
 

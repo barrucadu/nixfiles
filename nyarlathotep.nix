@@ -15,6 +15,7 @@
       # Include other configuration.
       ./common/kernel.nix
       ./services/openssh.nix
+      ./services/syncthing.nix
     ];
 
   # UEFI
