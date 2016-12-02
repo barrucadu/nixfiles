@@ -89,6 +89,6 @@ in
     libreoffice
     optipng
     (texlive.combine
-      { inherit (texlive) scheme-medium; })
+      { inherit (texlive) scheme-full; })
   ];
 }
