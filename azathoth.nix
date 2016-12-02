@@ -78,6 +78,9 @@ in
   services.postgresql.enable = true;
   services.postgresql.package = pkgs.postgresql95;
 
+  # Virtualisation
+  virtualisation.virtualbox.host.enable = true;
+
   # Extra packages
   environment.systemPackages = with pkgs; [
     abcde
