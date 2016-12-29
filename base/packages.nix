@@ -35,7 +35,6 @@ in
         gdb
         ghc
         git
-        gitAndTools.gitAnnex
         go_1_6
         gnumake
         gnupg
