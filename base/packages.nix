@@ -61,6 +61,7 @@ in
         rxvt_unicode.terminfo
         stack
         stow
+        taskwarrior
         tmux
         unzip
         valgrind
