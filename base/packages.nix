@@ -39,6 +39,7 @@ in
         gnumake
         gnupg
         gnupg1compat
+        fortune
         haskellPackages.Bookshelf
         haskellPackages.cpphs
         haskellPackages.haddock
