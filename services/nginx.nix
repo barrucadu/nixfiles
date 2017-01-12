@@ -57,23 +57,35 @@ let
     {
       hostname ? "localhost",
       certname ? null,
-      to       ? (if cfg.enableSSL && certname != null then "http://${hostname}" else "https://${hostname}"),
+      to,
       config   ? "",
-      httpAlso ? false
-    }:
-    makeHost {
-      hostname = ".${hostname}";
-      certname = certname;
-      config = ''
-	${if cfg.enableSSL && certname != null && httpAlso then "listen 80; listen [::]:80;" else ""}
+      http     ? false,
+      https    ? false
+    }: ''
+    server {
+      ${if http then ''
+        listen 80;
+        listen [::]:80;
+      '' else ""}
+      ${if cfg.enableSSL && certname != null && https then ''
+        listen 443 ssl spdy;
+        listen [::]:443 ssl spdy;
 
-        ${config}
+        ssl_certificate ${certdir}/${certname}/fullchain.pem;
+        ssl_certificate_key ${certdir}/${certname}/key.pem;
+      '' else ""}
 
-        location / {
+      add_header Strict-Transport-Security max-age=63072000;
+
+      server_name ${hostname};
+
+      ${config}
+
+      location / {
           return 301 ${to}$request_uri;
         }
-      '';
-    };
+    }
+  '';
 
   gzipConfig = ''
     # Enable Gzip compressed.

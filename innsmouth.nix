@@ -3,6 +3,19 @@
 with lib;
 
 let
+  # CONTAINERS
+  # ==========
+  #
+  # Just edit this attribute set. Everything else maps over it, so
+  # this should be all you need to touch.
+  containerSpecs =
+    { archhurd  = { num = 1; config = (import ./containers/innsmouth-archhurd.nix);  domain = "archhurd.org";    extrasubs = ["aur" "bugs" "files" "lists" "wiki"]; }
+    ; barrucadu = { num = 2; config = (import ./containers/innsmouth-barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["docs" "go" "misc" "wiki"]; }
+    ; mawalker  = { num = 3; config = (import ./containers/innsmouth-mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; }
+    ; uzbl      = { num = 4; config = (import ./containers/innsmouth-uzbl.nix);      domain = "uzbl.org";        extrasubs = []; }
+    ; };
+  containerSpecs' = mapAttrsToList (k: v: v) containerSpecs;
+
   acmedir = "/var/acme-challenges";
 
   acmeconf = ''
@@ -11,51 +24,6 @@ let
       root ${acmedir};
     }
   '';
-
-  wwwRedirect = domain:
-    { hostname = domain
-    ; certname = domain
-    ; to = "https://www.${domain}"
-    ; config = acmeconf
-    ; httpAlso = true
-    ; };
-
-  cert = extras:
-    { webroot = acmedir
-    ; extraDomains = genAttrs extras (name: null)
-    ; email = "mike@barrucadu.co.uk"
-    ; user = "nginx"
-    ; group = "nginx"
-    ; allowKeysForGroup = true
-    ; };
-
-  container = num: config:
-    { autoStart      = true
-    ; privateNetwork = true
-    ; hostAddress    = "192.168.254.${toString num}"
-    ; localAddress   = "192.168.255.${toString num}"
-    ; config         = config
-    ; };
-
-  nginxContainer = num: domain: ''
-    server {
-      listen  443       ssl  spdy;
-      listen  [::]:443  ssl  spdy;
-
-      server_name  ${domain}, *.${domain};
-
-      ssl_certificate      ${config.security.acme.directory}/${domain}/fullchain.pem;
-      ssl_certificate_key  ${config.security.acme.directory}/${domain}/key.pem;
-
-      location / {
-        proxy_pass        http://192.168.255.${toString num};
-        proxy_redirect    off;
-        proxy_set_header  Host             $host;
-        proxy_set_header  X-Real-IP        $remote_addr;
-        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
-      }
-    }
-    '';
 
 in
 
@@ -99,56 +67,79 @@ in
     ];
 
   # Container configuration
-  containers.archhurd  = container 1 (import ./containers/innsmouth-archhurd.nix);
-  containers.barrucadu = container 2 (import ./containers/innsmouth-barrucadu.nix);
-  containers.mawalker  = container 3 (import ./containers/innsmouth-mawalker.nix);
-  containers.uzbl      = container 4 (import ./containers/innsmouth-uzbl.nix);
+  containers = mapAttrs
+    (_: {num, config, ...}:
+      { autoStart      = true
+      ; privateNetwork = true
+      ; hostAddress    = "192.168.254.${toString num}"
+      ; localAddress   = "192.168.255.${toString num}"
+      ; config         = config
+      ; }
+    ) containerSpecs;
 
   # Web server
   services.nginx.enablePHP = true;
 
-  services.nginx.extraConfig = ''
-    ${nginxContainer 1 "archhurd.org"}
-    ${nginxContainer 2 "barrucadu.co.uk"}
-    ${nginxContainer 3 "mawalker.me.uk"}
-    ${nginxContainer 4 "uzbl.org"}
-  '';
+  services.nginx.extraConfig = concatMapStringsSep "\n"
+    ({num, domain, extrasubs, ...}: ''
+      server {
+        listen  443       ssl  spdy;
+        listen  [::]:443  ssl  spdy;
+
+        server_name  ${concatMapStringsSep "  " (sub: "${sub}.${domain}") (["www"] ++ extrasubs)};
+
+        ssl_certificate      ${config.security.acme.directory}/${domain}/fullchain.pem;
+        ssl_certificate_key  ${config.security.acme.directory}/${domain}/key.pem;
+
+        location / {
+          proxy_pass        http://192.168.255.${toString num};
+          proxy_redirect    off;
+          proxy_set_header  Host             $host;
+          proxy_set_header  X-Real-IP        $remote_addr;
+          proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+        }
+      }
+      ''
+    ) containerSpecs';
 
   services.nginx.redirects =
-    [ # Redirect http{s,}://foo to https://www.foo
-      (wwwRedirect "barrucadu.co.uk")
-      (wwwRedirect "mawalker.me.uk")
-      (wwwRedirect "archhurd.org")
-      (wwwRedirect "uzbl.org")
-
-      # Redirect barrucadu.com to barrucadu.co.uk
-      { hostname = "barrucadu.com"
+    [ # Redirect barrucadu.com to www.barrucadu.co.uk
+      { hostname = ".barrucadu.com"
       ; certname = "barrucadu.com"
       ; to = "https://www.barrucadu.co.uk"
       ; config = acmeconf
-      ; httpAlso = true
+      ; http = true
+      ; https = true
       ; }
-
-      # Redirects http to https
-      { hostname = "docs.barrucadu.co.uk"; config = acmeconf; }
-      { hostname = "go.barrucadu.co.uk";   config = acmeconf; }
-      { hostname = "misc.barrucadu.co.uk"; config = acmeconf; }
-      { hostname = "wiki.barrucadu.co.uk"; config = acmeconf; }
-      { hostname = "aur.archhurd.org";     config = acmeconf; }
-      { hostname = "bugs.archhurd.org";    config = acmeconf; }
-      { hostname = "files.archhurd.org";   config = acmeconf; }
-      { hostname = "lists.archhurd.org";   config = acmeconf; }
-      { hostname = "wiki.archhurd.org";    config = acmeconf; }
-    ];
+    ] ++ concatMap
+    ({domain, extrasubs, ...}:
+      [ { hostname = domain
+        ; certname = domain
+        ; to       = "https://www.${domain}"
+        ; config   = acmeconf
+        ; http     = true
+        ; https    = true
+        ; }
+      ] ++
+      map (sub: { hostname = "${sub}.${domain}"
+                ; to       = "https://${sub}.${domain}"
+                ; config   = acmeconf
+                ; http     = true
+                ; }
+          ) (["www"] ++ extrasubs)
+    ) containerSpecs';
 
   # SSL certificates
-  security.acme.certs =
-    { "barrucadu.co.uk" = cert [ "www.barrucadu.co.uk" "docs.barrucadu.co.uk" "go.barrucadu.co.uk" "misc.barrucadu.co.uk" "wiki.barrucadu.co.uk" ]
-    ; "barrucadu.com"   = cert [ "www.barrucadu.com" ]
-    ; "mawalker.me.uk"  = cert [ "www.mawalker.me.uk" ]
-    ; "archhurd.org"    = cert [ "www.archhurd.org" "aur.archhurd.org" "bugs.archhurd.org" "files.archhurd.org" "lists.archhurd.org" "wiki.archhurd.org" ]
-    ; "uzbl.org"        = cert [ "www.uzbl.org" ]
-    ; };
+  security.acme.certs = mapAttrs'
+    (_: {domain, extrasubs, ...}: nameValuePair domain
+      { webroot = acmedir
+      ; extraDomains = genAttrs (map (subdomain: "${subdomain}.${domain}") (["www"] ++ extrasubs)) (name: null)
+      ; email = "mike@barrucadu.co.uk"
+      ; user = "nginx"
+      ; group = "nginx"
+      ; allowKeysForGroup = true
+      ; }
+    ) containerSpecs;
 
   # Databases
   services.mongodb =
