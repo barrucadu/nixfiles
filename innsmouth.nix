@@ -78,8 +78,6 @@ in
     ) containerSpecs;
 
   # Web server
-  services.nginx.enablePHP = true;
-
   services.nginx.extraConfig = concatMapStringsSep "\n"
     ({num, domain, extrasubs, ...}: ''
       server {
