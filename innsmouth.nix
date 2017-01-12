@@ -9,10 +9,10 @@ let
   # Just edit this attribute set. Everything else maps over it, so
   # this should be all you need to touch.
   containerSpecs =
-    { archhurd  = { num = 1; config = (import ./containers/innsmouth-archhurd.nix);  domain = "archhurd.org";    extrasubs = ["aur" "bugs" "files" "lists" "wiki"]; }
-    ; barrucadu = { num = 2; config = (import ./containers/innsmouth-barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["docs" "go" "misc" "wiki"]; }
-    ; mawalker  = { num = 3; config = (import ./containers/innsmouth-mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; }
-    ; uzbl      = { num = 4; config = (import ./containers/innsmouth-uzbl.nix);      domain = "uzbl.org";        extrasubs = []; }
+    { archhurd  = { num = 1; config = (import ./containers/innsmouth-archhurd.nix);  domain = "archhurd.org";    extrasubs = ["aur" "bugs" "files" "lists" "wiki"]; ports = [21 873];}
+    ; barrucadu = { num = 2; config = (import ./containers/innsmouth-barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["docs" "go" "misc" "wiki"]; ports = [70];}
+    ; mawalker  = { num = 3; config = (import ./containers/innsmouth-mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; ports = []; }
+    ; uzbl      = { num = 4; config = (import ./containers/innsmouth-uzbl.nix);      domain = "uzbl.org";        extrasubs = []; ports = []; }
     ; };
   containerSpecs' = mapAttrsToList (k: v: v) containerSpecs;
 
@@ -60,11 +60,10 @@ in
   networking.nat.enable = true;
   networking.nat.internalInterfaces = ["ve-+"];
   networking.nat.externalInterface = "enp0s4";
-  networking.nat.forwardPorts =
-    [ { sourcePort = 21;  destination = "192.168.255.1:21"; }
-      { sourcePort = 873; destination = "192.168.255.1:873"; }
-      { sourcePort = 70;  destination = "192.168.255.2:70"; }
-    ];
+  networking.nat.forwardPorts = concatMap
+    ( {num, ports, ...}:
+        map (p: { sourcePort = p; destination = "192.168.255.${toString num}:${toString p}"; }) ports
+    ) containerSpecs';
 
   # Container configuration
   containers = mapAttrs
