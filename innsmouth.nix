@@ -80,8 +80,8 @@ in
   services.nginx.extraConfig = concatMapStringsSep "\n"
     ({num, domain, extrasubs, ...}: ''
       server {
-        listen  443       ssl  spdy;
-        listen  [::]:443  ssl  spdy;
+        listen  443       ssl  http2;
+        listen  [::]:443  ssl  http2;
 
         server_name  ${concatMapStringsSep "  " (sub: "${sub}.${domain}") (["www"] ++ extrasubs)};
 

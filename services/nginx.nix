@@ -12,8 +12,8 @@ let
   makeHost = { hostname, certname ? null, config ? "" }: ''
     server {
       ${if cfg.enableSSL && certname != null then ''
-        listen 443 ssl spdy;
-        listen [::]:443 ssl spdy;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate ${certdir}/${certname}/fullchain.pem;
         ssl_certificate_key ${certdir}/${certname}/key.pem;
@@ -68,8 +68,8 @@ let
         listen [::]:80;
       '' else ""}
       ${if cfg.enableSSL && certname != null && https then ''
-        listen 443 ssl spdy;
-        listen [::]:443 ssl spdy;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate ${certdir}/${certname}/fullchain.pem;
         ssl_certificate_key ${certdir}/${certname}/key.pem;
