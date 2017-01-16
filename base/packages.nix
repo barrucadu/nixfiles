@@ -43,6 +43,7 @@ in
         haskellPackages.Bookshelf
         haskellPackages.cpphs
         haskellPackages.haddock
+        haskellPackages.hledger
         haskellPackages.hlint
         haskellPackages.hscolour
         haskellPackages.pandoc
@@ -52,6 +53,7 @@ in
         man-pages
         mosh
         m4
+        nmap
         nox
         pkgconfig
         psmisc
