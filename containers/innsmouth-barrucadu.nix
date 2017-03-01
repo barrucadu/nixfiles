@@ -59,7 +59,7 @@ in
       ; config    = "location /pub/ { autoindex on; }"
       ; }
 
-      { subdomain = "wiki"
+      { subdomain = "memo"
       ; }
     ];
 
