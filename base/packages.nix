@@ -40,7 +40,6 @@ in
         gnupg
         gnupg1compat
         fortune
-        haskellPackages.Bookshelf
         haskellPackages.cpphs
         haskellPackages.haddock
         haskellPackages.hledger
