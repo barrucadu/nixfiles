@@ -10,5 +10,5 @@ if [[ ! -e "hosts/$HOST.nix" ]] || [[ ! -e "hosts/$HOST-hardware.nix" ]]; then
   exit 1
 fi
 
-ln -sf "hosts/$HOST.nix"          configuration.nix
-ln -sf "hosts/$HOST-hardware.nix" hardware-configuration.nix
+ln -f "hosts/$HOST.nix"          configuration.nix
+ln -f "hosts/$HOST-hardware.nix" hardware-configuration.nix
