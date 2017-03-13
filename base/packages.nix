@@ -85,6 +85,7 @@ in
         firefox
         ghostscript
         gimp
+        gmrun
         mirage
         mpv
         scribus
