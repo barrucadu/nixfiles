@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+HOST=`hostname`
+if [[ ! -z "$1" ]]; then
+  HOST=$1
+fi
+
+if [[ ! -e "hosts/$HOST.nix" ]] || [[ ! -e "hosts/$HOST-hardware.nix" ]]; then
+  echo "missing $HOST.nix or $HOST-hardware.nix" >&2
+  exit 1
+fi
+
+ln -sf "hosts/$HOST.nix"          configuration.nix
+ln -sf "hosts/$HOST-hardware.nix" hardware-configuration.nix
