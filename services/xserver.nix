@@ -11,6 +11,7 @@
 
   # Use lightdm instead of slim
   services.xserver.displayManager.lightdm.enable = true;
+  environment.systemPackages = [ pkgs.lightdm ];
 
   # Sane font defaults
   fonts = {
