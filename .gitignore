@@ -1,5 +1,3 @@
-# See example-configuration.nix for what this could be.
+# Produce your own config files in hosts/ and use the ln-host script.
 configuration.nix
-
-# System-dependent and auto-generated.
 hardware-configuration.nix
