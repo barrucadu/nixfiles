@@ -57,13 +57,13 @@ in
       ];
 
       noxorg = [
-        emacs25-nox
+        emacs24-nox
       ];
 
       xorg = [
         chromium
         clawsMail
-        emacs25
+        emacs24
         evince
         firefox
         ghostscript
