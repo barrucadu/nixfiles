@@ -19,6 +19,8 @@ in
   # Web
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
+    "archhurd.org".globalRedirect = "www.archhurd.org";
+
     "www.archhurd.org" = {
       root = "/srv/http/www";
       locations."/".proxyPass = "http://127.0.0.1:8000";

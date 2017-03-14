@@ -5,6 +5,8 @@
 
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
+    "barrucadu.co.uk".globalRedirect = "www.barrucadu.co.uk";
+
     "www.barrucadu.co.uk" = {
       root = "/srv/http/www";
       locations."/bookdb/".proxyPass = "http://127.0.0.1:3000";

@@ -7,6 +7,8 @@
 
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
+    "mawalker.me.uk".globalRedirect = "www.mawalker.me.uk";
+
     "www.mawalker.me.uk" = {
       root = "/srv/http/www";
       locations."~ \.php$".extraConfig = ''

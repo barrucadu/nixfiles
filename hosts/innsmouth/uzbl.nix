@@ -7,6 +7,8 @@
 
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
+    "uzbl.org".globalRedirect = "www.uzbl.org";
+
     "www.uzbl.org" = {
       root = "/srv/http/www";
       locations."= /archives.php".extraConfig    = "rewrite ^(.*) /index.php;";
