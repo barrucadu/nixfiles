@@ -9,10 +9,10 @@ let
   # Just edit this attribute set. Everything else maps over it, so
   # this should be all you need to touch.
   containerSpecs =
-    { archhurd  = { num = 1; config = (import ./containers/innsmouth-archhurd.nix);  domain = "archhurd.org";    extrasubs = ["aur" "bugs" "files" "lists" "wiki"]; ports = [21 873];}
-    ; barrucadu = { num = 2; config = (import ./containers/innsmouth-barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["docs" "go" "memo" "misc"]; ports = [70];}
-    ; mawalker  = { num = 3; config = (import ./containers/innsmouth-mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; ports = []; }
-    ; uzbl      = { num = 4; config = (import ./containers/innsmouth-uzbl.nix);      domain = "uzbl.org";        extrasubs = []; ports = []; }
+    { archhurd  = { num = 1; config = (import ./hosts/innsmouth/archhurd.nix);  domain = "archhurd.org";    extrasubs = ["aur" "bugs" "files" "lists" "wiki"]; ports = [21 873];}
+    ; barrucadu = { num = 2; config = (import ./hosts/innsmouth/barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["docs" "go" "memo" "misc"]; ports = [70];}
+    ; mawalker  = { num = 3; config = (import ./hosts/innsmouth/mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; ports = []; }
+    ; uzbl      = { num = 4; config = (import ./hosts/innsmouth/uzbl.nix);      domain = "uzbl.org";        extrasubs = []; ports = []; }
     ; };
   containerSpecs' = mapAttrsToList (k: v: v) containerSpecs;
 in

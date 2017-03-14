@@ -10,8 +10,8 @@ let
 in
 {
   imports =
-    [ ../services/nginx-phpfpm.nix
-      ../services/vsftpd.nix
+    [ ../../services/nginx-phpfpm.nix
+      ../../services/vsftpd.nix
     ];
 
   networking.firewall.enable = false;
