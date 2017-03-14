@@ -1,67 +1,57 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
-let
-  vHost = { subdomain, config ? "" }:
-    { hostname = "${subdomain}.barrucadu.co.uk"
-    ; webdir   = subdomain
-    ; config   = config
-    ; };
-  alias   = from: to: "location ${from} { alias ${to}; }";
-  expires = regex: when: "location ~* ${regex} { expires ${when}; }";
-in
 {
-  imports = [ ../services/nginx.nix ];
-
   networking.firewall.enable = false;
 
-  services.nginx.enable    = true;
-  services.nginx.enableSSL = false;
-  services.nginx.hosts     = map vHost
-    [ { subdomain = "www"
-      ; config    = ''
-        ${alias "/bookdb/covers/" "/srv/bookdb/covers/"}
-        ${alias "= /bookdb/script.js" "/srv/bookdb/script.js"}
-        ${alias "= /bookdb/style.css" "/srv/bookdb/style.css"}
+  services.nginx.enable = true;
+  services.nginx.virtualHosts = {
+    "www.barrucadu.co.uk" = {
+      root = "/srv/http/www";
+      locations."/bookdb/".proxyPass = "http://127.0.0.1:3000";
+      locations."/bookdb/covers/".extraConfig   = "alias /srv/bookdb/covers/;";
+      locations."/bookdb/script.js".extraConfig = "alias /srv/bookdb/script.js;";
+      locations."/bookdb/style.css".extraConfig = "alias /srv/bookdb/style.css;";
+      extraConfig = ''
+        access_log /var/spool/nginx/logs/www.access.log;
+        error_log  /var/spool/nginx/logs/www.error.log;
+      '';
+    };
 
-        location /bookdb/ {
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
+    "docs.barrucadu.co.uk" = {
+      root = "/srv/http/docs";
+      extraConfig = ''
+        types { text/html go; }
+        access_log /var/spool/nginx/logs/docs.access.log;
+        error_log  /var/spool/nginx/logs/docs.error.log;
+      '';
+    };
 
-          proxy_read_timeout 300;
-          proxy_connect_timeout 300;
-          proxy_pass http://127.0.0.1:3000;
-        }
+    "go.barrucadu.co.uk" = {
+      root = "/srv/http/go";
+      extraConfig = ''
+        include /srv/http/go.conf;
+        access_log /var/spool/nginx/logs/go.access.log;
+        error_log  /var/spool/nginx/logs/go.error.log;
+      '';
+    };
 
-        ${expires "index\.html$" "7d"}
-        ${expires "\.html$" "30d"}
-        ${expires "(cv.pdf|robots.txt|style.css)$" "30d"}
-        ${expires "(fonts|postfiles|publications)" "365d"}
-      ''
-      ; }
+    "memo.barrucadu.co.uk" = {
+      root = "/srv/http/memo";
+      extraConfig = ''
+        access_log /var/spool/nginx/logs/memo.access.log;
+        error_log  /var/spool/nginx/logs/memo.error.log;
+      '';
+    };
 
-      { subdomain = "docs"
-      ; config    = ''
-      # Serve .go files as HTML, for godoc.
-      include ${pkgs.nginx}/conf/mime.types;
-      types {
-        text/html go;
-      }
-      ''
-      ; }
-
-      { subdomain = "go"
-      ; config    = "include ${config.services.nginx.webroot}/go.conf;"
-      ; }
-
-      { subdomain = "misc"
-      ; config    = "location /pub/ { autoindex on; }"
-      ; }
-
-      { subdomain = "memo"
-      ; }
-    ];
+    "misc.barrucadu.co.uk" = {
+      root = "/srv/http/misc";
+      locations."/pub/".extraConfig = "autoindex on;";
+      extraConfig = ''
+        access_log /var/spool/nginx/logs/misc.access.log;
+        error_log  /var/spool/nginx/logs/misc.error.log;
+      '';
+    };
+  };
 
   systemd.services.bookdb =
     { enable   = true

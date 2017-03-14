@@ -15,18 +15,7 @@ let
     ; uzbl      = { num = 4; config = (import ./containers/innsmouth-uzbl.nix);      domain = "uzbl.org";        extrasubs = []; ports = []; }
     ; };
   containerSpecs' = mapAttrsToList (k: v: v) containerSpecs;
-
-  acmedir = "/var/acme-challenges";
-
-  acmeconf = ''
-    location '/.well-known/acme-challenge' {
-      default_type "text/plain";
-      root ${acmedir};
-    }
-  '';
-
 in
-
 {
   networking.hostName = "innsmouth";
 
@@ -38,7 +27,6 @@ in
       ./base/default.nix
 
       # Include other configuration.
-      ./services/nginx.nix
       ./services/openssh.nix
       ./services/syncthing.nix
     ];
@@ -77,72 +65,24 @@ in
     ) containerSpecs;
 
   # Web server
-  services.nginx.extraConfig = concatMapStringsSep "\n"
-    ({num, domain, extrasubs, ...}: ''
-      server {
-        listen  443       ssl  http2;
-        listen  [::]:443  ssl  http2;
-
-        server_name  ${concatMapStringsSep "  " (sub: "${sub}.${domain}") (["www"] ++ extrasubs)};
-
-        ssl_certificate      ${config.security.acme.directory}/${domain}/fullchain.pem;
-        ssl_certificate_key  ${config.security.acme.directory}/${domain}/key.pem;
-
-        location / {
-          proxy_pass        http://192.168.255.${toString num};
-          proxy_redirect    off;
-          proxy_set_header  Host             $host;
-          proxy_set_header  X-Real-IP        $remote_addr;
-          proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
-        }
-      }
-      ''
-    ) containerSpecs';
-
-  services.nginx.redirects =
-    [ # Redirect barrucadu.com to www.barrucadu.co.uk
-      { hostname = ".barrucadu.com"
-      ; certname = "barrucadu.com"
-      ; to = "https://www.barrucadu.co.uk"
-      ; config = acmeconf
-      ; http = true
-      ; https = true
-      ; }
-    ] ++ concatMap
-    ({domain, extrasubs, ...}:
-      [ { hostname = domain
-        ; certname = domain
-        ; to       = "https://www.${domain}"
-        ; config   = acmeconf
-        ; http     = true
-        ; https    = true
-        ; }
-      ] ++
-      map (sub: { hostname = "${sub}.${domain}"
-                ; to       = "https://${sub}.${domain}"
-                ; config   = acmeconf
-                ; http     = true
-                ; }
-          ) (["www"] ++ extrasubs)
-    ) containerSpecs';
-
-  # SSL certificates
-  security.acme.certs = mapAttrs'
-    (_: {domain, extrasubs, ...}: nameValuePair domain
-      { webroot = acmedir
-      ; extraDomains = genAttrs (map (subdomain: "${subdomain}.${domain}") (["www"] ++ extrasubs)) (name: null)
-      ; email = "mike@barrucadu.co.uk"
-      ; user = "nginx"
-      ; group = "nginx"
-      ; allowKeysForGroup = true
-      ; }
-    ) containerSpecs;
+  services.nginx.enable = true;
+  services.nginx.recommendedGzipSettings  = true;
+  services.nginx.recommendedOptimisation  = true;
+  services.nginx.recommendedProxySettings = true;
+  services.nginx.recommendedTlsSettings   = true;
+  services.nginx.virtualHosts = mapAttrs'
+    (_: {num, domain, extrasubs, ...}:
+      let cfg = {
+            serverAliases = map (sub: "${sub}.${domain}") (["www"]++extrasubs);
+            enableACME = true;
+            forceSSL   = true;
+            locations."/".proxyPass = "http://192.168.255.${toString num}";
+          };
+      in nameValuePair "${domain}" cfg)
+    containerSpecs;
 
   # Databases
-  services.mongodb =
-    { enable = true
-    ; };
-
+  services.mongodb.enable = true;
   # Gitolite
   services.gitolite =
     { enable = true

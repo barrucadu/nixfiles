@@ -1,49 +1,46 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../services/nginx.nix ];
+  imports = [ ../services/nginx-phpfpm.nix ];
 
   networking.firewall.enable = false;
 
-  services.nginx.enable    = true;
-  services.nginx.enablePHP = true;
-  services.nginx.enableSSL = false;
-  services.nginx.hosts     =
-    [ { hostname = "www.uzbl.org"
-      ; webdir   = "www"
-      ; config = ''
-        index index.html index.htm index.php;
-
-        location = /archives.php    { rewrite ^(.*) /index.php; }
-        location = /faq.php         { rewrite ^(.*) /index.php; }
-        location = /readme.php      { rewrite ^(.*) /index.php; }
-        location = /keybindings.php { rewrite ^(.*) /index.php; }
-        location = /get.php         { rewrite ^(.*) /index.php; }
-        location = /community.php   { rewrite ^(.*) /index.php; }
-        location = /contribute.php  { rewrite ^(.*) /index.php; }
-        location = /commits.php     { rewrite ^(.*) /index.php; }
-        location = /news.php        { rewrite ^(.*) /index.php; }
-        location /doesitwork/       { rewrite ^(.*) /index.php; }
-        location /fosdem2010/       { rewrite ^(.*) /index.php; }
-
-        location /wiki/ { try_files $uri $uri/ @dokuwiki; }
-        location ~ /wiki/(data/|conf/|bin/|inc/|install.php) { deny all; }
-        location @dokuwiki {
-          rewrite ^/wiki/_media/(.*) /wiki/lib/exe/fetch.php?media=$1 last;
-          rewrite ^/wiki/_detail/(.*) /wiki/lib/exe/detail.php?media=$1 last;
-          rewrite ^/wiki/_export/([^/]+)/(.*) /wiki/doku.php?do=export_$1&id=$2 last;
-          rewrite ^/wiki/(.*) /wiki/doku.php?id=$1&$args last;
-        }
-
-        location ~ \.php$ {
-          include ${pkgs.nginx}/conf/fastcgi_params;
-          fastcgi_pass  unix:/run/phpfpm/phpfpm.sock;
-          fastcgi_index index.php;
-          fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
-        }
-      ''
-      ; }
-    ];
+  services.nginx.enable = true;
+  services.nginx.virtualHosts = {
+    "www.uzbl.org" = {
+      root = "/srv/http/www";
+      locations."= /archives.php".extraConfig    = "rewrite ^(.*) /index.php;";
+      locations."= /faq.php".extraConfig         = "rewrite ^(.*) /index.php;";
+      locations."= /readme.php".extraConfig      = "rewrite ^(.*) /index.php;";
+      locations."= /keybindings.php".extraConfig = "rewrite ^(.*) /index.php;";
+      locations."= /get.php".extraConfig         = "rewrite ^(.*) /index.php;";
+      locations."= /community.php".extraConfig   = "rewrite ^(.*) /index.php;";
+      locations."= /contribute.php".extraConfig  = "rewrite ^(.*) /index.php;";
+      locations."= /commits.php".extraConfig     = "rewrite ^(.*) /index.php;";
+      locations."= /news.php".extraConfig        = "rewrite ^(.*) /index.php;";
+      locations."/doesitwork/".extraConfig       = "rewrite ^(.*) /index.php;";
+      locations."/fosdem2010/".extraConfig       = "rewrite ^(.*) /index.php;";
+      locations."/wiki/".tryFiles = "$uri $uri/ @dokuwiki";
+      locations."~ /wiki/(data/|conf/|bin/|inc/|install.php)".extraConfig = "deny all;";
+      locations."@dokuwiki".extraConfig = ''
+        rewrite ^/wiki/_media/(.*) /wiki/lib/exe/fetch.php?media=$1 last;
+        rewrite ^/wiki/_detail/(.*) /wiki/lib/exe/detail.php?media=$1 last;
+        rewrite ^/wiki/_export/([^/]+)/(.*) /wiki/doku.php?do=export_$1&id=$2 last;
+        rewrite ^/wiki/(.*) /wiki/doku.php?id=$1&$args last;
+      '';
+      locations."~ \.php$".extraConfig = ''
+        include ${pkgs.nginx}/conf/fastcgi_params;
+        fastcgi_pass  unix:/run/phpfpm/phpfpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+      '';
+      extraConfig = ''
+        index index.php;
+        access_log /var/spool/nginx/logs/www.access.log;
+        error_log  /var/spool/nginx/logs/www.error.log;
+      '';
+    };
+  };
 
   systemd.services.git-pull-www =
     { enable   = true
