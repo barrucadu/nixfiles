@@ -76,4 +76,10 @@
       ; WorkingDirectory = "/srv/gopher"
       ; }
     ; };
+
+  # Clear the misc files every so often.
+  systemd.tmpfiles.rules =
+    [ "d /srv/http/misc     0755 root root 3d"
+      "d /srv/http/misc/pub 0755 root root 3d"
+    ];
 }
