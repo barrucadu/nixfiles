@@ -27,7 +27,6 @@ in
       common = [
         aspell
         aspellDicts.en
-        direnv
         file
         git
         gnupg
