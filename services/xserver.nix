@@ -13,6 +13,14 @@
   services.xserver.displayManager.lightdm.enable = true;
   environment.systemPackages = [ pkgs.lightdm ];
 
+  # Enable redshift
+  services.redshift = {
+    enable = true;
+    # York
+    latitude  = "53.953";
+    longitude = "-1.0391";
+  };
+
   # Sane font defaults
   fonts = {
     enableFontDir = true;

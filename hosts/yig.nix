@@ -26,14 +26,6 @@
   # Enable wifi
   networking.wireless.enable = true;
 
-  # Enable redshift
-  services.redshift = {
-    enable = true;
-    # York
-    latitude  = "53.953";
-    longitude = "-1.0391";
-  };
-
   # Enable touchpad
   services.xserver.synaptics.enable = true;
 }
