@@ -38,7 +38,7 @@ in
 
   # Firewall and container NAT
   networking.firewall.allowPing = true;
-  networking.firewall.allowedTCPPorts = [ 21 70 80 443 873 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ] ++ concatMap ({ports, ...}: ports) containerSpecs';
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
 
   networking.nat.enable = true;
