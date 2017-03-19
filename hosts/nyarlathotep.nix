@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+
+# Bring names from 'lib' into scope.
+with lib;
+
+let
+  shares = [ "anime" "music" "movies" "tv" "images" "torrents" ];
+in
 
 {
   networking.hostName = "nyarlathotep";
@@ -32,25 +39,14 @@
   # NFS exports
   services.nfs.server.enable = true;
   services.nfs.server.exports = ''
-    /srv/share/         10.1.1.0/24(rw,fsid=root,no_subtree_check)
-    /srv/share/anime    10.1.1.0/24(rw,no_subtree_check,nohide)
-    /srv/share/music    10.1.1.0/24(rw,no_subtree_check,nohide)
-    /srv/share/movies   10.1.1.0/24(rw,no_subtree_check,nohide)
-    /srv/share/tv       10.1.1.0/24(rw,no_subtree_check,nohide)
-    /srv/share/images   10.1.1.0/24(rw,no_subtree_check,nohide)
-    /srv/share/torrents 10.1.1.0/24(rw,no_subtree_check,nohide)
+    /srv/share/ 10.1.1.0/24(rw,fsid=root,no_subtree_check)
+    ${concatMapStringsSep "\n" (n: "/srv/share/${n} 10.1.1.0/24(rw,no_subtree_check,nohide)") shares}
   '';
 
   # Samba
   services.samba.enable = true;
-  services.samba.shares = {
-    anime    = { path = "/srv/share/anime";    writable = "yes"; };
-    movies   = { path = "/srv/share/movies";   writable = "yes"; };
-    music    = { path = "/srv/share/music";    writable = "yes"; };
-    tv       = { path = "/srv/share/tv";       writable = "yes"; };
-    images   = { path = "/srv/share/images";   writable = "yes"; };
-    torrents = { path = "/srv/share/torrents"; writable = "yes"; };
-  };
+  services.samba.shares = listToAttrs
+    (map (n: nameValuePair n { path = "/srv/share/${n}"; writable = "yes"; }) shares);
   services.samba.extraConfig = ''
     hosts allow = 10.1.1. 127.
     log file = /var/log/samba/%m.log
