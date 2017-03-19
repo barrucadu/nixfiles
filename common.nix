@@ -135,6 +135,7 @@
         lynx
         man-pages
         mosh
+        nix-repl
         nmap
         nox
         psmisc
