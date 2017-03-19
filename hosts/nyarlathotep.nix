@@ -57,12 +57,6 @@
   '';
   services.samba.syncPasswordsByPam = true;
 
-  # Plex Media Server
-  #
-  # extra set-up: install the Absolute Series Scanner and Hama plugins in /var.
-  services.plex.enable = true;
-  services.plex.managePlugins = false;
-
   # nginx
   services.nginx.enable = true;
   services.nginx.config = ''
