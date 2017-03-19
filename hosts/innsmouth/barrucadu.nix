@@ -14,6 +14,7 @@
       locations."/bookdb/script.js".extraConfig = "alias /srv/bookdb/script.js;";
       locations."/bookdb/style.css".extraConfig = "alias /srv/bookdb/style.css;";
       extraConfig = ''
+        include /srv/http/www.conf;
         access_log /var/spool/nginx/logs/www.access.log;
         error_log  /var/spool/nginx/logs/www.error.log;
       '';
