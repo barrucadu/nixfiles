@@ -30,6 +30,8 @@
   i18n.defaultLocale = "en_GB.UTF-8";
 
   # Timezone
+  services.ntp.enable = true; # this is enabled by default, but I like
+                              # being explicit about it, to remind me.
   time.timeZone = "Europe/London";
 
   # Keyboard
