@@ -18,10 +18,6 @@
     (let mkTmpDir = n: u: "d ${u.home}/tmp 0700 ${n} ${u.group} 7d";
      in lib.mapAttrsToList mkTmpDir (lib.filterAttrs (n: u: u.isNormalUser) config.users.extraUsers));
 
-  # Use zsh as the default shell.
-  programs.zsh.enable = true;
-  users.defaultUserShell = "/run/current-system/sw/bin/zsh";
-
   # Enable passwd and co.
   users.mutableUsers = true;
 
@@ -77,6 +73,7 @@
     extraGroups = [ "wheel" ];
     group = "users";
     initialPassword = "breadbread";
+    shell = "${pkgs.zsh}/bin/zsh";
 
     # Such pubkey!
     openssh.authorizedKeys.keys = [
@@ -150,6 +147,7 @@
         which
         whois
         wget
+        zsh
       ];
 
       # Packages to install if X is not enabled.
