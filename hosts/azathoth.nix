@@ -16,13 +16,11 @@ in
       ./hardware-configuration.nix
 
       # Include the standard configuration.
-      ./base/default.nix
+      ./common.nix
 
       # Include other configuration.
-      ./common/kernel.nix
+      ./misc/kernel.nix
       ./services/mpd.nix
-      ./services/openssh.nix
-      ./services/syncthing.nix
       ./services/xserver.nix
     ];
 

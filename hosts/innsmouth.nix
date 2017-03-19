@@ -24,11 +24,7 @@ in
       ./hardware-configuration.nix
 
       # Include the standard configuration.
-      ./base/default.nix
-
-      # Include other configuration.
-      ./services/openssh.nix
-      ./services/syncthing.nix
+      ./common.nix
     ];
 
   # Bootloader

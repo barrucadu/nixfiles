@@ -8,11 +8,9 @@
       ./hardware-configuration.nix
 
       # Include the standard configuration.
-      ./base/default.nix
+      ./common.nix
 
       # Include other configuration.
-      ./services/openssh.nix
-      ./services/syncthing.nix
       ./services/xserver.nix
     ];
 

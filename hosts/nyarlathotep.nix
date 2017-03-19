@@ -10,12 +10,10 @@
       ./hardware-configuration.nix
 
       # Include the standard configuration.
-      ./base/default.nix
+      ./common.nix
 
       # Include other configuration.
-      ./common/kernel.nix
-      ./services/openssh.nix
-      ./services/syncthing.nix
+      ./misc/kernel.nix
     ];
 
   # UEFI
