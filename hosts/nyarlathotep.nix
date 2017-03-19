@@ -5,16 +5,11 @@
   networking.hostId = "4a592971"; # ZFS needs one of these
   boot.supportedFilesystems = [ "zfs" ];
 
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-
-      # Include the standard configuration.
-      ./common.nix
-
-      # Include other configuration.
-      ./misc/kernel.nix
-    ];
+  imports = [
+    ./common.nix
+    ./hardware-configuration.nix
+    ./misc/kernel.nix
+  ];
 
   # UEFI
   boot.loader.systemd-boot.enable = true;

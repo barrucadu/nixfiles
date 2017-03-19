@@ -3,16 +3,11 @@
 {
   networking.hostName = "yig";
 
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-
-      # Include the standard configuration.
-      ./common.nix
-
-      # Include other configuration.
-      ./services/xserver.nix
-    ];
+  imports = [
+    ./common.nix
+    ./hardware-configuration.nix
+    ./services/xserver.nix
+  ];
 
   # Bootloader
   boot.loader.grub.enable  = true;

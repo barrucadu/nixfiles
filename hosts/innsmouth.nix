@@ -19,13 +19,10 @@ in
 {
   networking.hostName = "innsmouth";
 
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-
-      # Include the standard configuration.
-      ./common.nix
-    ];
+  imports = [
+    ./common.nix
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader
   boot.loader.grub.enable  = true;

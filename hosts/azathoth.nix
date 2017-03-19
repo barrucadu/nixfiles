@@ -11,18 +11,13 @@ in
 {
   networking.hostName = "azathoth";
 
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-
-      # Include the standard configuration.
-      ./common.nix
-
-      # Include other configuration.
-      ./misc/kernel.nix
-      ./services/mpd.nix
-      ./services/xserver.nix
-    ];
+  imports = [
+    ./common.nix
+    ./hardware-configuration.nix
+    ./misc/kernel.nix
+    ./services/mpd.nix
+    ./services/xserver.nix
+  ];
 
   # Bootloader
   boot.loader.grub.enable  = true;
