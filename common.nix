@@ -128,6 +128,7 @@ with lib;
         git
         gnupg
         gnupg1compat
+        gnum4
         fortune
         haskellPackages.hledger
         haskellPackages.pandoc
