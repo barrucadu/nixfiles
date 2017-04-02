@@ -10,9 +10,9 @@ with lib;
   # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "17.03";
 
-  # Collect nix store garbage daily.
+  # Collect nix store garbage and optimise daily.
   nix.gc.automatic = true;
-  nix.gc.dates = "03:15";
+  nix.optimise.automatic = true;
 
   # Clear out /tmp after a fortnight and give all normal users a ~/tmp
   # cleaned out weekly.
