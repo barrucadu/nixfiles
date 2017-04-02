@@ -8,7 +8,7 @@ with lib;
   #############################################################################
 
   # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "16.09";
+  system.stateVersion = "17.03";
 
   # Collect nix store garbage daily.
   nix.gc.automatic = true;
@@ -32,8 +32,9 @@ with lib;
   i18n.defaultLocale = "en_GB.UTF-8";
 
   # Timezone
-  services.ntp.enable = true; # this is enabled by default, but I like
-                              # being explicit about it, to remind me.
+  services.timesyncd.enable = true; # this is enabled by default, but
+                                    # I like being explicit about it,
+                                    # to remind me.
   time.timeZone = "Europe/London";
 
   # Keyboard
@@ -157,14 +158,14 @@ with lib;
 
       # Packages to install if X is not enabled.
       noxorg = [
-        emacs24-nox
+        emacs25-nox
       ];
 
       # Packages to install if X is enabled.
       xorg = [
         chromium
         clawsMail
-        emacs24
+        emacs
         evince
         firefox
         ghostscript
