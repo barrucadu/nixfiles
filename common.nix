@@ -66,6 +66,9 @@ with lib;
     allowedUDPPorts = [ 21027 ];
   };
 
+  # Monitor network activity
+  services.vnstat.enable = true;
+
 
   #############################################################################
   ## User accounts
@@ -150,6 +153,7 @@ with lib;
         tmux
         unzip
         vim
+        vnstat
         which
         whois
         wget
