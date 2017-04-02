@@ -33,4 +33,7 @@
       source-code-pro
     ];
   };
+
+  # Start the urxvtd user service
+  services.urxvtd.enable = true;
 }
