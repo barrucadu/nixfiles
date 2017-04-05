@@ -78,9 +78,14 @@
       ; }
     ; };
 
-  # Clear the misc files every so often.
+  # Clear the misc files every so often (this needs a user created, as
+  # just specifying an arbitrary UID doesn't work)
   systemd.tmpfiles.rules =
-    [ "d /srv/http/misc     0755 1000 100 3d"
-      "d /srv/http/misc/pub 0755 1000 100 3d"
+    [ "d /srv/http/misc     0755 barrucadu users 3d"
+      "d /srv/http/misc/pub 0755 barrucadu users 3d"
     ];
+  users.extraUsers.barrucadu = {
+    uid = 1000;
+    group = "users";
+  };
 }
