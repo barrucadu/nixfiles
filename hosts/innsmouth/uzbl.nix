@@ -38,7 +38,7 @@
       '';
       extraConfig = ''
         index index.php;
-        access_log /var/spool/nginx/logs/www.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/www.error.log;
       '';
     };

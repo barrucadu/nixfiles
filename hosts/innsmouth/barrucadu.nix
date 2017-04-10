@@ -15,7 +15,7 @@
       locations."/bookdb/style.css".extraConfig = "alias /srv/bookdb/style.css;";
       extraConfig = ''
         include /srv/http/www.conf;
-        access_log /var/spool/nginx/logs/www.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/www.error.log;
       '';
     };
@@ -25,7 +25,7 @@
       extraConfig = ''
         include ${pkgs.nginx}/conf/mime.types;
         types { text/html go; }
-        access_log /var/spool/nginx/logs/docs.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/docs.error.log;
       '';
     };
@@ -34,7 +34,7 @@
       root = "/srv/http/go";
       extraConfig = ''
         include /srv/http/go.conf;
-        access_log /var/spool/nginx/logs/go.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/go.error.log;
       '';
     };
@@ -42,7 +42,7 @@
     "memo.barrucadu.co.uk" = {
       root = "/srv/http/memo";
       extraConfig = ''
-        access_log /var/spool/nginx/logs/memo.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/memo.error.log;
       '';
     };
@@ -51,7 +51,7 @@
       root = "/srv/http/misc";
       locations."/pub/".extraConfig = "autoindex on;";
       extraConfig = ''
-        access_log /var/spool/nginx/logs/misc.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/misc.error.log;
       '';
     };

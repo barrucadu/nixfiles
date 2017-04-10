@@ -30,7 +30,7 @@ in
       };
       locations."/media".root = "/srv/archweb";
       extraConfig = ''
-        access_log /var/spool/nginx/logs/www.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/www.error.log;
       '';
     };
@@ -47,7 +47,7 @@ in
       };
       extraConfig = ''
         index index.php;
-        access_log /var/spool/nginx/logs/aur.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/aur.error.log;
       '';
     };
@@ -57,7 +57,7 @@ in
       locations."~ \.php$".extraConfig = phpExtraConfig;
       extraConfig = ''
         index index.php;
-        access_log /var/spool/nginx/logs/bugs.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/bugs.error.log;
       '';
     };
@@ -66,7 +66,7 @@ in
       root = "/srv/http/files";
       locations."/".extraConfig = "autoindex on;";
       extraConfig = ''
-        access_log /var/spool/nginx/logs/files.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/files.error.log;
       '';
     };
@@ -74,7 +74,7 @@ in
     "lists.archhurd.org" = {
       root = "/srv/http/lists";
       extraConfig = ''
-        access_log /var/spool/nginx/logs/lists.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/lists.error.log;
       '';
     };
@@ -90,7 +90,7 @@ in
       locations."^~ /cache/".extraConfig = "deny all;";
       extraConfig = ''
         index index.php;
-        access_log /var/spool/nginx/logs/wiki.access.log;
+        access_log /dev/null;
         error_log  /var/spool/nginx/logs/wiki.error.log;
       '';
     };
