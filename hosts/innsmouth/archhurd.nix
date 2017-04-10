@@ -1,4 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+with lib;
 
 let
   phpExtraConfig = ''
@@ -146,6 +148,26 @@ in
                  ; }
       ; }
     ; };
+
+  # Logs
+  services.logrotate.enable = true;
+  services.logrotate.config = ''
+/var/spool/rsyncd.log {
+    weekly
+    copytruncate
+    rotate 1
+    compress
+}
+${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "aur" "bugs" "files" "lists" "wiki" ]} {
+    weekly
+    copytruncate
+    rotate 1
+    compress
+    postrotate
+        systemctl kill nginx.service --signal=USR1
+    endscript
+}
+  '';
 
   # Extra packages
   environment.systemPackages = [ pkgs.python2Packages.virtualenv ];

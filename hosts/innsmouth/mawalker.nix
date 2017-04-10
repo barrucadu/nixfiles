@@ -24,4 +24,17 @@
       '';
     };
   };
+
+  services.logrotate.enable = true;
+  services.logrotate.config = ''
+/var/spool/nginx/logs/www.error.log {
+    weekly
+    copytruncate
+    rotate 1
+    compress
+    postrotate
+        systemctl kill nginx.service --signal=USR1
+    endscript
+}
+  '';
 }

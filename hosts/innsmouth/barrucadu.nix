@@ -1,4 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+with lib;
 
 {
   networking.firewall.enable = false;
@@ -78,6 +80,20 @@
       ; WorkingDirectory = "/srv/gopher"
       ; }
     ; };
+
+  # Logs
+  services.logrotate.enable = true;
+  services.logrotate.config = ''
+${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "docs" "go" "memo" "misc" ]} {
+    weekly
+    copytruncate
+    rotate 1
+    compress
+    postrotate
+        systemctl kill nginx.service --signal=USR1
+    endscript
+}
+  '';
 
   # Clear the misc files every so often (this needs a user created, as
   # just specifying an arbitrary UID doesn't work)
