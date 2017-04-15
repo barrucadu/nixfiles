@@ -14,7 +14,6 @@ in
   imports = [
     ./common.nix
     ./hardware-configuration.nix
-    ./misc/kernel.nix
     ./services/mpd.nix
     ./services/xserver.nix
   ];
@@ -23,6 +22,11 @@ in
   boot.loader.grub.enable  = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.device  = "/dev/sda";
+
+  # Kernel
+  boot.kernelPatches = [
+    { patch = ./patches/wifi.patch; name = "Holgate wifi issue"; }
+  ];
 
   # Windows
   fileSystems."/mnt/data".device = "/dev/disk/by-label/Data";

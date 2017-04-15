@@ -15,11 +15,15 @@ in
   imports = [
     ./common.nix
     ./hardware-configuration.nix
-    ./misc/kernel.nix
   ];
 
-  # UEFI
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
+
+  # Kernel
+  boot.kernelPatches = [
+    { patch = ./patches/wifi.patch; name = "Holgate wifi issue"; }
+  ];
 
   # Enable wifi
   networking.wireless.enable = true;
