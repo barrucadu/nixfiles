@@ -149,7 +149,6 @@ with lib;
         nox
         psmisc
         python3
-        python3Packages.pygments
         rxvt_unicode.terminfo
         stow
         taskwarrior
