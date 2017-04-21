@@ -131,7 +131,6 @@ with lib;
       common = [
         aspell
         aspellDicts.en
-        clisp
         file
         git
         gnupg
@@ -151,6 +150,7 @@ with lib;
         psmisc
         python3
         rxvt_unicode.terminfo
+        sbcl
         stow
         taskwarrior
         tmux
