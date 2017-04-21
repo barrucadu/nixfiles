@@ -131,6 +131,7 @@ with lib;
       common = [
         aspell
         aspellDicts.en
+        clisp
         file
         git
         gnupg
