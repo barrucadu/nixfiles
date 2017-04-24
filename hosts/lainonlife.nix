@@ -67,7 +67,7 @@ in
   # Radio (one MPD entry per channel)
   users.extraUsers."${radio.username}" = radio.userSettings;
   services.icecast = radio.icecastSettings;
-  systemd.services."mpd-random" = radio.mpdServiceFor { channel = "random"; port = 6600; description = "Anything and everything!"; };
+  systemd.services."mpd-everything" = radio.mpdServiceFor { channel = "everything"; port = 6600; description = "all the music, all the time"; };
   environment.systemPackages = [ pkgs.ncmpcpp ];
 
   # Build MPD with libmp3lame support, so shoutcast output can do mp3.
