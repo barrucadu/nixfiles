@@ -1,5 +1,9 @@
 { config, pkgs, lib, ... }:
 
+let
+  radio = import ./hosts/lainonlife/radio.nix { inherit pkgs; };
+in
+
 {
   networking.hostName = "lainonlife";
 
@@ -26,4 +30,14 @@
 
   # No syncthing
   services.syncthing.enable = lib.mkForce false;
+
+  # Firewall
+  networking.firewall.allowPing = true;
+  networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
+
+  # Radio (one MPD entry per channel)
+  users.extraUsers."${radio.username}" = radio.userSettings;
+  services.icecast = radio.icecastSettings;
+  systemd.services."mpd-random" = radio.mpdServiceFor { channel = "random"; port = 6600; description = "Anything and everything!"; };
+  environment.systemPackages = [ pkgs.ncmpcpp ];
 }

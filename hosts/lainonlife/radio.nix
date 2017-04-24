@@ -1,0 +1,95 @@
+# Radio stuff.
+{ pkgs, ... }:
+
+let
+  # Configuration for the radio user.
+  user  = "radio";
+  group = "audio";
+  homeDir = "/srv/radio";
+  dataDirFor  = channel: "${homeDir}/data/${channel}";
+  musicDirFor = channel: "${homeDir}/music/${channel}";
+
+  # Configuration for the Icecast server.
+  icecastAdminPassword  = import /etc/nixos/secrets/icecast-admin-password.nix;
+  icecastSourcePassword = import /etc/nixos/secrets/icecast-source-password.nix;
+  icecastRelayPassword  = import /etc/nixos/secrets/icecast-relay-password.nix;
+
+  # Configuration for an MPD instance.
+  mpdConfigFor = channel: description: port: pkgs.writeText "mpd-${channel}.conf" ''
+    music_directory     "${musicDirFor channel}"
+    playlist_directory  "${dataDirFor channel}/playlists"
+    db_file             "${dataDirFor channel}/db"
+    state_file          "${dataDirFor channel}/state"
+    sticker_file        "${dataDirFor channel}/sticker.sql"
+    log_file            "syslog"
+    bind_to_address     "127.0.0.1"
+    port                "${toString port}"
+
+    audio_output {
+      name        "${channel}"
+      description "${description}"
+      type        "shout"
+      encoding    "ogg"
+      host        "localhost"
+      port        "8000"
+      mount       "/${channel}.ogg"
+      user        "source"
+      password    "${icecastSourcePassword}"
+      bitrate     "64"
+      format      "44100:16:1"
+    }
+
+    audio_output {
+      type "null"
+      name "null"
+    }
+  '';
+in
+
+{
+  # The radio runs as its own user, with music files stored in $HOME/music/$CHANNEL and state files
+  # in $HOME/data/$CHANNEL.
+  #
+  # > users.extraUsers."${radio.username}" = radio.userSettings;
+  username = user;
+
+  userSettings = {
+    isSystemUser = true;
+    extraGroups = [ group ];
+    description = "Music Player Daemon user";
+    home = homeDir;
+    shell = "${pkgs.bash}/bin/bash";
+  };
+
+  # Icecast service settings.
+  #
+  # > services.icecast = radio.icecastSettings;
+  icecastSettings = {
+    enable = true;
+    hostname = "lainon.life";
+    admin.password = icecastAdminPassword;
+    extraConf = ''
+      <authentication>
+        <source-password>${icecastSourcePassword}</source-password>
+        <relay-password>${icecastRelayPassword}</relay-password>
+      </authentication>
+    '';
+  };
+
+  # MPD service settings.
+  #
+  # > systemd.services."mpd-random" = radio.mpdServiceFor { channel = "random"; port = 6600; description = "Anything and everything!"; };
+  mpdServiceFor = { channel, description, port }: {
+    after = [ "network.target" "sound.target" ];
+    description = "Music Player Daemon (channel ${channel})";
+    wantedBy = [ "multi-user.target" ];
+
+    preStart = "mkdir -p ${dataDirFor channel} && chown -R ${user}:${group} ${dataDirFor channel}";
+    serviceConfig = {
+      User = user;
+      Group = group;
+      PermissionsStartOnly = true;
+      ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${mpdConfigFor channel description port}";
+    };
+  };
+}
