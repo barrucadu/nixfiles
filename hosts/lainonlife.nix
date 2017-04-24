@@ -35,6 +35,35 @@ in
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
 
+  # Web server
+  services.nginx.enable = true;
+  services.nginx.recommendedGzipSettings  = true;
+  services.nginx.recommendedOptimisation  = true;
+  services.nginx.recommendedProxySettings = true;
+  services.nginx.recommendedTlsSettings   = true;
+  services.nginx.virtualHosts."lainon.life" = {
+    serverAliases = [ "www.lainon.life" ];
+    enableACME = true;
+    forceSSL = true;
+    default = true;
+    root = "/srv/http";
+    locations."/radio/".proxyPass = "http://localhost:8000/";
+    extraConfig = "add_header 'Access-Control-Allow-Origin' '*';";
+  };
+
+  services.logrotate.enable = true;
+  services.logrotate.config = ''
+/var/spool/nginx/logs/access.log /var/spool/nginx/logs/error.log {
+    weekly
+    copytruncate
+    rotate 4
+    compress
+    postrotate
+        systemctl kill nginx.service --signal=USR1
+    endscript
+}
+  '';
+
   # Radio (one MPD entry per channel)
   users.extraUsers."${radio.username}" = radio.userSettings;
   services.icecast = radio.icecastSettings;
