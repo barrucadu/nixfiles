@@ -76,4 +76,12 @@ in
       buildInputs = oldAttrs.buildInputs ++ [ pkgs.lame ];
     });
   };
+
+  # Extra users
+  users.extraUsers.appleman1234 = {
+    uid = 1001;
+    description = "Appleman1234 <admin@lainchan.org>";
+    isNormalUser = true;
+    group = "users";
+  };
 }
