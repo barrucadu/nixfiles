@@ -40,4 +40,11 @@ in
   services.icecast = radio.icecastSettings;
   systemd.services."mpd-random" = radio.mpdServiceFor { channel = "random"; port = 6600; description = "Anything and everything!"; };
   environment.systemPackages = [ pkgs.ncmpcpp ];
+
+  # Build MPD with libmp3lame support, so shoutcast output can do mp3.
+  nixpkgs.config.packageOverrides = pkgs: {
+    mpd = pkgs.mpd.overrideAttrs (oldAttrs: rec {
+      buildInputs = oldAttrs.buildInputs ++ [ pkgs.lame ];
+    });
+  };
 }

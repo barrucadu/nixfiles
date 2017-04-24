@@ -15,35 +15,41 @@ let
   icecastRelayPassword  = import /etc/nixos/secrets/icecast-relay-password.nix;
 
   # Configuration for an MPD instance.
-  mpdConfigFor = channel: description: port: pkgs.writeText "mpd-${channel}.conf" ''
-    music_directory     "${musicDirFor channel}"
-    playlist_directory  "${dataDirFor channel}/playlists"
-    db_file             "${dataDirFor channel}/db"
-    state_file          "${dataDirFor channel}/state"
-    sticker_file        "${dataDirFor channel}/sticker.sql"
-    log_file            "syslog"
-    bind_to_address     "127.0.0.1"
-    port                "${toString port}"
+  mpdConfigFor = channel: description: port:
+    let shoutConfig = encoder: ext: ''
+      audio_output {
+        name        "${channel} (${ext})"
+        description "${description}"
+        type        "shout"
+        encoder     "${encoder}"
+        host        "localhost"
+        port        "8000"
+        mount       "/${channel}.${ext}"
+        user        "source"
+        password    "${icecastSourcePassword}"
+        quality     "3"
+        format      "44100:16:2"
+        always_on   "yes"
+      }
+      '';
+    in pkgs.writeText "mpd-${channel}.conf" ''
+      music_directory     "${musicDirFor channel}"
+      playlist_directory  "${dataDirFor channel}/playlists"
+      db_file             "${dataDirFor channel}/db"
+      state_file          "${dataDirFor channel}/state"
+      sticker_file        "${dataDirFor channel}/sticker.sql"
+      log_file            "syslog"
+      bind_to_address     "127.0.0.1"
+      port                "${toString port}"
 
-    audio_output {
-      name        "${channel}"
-      description "${description}"
-      type        "shout"
-      encoding    "ogg"
-      host        "localhost"
-      port        "8000"
-      mount       "/${channel}.ogg"
-      user        "source"
-      password    "${icecastSourcePassword}"
-      bitrate     "64"
-      format      "44100:16:1"
-    }
+      ${shoutConfig "vorbis" "ogg"}
+      ${shoutConfig "lame"   "mp3"}
 
-    audio_output {
-      type "null"
-      name "null"
-    }
-  '';
+      audio_output {
+        type "null"
+        name "null"
+      }
+    '';
 in
 
 {
