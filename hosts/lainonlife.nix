@@ -85,4 +85,11 @@ in
     isNormalUser = true;
     group = "users";
   };
+  users.extraUsers.yuuko = {
+    uid = 1002;
+    description = "Yuuko";
+    isNormalUser = true;
+    group = "users";
+    extraGroups = [ "audio" ];
+  };
 }
