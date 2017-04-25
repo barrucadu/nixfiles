@@ -47,7 +47,8 @@ in
     forceSSL = true;
     default = true;
     root = "/srv/http";
-    locations."/radio/".proxyPass = "http://localhost:8000/";
+    locations."/radio/".proxyPass  = "http://localhost:8000/";
+    locations."/graphs/".proxyPass = "http://localhost:8001/";
     extraConfig = "add_header 'Access-Control-Allow-Origin' '*';";
   };
 
@@ -76,6 +77,33 @@ in
     mpd = pkgs.mpd.overrideAttrs (oldAttrs: rec {
       buildInputs = oldAttrs.buildInputs ++ [ pkgs.lame ];
     });
+  };
+
+  # Fancy graphs
+  services.influxdb.enable = true;
+
+  services.grafana = {
+    enable = true;
+    port = 8001;
+    domain = "lainon.life";
+    rootUrl = "https://lainon.life/graphs/";
+    security.adminPassword = import /etc/nixos/secrets/grafana-admin-password.nix;
+    security.secretKey = import /etc/nixos/secrets/grafana-key.nix;
+    auth.anonymous.enable = true;
+    auth.anonymous.org_name = "lainon.life";
+  };
+
+  systemd.services.metrics = {
+    after = [ "network.target" ];
+    description = "Report metrics";
+    wantedBy = [ "multi-user.target" ];
+    startAt = "*:*:0,30";
+
+    serviceConfig = {
+      User = radio.username;
+      ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.influxdb python3Packages.psutil --run /srv/http/misc/metrics.py\"";
+      Type = "oneshot";
+    };
   };
 
   # Extra users
