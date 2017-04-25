@@ -98,4 +98,21 @@ in
       ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${mpdConfigFor channel description port}";
     };
   };
+
+  # Programming service settings.
+  #
+  # > systemd.services."programme-random" = radio.programmingServiceFor { channel = "random"; port = 6600; };
+  programmingServiceFor = {channel, port}: {
+    after = [ "network.target" "sound.target" ];
+    description = "Radio Programming (channel ${channel})";
+    wantedBy = [ "multi-user.target" ];
+    startAt = "0/4:00:00";
+
+    serviceConfig = {
+      User = user;
+      Group = group;
+      ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.mpd2 --run '/srv/http/misc/schedule-radio.py ${toString port}'\"";
+      Type = "oneshot";
+    };
+  };
 }
