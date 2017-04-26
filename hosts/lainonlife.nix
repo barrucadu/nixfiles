@@ -108,7 +108,7 @@ in
         };
       }
     ];
-  environment.systemPackages = [ pkgs.ncmpcpp ];
+  environment.systemPackages = with pkgs; [ flac ncmpcpp ];
 
   # Build MPD with libmp3lame support, so shoutcast output can do mp3.
   nixpkgs.config.packageOverrides = pkgs: {
