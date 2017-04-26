@@ -55,6 +55,7 @@ in
     root = "/srv/http";
     locations."/radio/".proxyPass  = "http://localhost:8000/";
     locations."/graphs/".proxyPass = "http://localhost:8001/";
+    locations."/script/".proxyPass = "http://localhost:8002/";
     extraConfig = "add_header 'Access-Control-Allow-Origin' '*';";
   };
 
@@ -78,8 +79,8 @@ in
     [ (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "mpd-${channel}"       (radio.mpdServiceFor         c)) radioChannels))
       (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
 
-      # Because I am defining systemd.services in its entirety here, the metric-reporting service
-      # needs to live in this list too.
+      # Because I am defining systemd.services in its entirety here, all services defined in this
+      # file need to live in this list too.
       { metrics = {
           after = [ "network.target" ];
           description = "Report metrics";
@@ -90,6 +91,18 @@ in
             User = radio.username;
             ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.influxdb python3Packages.psutil --run /srv/http/misc/metrics.py\"";
             Type = "oneshot";
+          };
+        };
+      }
+
+      { "http-backend" = {
+          after = [ "network.target" ];
+          description = "HTTP backend service";
+          wantedBy = [ "multi-user.target" ];
+
+          serviceConfig = {
+            User = config.services.nginx.user;
+            ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.flask --run '/srv/http/misc/backend.py 8002'\"";
           };
         };
       }
