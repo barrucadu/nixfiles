@@ -2,6 +2,12 @@
 
 let
   radio = import ./hosts/lainonlife/radio.nix { inherit pkgs; };
+
+  radioChannels = [
+    { channel = "everything"; port = 6600; description = "all the music, all the time"; }
+    { channel = "cyberia";    port = 6601; description = "classic lainchan radio: electronic, chiptune, weeb"; }
+    { channel = "swing";      port = 6602; description = "swing, electroswing, and jazz"; }
+  ];
 in
 
 {
@@ -65,11 +71,29 @@ in
 }
   '';
 
-  # Radio (one MPD and programme entry per channel)
+  # Radio
   users.extraUsers."${radio.username}" = radio.userSettings;
   services.icecast = radio.icecastSettings;
-  systemd.services."mpd-everything"       = radio.mpdServiceFor         { channel = "everything"; port = 6600; description = "all the music, all the time"; };
-  systemd.services."programme-everything" = radio.programmingServiceFor { channel = "everything"; port = 6600; };
+  systemd.services = lib.mkMerge
+    [ (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "mpd-${channel}"       (radio.mpdServiceFor         c)) radioChannels))
+      (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
+
+      # Because I am defining systemd.services in its entirety here, the metric-reporting service
+      # needs to live in this list too.
+      { metrics = {
+          after = [ "network.target" ];
+          description = "Report metrics";
+          wantedBy = [ "multi-user.target" ];
+          startAt = "*:*:0,30";
+
+          serviceConfig = {
+            User = radio.username;
+            ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.influxdb python3Packages.psutil --run /srv/http/misc/metrics.py\"";
+            Type = "oneshot";
+          };
+        };
+      }
+    ];
   environment.systemPackages = [ pkgs.ncmpcpp ];
 
   # Build MPD with libmp3lame support, so shoutcast output can do mp3.
@@ -91,19 +115,6 @@ in
     security.secretKey = import /etc/nixos/secrets/grafana-key.nix;
     auth.anonymous.enable = true;
     auth.anonymous.org_name = "lainon.life";
-  };
-
-  systemd.services.metrics = {
-    after = [ "network.target" ];
-    description = "Report metrics";
-    wantedBy = [ "multi-user.target" ];
-    startAt = "*:*:0,30";
-
-    serviceConfig = {
-      User = radio.username;
-      ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.influxdb python3Packages.psutil --run /srv/http/misc/metrics.py\"";
-      Type = "oneshot";
-    };
   };
 
   # Extra users

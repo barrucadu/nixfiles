@@ -85,7 +85,7 @@ in
   # MPD service settings.
   #
   # > systemd.services."mpd-random" = radio.mpdServiceFor { channel = "random"; port = 6600; description = "Anything and everything!"; };
-  mpdServiceFor = { channel, description, port }: {
+  mpdServiceFor = { channel, description, port, ... }: {
     after = [ "network.target" "sound.target" ];
     description = "Music Player Daemon (channel ${channel})";
     wantedBy = [ "multi-user.target" ];
@@ -102,7 +102,7 @@ in
   # Programming service settings.
   #
   # > systemd.services."programme-random" = radio.programmingServiceFor { channel = "random"; port = 6600; };
-  programmingServiceFor = {channel, port}: {
+  programmingServiceFor = {channel, port, ...}: {
     after = [ "network.target" "sound.target" ];
     description = "Radio Programming (channel ${channel})";
     wantedBy = [ "multi-user.target" ];
