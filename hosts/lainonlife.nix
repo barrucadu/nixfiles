@@ -65,12 +65,21 @@ in
   services.logrotate.enable = true;
   services.logrotate.config = ''
 /var/spool/nginx/logs/access.log /var/spool/nginx/logs/error.log {
-    weekly
+    daily
     copytruncate
-    rotate 4
+    rotate 1
     compress
     postrotate
         systemctl kill nginx.service --signal=USR1
+    endscript
+}
+/var/log/icecast/access.log /var/log/icecast/error.log {
+    daily
+    copytruncate
+    rotate 1
+    compress
+    postrotate
+        systemctl kill icecast.service --signal=HUP
     endscript
 }
   '';
