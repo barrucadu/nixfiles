@@ -40,6 +40,8 @@ in
   # Firewall
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
+  networking.firewall.allowedTCPPortRanges = [ { from = 60000; to = 63000; } ];
+  networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 63000; } ];
 
   # Web server
   services.nginx.enable = true;
