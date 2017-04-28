@@ -106,7 +106,7 @@ in
     after = [ "network.target" "sound.target" ];
     description = "Radio Programming (channel ${channel})";
     wantedBy = [ "multi-user.target" ];
-    startAt = "0/4:00:00";
+    startAt = "0/3:00:00";
 
     serviceConfig = {
       User = user;
