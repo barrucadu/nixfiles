@@ -101,7 +101,7 @@ in
 
           serviceConfig = {
             User = radio.username;
-            ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.influxdb python3Packages.psutil --run /srv/http/misc/metrics.py\"";
+            ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/metrics.py";
             Type = "oneshot";
           };
         };
@@ -114,18 +114,21 @@ in
 
           serviceConfig = {
             User = config.services.nginx.user;
-            ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.flask --run '/srv/http/misc/backend.py 8002'\"";
+            ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/backend.py 8002";
           };
         };
       }
     ];
   environment.systemPackages = with pkgs; [ flac ncmpcpp ];
 
-  # Build MPD with libmp3lame support, so shoutcast output can do mp3.
   nixpkgs.config.packageOverrides = pkgs: {
+    # Build MPD with libmp3lame support, so shoutcast output can do mp3.
     mpd = pkgs.mpd.overrideAttrs (oldAttrs: rec {
       buildInputs = oldAttrs.buildInputs ++ [ pkgs.lame ];
     });
+
+    # Set up the Python 3 environment we want for the systemd services.
+    python3 = pkgs.python35.withPackages (p: [p.flask p.influxdb p.mpd2 p.psutil]);
   };
 
   # Fancy graphs

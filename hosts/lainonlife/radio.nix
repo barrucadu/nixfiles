@@ -111,7 +111,7 @@ in
     serviceConfig = {
       User = user;
       Group = group;
-      ExecStart = "${pkgs.bash}/bin/bash -l -c \"${pkgs.nix}/bin/nix-shell -p python3Packages.mpd2 --run '/srv/http/misc/schedule-radio.py ${toString port}'\"";
+      ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/schedule.py ${toString port}";
       Type = "oneshot";
     };
   };
