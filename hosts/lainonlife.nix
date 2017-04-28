@@ -97,12 +97,10 @@ in
           after = [ "network.target" ];
           description = "Report metrics";
           wantedBy = [ "multi-user.target" ];
-          startAt = "*:*:0,30";
 
           serviceConfig = {
             User = radio.username;
             ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/metrics.py";
-            Type = "oneshot";
           };
         };
       }
