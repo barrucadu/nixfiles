@@ -104,7 +104,8 @@ in
       # Because I am defining systemd.services in its entirety here, all services defined in this
       # file need to live in this list too.
       { metrics = service {
-          user = radio.username;
+          # This needs to run as root so that `du` can measure everything.
+          user = "root";
           description = "Report metrics";
           execstart = "${pkgs.python3}/bin/python3 /srv/http/misc/metrics.py";
         };
