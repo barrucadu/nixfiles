@@ -96,6 +96,7 @@ in
       Group = group;
       PermissionsStartOnly = true;
       ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${mpdConfigFor channel description port}";
+      Restart = "on-failure";
     };
   };
 

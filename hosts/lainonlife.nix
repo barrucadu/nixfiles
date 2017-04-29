@@ -104,6 +104,7 @@ in
           serviceConfig = {
             User = radio.username;
             ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/metrics.py";
+            Restart = "on-failure";
           };
         };
       }
@@ -116,6 +117,7 @@ in
           serviceConfig = {
             User = config.services.nginx.user;
             ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/backend.py 8002";
+            Restart = "on-failure";
           };
         };
       }
