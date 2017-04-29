@@ -90,35 +90,30 @@ in
   # Radio
   users.extraUsers."${radio.username}" = radio.userSettings;
   services.icecast = radio.icecastSettings;
-  systemd.services = lib.mkMerge
-    [ (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "mpd-${channel}"       (radio.mpdServiceFor         c)) radioChannels))
-      (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
+  systemd.services =
+    let service = {user, description, execstart, ...}: {
+          after         = [ "network.target" ];
+          description   = description;
+          wantedBy      = [ "multi-user.target" ];
+          serviceConfig = { User = user; ExecStart = execstart; Restart = "on-failure"; };
+        };
+    in lib.mkMerge
+      [ (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "mpd-${channel}"       (radio.mpdServiceFor         c)) radioChannels))
+        (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
 
       # Because I am defining systemd.services in its entirety here, all services defined in this
       # file need to live in this list too.
-      { metrics = {
-          after = [ "network.target" ];
+      { metrics = service {
+          user = radio.username;
           description = "Report metrics";
-          wantedBy = [ "multi-user.target" ];
-
-          serviceConfig = {
-            User = radio.username;
-            ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/metrics.py";
-            Restart = "on-failure";
-          };
+          execstart = "${pkgs.python3}/bin/python3 /srv/http/misc/metrics.py";
         };
       }
 
-      { "http-backend" = {
-          after = [ "network.target" ];
+      { "http-backend" = service {
+          user = config.services.nginx.user;
           description = "HTTP backend service";
-          wantedBy = [ "multi-user.target" ];
-
-          serviceConfig = {
-            User = config.services.nginx.user;
-            ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/backend.py 8002";
-            Restart = "on-failure";
-          };
+          execstart = "${pkgs.python3}/bin/python3 /srv/http/misc/backend.py 8002";
         };
       }
     ];
