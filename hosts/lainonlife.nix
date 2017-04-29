@@ -59,7 +59,10 @@ in
     locations."/radio/".proxyPass  = "http://localhost:8000/";
     locations."/graphs/".proxyPass = "http://localhost:8001/";
     locations."@script".proxyPass = "http://localhost:8002";
-    extraConfig = "add_header 'Access-Control-Allow-Origin' '*';";
+    extraConfig = ''
+      add_header 'Access-Control-Allow-Origin' '*';
+      proxy_max_temp_file_size 0;
+    '';
   };
 
   services.logrotate.enable = true;
