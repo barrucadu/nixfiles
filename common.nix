@@ -145,6 +145,8 @@ with lib;
         haskellPackages.pandoc
         htop
         imagemagick
+        iotop
+        lsof
         lynx
         man-pages
         mosh
