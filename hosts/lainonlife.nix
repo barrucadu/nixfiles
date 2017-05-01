@@ -127,7 +127,7 @@ in
     });
 
     # Set up the Python 3 environment we want for the systemd services.
-    python3 = pkgs.python35.withPackages (p: [p.flask p.influxdb p.mpd2 p.psutil]);
+    python3 = pkgs.python35.withPackages (p: [p.docopt p.flask p.influxdb p.mpd2 p.psutil]);
   };
 
   # Fancy graphs
