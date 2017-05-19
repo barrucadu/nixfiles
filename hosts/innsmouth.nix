@@ -63,6 +63,13 @@ in
   services.nginx.recommendedOptimisation  = true;
   services.nginx.recommendedProxySettings = true;
   services.nginx.recommendedTlsSettings   = true;
+  services.nginx.commonHttpConfig = ''
+    log_format combined_vhost '$host '
+                              '$remote_addr - $remote_user [$time_local] '
+                              '"$request" $status $body_bytes_sent '
+                              '"$http_referer" "$http_user_agent"';
+    access_log logs/access.log combined_vhost;
+  '';
   services.nginx.virtualHosts = mapAttrs'
     (_: {num, domain, extrasubs, ...}:
       let cfg = {
