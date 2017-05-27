@@ -70,16 +70,19 @@ in
                               '"$http_referer" "$http_user_agent"';
     access_log logs/access.log combined_vhost;
   '';
-  services.nginx.virtualHosts = mapAttrs'
-    (_: {num, domain, extrasubs, ...}:
-      let cfg = {
-            serverAliases = map (sub: "${sub}.${domain}") (["www"]++extrasubs);
-            enableACME = true;
-            forceSSL   = true;
-            locations."/".proxyPass = "http://192.168.255.${toString num}";
-          };
-      in nameValuePair "${domain}" cfg)
-    containerSpecs;
+  services.nginx.virtualHosts = mkMerge
+    [ { default = { default = true; locations."/".root = "/srv/http/"; }; }
+      (mapAttrs'
+        (_: {num, domain, extrasubs, ...}:
+          let cfg = {
+                serverAliases = map (sub: "${sub}.${domain}") (["www"]++extrasubs);
+                enableACME = true;
+                forceSSL   = true;
+                locations."/".proxyPass = "http://192.168.255.${toString num}";
+              };
+          in nameValuePair "${domain}" cfg)
+        containerSpecs)
+    ];
 
   # Databases
   services.mongodb.enable = true;
