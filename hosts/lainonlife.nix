@@ -108,14 +108,14 @@ in
           # This needs to run as root so that `du` can measure everything.
           user = "root";
           description = "Report metrics";
-          execstart = "${pkgs.python3}/bin/python3 /srv/http/misc/metrics.py";
+          execstart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/metrics.py";
         };
       }
 
       { "http-backend" = service {
           user = config.services.nginx.user;
           description = "HTTP backend service";
-          execstart = "${pkgs.python3}/bin/python3 /srv/http/misc/backend.py 8002";
+          execstart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/backend.py 8002";
         };
       }
     ];

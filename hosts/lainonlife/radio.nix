@@ -112,7 +112,7 @@ in
     serviceConfig = {
       User = user;
       Group = group;
-      ExecStart = "${pkgs.python3}/bin/python3 /srv/http/misc/schedule.py ${toString port}";
+      ExecStart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/schedule.py ${toString port}";
       Type = "oneshot";
     };
   };
