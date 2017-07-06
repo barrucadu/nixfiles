@@ -15,24 +15,8 @@ let
   icecastRelayPassword  = import /etc/nixos/secrets/icecast-relay-password.nix;
 
   # Configuration for an MPD instance.
-  mpdConfigFor = channel: description: port:
-    let shoutConfig = encoder: ext: ''
-      audio_output {
-        name        "${channel} (${ext})"
-        description "${description}"
-        type        "shout"
-        encoder     "${encoder}"
-        host        "localhost"
-        port        "8000"
-        mount       "/${channel}.${ext}"
-        user        "source"
-        password    "${icecastSourcePassword}"
-        quality     "3"
-        format      "44100:16:2"
-        always_on   "yes"
-      }
-      '';
-    in pkgs.writeText "mpd-${channel}.conf" ''
+  mpdConfigFor = { channel, description, port, password ? icecastSourcePassword, ... }:
+    pkgs.writeText "mpd-${channel}.conf" ''
       music_directory     "${musicDirFor channel}"
       playlist_directory  "${dataDirFor channel}/playlists"
       db_file             "${dataDirFor channel}/db"
@@ -42,8 +26,20 @@ let
       bind_to_address     "127.0.0.1"
       port                "${toString port}"
 
-      ${shoutConfig "vorbis" "ogg"}
-      ${shoutConfig "lame"   "mp3"}
+      audio_output {
+        name        "${channel} (${ext})"
+        description "${description}"
+        type        "shout"
+        encoder     "lame"
+        host        "localhost"
+        port        "8000"
+        mount       "/mpd-${channel}.mpd"
+        user        "source"
+        password    "${icecastSourcePassword}"
+        quality     "3"
+        format      "44100:16:2"
+        always_on   "yes"
+      }
 
       audio_output {
         type "null"
