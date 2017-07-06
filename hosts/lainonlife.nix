@@ -1,13 +1,13 @@
 { config, pkgs, lib, ... }:
 
 let
-  radio = import ./hosts/lainonlife/radio.nix { inherit pkgs; };
+  radio = import ./hosts/lainonlife/radio.nix { inherit lib pkgs; };
 
   radioChannels = [
-    { channel = "everything"; port = 6600; description = "all the music, all the time"; }
-    { channel = "cyberia";    port = 6601; description = "classic lainchan radio: electronic, chiptune, weeb"; }
-    { channel = "swing";      port = 6602; description = "swing, electroswing, and jazz"; }
-    { channel = "cafe";       port = 6603; description = "music to drink tea to"; }
+    { channel = "everything"; port = 6600; description = "all the music, all the time";                        password = import /etc/nixos/secrets/everything-password.nix; }
+    { channel = "cyberia";    port = 6601; description = "classic lainchan radio: electronic, chiptune, weeb"; password = import /etc/nixos/secrets/cyberia-password.nix; }
+    { channel = "swing";      port = 6602; description = "swing, electroswing, and jazz";                      password = import /etc/nixos/secrets/swing-password.nix; }
+    { channel = "cafe";       port = 6603; description = "music to drink tea to";                              password = import /etc/nixos/secrets/cafe-password.nix; }
   ];
 in
 
@@ -90,7 +90,7 @@ in
 
   # Radio
   users.extraUsers."${radio.username}" = radio.userSettings;
-  services.icecast = radio.icecastSettings;
+  services.icecast = radio.icecastSettingsFor radioChannels;
   systemd.services =
     let service = {user, description, execstart, ...}: {
           after         = [ "network.target" ];

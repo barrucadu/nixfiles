@@ -1,5 +1,7 @@
 # Radio stuff.
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+
+with lib;
 
 let
   # Configuration for the radio user.
@@ -12,7 +14,6 @@ let
   # Configuration for the Icecast server.
   icecastAdminPassword  = import /etc/nixos/secrets/icecast-admin-password.nix;
   icecastSourcePassword = import /etc/nixos/secrets/icecast-source-password.nix;
-  icecastRelayPassword  = import /etc/nixos/secrets/icecast-relay-password.nix;
 
   # Configuration for an MPD instance.
   mpdConfigFor = { channel, description, port, password ? icecastSourcePassword, ... }:
@@ -27,15 +28,15 @@ let
       port                "${toString port}"
 
       audio_output {
-        name        "${channel} (${ext})"
+        name        "${channel} (mp3)"
         description "${description}"
         type        "shout"
         encoder     "lame"
         host        "localhost"
         port        "8000"
-        mount       "/mpd-${channel}.mpd"
+        mount       "/mpd-${channel}.mp3"
         user        "source"
-        password    "${icecastSourcePassword}"
+        password    "${password}"
         quality     "3"
         format      "44100:16:2"
         always_on   "yes"
@@ -65,23 +66,37 @@ in
 
   # Icecast service settings.
   #
-  # > services.icecast = radio.icecastSettings;
-  icecastSettings = {
+  # > services.icecast = radio.icecastSettings [ { channel = "random"; description = "Anything and everything!"; password = "password"; } ... ];
+  icecastSettingsFor = channels: {
     enable = true;
     hostname = "lainon.life";
     admin.password = icecastAdminPassword;
-    extraConf = ''
-      <authentication>
-        <source-password>${icecastSourcePassword}</source-password>
-        <relay-password>${icecastRelayPassword}</relay-password>
-      </authentication>
-    '';
+    extraConf =
+      let channelMount = { channel, description, password ? icecastSourcePassword, ... }: ''
+            <mount>
+              <mount-name>/${channel}.mp3</mount-name>
+              <password>${password}</password>
+              <fallback-mount>/mpd-${channel}.mp3</fallback-mount>
+              <fallback-override>1</fallback-override>
+              <stream-name>${channel}</stream-name>
+              <stream-description>${description}</stream-description>
+              <public>1</public>
+            </mount>
+            <mount>
+              <mount-name>/mpd-${channel}.mp3</mount-name>
+              <password>${password}</password>
+              <stream-name>${channel} (mpd)</stream-name>
+              <stream-description>${description}</stream-description>
+              <public>0</public>
+            </mount>
+          '';
+      in concatMapStringsSep "\n" channelMount channels;
   };
 
   # MPD service settings.
   #
-  # > systemd.services."mpd-random" = radio.mpdServiceFor { channel = "random"; port = 6600; description = "Anything and everything!"; };
-  mpdServiceFor = { channel, description, port, ... }: {
+  # > systemd.services."mpd-random" = radio.mpdServiceFor { channel = "random"; port = 6600; description = "Anything and everything!"; password = "password"; };
+  mpdServiceFor = args@{ channel, description, port, password, ... }: {
     after = [ "network.target" "sound.target" ];
     description = "Music Player Daemon (channel ${channel})";
     wantedBy = [ "multi-user.target" ];
@@ -91,7 +106,7 @@ in
       User = user;
       Group = group;
       PermissionsStartOnly = true;
-      ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${mpdConfigFor channel description port}";
+      ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${mpdConfigFor args}";
       Restart = "on-failure";
     };
   };
