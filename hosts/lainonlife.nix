@@ -115,11 +115,11 @@ in
       { "http-backend" = service {
           user = config.services.nginx.user;
           description = "HTTP backend service";
-          execstart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/backend.py --channels=/srv/radio/channels.json 8002";
+          execstart = "${pkgs.bash}/bin/bash -l -c '/srv/radio/backend/run.sh --channels=/srv/radio/channels.json 8002'";
         };
       }
     ];
-  environment.systemPackages = with pkgs; [ flac id3v2 ncmpcpp ];
+  environment.systemPackages = with pkgs; [ flac id3v2 ncmpcpp python35Packages.virtualenv ];
 
   nixpkgs.config.packageOverrides = pkgs: {
     # Build MPD with libmp3lame support, so shoutcast output can do mp3.
@@ -128,7 +128,7 @@ in
     });
 
     # Set up the Python 3 environment we want for the systemd services.
-    python3 = pkgs.python35.withPackages (p: [p.docopt p.flask p.influxdb p.mpd2 p.psutil]);
+    python3 = pkgs.python35.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil]);
   };
 
   # Fancy graphs
