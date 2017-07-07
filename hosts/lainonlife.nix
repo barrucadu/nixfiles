@@ -115,7 +115,7 @@ in
       { "http-backend" = service {
           user = config.services.nginx.user;
           description = "HTTP backend service";
-          execstart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/backend.py 8002";
+          execstart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/backend.py --channels=/srv/radio/channels.json 8002";
         };
       }
     ];
