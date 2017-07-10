@@ -62,6 +62,7 @@ in
     locations."@script".proxyPass = "http://localhost:8002";
     extraConfig = ''
       add_header 'Access-Control-Allow-Origin' '*';
+      add_header 'Referrer-Policy' 'strict-origin-when-cross-origin';
       proxy_max_temp_file_size 0;
     '';
   };
