@@ -115,6 +115,9 @@ in
       [ (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "mpd-${channel}"       (radio.mpdServiceFor         c)) radioChannels))
         (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
 
+      { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3"; }
+      { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg"; }
+
       # Because I am defining systemd.services in its entirety here, all services defined in this
       # file need to live in this list too.
       { metrics = service {
@@ -142,6 +145,30 @@ in
 
     # Set up the Python 3 environment we want for the systemd services.
     python3 = pkgs.python35.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil]);
+
+    # Ezstream, for the fallback streams.
+    ezstream = pkgs.callPackage
+      ( { stdenv, fetchurl, libiconv, libshout, taglib, libxml2, pkgconfig }:
+        stdenv.mkDerivation rec {
+          name = "ezstream-${version}";
+          version = "0.6.0";
+
+          src = fetchurl {
+            url = "https://ftp.osuosl.org/pub/xiph/releases/ezstream/${name}.tar.gz";
+            sha256 = "f86eb8163b470c3acbc182b42406f08313f85187bd9017afb8b79b02f03635c9";
+          };
+
+          buildInputs = [ libiconv libshout taglib libxml2 ];
+          nativeBuildInputs = [ pkgconfig ];
+
+          doCheck = true;
+
+          meta = with pkgs.stdenv.lib; {
+            description = "A command line source client for Icecast media streaming servers";
+            license = licenses.gpl2;
+          };
+        }
+       ) {};
   };
 
   # Fancy graphs
