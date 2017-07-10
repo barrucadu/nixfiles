@@ -13,10 +13,9 @@ let
 
   # Configuration for the Icecast server.
   icecastAdminPassword  = import /etc/nixos/secrets/icecast-admin-password.nix;
-  icecastSourcePassword = import /etc/nixos/secrets/icecast-source-password.nix;
 
   # Configuration for an MPD instance.
-  mpdConfigFor = { channel, description, port, password ? icecastSourcePassword, ... }:
+  mpdConfigFor = { channel, description, port, mpdPassword, ... }:
     let shoutConfig = encoder: ext: ''
       audio_output {
         name        "[mpd] ${channel} (${ext})"
@@ -27,7 +26,7 @@ let
         port        "8000"
         mount       "/mpd-${channel}.${ext}"
         user        "source"
-        password    "${password}"
+        password    "${mpdPassword}"
         quality     "3"
         format      "44100:16:2"
         always_on   "yes"
@@ -70,17 +69,17 @@ in
 
   # Icecast service settings.
   #
-  # > services.icecast = radio.icecastSettings [ { channel = "random"; description = "Anything and everything!"; password = "password"; } ... ];
+  # > services.icecast = radio.icecastSettings [ channel_spec ];
   icecastSettingsFor = channels: {
     enable = true;
     hostname = "lainon.life";
     admin.password = icecastAdminPassword;
     extraConf =
-      let channelMount = { channel, description, password ? icecastSourcePassword, ... }:
+      let channelMount = { channel, description, mpdPassword, livePassword, ... }:
         let channelMountForExt = ext: ''
             <mount>
               <mount-name>/${channel}.${ext}</mount-name>
-              <password>${password}</password>
+              <password>${livePassword}</password>
               <fallback-mount>/mpd-${channel}.${ext}</fallback-mount>
               <fallback-override>1</fallback-override>
               <stream-name>${channel} (${ext}</stream-name>
@@ -89,7 +88,7 @@ in
             </mount>
             <mount>
               <mount-name>/mpd-${channel}.${ext}</mount-name>
-              <password>${password}</password>
+              <password>${mpdPassword}</password>
               <stream-name>[mpd] ${channel} (${ext})</stream-name>
               <stream-description>${description}</stream-description>
               <public>0</public>
@@ -101,8 +100,8 @@ in
 
   # MPD service settings.
   #
-  # > systemd.services."mpd-random" = radio.mpdServiceFor { channel = "random"; port = 6600; description = "Anything and everything!"; password = "password"; };
-  mpdServiceFor = args@{ channel, description, port, password, ... }: {
+  # > systemd.services."mpd-random" = radio.mpdServiceFor channel_spec;
+  mpdServiceFor = args@{ channel, ... }: {
     after = [ "network.target" "sound.target" ];
     description = "Music Player Daemon (channel ${channel})";
     wantedBy = [ "multi-user.target" ];
@@ -119,7 +118,7 @@ in
 
   # Programming service settings.
   #
-  # > systemd.services."programme-random" = radio.programmingServiceFor { channel = "random"; port = 6600; };
+  # > systemd.services."programme-random" = radio.programmingServiceFor channel_spec;
   programmingServiceFor = {channel, port, ...}: {
     after = [ "network.target" "sound.target" ];
     description = "Radio Programming (channel ${channel})";

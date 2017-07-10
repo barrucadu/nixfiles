@@ -4,10 +4,22 @@ let
   radio = import ./hosts/lainonlife/radio.nix { inherit lib pkgs; };
 
   radioChannels = [
-    { channel = "everything"; port = 6600; description = "all the music, all the time";                        password = import /etc/nixos/secrets/everything-password.nix; }
-    { channel = "cyberia";    port = 6601; description = "classic lainchan radio: electronic, chiptune, weeb"; password = import /etc/nixos/secrets/cyberia-password.nix; }
-    { channel = "swing";      port = 6602; description = "swing, electroswing, and jazz";                      password = import /etc/nixos/secrets/swing-password.nix; }
-    { channel = "cafe";       port = 6603; description = "music to drink tea to";                              password = import /etc/nixos/secrets/cafe-password.nix; }
+    { channel = "everything"; port = 6600; description = "all the music, all the time"
+    ; mpdPassword  = import /etc/nixos/secrets/everything-password-mpd.nix
+    ; livePassword = import /etc/nixos/secrets/everything-password-live.nix
+    ; }
+    { channel = "cyberia"; port = 6601; description = "classic lainchan radio: electronic, chiptune, weeb"
+    ; mpdPassword  = import /etc/nixos/secrets/cyberia-password-mpd.nix
+    ; livePassword = import /etc/nixos/secrets/cyberia-password-live.nix
+    ; }
+    { channel = "swing"; port = 6602; description = "swing, electroswing, and jazz"
+    ; mpdPassword  = import /etc/nixos/secrets/swing-password-mpd.nix
+    ; livePassword = import /etc/nixos/secrets/swing-password-live.nix
+    ; }
+    { channel = "cafe"; port = 6603; description = "music to drink tea to"
+    ; mpdPassword  = import /etc/nixos/secrets/cafe-password-mpd.nix
+    ; livePassword = import /etc/nixos/secrets/cafe-password-live.nix
+    ; }
   ];
 in
 
