@@ -115,7 +115,7 @@ in
                 <password>${if ismpd then mpdPassword else livePassword}</password>
                 <fallback-mount>/${if ismpd then "fallback" else "mpd-${channel}"}.${ext}</fallback-mount>
                 <fallback-override>1</fallback-override>
-                <stream-name>${channel} (${ext})</stream-name>
+                <stream-name>${if ismpd then "[mpd] " else ""}${channel} (${ext})</stream-name>
                 <stream-description>${description}</stream-description>
                 <public>${if ismpd then "0" else "1"}</public>
               </mount>
