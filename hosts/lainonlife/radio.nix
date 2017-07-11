@@ -131,7 +131,14 @@ in
             <public>0</public>
           </mount>
         '';
-      in concatMapStringsSep "\n" channelMount channels + fallbackMount "mp3" + fallbackMount "ogg";
+
+        headers = ''
+          <http-headers>
+            <header name="Access-Control-Allow-Origin" value="*" />
+            <header name="Referrer-Policy" value="no-referrer" />
+          </http-headers>
+        '';
+      in concatMapStringsSep "\n" channelMount channels + fallbackMount "mp3" + fallbackMount "ogg" + headers;
   };
 
   # MPD service settings.
