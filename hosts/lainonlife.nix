@@ -69,17 +69,13 @@ in
     default = true;
     root = "/srv/http";
     locations."/".extraConfig = "try_files $uri $uri/ @script;";
+    locations."/radio/".proxyPass  = "http://localhost:8000/";
     locations."/graphs/".proxyPass = "http://localhost:8001/";
     locations."@script".proxyPass = "http://localhost:8002";
-    # these two are so that the status files are available over https,
-    # which makes Chrome happy when they get used in scripts.
-    locations."/radio/status.xsl".proxyPass = "http://localhost:8000/status.xsl";
-    locations."/radio/status-json.xsl".proxyPass = "http://localhost:8000/status-json.xsl";
-    # redirect all other radio stuff to icecast directly, don't want to proxy the audio streams
-    locations."/radio/".extraConfig = "rewrite ^/radio/(.*)$ http://lainon.life:8000/$1 permanent;";
     extraConfig = ''
       add_header 'Access-Control-Allow-Origin' '*';
       add_header 'Referrer-Policy' 'strict-origin-when-cross-origin';
+      proxy_max_temp_file_size 0;
     '';
   };
 
