@@ -57,7 +57,8 @@ in
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 63000; } ];
 
   # Web server
-  services.nginx.enable = true;
+  services.nginx.enable  = true;
+  services.nginx.package = pkgs.nginx;
   services.nginx.recommendedGzipSettings  = true;
   services.nginx.recommendedOptimisation  = true;
   services.nginx.recommendedProxySettings = true;
@@ -73,8 +74,10 @@ in
     locations."/graphs/".proxyPass = "http://localhost:8001/";
     locations."@script".proxyPass = "http://localhost:8002";
     extraConfig = ''
-      add_header 'Access-Control-Allow-Origin' '*';
-      add_header 'Referrer-Policy' 'strict-origin-when-cross-origin';
+      header_filter_by_lua_block {
+        if not ngx.header["Access-Control-Allow-Origin"] then ngx.header["Access-Control-Allow-Origin"] = "*" end
+        if not ngx.header["Referrer-Policy"] then ngx.header["Referrer-Policy"] = "strict-origin-when-cross-origin" end
+      }
       proxy_max_temp_file_size 0;
     '';
   };
@@ -142,6 +145,9 @@ in
     mpd = pkgs.mpd.overrideAttrs (oldAttrs: rec {
       buildInputs = oldAttrs.buildInputs ++ [ pkgs.lame ];
     });
+
+    # Build nginx with lua support.
+    nginx = pkgs.nginx.override { modules = [ pkgs.nginxModules.lua ]; };
 
     # Set up the Python 3 environment we want for the systemd services.
     python3 = pkgs.python35.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil]);
