@@ -59,6 +59,7 @@ in
 
   # Web server
   services.nginx.enable = true;
+  services.nginx.package = pkgs.nginx;
   services.nginx.recommendedGzipSettings  = true;
   services.nginx.recommendedOptimisation  = true;
   services.nginx.recommendedProxySettings = true;
@@ -79,6 +80,16 @@ in
                 enableACME = true;
                 forceSSL   = true;
                 locations."/".proxyPass = "http://192.168.255.${toString num}";
+                extraConfig = ''
+                  header_filter_by_lua_block {
+                    if not ngx.header["Content-Security-Policy"] then ngx.header["Content-Security-Policy"] = "default-src 'self'; font-src 'self' https://fonts.gstatic.com" end
+                    if not ngx.header["Referrer-Policy"] then ngx.header["Referrer-Policy"] = "strict-origin-when-cross-origin" end
+                    if not ngx.header["Strict-Transport-Security"] then ngx.header["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains" end
+                    if not ngx.header["X-Content-Type-Options"] then ngx.header["X-Content-Type-Options"] = "nosniff" end
+                    if not ngx.header["X-Frame-Options"] then ngx.header["X-Frame-Options"] = "SAMEORIGIN" end
+                    if not ngx.header["X-XSS-Protection"] then ngx.header["X-XSS-Protection"] = "1; mode=block" end
+                  }
+                '';
               };
           in nameValuePair "${domain}" cfg)
         containerSpecs)
@@ -107,6 +118,11 @@ in
     endscript
 }
   '';
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    # Build nginx with lua support.
+    nginx = pkgs.nginx.override { modules = [ pkgs.nginxModules.lua ]; };
+  };
 
   # Extra packages
   environment.systemPackages = with pkgs; [
