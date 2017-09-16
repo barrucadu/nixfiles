@@ -12,9 +12,8 @@ with lib;
     "www.barrucadu.co.uk" = {
       root = "/srv/http/www";
       locations."/bookdb/".proxyPass = "http://127.0.0.1:3000";
-      locations."/bookdb/covers/".extraConfig   = "alias /srv/bookdb/covers/;";
-      locations."/bookdb/script.js".extraConfig = "alias /srv/bookdb/script.js;";
-      locations."/bookdb/style.css".extraConfig = "alias /srv/bookdb/style.css;";
+      locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
+      locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
       extraConfig = ''
         include /srv/http/www.conf;
         access_log /dev/null;
