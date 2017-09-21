@@ -4,7 +4,7 @@
 with lib;
 
 let
-  shares = [ "anime" "music" "movies" "tv" "images" "torrents" ];
+  shares = [ "anime" "manga" "music" "movies" "tv" "images" "torrents" ];
 in
 
 {
