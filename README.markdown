@@ -13,7 +13,6 @@ Machines
 - **azathoth:**     home desktop
 - **innsmouth:**    linode
 - **nyarlathotep:** home server
-- **yig:**          netbook
 
 See [the memo](https://memo.barrucadu.co.uk/machines.html) for machine-specific notes.
 
