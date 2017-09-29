@@ -150,7 +150,6 @@ with lib;
         rxvt_unicode.terminfo
         sbcl
         stow
-        taskwarrior
         tmux
         unzip
         vim
