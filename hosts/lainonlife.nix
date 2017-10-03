@@ -155,7 +155,7 @@ in
     nginx = pkgs.nginx.override { modules = [ pkgs.nginxModules.lua ]; };
 
     # Set up the Python 3 environment we want for the systemd services.
-    python3 = pkgs.python35.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil]);
+    python3 = pkgs.python35.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil p.requests]);
 
     # Ezstream, for the fallback streams.
     ezstream = pkgs.callPackage
