@@ -115,8 +115,7 @@ ${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "d
   # Clear the misc files every so often (this needs a user created, as
   # just specifying an arbitrary UID doesn't work)
   systemd.tmpfiles.rules =
-    [ "d /srv/http/misc     0755 barrucadu users 3d"
-      "d /srv/http/misc/pub 0755 barrucadu users 3d"
+    [ "d /srv/http/misc/pub 0755 barrucadu users 3d"
     ];
   users.extraUsers.barrucadu = {
     uid = 1000;
