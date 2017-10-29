@@ -21,6 +21,10 @@ with lib;
       '';
     };
 
+    "ci.barrucadu.co.uk" = {
+      locations."/".proxyPass = "http://127.0.0.1:3001";
+    };
+
     "docs.barrucadu.co.uk" = {
       root = "/srv/http/docs";
       extraConfig = ''
@@ -93,6 +97,20 @@ ${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "d
     endscript
 }
   '';
+
+  # CI
+  services.jenkins.enable = true;
+  services.jenkins.port = 3001;
+  services.jenkins.packages = with pkgs;
+    let env = buildEnv
+      { name = "jenkins-env"
+      ; pathsToLink = [ "/bin" ]
+      ; paths =
+        [ stdenv git jdk config.programs.ssh.package nix ] ++ # default
+        [ bash m4 stack texlive.combined.scheme-full wget ] ++
+        (with haskellPackages; [ cabal-info cpphs hscolour ] )
+      ; };
+    in [ env ];
 
   # Clear the misc files every so often (this needs a user created, as
   # just specifying an arbitrary UID doesn't work)
