@@ -40,7 +40,7 @@ in
 
   networking.nat.enable = true;
   networking.nat.internalInterfaces = ["ve-+"];
-  networking.nat.externalInterface = "enp0s4";
+  networking.nat.externalInterface = "ens4";
   networking.nat.forwardPorts = concatMap
     ( {num, ports, ...}:
         map (p: { sourcePort = p; destination = "192.168.255.${toString num}:${toString p}"; }) ports
