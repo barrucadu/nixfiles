@@ -3,6 +3,8 @@
 with lib;
 
 {
+  imports = [ ../../services/nginx-phpfpm.nix ];
+
   networking.firewall.enable = false;
 
   services.nginx.enable = true;
@@ -60,6 +62,24 @@ with lib;
         error_log  /var/spool/nginx/logs/misc.error.log;
       '';
     };
+
+    "papers.barrucadu.co.uk" = {
+      root = "/srv/http/papers";
+      locations."/".extraConfig = ''
+        try_files $uri $uri/ /index.php?$args;
+      '';
+      locations."~ \.php$".extraConfig = ''
+        include ${pkgs.nginx}/conf/fastcgi_params;
+        fastcgi_pass  unix:/run/phpfpm/phpfpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+      '';
+      extraConfig = ''
+        index index.php;
+        access_log /dev/null;
+        error_log  /var/spool/nginx/logs/www.error.log;
+      '';
+    };
   };
 
   systemd.services.bookdb =
@@ -84,10 +104,16 @@ with lib;
       ; }
     ; };
 
+  # Database (for papers. subdomain)
+  services.mysql =
+    { enable = true
+    ; package = pkgs.mariadb
+    ; };
+
   # Logs
   services.logrotate.enable = true;
   services.logrotate.config = ''
-${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "docs" "go" "memo" "misc" ]} {
+${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "ci" "docs" "go" "memo" "misc" "papers" ]} {
     weekly
     copytruncate
     rotate 1
