@@ -14,7 +14,6 @@ let
     ; mawalker  = { num = 3; config = (import ./hosts/innsmouth/mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; ports = []; }
     ; uzbl      = { num = 4; config = (import ./hosts/innsmouth/uzbl.nix);      domain = "uzbl.org";        extrasubs = []; ports = []; }
     ; };
-  containerSpecs' = mapAttrsToList (k: v: v) containerSpecs;
 in
 {
   networking.hostName = "innsmouth";
@@ -35,24 +34,21 @@ in
 
   # Firewall and container NAT
   networking.firewall.allowPing = true;
-  networking.firewall.allowedTCPPorts = [ 80 443 ] ++ concatMap ({ports, ...}: ports) containerSpecs';
+  networking.firewall.allowedTCPPorts = [ 80 443 ] ++ concatMap ({ports, ...}: ports) (mapAttrsToList (k: v: v) containerSpecs);
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
 
   networking.nat.enable = true;
   networking.nat.internalInterfaces = ["ve-+"];
   networking.nat.externalInterface = "ens4";
-  networking.nat.forwardPorts = concatMap
-    ( {num, ports, ...}:
-        map (p: { sourcePort = p; destination = "192.168.255.${toString num}:${toString p}"; }) ports
-    ) containerSpecs';
 
   # Container configuration
   containers = mapAttrs
-    (_: {num, config, ...}:
+    (_: {num, config, ports, ...}:
       { autoStart      = true
       ; privateNetwork = true
       ; hostAddress    = "192.168.254.${toString num}"
       ; localAddress   = "192.168.255.${toString num}"
+      ; forwardPorts   = map (p: { containerPort = p; hostPort = p; protocol = "tcp"; }) ports
       ; config         = config
       ; }
     ) containerSpecs;
