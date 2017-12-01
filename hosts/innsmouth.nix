@@ -53,6 +53,8 @@ in
       ; }
     ) containerSpecs;
 
+  systemd.services."container@barrucadu".serviceConfig.TimeoutSec = "5min";
+
   # Web server
   services.nginx.enable = true;
   services.nginx.package = pkgs.nginx;
