@@ -23,11 +23,6 @@ in
   boot.loader.grub.version = 2;
   boot.loader.grub.device  = "/dev/sda";
 
-  # Kernel
-  boot.kernelPatches = [
-    { patch = ./patches/wifi.patch; name = "Holgate wifi issue"; }
-  ];
-
   # Windows
   fileSystems."/mnt/data".device = "/dev/disk/by-label/Data";
   fileSystems."/mnt/data".fsType = "ntfs";
