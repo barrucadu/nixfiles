@@ -46,8 +46,8 @@ in
   networking.wireless.enable = true;
 
   # Nyarlathotep
-  networking.interfaces.enp6s0.ipAddress = "10.1.1.2";
-  networking.interfaces.enp6s0.prefixLength = 24;
+  networking.interfaces.enp6s0.ipv4.addresses =
+    [ { address = "10.1.1.2"; prefixLength = 24; } ];
 
   networking.extraHosts = "10.1.1.1 nyarlathotep";
 

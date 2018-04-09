@@ -24,8 +24,8 @@ in
   networking.wireless.enable = true;
 
   # Static ethernet
-  networking.interfaces.enp3s0.ipAddress = "10.1.1.1";
-  networking.interfaces.enp3s0.prefixLength = 24;
+  networking.interfaces.enp3s0.ipv4.addresses =
+    [ { address = "10.1.1.1"; prefixLength = 24; } ];
 
   # Firewall
   networking.firewall.enable = true;

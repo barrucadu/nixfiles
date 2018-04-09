@@ -109,8 +109,9 @@ ${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "c
       ; pathsToLink = [ "/bin" ]
       ; paths =
         [ stdenv git jdk config.programs.ssh.package nix ] ++ # default
-        [ bash m4 stack texlive.combined.scheme-full wget ] ++
-        (with haskellPackages; [ cabal-info cpphs hscolour ] )
+        [ bash m4 texlive.combined.scheme-full wget ] ++
+        (with (import <unstable> {}); [ stack ] ) ++
+        (with haskellPackages; [ cpphs hscolour ] )
       ; };
     in [ env ];
 

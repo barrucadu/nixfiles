@@ -38,8 +38,8 @@ in
 
   # OVH network set up
   networking.interfaces.eno1 = {
-    ip4 = [ { address = "91.121.0.148";           prefixLength = 24;  } ];
-    ip6 = [ { address = "2001:41d0:0001:5394::1"; prefixLength = 128; } ];
+    ipv4.addresses = [ { address = "91.121.0.148";           prefixLength = 24;  } ];
+    ipv6.addresses = [ { address = "2001:41d0:0001:5394::1"; prefixLength = 128; } ];
   };
 
   networking.defaultGateway  = "91.121.0.254";

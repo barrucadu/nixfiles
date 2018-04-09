@@ -60,9 +60,8 @@ with lib;
 
   # Syncthing for shared folders (configured directly in the syncthing client)
   services.syncthing = {
-    enable     = true;
-    useInotify = true;
-    user       = "barrucadu";
+    enable = true;
+    user   = "barrucadu";
   };
   networking.firewall = {
     allowedTCPPorts = [ 22000 ];
