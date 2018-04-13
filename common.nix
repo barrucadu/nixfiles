@@ -128,6 +128,7 @@ with lib;
       common = [
         aspell
         aspellDicts.en
+        bind
         file
         git
         gnupg
