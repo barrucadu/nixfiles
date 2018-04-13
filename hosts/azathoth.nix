@@ -60,6 +60,7 @@ in
   # Extra packages
   environment.systemPackages = with pkgs; [
     abcde
+    feh
     gphoto2
     keybase
     libreoffice
