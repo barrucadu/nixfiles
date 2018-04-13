@@ -2,7 +2,7 @@
 
 let
   nfsShare = name:
-    { device = "nyarlathotep:/${name}"
+    { device = "nyarlathotep.dot:/${name}"
     ; fsType = "nfs"
     ; options = [ "x-systemd.automount" "noauto" ]
     ; };
@@ -46,11 +46,6 @@ in
   networking.wireless.enable = true;
 
   # Nyarlathotep
-  networking.interfaces.enp6s0.ipv4.addresses =
-    [ { address = "10.1.1.2"; prefixLength = 24; } ];
-
-  networking.extraHosts = "10.1.1.1 nyarlathotep";
-
   fileSystems."/home/barrucadu/nfs/anime"    = nfsShare "anime";
   fileSystems."/home/barrucadu/nfs/manga"    = nfsShare "manga";
   fileSystems."/home/barrucadu/nfs/music"    = nfsShare "music";
