@@ -76,6 +76,8 @@ with lib;
   ## User accounts
   #############################################################################
 
+  programs.zsh.enable = true;
+
   users.extraUsers.barrucadu = {
     uid = 1000;
     description = "Michael Walker <mike@barrucadu.co.uk>";
@@ -83,7 +85,7 @@ with lib;
     extraGroups = [ "wheel" ];
     group = "users";
     initialPassword = "breadbread";
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = "/run/current-system/sw/bin/zsh";
 
     # Such pubkey!
     openssh.authorizedKeys.keys = [
@@ -156,7 +158,6 @@ with lib;
         which
         whois
         wget
-        zsh
       ];
 
       # Packages to install if X is not enabled.
