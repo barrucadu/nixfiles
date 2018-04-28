@@ -181,6 +181,7 @@ with lib;
         scribus
         scrot
         rxvt_unicode
+        xclip
       ];
     in common ++ (if config.services.xserver.enable then xorg else noxorg);
 }
