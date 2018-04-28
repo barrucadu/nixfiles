@@ -60,12 +60,16 @@ in
   # Extra packages
   environment.systemPackages = with pkgs; [
     abcde
+    biber
     feh
+    gnuplot
     gphoto2
     keybase
     libreoffice
     optipng
-    (texlive.combine
-      { inherit (texlive) scheme-full; })
+    p7zip
+    python3Packages.pygments
+    (texlive.combine { inherit (texlive) scheme-full; })
+    unrar
   ];
 }
