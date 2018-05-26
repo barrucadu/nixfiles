@@ -26,8 +26,6 @@ in
   # Static ethernet
   networking.interfaces.enp3s0.ipv4.addresses =
     [ { address = "10.1.1.1"; prefixLength = 24; } ];
-  networking.interfaces.enp3s0.ipv6.addresses =
-    [ { address = "fdb1:652e:e9ce:19aa::1"; prefixLength = 64; } ];
 
   # Firewall
   networking.firewall.enable = true;
@@ -38,11 +36,6 @@ in
   '';
 
   # DNS & DHCP for LAN
-  #
-  # note: it would be nice to be able to resolve LAN hostnames (eg:
-  # azathoth.dot works automagically), but I haven't been able to make
-  # that happen, despite everything I read saying it should just work
-  # out of the box.
   services.dnsmasq.enable = true;
   services.dnsmasq.extraConfig = ''
     domain-needed
@@ -57,20 +50,12 @@ in
     except-interface=wlp2s0
     bind-interfaces
 
-    # v4
     address=/nyarlathotep/10.1.1.1
     address=/nyarlathotep.dot/10.1.1.1
 
+    dhcp-option=3
     dhcp-option=6,10.1.1.1
     dhcp-range=10.1.1.100,10.1.1.200
-
-    # v6
-    address=/nyarlathotep/fdb1:652e:e9ce:19aa::1
-    address=/nyarlathotep.dot/fdb1:652e:e9ce:19aa::1
-
-    enable-ra
-    dhcp-option=option6:dns-server,[fdb1:652e:e9ce:19aa::1]
-    dhcp-range=::100,::1ff,constructor:enp3s0
   '';
 
   # NFS exports
