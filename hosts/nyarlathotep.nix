@@ -119,6 +119,21 @@ in
     serviceConfig.Group = "users";
   };
 
+  # bookdb database sync
+  systemd.timers.bookdb-sync = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "hourly";
+    };
+  };
+  systemd.services.bookdb-sync = {
+    description = "Upload bookdb data to innsmouth";
+    serviceConfig.WorkingDirectory = "/srv/http/bookdb";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./upload.sh";
+    serviceConfig.User = "barrucadu";
+    serviceConfig.Group = "users";
+  };
+
   # Extra packages
   environment.systemPackages = with pkgs; [
     influxdb
