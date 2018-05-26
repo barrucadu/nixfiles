@@ -114,8 +114,29 @@ in
     }
   '';
 
+  # hledger dashboard
+  services.influxdb.enable = true;
+  services.grafana.enable  = true;
+  services.grafana.addr = "0.0.0.0";
+  services.grafana.port = 3333;
+
+  systemd.timers.hledger-scripts = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 21:00:00";
+    };
+  };
+  systemd.services.hledger-scripts = {
+    description = "Run hledger scripts";
+    serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./sync.sh";
+    serviceConfig.User = "barrucadu";
+    serviceConfig.Group = "users";
+  };
+
   # Extra packages
   environment.systemPackages = with pkgs; [
+    influxdb
     rtorrent
   ];
 }
