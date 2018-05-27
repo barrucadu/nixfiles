@@ -144,6 +144,7 @@ with lib;
         lynx
         man-pages
         mosh
+        ncdu
         nmap
         psmisc
         python3
