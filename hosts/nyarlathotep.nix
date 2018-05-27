@@ -20,6 +20,10 @@ in
   # Bootloader
   boot.loader.systemd-boot.enable = true;
 
+  # Monthly ZFS scrub
+  services.zfs.autoScrub.enable = true;
+  services.zfs.autoScrub.interval = "monthly";
+
   # Enable wifi
   networking.wireless.enable = true;
 
