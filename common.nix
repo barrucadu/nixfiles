@@ -144,13 +144,10 @@ with lib;
         lynx
         man-pages
         mosh
-        nix-repl
         nmap
-        nox
         psmisc
         python3
         rxvt_unicode.terminfo
-        sbcl
         stow
         tmux
         unzip
