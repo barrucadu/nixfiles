@@ -166,7 +166,6 @@ with lib;
       # Packages to install if X is enabled.
       xorg = [
         chromium
-        clawsMail
         emacs
         evince
         firefox
@@ -175,7 +174,6 @@ with lib;
         gmrun
         mirage
         mpv
-        scribus
         scrot
         rxvt_unicode
         xclip
