@@ -73,6 +73,11 @@ in
     locations."/radio/".proxyPass  = "http://localhost:8000/";
     locations."/graphs/".proxyPass = "http://localhost:8001/";
     locations."@script".proxyPass = "http://localhost:8002";
+    locations."/graphs/".extraConfig = ''
+      header_filter_by_lua_block {
+        if not ngx.header["Content-Security-Policy"] then ngx.header["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'" end
+      }
+    '';
     extraConfig = ''
       header_filter_by_lua_block {
         if not ngx.header["Access-Control-Allow-Origin"] then ngx.header["Access-Control-Allow-Origin"] = "*" end
