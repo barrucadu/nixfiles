@@ -18,6 +18,8 @@ in
 
   networking.firewall.enable = false;
 
+  services.journald.extraConfig = "SystemMaxUse=500M";
+
   # Web
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
@@ -68,6 +70,7 @@ in
       root = "/srv/http/files";
       locations."/".extraConfig = "autoindex on;";
       extraConfig = ''
+        types { application/octet-stream xz; }
         access_log /dev/null;
         error_log  /var/spool/nginx/logs/files.error.log;
       '';

@@ -5,6 +5,8 @@
 
   networking.firewall.enable = false;
 
+  services.journald.extraConfig = "SystemMaxUse=500M";
+
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
     "mawalker.me.uk".globalRedirect = "www.mawalker.me.uk";
