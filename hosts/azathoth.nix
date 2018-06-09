@@ -42,9 +42,6 @@ in
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true;
 
-  # Enable wifi
-  networking.wireless.enable = true;
-
   # Nyarlathotep
   fileSystems."/home/barrucadu/nfs/anime"    = nfsShare "anime";
   fileSystems."/home/barrucadu/nfs/manga"    = nfsShare "manga";
