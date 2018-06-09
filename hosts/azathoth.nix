@@ -42,6 +42,11 @@ in
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true;
 
+  # Firewall
+  networking.firewall.enable = true;
+  networking.firewall.allowPing = true;
+  networking.firewall.trustedInterfaces = [ "lo" "enp6s0" ];
+
   # Nyarlathotep
   fileSystems."/home/barrucadu/nfs/anime"    = nfsShare "anime";
   fileSystems."/home/barrucadu/nfs/manga"    = nfsShare "manga";
