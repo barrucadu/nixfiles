@@ -2,7 +2,7 @@
 
 let
   nfsShare = name:
-    { device = "nyarlathotep.dot:/${name}"
+    { device = "nyarlathotep:/${name}"
     ; fsType = "nfs"
     ; options = [ "x-systemd.automount" "noauto" ]
     ; };
