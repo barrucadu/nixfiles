@@ -24,43 +24,9 @@ in
   services.zfs.autoScrub.enable = true;
   services.zfs.autoScrub.interval = "monthly";
 
-  # Enable wifi
-  networking.wireless.enable = true;
-
-  # Static ethernet
-  networking.interfaces.enp3s0.ipv4.addresses =
-    [ { address = "10.1.1.1"; prefixLength = 24; } ];
-
   # Firewall
   networking.firewall.enable = true;
   networking.firewall.trustedInterfaces = [ "lo" "enp3s0" ];
-  networking.firewall.extraCommands = ''
-    iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-    iptables -A INPUT -i wlp2s0 -j DROP
-  '';
-
-  # DNS & DHCP for LAN
-  services.dnsmasq.enable = true;
-  services.dnsmasq.extraConfig = ''
-    domain-needed
-    bogus-priv
-
-    local=/dot/
-    domain=dot
-    dhcp-fqdn
-    dhcp-authoritative
-    no-hosts
-
-    except-interface=wlp2s0
-    bind-interfaces
-
-    address=/nyarlathotep/10.1.1.1
-    address=/nyarlathotep.dot/10.1.1.1
-
-    dhcp-option=3
-    dhcp-option=6,10.1.1.1
-    dhcp-range=10.1.1.100,10.1.1.200
-  '';
 
   # NFS exports
   services.nfs.server.enable = true;
