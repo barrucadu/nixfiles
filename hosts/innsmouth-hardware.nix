@@ -17,8 +17,13 @@
       fsType = "ext4";
     };
 
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/4c266717-5fa9-4f82-9546-fac7dfc3da76";
+      fsType = "ext4";
+    };
+
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/3dcc2874-a0e4-4bbb-b2e2-f26b4ef298fd"; }
+    [ { device = "/dev/disk/by-uuid/fd1671e4-fb76-4493-9e9a-ca42c9520430"; }
     ];
 
   nix.maxJobs = 2;
