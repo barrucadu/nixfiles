@@ -58,7 +58,10 @@ with lib;
 
     "misc.barrucadu.co.uk" = {
       root = "/srv/http/misc";
-      locations."/pub/".extraConfig = "autoindex on;";
+      locations."~ /7day/.*/".extraConfig    = "autoindex on;";
+      locations."~ /14day/.*/".extraConfig   = "autoindex on;";
+      locations."~ /28day/.*/".extraConfig   = "autoindex on;";
+      locations."~ /forever/.*/".extraConfig = "autoindex on;";
       extraConfig = ''
         access_log /dev/null;
         error_log  /var/spool/nginx/logs/misc.error.log;
@@ -119,7 +122,9 @@ ${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "c
   # Clear the misc files every so often (this needs a user created, as
   # just specifying an arbitrary UID doesn't work)
   systemd.tmpfiles.rules =
-    [ "d /srv/http/misc/pub 0755 barrucadu users 3d"
+    [ "d /srv/http/misc/7day  0755 barrucadu users  7d"
+      "d /srv/http/misc/14day 0755 barrucadu users 14d"
+      "d /srv/http/misc/28day 0755 barrucadu users 28d"
     ];
   users.extraUsers.barrucadu = {
     uid = 1000;
