@@ -80,17 +80,6 @@ with lib;
       ; }
     ; };
 
-  systemd.services.gopher =
-    { enable   = true
-    ; wantedBy = [ "multi-user.target" ]
-    ; after    = [ "network.target" ]
-    ; serviceConfig =
-      { ExecStart = "/bin/gopherd"
-      ; Restart   = "on-failure"
-      ; WorkingDirectory = "/srv/gopher"
-      ; }
-    ; };
-
   # Logs
   services.logrotate.enable = true;
   services.logrotate.config = ''
