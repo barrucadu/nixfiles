@@ -44,7 +44,6 @@ in
 
   # Firewall
   networking.firewall.enable = true;
-  networking.firewall.allowPing = true;
   networking.firewall.trustedInterfaces = [ "lo" "enp6s0" ];
 
   # Nyarlathotep

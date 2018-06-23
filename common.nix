@@ -49,6 +49,15 @@ with lib;
   ## Services
   #############################################################################
 
+  networking.firewall = {
+    # Ping is enabled
+    allowPing = true;
+
+    # Ports for syncthing
+    allowedTCPPorts = [ 22000 ];
+    allowedUDPPorts = [ 21027 ];
+  };
+
   # Every machine gets an sshd
   services.openssh = {
     enable = true;
@@ -62,10 +71,6 @@ with lib;
   services.syncthing = {
     enable = true;
     user   = "barrucadu";
-  };
-  networking.firewall = {
-    allowedTCPPorts = [ 22000 ];
-    allowedUDPPorts = [ 21027 ];
   };
 
   # Monitor network activity

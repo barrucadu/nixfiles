@@ -26,7 +26,6 @@ in
 
   # Firewall
   networking.firewall.enable = true;
-  networking.firewall.allowPing = true;
   networking.firewall.trustedInterfaces = [ "lo" "enp3s0" ];
 
   # NFS exports

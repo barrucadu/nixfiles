@@ -32,7 +32,6 @@ in
   boot.loader.grub.extraConfig = "serial; terminal_input serial; terminal_output serial";
 
   # Firewall and container NAT
-  networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
 
