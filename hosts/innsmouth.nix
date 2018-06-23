@@ -9,9 +9,9 @@ let
   # Just edit this attribute set. Everything else maps over it, so
   # this should be all you need to touch.
   containerSpecs =
-    { barrucadu = { num = 2; config = (import ./hosts/innsmouth/barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["ci" "docs" "go" "memo" "misc"]; ports = [];}
-    ; mawalker  = { num = 3; config = (import ./hosts/innsmouth/mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; ports = []; }
-    ; uzbl      = { num = 4; config = (import ./hosts/innsmouth/uzbl.nix);      domain = "uzbl.org";        extrasubs = []; ports = []; }
+    { barrucadu = { num = 2; config = (import ./hosts/innsmouth/barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["ci" "docs" "go" "memo" "misc"];}
+    ; mawalker  = { num = 3; config = (import ./hosts/innsmouth/mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; }
+    ; uzbl      = { num = 4; config = (import ./hosts/innsmouth/uzbl.nix);      domain = "uzbl.org";        extrasubs = []; }
     ; };
 in
 {
@@ -33,7 +33,7 @@ in
 
   # Firewall and container NAT
   networking.firewall.allowPing = true;
-  networking.firewall.allowedTCPPorts = [ 80 443 ] ++ concatMap ({ports, ...}: ports) (mapAttrsToList (k: v: v) containerSpecs);
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
 
   networking.nat.enable = true;
@@ -42,12 +42,12 @@ in
 
   # Container configuration
   containers = mapAttrs
-    (_: {num, config, ports, ...}:
+    (_: {num, config, ...}:
       { autoStart      = true
       ; privateNetwork = true
       ; hostAddress    = "192.168.254.${toString num}"
       ; localAddress   = "192.168.255.${toString num}"
-      ; forwardPorts   = map (p: { containerPort = p; hostPort = p; protocol = "tcp"; }) ports
+      ; forwardPorts   = []
       ; config         = config
       ; }
     ) containerSpecs;
