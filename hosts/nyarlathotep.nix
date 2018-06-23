@@ -70,10 +70,11 @@ in
   '';
 
   # hledger dashboard
-  services.influxdb.enable = true;
-  services.grafana.enable  = true;
-  services.grafana.addr = "0.0.0.0";
-  services.grafana.port = 3333;
+  services.grafana = {
+    enable = true;
+    addr = "0.0.0.0";
+    port = 3333;
+  };
 
   systemd.timers.hledger-scripts = {
     wantedBy = [ "timers.target" ];
