@@ -9,8 +9,7 @@ let
   # Just edit this attribute set. Everything else maps over it, so
   # this should be all you need to touch.
   containerSpecs =
-    { archhurd  = { num = 1; config = (import ./hosts/innsmouth/archhurd.nix);  domain = "archhurd.org";    extrasubs = ["aur" "bugs" "files" "lists" "wiki"]; ports = [21 873];}
-    ; barrucadu = { num = 2; config = (import ./hosts/innsmouth/barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["ci" "docs" "go" "memo" "misc"]; ports = [];}
+    { barrucadu = { num = 2; config = (import ./hosts/innsmouth/barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["ci" "docs" "go" "memo" "misc"]; ports = [];}
     ; mawalker  = { num = 3; config = (import ./hosts/innsmouth/mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; ports = []; }
     ; uzbl      = { num = 4; config = (import ./hosts/innsmouth/uzbl.nix);      domain = "uzbl.org";        extrasubs = []; ports = []; }
     ; };
