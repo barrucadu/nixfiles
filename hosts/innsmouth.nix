@@ -93,6 +93,7 @@ in
 
   # Databases
   services.mongodb.enable = true;
+
   # Gitolite
   services.gitolite =
     { enable = true
