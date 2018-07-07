@@ -67,6 +67,8 @@ in
   '';
   services.nginx.virtualHosts = mkMerge
     [ { default = { default = true; locations."/".root = "/srv/http/"; }; }
+      { "barrucadu.com" = { serverAliases = [ "www.barrucadu.com" ]; globalRedirect = "www.barrucadu.co.uk"; }; }
+      { "barrucadu.uk"  = { serverAliases = [ "www.barrucadu.uk"  ]; globalRedirect = "www.barrucadu.co.uk"; }; }
       { "ci.barrucadu.co.uk" = { enableACME = true; forceSSL = true; locations."/".proxyPass = "http://127.0.0.1:${toString config.services.jenkins.port}"; }; }
       (mapAttrs'
         (_: {num, domain, extrasubs, ...}:
