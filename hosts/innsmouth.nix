@@ -9,7 +9,7 @@ let
   # Just edit this attribute set. Everything else maps over it, so
   # this should be all you need to touch.
   containerSpecs =
-    { barrucadu = { num = 2; config = (import ./hosts/innsmouth/barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["ci" "docs" "go" "memo" "misc"];}
+    { barrucadu = { num = 2; config = (import ./hosts/innsmouth/barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["docs" "go" "memo" "misc"];}
     ; mawalker  = { num = 3; config = (import ./hosts/innsmouth/mawalker.nix);  domain = "mawalker.me.uk";  extrasubs = []; }
     ; uzbl      = { num = 4; config = (import ./hosts/innsmouth/uzbl.nix);      domain = "uzbl.org";        extrasubs = []; }
     ; };
@@ -51,8 +51,6 @@ in
       ; }
     ) containerSpecs;
 
-  systemd.services."container@barrucadu".serviceConfig.TimeoutSec = "5min";
-
   # Web server
   services.nginx.enable = true;
   services.nginx.package = pkgs.nginx;
@@ -69,6 +67,7 @@ in
   '';
   services.nginx.virtualHosts = mkMerge
     [ { default = { default = true; locations."/".root = "/srv/http/"; }; }
+      { "ci.barrucadu.co.uk" = { enableACME = true; forceSSL = true; locations."/".proxyPass = "http://127.0.0.1:${toString config.services.jenkins.port}"; }; }
       (mapAttrs'
         (_: {num, domain, extrasubs, ...}:
           let cfg = {
@@ -115,6 +114,21 @@ in
     endscript
 }
   '';
+
+  # CI
+  services.jenkins.enable = true;
+  services.jenkins.port = 3001;
+  services.jenkins.packages = with pkgs;
+    let env = buildEnv
+      { name = "jenkins-env"
+      ; pathsToLink = [ "/bin" ]
+      ; paths =
+        [ stdenv git jdk config.programs.ssh.package nix ] ++ # default
+        [ bash m4 stack texlive.combined.scheme-full wget ] ++
+        (with haskellPackages; [ cpphs hscolour ] )
+      ; };
+    in [ env ];
+  systemd.services."jenkins".serviceConfig.TimeoutSec = "5min";
 
   nixpkgs.config.packageOverrides = pkgs: {
     # Build nginx with lua support.
