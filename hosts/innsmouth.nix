@@ -53,7 +53,7 @@ in
 
   # Web server
   services.nginx.enable = true;
-  services.nginx.package = pkgs.nginx;
+  services.nginx.package = pkgs.nginx.override { modules = [ pkgs.nginxModules.lua ]; };
   services.nginx.recommendedGzipSettings  = true;
   services.nginx.recommendedOptimisation  = true;
   services.nginx.recommendedProxySettings = true;
@@ -129,11 +129,6 @@ in
       ; };
     in [ env ];
   systemd.services."jenkins".serviceConfig.TimeoutSec = "5min";
-
-  nixpkgs.config.packageOverrides = pkgs: {
-    # Build nginx with lua support.
-    nginx = pkgs.nginx.override { modules = [ pkgs.nginxModules.lua ]; };
-  };
 
   # Extra packages
   environment.systemPackages = with pkgs; [
