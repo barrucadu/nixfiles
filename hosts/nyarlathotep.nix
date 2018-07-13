@@ -105,6 +105,21 @@ in
     serviceConfig.Group = "users";
   };
 
+  # Monitoring
+  systemd.timers.monitoring-scripts = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "0/12:00:00";
+    };
+  };
+  systemd.services.monitoring-scripts = {
+    description = "Run monitoring scripts";
+    serviceConfig.WorkingDirectory = "/home/barrucadu/monitoring-scripts";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./monitor.sh";
+    serviceConfig.User = "barrucadu";
+    serviceConfig.Group = "users";
+  };
+
   # Extra packages
   environment.systemPackages = with pkgs; [
     influxdb
