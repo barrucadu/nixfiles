@@ -46,34 +46,25 @@ in
 
   # nginx
   services.nginx.enable = true;
-  services.nginx.config = ''
-    worker_processes 1;
-    events {
-      worker_connections 1024;
-    }
-    http {
-      include ${pkgs.nginx}/conf/mime.types;
-      default_type application/octet-stream;
-      sendfile on;
-      keepalive_timeout 65;
-      gzip on;
-      error_log /var/spool/nginx/logs/errors.log;
-      server {
-        listen [::]:80 ipv6only=off;
-        location / {
-          proxy_read_timeout 300;
-          proxy_connect_timeout 300;
-          proxy_pass http://127.0.0.1:3000;
-        }
-      }
-    }
-  '';
+  services.nginx.recommendedGzipSettings  = true;
+  services.nginx.recommendedOptimisation  = true;
+  services.nginx.recommendedProxySettings = true;
+  services.nginx.virtualHosts.nyarlathotep = {
+    default = true;
+    root = "/srv/http";
+    locations."/bookdb/".proxyPass  = "http://localhost:3000/";
+    locations."/flood/".proxyPass   = "http://localhost:3001/";
+    locations."/grafana/".proxyPass = "http://localhost:3002/";
+    locations."/bookdb/covers/".extraConfig = "alias /srv/http/bookdb/covers/;";
+    locations."/bookdb/static/".extraConfig = "alias /srv/http/bookdb/static/;";
+  };
 
   # hledger dashboard
   services.grafana = {
     enable = true;
-    addr = "0.0.0.0";
-    port = 3333;
+    port = 3002;
+    domain = "nyarlathotep";
+    rootUrl = "http://nyarlathotep/grafana/";
   };
 
   systemd.timers.hledger-scripts = {
