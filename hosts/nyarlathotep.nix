@@ -17,6 +17,7 @@ in
     ./hardware-configuration.nix
     ./services/bookdb.nix
     ./services/nginx.nix
+    ./services/rtorrent.nix
   ];
 
   # Bootloader
@@ -112,6 +113,5 @@ in
   # Extra packages
   environment.systemPackages = with pkgs; [
     influxdb
-    rtorrent
   ];
 }
