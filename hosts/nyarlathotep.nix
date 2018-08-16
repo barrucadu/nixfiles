@@ -15,6 +15,7 @@ in
   imports = [
     ./common.nix
     ./hardware-configuration.nix
+    ./services/bookdb.nix
     ./services/nginx.nix
   ];
 
@@ -52,8 +53,8 @@ in
     locations."/bookdb/".proxyPass  = "http://localhost:3000/";
     locations."/flood/".proxyPass   = "http://localhost:3001/";
     locations."/grafana/".proxyPass = "http://localhost:3002/";
-    locations."/bookdb/covers/".extraConfig = "alias /srv/http/bookdb/covers/;";
-    locations."/bookdb/static/".extraConfig = "alias /srv/http/bookdb/static/;";
+    locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
+    locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
   };
 
   # hledger dashboard
@@ -87,7 +88,7 @@ in
   };
   systemd.services.bookdb-sync = {
     description = "Upload bookdb data to innsmouth";
-    serviceConfig.WorkingDirectory = "/srv/http/bookdb";
+    serviceConfig.WorkingDirectory = "/srv/bookdb";
     serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./upload.sh";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
