@@ -35,15 +35,6 @@ with lib;
       '';
     };
 
-    "go.barrucadu.co.uk" = {
-      root = "/srv/http/go";
-      extraConfig = ''
-        include /srv/http/go.conf;
-        access_log /dev/null;
-        error_log  /var/spool/nginx/logs/go.error.log;
-      '';
-    };
-
     "memo.barrucadu.co.uk" = {
       root = "/srv/http/memo";
       extraConfig = ''
