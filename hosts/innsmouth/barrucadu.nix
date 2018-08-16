@@ -25,16 +25,6 @@ with lib;
       '';
     };
 
-    "docs.barrucadu.co.uk" = {
-      root = "/srv/http/docs";
-      extraConfig = ''
-        include ${pkgs.nginx}/conf/mime.types;
-        types { text/html go; }
-        access_log /dev/null;
-        error_log  /var/spool/nginx/logs/docs.error.log;
-      '';
-    };
-
     "memo.barrucadu.co.uk" = {
       root = "/srv/http/memo";
       extraConfig = ''
