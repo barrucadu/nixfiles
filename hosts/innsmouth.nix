@@ -20,6 +20,7 @@ in
   imports = [
     ./common.nix
     ./hardware-configuration.nix
+    ./services/nginx.nix
   ];
 
   # Bootloader
@@ -52,12 +53,6 @@ in
     ) containerSpecs;
 
   # Web server
-  services.nginx.enable = true;
-  services.nginx.package = pkgs.nginx.override { modules = [ pkgs.nginxModules.lua ]; };
-  services.nginx.recommendedGzipSettings  = true;
-  services.nginx.recommendedOptimisation  = true;
-  services.nginx.recommendedProxySettings = true;
-  services.nginx.recommendedTlsSettings   = true;
   services.nginx.commonHttpConfig = ''
     log_format combined_vhost '$host '
                               '$remote_addr - $remote_user [$time_local] '
@@ -77,16 +72,6 @@ in
                 enableACME = true;
                 forceSSL   = true;
                 locations."/".proxyPass = "http://192.168.255.${toString num}";
-                extraConfig = ''
-                  header_filter_by_lua_block {
-                    if not ngx.header["Content-Security-Policy"] then ngx.header["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com" end
-                    if not ngx.header["Referrer-Policy"] then ngx.header["Referrer-Policy"] = "strict-origin-when-cross-origin" end
-                    if not ngx.header["Strict-Transport-Security"] then ngx.header["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains" end
-                    if not ngx.header["X-Content-Type-Options"] then ngx.header["X-Content-Type-Options"] = "nosniff" end
-                    if not ngx.header["X-Frame-Options"] then ngx.header["X-Frame-Options"] = "SAMEORIGIN" end
-                    if not ngx.header["X-XSS-Protection"] then ngx.header["X-XSS-Protection"] = "1; mode=block" end
-                  }
-                '';
               };
           in nameValuePair "${domain}" cfg)
         containerSpecs)

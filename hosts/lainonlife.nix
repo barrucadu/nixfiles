@@ -29,6 +29,7 @@ in
   imports = [
     ./common.nix
     ./hardware-configuration.nix
+    ./services/nginx.nix
   ];
 
   # Bootloader
@@ -56,12 +57,6 @@ in
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 63000; } ];
 
   # Web server
-  services.nginx.enable  = true;
-  services.nginx.package = pkgs.nginx;
-  services.nginx.recommendedGzipSettings  = true;
-  services.nginx.recommendedOptimisation  = true;
-  services.nginx.recommendedProxySettings = true;
-  services.nginx.recommendedTlsSettings   = true;
   services.nginx.virtualHosts."lainon.life" = {
     serverAliases = [ "www.lainon.life" ];
     enableACME = true;
@@ -72,23 +67,6 @@ in
     locations."/radio/".proxyPass  = "http://localhost:8000/";
     locations."/graphs/".proxyPass = "http://localhost:8001/";
     locations."@script".proxyPass = "http://localhost:8002";
-    locations."/graphs/".extraConfig = ''
-      header_filter_by_lua_block {
-        if not ngx.header["Content-Security-Policy"] then ngx.header["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'" end
-      }
-    '';
-    extraConfig = ''
-      header_filter_by_lua_block {
-        if not ngx.header["Access-Control-Allow-Origin"] then ngx.header["Access-Control-Allow-Origin"] = "*" end
-        if not ngx.header["Content-Security-Policy"] then ngx.header["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'" end
-        if not ngx.header["Referrer-Policy"] then ngx.header["Referrer-Policy"] = "strict-origin-when-cross-origin" end
-        if not ngx.header["Strict-Transport-Security"] then ngx.header["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains" end
-        if not ngx.header["X-Content-Type-Options"] then ngx.header["X-Content-Type-Options"] = "nosniff" end
-        if not ngx.header["X-Frame-Options"] then ngx.header["X-Frame-Options"] = "SAMEORIGIN" end
-        if not ngx.header["X-XSS-Protection"] then ngx.header["X-XSS-Protection"] = "1; mode=block" end
-      }
-      proxy_max_temp_file_size 0;
-    '';
   };
 
   services.logrotate.enable = true;
@@ -154,9 +132,6 @@ in
     mpd = pkgs.mpd.overrideAttrs (oldAttrs: rec {
       buildInputs = oldAttrs.buildInputs ++ [ pkgs.lame ];
     });
-
-    # Build nginx with lua support.
-    nginx = pkgs.nginx.override { modules = [ pkgs.nginxModules.lua ]; };
 
     # Set up the Python 3 environment we want for the systemd services.
     python3 = pkgs.python35.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil p.requests]);

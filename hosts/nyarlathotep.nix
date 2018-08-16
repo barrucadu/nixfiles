@@ -15,6 +15,7 @@ in
   imports = [
     ./common.nix
     ./hardware-configuration.nix
+    ./services/nginx.nix
   ];
 
   # Bootloader
@@ -45,10 +46,6 @@ in
   services.samba.syncPasswordsByPam = true;
 
   # nginx
-  services.nginx.enable = true;
-  services.nginx.recommendedGzipSettings  = true;
-  services.nginx.recommendedOptimisation  = true;
-  services.nginx.recommendedProxySettings = true;
   services.nginx.virtualHosts.nyarlathotep = {
     default = true;
     root = "/srv/http";
