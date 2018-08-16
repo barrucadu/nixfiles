@@ -3,7 +3,10 @@
 with lib;
 
 {
-  imports = [ ../../services/nginx-phpfpm.nix ];
+  imports = [
+    ../../services/bookdb.nix
+    ../../services/nginx-phpfpm.nix
+  ];
 
   networking.firewall.enable = false;
 
@@ -45,17 +48,6 @@ with lib;
       '';
     };
   };
-
-  systemd.services.bookdb =
-    { enable   = true
-    ; wantedBy = [ "multi-user.target" ]
-    ; after    = [ "network.target" ]
-    ; serviceConfig =
-      { ExecStart = "/bin/bookdb run bookdb.conf"
-      ; Restart   = "on-failure"
-      ; WorkingDirectory = "/srv/bookdb"
-      ; }
-    ; };
 
   # Logs
   services.logrotate.enable = true;
