@@ -30,6 +30,7 @@ in
     ./common.nix
     ./hardware-configuration.nix
     ./services/nginx.nix
+    ./services/rtorrent.nix
   ];
 
   # Bootloader
