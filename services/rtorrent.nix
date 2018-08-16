@@ -15,8 +15,22 @@
     ; }
   ; }
 
+; systemd.services.flood =
+  { enable   = true
+  ; wantedBy = [ "default.target" ]
+  ; after    = [ "network.target" ]
+  ; serviceConfig =
+    { ExecStart = "${pkgs.zsh}/bin/zsh --login -c '${pkgs.nodejs-8_x}/bin/npm start'"
+    ; User      = "barrucadu"
+    ; KillMode  = "none"
+    ; Restart   = "on-failure"
+    ; WorkingDirectory = "/home/barrucadu/flood"
+    ; }
+  ; }
+
 ; environment.systemPackages = with pkgs;
   [ mktorrent
+    nodejs-8_x
     rtorrent
     tmux
   ]
