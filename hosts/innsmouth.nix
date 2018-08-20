@@ -20,8 +20,10 @@ in
   imports = [
     ./common.nix
     ./hardware-configuration.nix
+    ./services/monitoring.nix
     ./services/nginx.nix
   ];
+  services.monitoring-scripts.OnCalendar = "hourly";
 
   # Bootloader
   boot.loader.grub.enable  = true;

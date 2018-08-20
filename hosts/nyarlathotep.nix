@@ -16,6 +16,7 @@ in
     ./common.nix
     ./hardware-configuration.nix
     ./services/bookdb.nix
+    ./services/monitoring.nix
     ./services/nginx.nix
     ./services/rtorrent.nix
   ];
@@ -91,21 +92,6 @@ in
     description = "Upload bookdb data to innsmouth";
     serviceConfig.WorkingDirectory = "/srv/bookdb";
     serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./upload.sh";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
-  };
-
-  # Monitoring
-  systemd.timers.monitoring-scripts = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "0/12:00:00";
-    };
-  };
-  systemd.services.monitoring-scripts = {
-    description = "Run monitoring scripts";
-    serviceConfig.WorkingDirectory = "/home/barrucadu/monitoring-scripts";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./monitor.sh";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
   };
