@@ -139,7 +139,6 @@ with lib;
       (import ./files/innsmouth-pubkey.nix)
       (import ./files/lainonlife-pubkey.nix)
       (import ./files/nyarlathotep-pubkey.nix)
-      (import ./files/york-pubkey.nix)
     ];
   };
 
