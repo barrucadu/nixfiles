@@ -52,7 +52,7 @@ with lib;
   # Logs
   services.logrotate.enable = true;
   services.logrotate.config = ''
-${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "ci" "docs" "go" "memo" "misc" ]} {
+${concatMapStringsSep " " (n: "/var/spool/nginx/logs/${n}.error.log") [ "www" "memo" "misc" ]} {
     weekly
     copytruncate
     rotate 1
