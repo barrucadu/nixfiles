@@ -81,14 +81,6 @@ in
   # Use lightdm instead of slim
   services.xserver.displayManager.lightdm.enable = true;
 
-  # Enable redshift
-  services.redshift = {
-    enable = true;
-    # York
-    latitude  = "53.953";
-    longitude = "-1.0391";
-  };
-
   # Sane font defaults
   fonts = {
     enableFontDir = true;
