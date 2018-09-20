@@ -1,19 +1,12 @@
 { config, pkgs, ... }:
 
 let
-  nginxWithLua = pkgs.nginx.override { modules = [ pkgs.nginxModules.lua ]; };
-in
+  nginx = pkgs.nginx.override { modules = [
+    pkgs.nginxModules.brotli
+    pkgs.nginxModules.lua
+  ]; };
 
-{
-  services.nginx.enable = true;
-  services.nginx.package = nginxWithLua;
-
-  services.nginx.recommendedGzipSettings  = true;
-  services.nginx.recommendedOptimisation  = true;
-  services.nginx.recommendedProxySettings = true;
-  services.nginx.recommendedTlsSettings   = true;
-
-  services.nginx.appendHttpConfig = ''
+  security_header_settings = ''
     header_filter_by_lua_block {
       if not ngx.header["Access-Control-Allow-Origin"] then
         ngx.header["Access-Control-Allow-Origin"] = "*"
@@ -43,7 +36,31 @@ in
         ngx.header["X-XSS-Protection"] = "1; mode=block"
       end
     }
+  '';
 
+  brotli_settings = ''
+    brotli on;
+    brotli_comp_level 11;
+    brotli_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+  '';
+
+  proxy_settings = ''
     proxy_max_temp_file_size 0;
+  '';
+in
+
+{
+  services.nginx.enable = true;
+  services.nginx.package = nginx;
+
+  services.nginx.recommendedGzipSettings  = true;
+  services.nginx.recommendedOptimisation  = true;
+  services.nginx.recommendedProxySettings = true;
+  services.nginx.recommendedTlsSettings   = true;
+
+  services.nginx.appendHttpConfig = ''
+    ${security_header_settings}
+    ${brotli_settings}
+    ${proxy_settings}
   '';
 }
