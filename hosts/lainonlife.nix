@@ -178,7 +178,7 @@ in
           ngx.header["Access-Control-Expose-Headers"] = "Link, X-RateLimit-Reset, X-RateLimit-Limit, X-RateLimit-Remaining, X-Request-Id"
           ngx.header["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' http: https: data:; connect-src 'self' wss://social.lainon.life/"
           ngx.header["X-Download-Options"] = "noopen"
-          ngx.header["Content-Security-Policy"] = "default-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self' wss://social.lainon.life; upgrade-insecure-requests;"
+          ngx.header["Content-Security-Policy"] = "default-src 'none'; base-uri 'self'; form-action *; frame-ancestors 'none'; img-src 'self' data: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self' wss://social.lainon.life; upgrade-insecure-requests;"
         }
 
         if ($request_method = OPTIONS) {
