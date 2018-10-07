@@ -119,6 +119,11 @@ in
     in [ env ];
   systemd.services."jenkins".serviceConfig.TimeoutSec = "5min";
 
+  # 10% of the RAM is too little space
+  services.logind.extraConfig = ''
+    RuntimeDirectorySize=2G
+  '';
+
   # Extra packages
   environment.systemPackages = with pkgs; [
     irssi
