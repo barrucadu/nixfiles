@@ -179,7 +179,6 @@ with lib;
         gnum4
         fortune
         haskellPackages.hledger
-        haskellPackages.pandoc
         htop
         imagemagick
         iotop
