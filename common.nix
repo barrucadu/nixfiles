@@ -178,7 +178,6 @@ with lib;
         gnupg1compat
         gnum4
         fortune
-        haskellPackages.hledger
         htop
         imagemagick
         iotop

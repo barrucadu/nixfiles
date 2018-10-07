@@ -126,6 +126,7 @@ in
 
   # Extra packages
   environment.systemPackages = with pkgs; [
+    haskellPackages.hledger
     irssi
     perl
     texlive.combined.scheme-full

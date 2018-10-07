@@ -102,6 +102,7 @@ in
     abcde
     biber
     feh
+    haskellPackages.hledger
     gnuplot
     gphoto2
     keybase
