@@ -157,7 +157,7 @@ in
     });
 
     # Set up the Python 3 environment we want for the systemd services.
-    python3 = pkgs.python35.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil p.requests]);
+    python3 = pkgs.python3.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil p.requests]);
   };
 
   # Pleroma
