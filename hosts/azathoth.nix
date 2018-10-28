@@ -101,6 +101,7 @@ in
   environment.systemPackages = with pkgs; [
     abcde
     biber
+    discord
     feh
     haskellPackages.hledger
     gnuplot
