@@ -67,6 +67,9 @@ with lib;
     challengeResponseAuthentication = false;
   };
 
+  # Start ssh-agent as a systemd user service
+  programs.ssh.startAgent = true;
+
   # Syncthing for shared folders (configured directly in the syncthing client)
   services.syncthing = {
     enable = true;
