@@ -220,8 +220,8 @@ with lib;
         gmrun
         mirage
         mpv
-        scrot
         rxvt_unicode
+        scrot
         xclip
       ];
     in common ++ (if config.services.xserver.enable then xorg else noxorg);
