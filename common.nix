@@ -218,6 +218,7 @@ with lib;
         ghostscript
         gimp
         gmrun
+        keepassxc
         mirage
         mpv
         rxvt_unicode
