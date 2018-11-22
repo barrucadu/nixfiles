@@ -99,23 +99,16 @@ in
 
   # Extra packages
   environment.systemPackages = with pkgs; [
-    abcde
     biber
     discord
     feh
     haskellPackages.hledger
     gnuplot
-    gphoto2
-    keybase
-    libreoffice
     lightdm
     mpc_cli
     mpd
     ncmpcpp
-    optipng
-    p7zip
     python3Packages.pygments
     (texlive.combine { inherit (texlive) scheme-full; })
-    unrar
   ];
 }
