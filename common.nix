@@ -214,8 +214,6 @@ with lib;
         chromium
         emacs
         evince
-        firefox
-        ghostscript
         gimp
         gmrun
         keepassxc
