@@ -30,7 +30,7 @@ in
 
   # Firewall
   networking.firewall.enable = true;
-  networking.firewall.trustedInterfaces = [ "lo" "enp3s0" ];
+  networking.firewall.trustedInterfaces = [ "lo" "enp4s0" ];
 
   # NFS exports
   services.nfs.server.enable = true;
