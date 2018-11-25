@@ -17,20 +17,8 @@ in
   ];
 
   # Bootloader
-  boot.loader.grub.enable  = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device  = "/dev/sda";
-
-  # Windows
-  fileSystems."/mnt/data".device = "/dev/disk/by-label/Data";
-  fileSystems."/mnt/data".fsType = "ntfs";
-
-  boot.loader.grub.extraEntries = ''
-    menuentry "Windows 10" {
-      set root=(hd1,1)
-      chainloader +1
-    }
-  '';
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # Enable nvidia graphics
   services.xserver.videoDrivers = [ "nvidia" ];
