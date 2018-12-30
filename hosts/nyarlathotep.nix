@@ -16,10 +16,11 @@ in
     ./common.nix
     ./hardware-configuration.nix
     ./services/bookdb.nix
-    ./services/monitoring.nix
     ./services/nginx.nix
     ./services/rtorrent.nix
   ];
+
+  services.monitoring-scripts.OnCalendar = "0/12:00:00";
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
