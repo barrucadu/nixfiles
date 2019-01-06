@@ -62,8 +62,8 @@ in
   '';
   services.nginx.virtualHosts = mkMerge
     [ { default = { default = true; locations."/".root = "/srv/http/"; }; }
-      { "barrucadu.com" = { serverAliases = [ "www.barrucadu.com" ]; globalRedirect = "www.barrucadu.co.uk"; }; }
-      { "barrucadu.uk"  = { serverAliases = [ "www.barrucadu.uk"  ]; globalRedirect = "www.barrucadu.co.uk"; }; }
+      { "barrucadu.com" = { serverAliases = [ "www.barrucadu.com" ]; locations."/".extraConfig = "return 301 https://www.barrucadu.co.uk$request_uri;"; enableACME = true; }; }
+      { "barrucadu.uk"  = { serverAliases = [ "www.barrucadu.uk"  ]; locations."/".extraConfig = "return 301 https://www.barrucadu.co.uk$request_uri;"; enableACME = true; }; }
       { "ci.barrucadu.co.uk" = { enableACME = true; forceSSL = true; locations."/".proxyPass = "http://127.0.0.1:${toString config.services.jenkins.port}"; }; }
       (mapAttrs'
         (_: {num, domain, extrasubs, ...}:
