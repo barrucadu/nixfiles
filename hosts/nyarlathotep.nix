@@ -56,8 +56,6 @@ in
     locations."/bookdb/".proxyPass  = "http://localhost:3000/";
     locations."/flood/".proxyPass   = "http://localhost:3001/";
     locations."/grafana/".proxyPass = "http://localhost:3002/";
-    # see https://github.com/monicahq/monica/issues/139
-    # locations."/monica/".proxyPass  = "http://localhost:3003/";
     locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
     locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
   };
@@ -99,33 +97,8 @@ in
     serviceConfig.Group = "users";
   };
 
-  # monica
-  users.extraUsers.monica = {
-    home = "/srv/monica";
-    createHome = true;
-    isSystemUser = true;
-    extraGroups = [ "docker" ];
-  };
-
-  systemd.services.monica = {
-    enable   = true;
-    wantedBy = [ "multi-user.target" ];
-    requires = [ "docker.service" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.docker_compose}/bin/docker-compose up";
-      ExecStop  = "${pkgs.docker_compose}/bin/docker-compose down";
-      Restart   = "always";
-      User      = "monica";
-      WorkingDirectory = "/srv/monica";
-    };
-  };
-
-  virtualisation.docker.enable = true;
-  virtualisation.docker.autoPrune.enable = true;
-
   # Extra packages
   environment.systemPackages = with pkgs; [
     influxdb
-    docker_compose
   ];
 }
