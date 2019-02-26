@@ -4,18 +4,19 @@ with lib;
 
 {
   options = {
-    services.monitoring-scripts = {
-      OnCalendar = lib.mkOption {
-        default = "hourly";
+    services = {
+      backup-scripts = {
+        OnCalendarFull   = lib.mkOption { default = "monthly"; };
+        OnCalendarIncr   = lib.mkOption { default = "Mon, 04:00"; };
+        WorkingDirectory = lib.mkOption { default = "/home/barrucadu/backup-scripts"; };
+        User             = lib.mkOption { default = "barrucadu"; };
+        Group            = lib.mkOption { default = "users"; };
       };
-      WorkingDirectory = lib.mkOption {
-        default = "/home/barrucadu/monitoring-scripts";
-      };
-      User = lib.mkOption {
-        default = "barrucadu";
-      };
-      Group = lib.mkOption {
-        default = "users";
+      monitoring-scripts = {
+        OnCalendar       = lib.mkOption { default = "hourly"; };
+        WorkingDirectory = lib.mkOption { default = "/home/barrucadu/monitoring-scripts"; };
+        User             = lib.mkOption { default = "barrucadu"; };
+        Group            = lib.mkOption { default = "users"; };
       };
     };
   };
@@ -92,6 +93,41 @@ with lib;
     services.syncthing = {
       enable = true;
       user   = "barrucadu";
+    };
+
+
+    #############################################################################
+    ## Backups
+    #############################################################################
+
+    systemd.timers.backup-scripts-full = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = config.services.backup-scripts.OnCalendarFull;
+      };
+    };
+
+    systemd.timers.backup-scripts-incr = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = config.services.backup-scripts.OnCalendarIncr;
+      };
+    };
+
+    systemd.services.backup-scripts-full = {
+      description = "Take a full backup";
+      serviceConfig.WorkingDirectory = config.services.backup-scripts.WorkingDirectory;
+      serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './backup.sh full'";
+      serviceConfig.User = config.services.backup-scripts.User;
+      serviceConfig.Group = config.services.backup-scripts.Group;
+    };
+
+    systemd.services.backup-scripts-incr = {
+      description = "Take an incremental backup";
+      serviceConfig.WorkingDirectory = config.services.backup-scripts.WorkingDirectory;
+      serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './backup.sh incr'";
+      serviceConfig.User = config.services.backup-scripts.User;
+      serviceConfig.Group = config.services.backup-scripts.Group;
     };
 
 
