@@ -4,8 +4,8 @@ with lib;
 
 {
   imports = [
-    ../../services/bookdb.nix
-    ../../services/nginx-phpfpm.nix
+    ../services/bookdb.nix
+    ../services/nginx-phpfpm.nix
   ];
 
   networking.firewall.enable = false;

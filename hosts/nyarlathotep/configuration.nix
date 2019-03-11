@@ -13,11 +13,9 @@ in
   boot.supportedFilesystems = [ "zfs" ];
 
   imports = [
-    ./common.nix
-    ./hardware-configuration.nix
-    ./services/bookdb.nix
-    ./services/nginx.nix
-    ./services/rtorrent.nix
+    ../services/bookdb.nix
+    ../services/nginx.nix
+    ../services/rtorrent.nix
   ];
 
   services.monitoring-scripts.OnCalendar = "0/12:00:00";

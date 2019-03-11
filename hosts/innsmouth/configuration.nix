@@ -9,17 +9,15 @@ let
   # Just edit this attribute set. Everything else maps over it, so
   # this should be all you need to touch.
   containerSpecs =
-    { barrucadu = { num = 2; config = (import ./hosts/innsmouth/barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["memo" "misc"];}
-    ; uzbl      = { num = 4; config = (import ./hosts/innsmouth/uzbl.nix);      domain = "uzbl.org";        extrasubs = []; }
+    { barrucadu = { num = 2; config = (import ./container-barrucadu.nix); domain = "barrucadu.co.uk"; extrasubs = ["memo" "misc"];}
+    ; uzbl      = { num = 4; config = (import ./container-uzbl.nix);      domain = "uzbl.org";        extrasubs = []; }
     ; };
 in
 {
   networking.hostName = "innsmouth";
 
   imports = [
-    ./common.nix
-    ./hardware-configuration.nix
-    ./services/nginx.nix
+    ../services/nginx.nix
   ];
 
   # Bootloader

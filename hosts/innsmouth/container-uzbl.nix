@@ -1,7 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../../services/nginx-phpfpm.nix ];
+  imports = [
+    ../services/nginx-phpfpm.nix
+  ];
 
   networking.firewall.enable = false;
 

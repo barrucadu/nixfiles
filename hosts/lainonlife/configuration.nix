@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  radio = import ./hosts/lainonlife/radio.nix { inherit lib pkgs; };
+  radio = import ./service-radio.nix { inherit lib pkgs; };
 
   radioChannels = [
     { channel = "everything"; port = 6600; description = "all the music, all the time"
@@ -27,10 +27,8 @@ in
   networking.hostName = "lainonlife";
 
   imports = [
-    ./common.nix
-    ./hardware-configuration.nix
-    ./services/nginx.nix
-    ./services/rtorrent.nix
+    ../services/nginx.nix
+    ../services/rtorrent.nix
   ];
 
   # Bootloader
