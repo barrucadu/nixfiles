@@ -66,9 +66,9 @@ let
     '';
 
   # A systemd service
-  service = {description, preStart ? null, startAt ? null, PermissionsStartOnly ? false, ExecStart, Type ? "simple", Restart ? "on-failure" }:
+  service = {environment ? {}, description, preStart ? null, startAt ? null, PermissionsStartOnly ? false, ExecStart, Type ? "simple", Restart ? "on-failure" }:
     mkMerge [
-      { inherit description;
+      { inherit environment description;
         after    = [ "network.target" "sound.target" ];
         wantedBy = [ "multi-user.target" ];
 
@@ -170,11 +170,18 @@ in
   # Programming service settings.
   #
   # > systemd.services."programme-random" = radio.programmingServiceFor channel_spec;
-  programmingServiceFor = {channel, port, ...}: service {
-    description = "Radio Programming (channel ${channel})";
-    startAt = "0/3:00:00";
-    ExecStart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/schedule.py ${toString port}";
-    Type = "oneshot";
-    Restart = "no";
-  };
+  programmingServiceFor = {channel, port, ...}:
+    let penv = pkgs.python3.buildEnv.override {
+          extraLibs = with pkgs.python3Packages; [docopt mpd2];
+        };
+    in service {
+      description = "Radio Programming (channel ${channel})";
+      startAt = "0/3:00:00";
+      ExecStart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/schedule.py ${toString port}";
+      Type = "oneshot";
+      Restart = "no";
+      environment = {
+        PYTHONPATH = "${penv}/${pkgs.python3.sitePackages}/";
+      };
+    };
 }

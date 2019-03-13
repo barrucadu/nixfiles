@@ -94,9 +94,9 @@ in
   users.extraUsers."${radio.username}" = radio.userSettings;
   services.icecast = radio.icecastSettingsFor radioChannels;
   systemd.services =
-    let service = {user, description, execstart, ...}: {
+    let service = {user, description, execstart, environment ? {}, ...}: {
+          inherit environment description;
           after         = [ "network.target" ];
-          description   = description;
           wantedBy      = [ "multi-user.target" ];
           serviceConfig = { User = user; ExecStart = execstart; Restart = "on-failure"; };
         };
@@ -109,12 +109,19 @@ in
 
       # Because I am defining systemd.services in its entirety here, all services defined in this
       # file need to live in this list too.
-      { metrics = service {
-          # This needs to run as root so that `du` can measure everything.
-          user = "root";
-          description = "Report metrics";
-          execstart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/metrics.py";
-        };
+      { metrics =
+          let penv = pkgs.python3.buildEnv.override {
+                extraLibs = with pkgs.python3Packages; [docopt influxdb psutil];
+              };
+          in service {
+            # This needs to run as root so that `du` can measure everything.
+            user = "root";
+            description = "Report metrics";
+            execstart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/metrics.py";
+            environment = {
+              PYTHONPATH = "${penv}/${pkgs.python3.sitePackages}/";
+            };
+          };
       }
 
       { "http-backend" = service {
@@ -144,16 +151,13 @@ in
       };
     }
     ];
-  environment.systemPackages = with pkgs; [ elixir erlang flac id3v2 ncmpcpp openssl python35Packages.virtualenv ];
+  environment.systemPackages = with pkgs; [ elixir erlang flac id3v2 ncmpcpp openssl python3Packages.virtualenv ];
 
   nixpkgs.config.packageOverrides = pkgs: {
     # Build MPD with libmp3lame support, so shoutcast output can do mp3.
     mpd = pkgs.mpd.overrideAttrs (oldAttrs: rec {
       buildInputs = oldAttrs.buildInputs ++ [ pkgs.lame ];
     });
-
-    # Set up the Python 3 environment we want for the systemd services.
-    python3 = pkgs.python3.withPackages (p: [p.docopt p.influxdb p.mpd2 p.psutil p.requests]);
   };
 
   # Pleroma
