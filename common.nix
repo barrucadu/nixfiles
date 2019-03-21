@@ -207,6 +207,7 @@ with lib;
         (import ./files/azathoth-linux-pubkey.nix)
         (import ./files/azathoth-windows-pubkey.nix)
         (import ./files/carter-pubkey.nix)
+        (import ./files/dunwich-pubkey.nix)
         (import ./files/innsmouth-pubkey.nix)
         (import ./files/lainonlife-pubkey.nix)
         (import ./files/nyarlathotep-pubkey.nix)
