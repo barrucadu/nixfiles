@@ -2,22 +2,13 @@
 
 with lib;
 
-let
-  # CONTAINERS
-  # ==========
-  #
-  # Just edit this attribute set. Everything else maps over it, so
-  # this should be all you need to touch.
-  containerSpecs =
-    { barrucadu = { num = 2; config = (import ./container-barrucadu.nix); domain = "dunwich.barrucadu.co.uk"; extrasubs = ["memo" "misc"];}
-    ; uzbl      = { num = 4; config = (import ./container-uzbl.nix);      domain = "dunwich.uzbl.org";        extrasubs = []; }
-    ; };
-in
 {
   networking.hostName = "dunwich";
 
   imports = [
+    ../services/bookdb.nix
     ../services/nginx.nix
+    ../services/nginx-phpfpm.nix
   ];
 
   # Bootloader
@@ -33,18 +24,6 @@ in
   networking.nat.internalInterfaces = ["ve-+"];
   networking.nat.externalInterface = "ens4";
 
-  # Container configuration
-  containers = mapAttrs
-    (_: {num, config, ...}:
-      { autoStart      = true
-      ; privateNetwork = true
-      ; hostAddress    = "192.168.254.${toString num}"
-      ; localAddress   = "192.168.255.${toString num}"
-      ; forwardPorts   = []
-      ; config         = config
-      ; }
-    ) containerSpecs;
-
   # Web server
   services.nginx.commonHttpConfig = ''
     log_format combined_vhost '$host '
@@ -53,21 +32,85 @@ in
                               '"$http_referer" "$http_user_agent"';
     access_log logs/access.log combined_vhost;
   '';
-  services.nginx.virtualHosts = mkMerge
-    [ { default = { default = true; locations."/".root = "/srv/http/"; }; }
-      #{ "barrucadu.com" = { serverAliases = [ "www.barrucadu.com" ]; locations."/".extraConfig = "return 301 https://www.barrucadu.co.uk$request_uri;"; enableACME = true; }; }
-      #{ "barrucadu.uk"  = { serverAliases = [ "www.barrucadu.uk"  ]; locations."/".extraConfig = "return 301 https://www.barrucadu.co.uk$request_uri;"; enableACME = true; }; }
-      { "ci.dunwich.barrucadu.co.uk" = { enableACME = true; forceSSL = true; locations."/".proxyPass = "http://127.0.0.1:${toString config.services.jenkins.port}"; }; }
-      (mapAttrs'
-        (_: {num, domain, extrasubs, ...}:
-          let cfg = {
-                serverAliases = map (sub: "${sub}.${domain}") (["www"]++extrasubs);
-                enableACME = true;
-                forceSSL   = true;
-                locations."/".proxyPass = "http://192.168.255.${toString num}";
-              };
-          in nameValuePair "${domain}" cfg)
-        containerSpecs)
+
+  services.nginx.virtualHosts = {
+    default = { default = true; locations."/".root = "/srv/http/default"; };
+
+    "dunwich.barrucadu.co.uk" = { enableACME = true; globalRedirect = "www.dunwich.barrucadu.co.uk"; };
+    "dunwich.barrucadu.com"   = { enableACME = true; globalRedirect = "www.dunwich.barrucadu.co.uk"; };
+    "dunwich.barrucadu.uk"    = { enableACME = true; globalRedirect = "www.dunwich.barrucadu.co.uk"; };
+    "dunwich.uzbl.org"        = { enableACME = true; globalRedirect = "www.dunwich.uzbl.org"; };
+
+    "www.dunwich.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      root = "/srv/http/barrucadu.co.uk/www";
+      locations."/bookdb/".proxyPass = "http://127.0.0.1:3000";
+      locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
+      locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
+      extraConfig = "include /srv/http/barrucadu.co.uk/www.conf;";
+    };
+
+    "ci.dunwich.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/".proxyPass = "http://127.0.0.1:${toString config.services.jenkins.port}";
+    };
+
+    "memo.dunwich.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      root = "/srv/http/barrucadu.co.uk/memo";
+    };
+
+    "misc.dunwich.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      root = "/srv/http/barrucadu.co.uk/misc";
+      locations."~ /7day/.*/".extraConfig    = "autoindex on;";
+      locations."~ /14day/.*/".extraConfig   = "autoindex on;";
+      locations."~ /28day/.*/".extraConfig   = "autoindex on;";
+      locations."~ /forever/.*/".extraConfig = "autoindex on;";
+    };
+
+    "www.dunwich.uzbl.org" = {
+      enableACME = true;
+      forceSSL = true;
+      root = "/srv/http/uzbl.org/www";
+      locations."= /archives.php".extraConfig    = "rewrite ^(.*) /index.php;";
+      locations."= /faq.php".extraConfig         = "rewrite ^(.*) /index.php;";
+      locations."= /readme.php".extraConfig      = "rewrite ^(.*) /index.php;";
+      locations."= /keybindings.php".extraConfig = "rewrite ^(.*) /index.php;";
+      locations."= /get.php".extraConfig         = "rewrite ^(.*) /index.php;";
+      locations."= /community.php".extraConfig   = "rewrite ^(.*) /index.php;";
+      locations."= /contribute.php".extraConfig  = "rewrite ^(.*) /index.php;";
+      locations."= /commits.php".extraConfig     = "rewrite ^(.*) /index.php;";
+      locations."= /news.php".extraConfig        = "rewrite ^(.*) /index.php;";
+      locations."/doesitwork/".extraConfig       = "rewrite ^(.*) /index.php;";
+      locations."/fosdem2010/".extraConfig       = "rewrite ^(.*) /index.php;";
+      locations."/wiki/".tryFiles = "$uri $uri/ @dokuwiki";
+      locations."~ /wiki/(data/|conf/|bin/|inc/|install.php)".extraConfig = "deny all;";
+      locations."@dokuwiki".extraConfig = ''
+        rewrite ^/wiki/_media/(.*) /wiki/lib/exe/fetch.php?media=$1 last;
+        rewrite ^/wiki/_detail/(.*) /wiki/lib/exe/detail.php?media=$1 last;
+        rewrite ^/wiki/_export/([^/]+)/(.*) /wiki/doku.php?do=export_$1&id=$2 last;
+        rewrite ^/wiki/(.*) /wiki/doku.php?id=$1&$args last;
+      '';
+      locations."~ \.php$".extraConfig = ''
+        include ${pkgs.nginx}/conf/fastcgi_params;
+        fastcgi_pass  unix:/run/phpfpm/phpfpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+      '';
+      extraConfig = "index index.php;";
+    };
+  };
+
+  # Clear the misc files every so often
+  systemd.tmpfiles.rules =
+    [ "d /srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
+      "d /srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
+      "d /srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
     ];
 
   # Databases
@@ -109,6 +152,20 @@ in
       ; };
     in [ env ];
   systemd.services."jenkins".serviceConfig.TimeoutSec = "5min";
+
+  # Uzbl cronjobs (todo: jenkins jobs, scheduled or webhooks)
+  systemd.services.git-pull-uzbl-website =
+    { enable   = true
+    ; script = "exec ${pkgs.git}/bin/git pull"
+    ; startAt = "hourly"
+    ; serviceConfig.WorkingDirectory = "/srv/http/uzbl.org/www"
+    ; };
+  systemd.services.git-pull-uzbl =
+    { enable   = true
+    ; script = "exec ${pkgs.git}/bin/git pull"
+    ; startAt = "hourly"
+    ; serviceConfig.WorkingDirectory = "/srv/http/uzbl.org/uzbl"
+    ; };
 
   # 10% of the RAM is too little space
   services.logind.extraConfig = ''
