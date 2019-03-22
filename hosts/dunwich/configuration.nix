@@ -16,9 +16,14 @@ with lib;
   boot.loader.grub.version = 2;
   boot.loader.grub.device  = "/dev/sda";
 
-  # Firewall and container NAT
+  # Networking
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
+
+  networking.interfaces.ens3 = {
+    ipv6.addresses = [ { address = "2a01:4f8:c2c:2b22::"; prefixLength = 64; } ];
+  };
+  networking.defaultGateway6 = { address = "fe80::1"; interface = "ens3"; };
 
   # Web server
   services.nginx.commonHttpConfig = ''
