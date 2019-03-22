@@ -20,10 +20,6 @@ with lib;
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
 
-  networking.nat.enable = true;
-  networking.nat.internalInterfaces = ["ve-+"];
-  networking.nat.externalInterface = "ens4";
-
   # Web server
   services.nginx.commonHttpConfig = ''
     log_format combined_vhost '$host '
