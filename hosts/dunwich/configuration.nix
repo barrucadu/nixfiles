@@ -63,7 +63,7 @@ with lib;
       root = "/srv/http/barrucadu.co.uk/memo";
     };
 
-    "misc.dunwich.barrucadu.co.uk" = {
+    "misc.barrucadu.co.uk" = {
       enableACME = true;
       forceSSL = true;
       root = "/srv/http/barrucadu.co.uk/misc";
