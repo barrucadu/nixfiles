@@ -40,7 +40,7 @@ with lib;
     "barrucadu.co.uk" = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
     "barrucadu.com"   = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
     "barrucadu.uk"    = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "dunwich.uzbl.org"        = { enableACME = true; globalRedirect = "www.dunwich.uzbl.org"; };
+    "uzbl.org"        = { enableACME = true; globalRedirect = "www.uzbl.org"; };
 
     "www.barrucadu.co.uk" = {
       enableACME = true;
@@ -74,7 +74,7 @@ with lib;
       locations."~ /forever/.*/".extraConfig = "autoindex on;";
     };
 
-    "www.dunwich.uzbl.org" = {
+    "www.uzbl.org" = {
       enableACME = true;
       forceSSL = true;
       root = "/srv/http/uzbl.org/www";
