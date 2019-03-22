@@ -37,9 +37,9 @@ with lib;
   services.nginx.virtualHosts = {
     default = { default = true; locations."/".root = "/srv/http/default"; };
 
-    "dunwich.barrucadu.co.uk" = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "dunwich.barrucadu.com"   = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "dunwich.barrucadu.uk"    = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
+    "barrucadu.co.uk" = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
+    "barrucadu.com"   = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
+    "barrucadu.uk"    = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
     "dunwich.uzbl.org"        = { enableACME = true; globalRedirect = "www.dunwich.uzbl.org"; };
 
     "www.barrucadu.co.uk" = {
