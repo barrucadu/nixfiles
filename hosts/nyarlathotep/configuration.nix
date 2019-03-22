@@ -88,7 +88,7 @@ in
     };
   };
   systemd.services.bookdb-sync = {
-    description = "Upload bookdb data to innsmouth";
+    description = "Upload bookdb data to dunwich";
     serviceConfig.WorkingDirectory = "/srv/bookdb";
     serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./upload.sh";
     serviceConfig.User = "barrucadu";
