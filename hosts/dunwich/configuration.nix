@@ -57,7 +57,7 @@ with lib;
       locations."/".proxyPass = "http://127.0.0.1:${toString config.services.jenkins.port}";
     };
 
-    "memo.dunwich.barrucadu.co.uk" = {
+    "memo.barrucadu.co.uk" = {
       enableACME = true;
       forceSSL = true;
       root = "/srv/http/barrucadu.co.uk/memo";
