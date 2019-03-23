@@ -83,6 +83,13 @@ with lib;
     # Start ssh-agent as a systemd user service
     programs.ssh.startAgent = true;
 
+    # Mosh
+    programs.mosh = {
+      enable = true;
+      # make `who` work
+      withUtempter = true;
+    };
+
     # Syncthing for shared folders (configured directly in the syncthing client)
     services.syncthing = {
       enable = true;
@@ -251,7 +258,6 @@ with lib;
           lsof
           lynx
           man-pages
-          mosh
           ncdu
           nmap
           psmisc
