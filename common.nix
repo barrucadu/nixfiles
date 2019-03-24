@@ -224,11 +224,6 @@ with lib;
       # Allow packages with non-free licenses.
       allowUnfree = true;
 
-      # Enable chromium plugins.
-      chromium = {
-        enablePepperFlash = true; # Flash player
-      };
-
       # Enable claws plugins.
       clawsMail = {
         enablePluginFancy = true; # HTML renderer
