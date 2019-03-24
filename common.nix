@@ -220,17 +220,8 @@ with lib;
     ## Package management
     #############################################################################
 
-    nixpkgs.config = {
-      # Allow packages with non-free licenses.
-      allowUnfree = true;
-
-      # Enable claws plugins.
-      clawsMail = {
-        enablePluginFancy = true; # HTML renderer
-        enablePluginPgp   = true; # PGP encrypt/decrypt/sign
-        enablePluginPdf   = true; # PDF/PS renderer
-      };
-    };
+    # Allow packages with non-free licenses.
+    nixpkgs.config.allowUnfree = true;
 
     # System-wide packages
     environment.systemPackages = with pkgs;
