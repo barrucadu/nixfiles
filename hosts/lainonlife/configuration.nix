@@ -28,6 +28,7 @@ in
 
   imports = [
     ../services/nginx.nix
+    ../services/pleroma.nix
     ../services/rtorrent.nix
   ];
 
@@ -130,28 +131,9 @@ in
           execstart = "${pkgs.bash}/bin/bash -l -c '/srv/radio/backend/run.sh serve --config=/srv/radio/config.json 8002'";
         };
       }
-
-    { "pleroma" = {
-        after         = [ "network.target" "postgresql.service" ];
-        description   = "Pleroma social network";
-        wantedBy      = [ "multi-user.target" ];
-        path          = with pkgs; [ elixir git openssl ];
-        environment   = {
-          HOME    = config.users.extraUsers.pleroma.home;
-          MIX_ENV = "prod";
-        };
-        serviceConfig = {
-          WorkingDirectory = "${config.users.extraUsers.pleroma.home}/pleroma";
-          User       = "pleroma";
-          ExecStart  = "${pkgs.elixir}/bin/mix phx.server";
-          ExecReload = "${pkgs.coreutils}/bin/kill $MAINPID";
-          KillMode   = "process";
-          Restart    = "on-failure";
-        };
-      };
-    }
     ];
-  environment.systemPackages = with pkgs; [ elixir erlang flac id3v2 ncmpcpp openssl python3Packages.virtualenv ];
+
+  environment.systemPackages = with pkgs; [ flac id3v2 ncmpcpp openssl python3Packages.virtualenv ];
 
   nixpkgs.config.packageOverrides = pkgs: {
     # Build MPD with libmp3lame support, so shoutcast output can do mp3.
@@ -161,39 +143,7 @@ in
   };
 
   # Pleroma
-  services.postgresql.enable = true;
-  services.postgresql.package = pkgs.postgresql96;
-
-  services.nginx.virtualHosts."social.lainon.life" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/" = {
-      proxyPass = "http://localhost:4000/";
-      proxyWebsockets = true;
-      # https://git.pleroma.social/pleroma/pleroma/blob/develop/installation/pleroma.nginx
-      extraConfig = ''
-        header_filter_by_lua_block {
-          ngx.header["Access-Control-Allow-Methods"] = "POST, PUT, DELETE, GET, PATCH, OPTIONS"
-          ngx.header["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Idempotency-Key"
-          ngx.header["Access-Control-Expose-Headers"] = "Link, X-RateLimit-Reset, X-RateLimit-Limit, X-RateLimit-Remaining, X-Request-Id"
-          ngx.header["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' http: https: data:; connect-src 'self' wss://social.lainon.life/"
-          ngx.header["X-Download-Options"] = "noopen"
-          ngx.header["Content-Security-Policy"] = "default-src 'none'; base-uri 'self'; form-action *; frame-ancestors 'none'; img-src 'self' data: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self' wss://social.lainon.life; upgrade-insecure-requests;"
-        }
-
-        if ($request_method = OPTIONS) {
-          return 204;
-        }
-      '';
-    };
-    locations."/proxy".proxyPass = "http://localhost:4000/";
-  };
-
-  users.extraUsers.pleroma = {
-    home = "/srv/pleroma";
-    createHome = true;
-    isSystemUser = true;
-  };
+  services.pleroma.virtualhost = "social.lainon.life";
 
   # Fancy graphs
   services.grafana = {
