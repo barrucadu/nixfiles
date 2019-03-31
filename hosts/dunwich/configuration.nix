@@ -9,6 +9,7 @@ with lib;
     ../services/bookdb.nix
     ../services/nginx.nix
     ../services/nginx-phpfpm.nix
+    ../services/pleroma.nix
   ];
 
   # Bootloader
@@ -112,6 +113,9 @@ with lib;
       "d /srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
       "d /srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
     ];
+
+  # Pleroma
+  services.pleroma.virtualhost = "ap.barrucadu.co.uk";
 
   # Databases
   services.mongodb.enable = true;
