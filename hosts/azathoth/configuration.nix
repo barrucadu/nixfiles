@@ -39,19 +39,6 @@ in
   # Virtualisation
   virtualisation.virtualbox.host.enable = true;
 
-  # MPD user service - copied from the unit file in Arch.
-  systemd.user.services.mpd = {
-    enable = true;
-    description = "Music Player Daemon";
-    after = [ "network.target" "sound.target" ];
-    wantedBy = [ "default.target" ];
-    serviceConfig = {
-      ExecStart   = "${pkgs.mpd}/bin/mpd --no-daemon";
-      LimitRTPRIO = "50";
-      LimitRTTIME = "infinity";
-    };
-  };
-
   # Enable xorg
   services.xserver.enable = true;
 
@@ -83,14 +70,13 @@ in
   # Extra packages
   environment.systemPackages = with pkgs; [
     biber
+    clementine
     discord
+    easytag
     feh
     haskellPackages.hledger
     gnuplot
     lightdm
-    mpc_cli
-    mpd
-    ncmpcpp
     python3Packages.pygments
     (texlive.combine { inherit (texlive) scheme-full; })
   ];
