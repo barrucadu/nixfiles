@@ -7,6 +7,7 @@ with lib;
 
   imports = [
     ../services/bookdb.nix
+    ../services/concourseci.nix
     ../services/nginx.nix
     ../services/nginx-phpfpm.nix
     ../services/pleroma.nix
@@ -50,12 +51,6 @@ with lib;
       locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
       locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
       extraConfig = "include /srv/http/barrucadu.co.uk/www.conf;";
-    };
-
-    "ci.dunwich.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/".proxyPass = "http://127.0.0.1:${toString config.services.jenkins.port}";
     };
 
     "memo.barrucadu.co.uk" = {
@@ -143,19 +138,13 @@ with lib;
   '';
 
   # CI
-  services.jenkins.enable = true;
-  services.jenkins.port = 3001;
-  services.jenkins.packages = with pkgs;
-    let env = buildEnv
-      { name = "jenkins-env"
-      ; pathsToLink = [ "/bin" ]
-      ; paths =
-        [ stdenv git jdk config.programs.ssh.package nix ] ++ # default
-        [ bash m4 stack texlive.combined.scheme-full wget ] ++
-        (with haskellPackages; [ cpphs hscolour ] )
-      ; };
-    in [ env ];
-  systemd.services."jenkins".serviceConfig.TimeoutSec = "5min";
+  services.concourseci = {
+    githubClientId = import /etc/nixos/secrets/concourse-github-client-id.nix;
+    githubClientSecret = import /etc/nixos/secrets/concourse-github-client-secret.nix;
+    virtualhost = "ci.dunwich.barrucadu.co.uk";
+    sshPublicKeys =
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4Ns3Qlja6/CsRb7w9SghjDniKiA6ohv7JRg274cRBc concourseci+worker@ci.dunwich.barrucadu.co.uk" ];
+  };
 
   # Uzbl cronjobs (todo: jenkins jobs, scheduled or webhooks)
   systemd.services.git-pull-uzbl-website =
