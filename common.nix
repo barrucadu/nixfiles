@@ -97,6 +97,10 @@ with lib;
       openDefaultPorts = true;
     };
 
+    # Run the docker daemon, just in case it's handy.
+    virtualisation.docker.enable = true;
+    virtualisation.docker.autoPrune.enable = true;
+
 
     #############################################################################
     ## Backups
@@ -199,7 +203,7 @@ with lib;
       uid = 1000;
       description = "Michael Walker <mike@barrucadu.co.uk>";
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "docker" "wheel" ];
       group = "users";
       initialPassword = "breadbread";
       shell = "/run/current-system/sw/bin/zsh";
@@ -231,6 +235,7 @@ with lib;
           aspell
           aspellDicts.en
           bind
+          docker_compose
           file
           git
           gnupg

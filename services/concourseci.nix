@@ -105,8 +105,5 @@ in
       openssh.authorizedKeys.keys = cfg.sshPublicKeys;
       shell = pkgs.bashInteractive;
     };
-
-    virtualisation.docker.enable = true;
-    virtualisation.docker.autoPrune.enable = true;
   };
 }
