@@ -247,6 +247,7 @@ with lib;
           nmap
           psmisc
           python3
+          rsync
           rxvt_unicode.terminfo
           smartmontools
           stow
