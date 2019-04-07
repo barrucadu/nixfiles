@@ -45,6 +45,8 @@ let
           ci:
             ipv4_address: "${cfg.registryIP}"
             aliases: [ci-registry]
+        volumes:
+          - regdata:/var/lib/registry
 
     networks:
       ci:
@@ -55,6 +57,7 @@ let
 
     volumes:
       pgdata:
+      regdata:
   '';
 in
 {
