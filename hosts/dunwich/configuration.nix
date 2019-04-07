@@ -146,20 +146,6 @@ with lib;
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4Ns3Qlja6/CsRb7w9SghjDniKiA6ohv7JRg274cRBc concourseci+worker@ci.dunwich.barrucadu.co.uk" ];
   };
 
-  # Uzbl cronjobs (todo: jenkins jobs, scheduled or webhooks)
-  systemd.services.git-pull-uzbl-website =
-    { enable   = true
-    ; script = "exec ${pkgs.git}/bin/git pull"
-    ; startAt = "hourly"
-    ; serviceConfig.WorkingDirectory = "/srv/http/uzbl.org/www"
-    ; };
-  systemd.services.git-pull-uzbl =
-    { enable   = true
-    ; script = "exec ${pkgs.git}/bin/git pull"
-    ; startAt = "hourly"
-    ; serviceConfig.WorkingDirectory = "/srv/http/uzbl.org/uzbl"
-    ; };
-
   # 10% of the RAM is too little space
   services.logind.extraConfig = ''
     RuntimeDirectorySize=2G
