@@ -24,6 +24,8 @@ let
           CONCOURSE_MAIN_TEAM_GITHUB_USER: "${cfg.githubUser}"
           CONCOURSE_GITHUB_CLIENT_ID: "${cfg.githubClientId}"
           CONCOURSE_GITHUB_CLIENT_SECRET: "${cfg.githubClientSecret}"
+          CONCOURSE_LOG_LEVEL: error
+          CONCOURSE_GARDEN_LOG_LEVEL: error
         networks:
           - ci
 
