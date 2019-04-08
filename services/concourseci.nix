@@ -20,7 +20,7 @@ let
           CONCOURSE_POSTGRES_USER: concourse
           CONCOURSE_POSTGRES_PASSWORD: concourse
           CONCOURSE_POSTGRES_DATABASE: concourse
-          CONCOURSE_EXTERNAL_URL: "${if cfg.useSSL then "https" else "http"}://${cfg.virtualhost}"
+          CONCOURSE_EXTERNAL_URL: "https://${cfg.virtualhost}"
           CONCOURSE_MAIN_TEAM_GITHUB_USER: "${cfg.githubUser}"
           CONCOURSE_GITHUB_CLIENT_ID: "${cfg.githubClientId}"
           CONCOURSE_GITHUB_CLIENT_SECRET: "${cfg.githubClientSecret}"
@@ -63,8 +63,6 @@ in
 {
   options.services.concourseci = {
     port = mkOption { type = types.int; default = 3001; };
-    useSSL = mkOption { type = types.bool; default = true; };
-    forceSSL = mkOption { type = types.bool; default = true; };
     virtualhost = mkOption { type = types.str; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
     githubClientId =  mkOption { type = types.str; };
@@ -92,8 +90,8 @@ in
     };
 
     services.nginx.virtualHosts."${cfg.virtualhost}" = {
-      enableACME = cfg.useSSL;
-      forceSSL = cfg.useSSL && cfg.forceSSL;
+      enableACME = true;
+      forceSSL = true;
       locations."/" = {
         proxyPass = "http://localhost:${toString cfg.port}/";
         proxyWebsockets = true;
