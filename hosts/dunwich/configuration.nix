@@ -145,6 +145,10 @@ with lib;
     sshPublicKeys =
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4Ns3Qlja6/CsRb7w9SghjDniKiA6ohv7JRg274cRBc concourseci+worker@ci.dunwich.barrucadu.co.uk" ];
   };
+  # for deploying bookdb
+  security.sudo.extraRules = [
+    { commands = [ { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; } ]; users = [ "concourseci" ]; }
+  ];
 
   # 10% of the RAM is too little space
   services.logind.extraConfig = ''
