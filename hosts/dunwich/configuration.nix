@@ -38,10 +38,10 @@ with lib;
   services.nginx.virtualHosts = {
     default = { default = true; locations."/".root = "/srv/http/default"; };
 
-    "barrucadu.co.uk" = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "barrucadu.com"   = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "barrucadu.uk"    = { enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "uzbl.org"        = { enableACME = true; globalRedirect = "www.uzbl.org"; };
+    "barrucadu.co.uk" = { addSSL = true; enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
+    "barrucadu.com"   = { addSSL = true; enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
+    "barrucadu.uk"    = { addSSL = true; enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
+    "uzbl.org"        = { addSSL = true; enableACME = true; globalRedirect = "www.uzbl.org"; };
 
     "www.barrucadu.co.uk" = {
       enableACME = true;
