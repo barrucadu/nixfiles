@@ -48,22 +48,35 @@ in
   services.samba.syncPasswordsByPam = true;
 
   # nginx
-  services.nginx.virtualHosts.nyarlathotep = {
-    default = true;
-    root = "/srv/http";
-    locations."/bookdb/".proxyPass  = "http://localhost:3000/";
-    locations."/flood/".proxyPass   = "http://localhost:3001/";
-    locations."/grafana/".proxyPass = "http://localhost:3002/";
-    locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
-    locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
+  services.nginx.virtualHosts = {
+    nyarlathotep = {
+      default = true;
+      globalRedirect = "nyarlathotep.barrucadu.co.uk";
+    };
+    "nyarlathotep.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      root = "/srv/http";
+      locations."/bookdb/" = {
+        proxyPass = "http://localhost:3000/";
+        extraConfig = ''
+          auth_basic "bookdb";
+          auth_basic_user_file ${pkgs.writeText "bookdb.htpasswd" (import /etc/nixos/secrets/bookdb-htpasswd.nix)};
+        '';
+      };
+      locations."/flood/".proxyPass   = "http://localhost:3001/";
+      locations."/grafana/".proxyPass = "http://localhost:3002/";
+      locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
+      locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
+    };
   };
 
   # hledger dashboard
   services.grafana = {
     enable = true;
     port = 3002;
-    domain = "nyarlathotep";
-    rootUrl = "http://nyarlathotep/grafana/";
+    domain = "nyarlathotep.barrucadu.co.uk";
+    rootUrl = "https://nyarlathotep.barrucadu.co.uk/grafana/";
   };
 
   systemd.timers.hledger-scripts = {
