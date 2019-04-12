@@ -14,6 +14,7 @@ in
 
   imports = [
     ../services/bookdb.nix
+    ../services/concourseci.nix
     ../services/nginx.nix
     ../services/rtorrent.nix
   ];
@@ -69,6 +70,16 @@ in
       locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
       locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
     };
+  };
+
+  # CI
+  services.concourseci = {
+    port = 3003;
+    githubClientId = import /etc/nixos/secrets/concourse-github-client-id.nix;
+    githubClientSecret = import /etc/nixos/secrets/concourse-github-client-secret.nix;
+    virtualhost = "ci.nyarlathotep.barrucadu.co.uk";
+    sshPublicKeys =
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAjUsZp/p0U9RprOXD2FfJd8xoWes4QNLEOJ8Umz8frE concourseci+worker@ci.nyarlathotep.barrucadu.co.uk" ];
   };
 
   # hledger dashboard
