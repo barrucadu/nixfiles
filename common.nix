@@ -253,6 +253,7 @@ with lib;
           nmap
           psmisc
           python3
+          ripgrep
           rsync
           rxvt_unicode.terminfo
           smartmontools
