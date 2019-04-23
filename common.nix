@@ -237,6 +237,7 @@ with lib;
           bind
           docker_compose
           file
+          fzf
           git
           gnupg
           gnupg1compat
