@@ -14,7 +14,7 @@ let
         command: quickstart
         privileged: true
         depends_on: [postgres, registry]
-        ports: ["${toString cfg.port}:8080"]
+        ports: ["127.0.0.1:${toString cfg.port}:8080"]
         environment:
           CONCOURSE_POSTGRES_HOST: postgres
           CONCOURSE_POSTGRES_USER: concourse
