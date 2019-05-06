@@ -280,7 +280,6 @@ with lib;
           gimp
           gmrun
           keepassxc
-          mirage
           mpv
           rxvt_unicode
           scrot
