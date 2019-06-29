@@ -47,6 +47,12 @@ let
   proxy_settings = ''
     proxy_max_temp_file_size 0;
   '';
+
+  extra_mime_types = ''
+    types {
+      application/octet-stream mkv;
+    }
+  '';
 in
 
 {
@@ -62,5 +68,6 @@ in
     ${security_header_settings}
     ${brotli_settings}
     ${proxy_settings}
+    ${extra_mime_types}
   '';
 }
