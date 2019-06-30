@@ -277,6 +277,7 @@ with lib;
           chromium
           emacs
           evince
+          firefox
           gimp
           gmrun
           keepassxc
