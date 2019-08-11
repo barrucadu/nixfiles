@@ -51,6 +51,7 @@ let
   extra_mime_types = ''
     types {
       application/octet-stream mkv;
+      application/octet-stream tar;
     }
   '';
 in
