@@ -20,7 +20,7 @@
   ; wantedBy = [ "default.target" ]
   ; after    = [ "network.target" ]
   ; serviceConfig =
-    { ExecStart = "${pkgs.zsh}/bin/zsh --login -c '${pkgs.nodejs-8_x}/bin/npm start'"
+    { ExecStart = "${pkgs.zsh}/bin/zsh --login -c '${pkgs.nodejs-12_x}/bin/npm start'"
     ; User      = "barrucadu"
     ; KillMode  = "none"
     ; Restart   = "on-failure"
@@ -30,7 +30,7 @@
 
 ; environment.systemPackages = with pkgs;
   [ mktorrent
-    nodejs-8_x
+    nodejs-12_x
     rtorrent
     tmux
   ]
