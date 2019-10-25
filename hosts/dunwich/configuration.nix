@@ -47,10 +47,14 @@ with lib;
       enableACME = true;
       forceSSL = true;
       root = "/srv/http/barrucadu.co.uk/www";
-      locations."/bookdb/".proxyPass = "http://127.0.0.1:3000";
-      locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
-      locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
+      locations."/bookdb".extraConfig = "rewrite ^/bookdb(.*)$   https://bookdb.barrucadu.co.uk$1 permanent;";
       extraConfig = "include /srv/http/barrucadu.co.uk/www.conf;";
+    };
+
+    "bookdb.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/".proxyPass = "http://127.0.0.1:3000";
     };
 
     "memo.barrucadu.co.uk" = {
