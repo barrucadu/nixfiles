@@ -82,6 +82,17 @@ in
       forceSSL = true;
       locations."/".proxyPass = "http://localhost:3002/";
     };
+    "finder.nyarlathotep.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:3003/";
+        extraConfig = ''
+          auth_basic "finder";
+          auth_basic_user_file ${pkgs.writeText "finder.htpasswd" (import /etc/nixos/secrets/finder-htpasswd.nix)};
+        '';
+      };
+    };
   };
 
   # hledger dashboard
@@ -119,6 +130,20 @@ in
     serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./upload.sh";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
+  };
+
+  # finder
+  services.elasticsearch.enable = true;
+
+  systemd.services.finder = {
+    enable   = true;
+    wantedBy = [ "multi-user.target" ];
+    after    = [ "network.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.zsh}/bin/zsh --login -c './run-finder --port=3003'";
+      Restart   = "on-failure";
+      WorkingDirectory = "/srv/finder";
+    };
   };
 
   # Extra packages
