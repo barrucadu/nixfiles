@@ -57,17 +57,30 @@ in
       enableACME = true;
       forceSSL = true;
       root = "/srv/http";
-      locations."/bookdb/" = {
+      locations."/bookdb".extraConfig  = "rewrite ^/bookdb(.*)$  https://bookdb.barrucadu.co.uk$1  permanent;";
+      locations."/flood".extraConfig   = "rewrite ^/flood(.*)$   https://flood.barrucadu.co.uk$1   permanent;";
+      locations."/grafana".extraConfig = "rewrite ^/grafana(.*)$ https://grafana.barrucadu.co.uk$1 permanent;";
+    };
+    "bookdb.nyarlathotep.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
         proxyPass = "http://localhost:3000/";
         extraConfig = ''
           auth_basic "bookdb";
           auth_basic_user_file ${pkgs.writeText "bookdb.htpasswd" (import /etc/nixos/secrets/bookdb-htpasswd.nix)};
         '';
       };
-      locations."/flood/".proxyPass   = "http://localhost:3001/";
-      locations."/grafana/".proxyPass = "http://localhost:3002/";
-      locations."/bookdb/covers/".extraConfig = "alias /srv/bookdb/covers/;";
-      locations."/bookdb/static/".extraConfig = "alias /srv/bookdb/static/;";
+    };
+    "flood.nyarlathotep.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/".proxyPass = "http://localhost:3001/";
+    };
+    "grafana.nyarlathotep.barrucadu.co.uk" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/".proxyPass = "http://localhost:3002/";
     };
   };
 
@@ -75,8 +88,8 @@ in
   services.grafana = {
     enable = true;
     port = 3002;
-    domain = "nyarlathotep.barrucadu.co.uk";
-    rootUrl = "https://nyarlathotep.barrucadu.co.uk/grafana/";
+    domain = "grafana.nyarlathotep.barrucadu.co.uk";
+    rootUrl = "https://grafana.nyarlathotep.barrucadu.co.uk/";
   };
 
   systemd.timers.hledger-scripts = {
