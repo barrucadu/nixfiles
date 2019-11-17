@@ -14,7 +14,7 @@ in
 
   imports = [
     ../services/bookdb.nix
-    ../services/nginx.nix
+    ../services/caddy.nix
     ../services/rtorrent.nix
   ];
 
@@ -47,53 +47,45 @@ in
   '';
   services.samba.syncPasswordsByPam = true;
 
-  # nginx
-  services.nginx.virtualHosts = {
-    nyarlathotep = {
-      default = true;
-      globalRedirect = "nyarlathotep.barrucadu.co.uk";
-    };
-    "nyarlathotep.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      root = "/srv/http";
-      locations."/bookdb".extraConfig  = "rewrite ^/bookdb(.*)$  https://bookdb.barrucadu.co.uk$1  permanent;";
-      locations."/flood".extraConfig   = "rewrite ^/flood(.*)$   https://flood.barrucadu.co.uk$1   permanent;";
-      locations."/grafana".extraConfig = "rewrite ^/grafana(.*)$ https://grafana.barrucadu.co.uk$1 permanent;";
-    };
-    "bookdb.nyarlathotep.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://localhost:3000/";
-        extraConfig = ''
-          auth_basic "bookdb";
-          auth_basic_user_file ${pkgs.writeText "bookdb.htpasswd" (import /etc/nixos/secrets/bookdb-htpasswd.nix)};
-        '';
-      };
-    };
-    "flood.nyarlathotep.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/".proxyPass = "http://localhost:3001/";
-    };
-    "grafana.nyarlathotep.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/".proxyPass = "http://localhost:3002/";
-    };
-    "finder.nyarlathotep.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://localhost:3003/";
-        extraConfig = ''
-          auth_basic "finder";
-          auth_basic_user_file ${pkgs.writeText "finder.htpasswd" (import /etc/nixos/secrets/finder-htpasswd.nix)};
-        '';
-      };
-    };
-  };
+  # caddy
+  services.caddy.config = ''
+    http://nyarlathotep:80 {
+      redir https://nyarlathotep.barrucadu.co.uk{uri}
+    }
+
+    nyarlathotep.barrucadu.co.uk {
+      gzip
+      root /srv/http
+    }
+
+    bookdb.nyarlathotep.barrucadu.co.uk {
+      basicauth / nyarlathotep ${builtins.readFile /etc/nixos/secrets/basic-auth-password.txt}
+      gzip
+      proxy / http://localhost:3000
+    }
+
+    # flood has its own auth
+    flood.nyarlathotep.barrucadu.co.uk {
+      gzip
+      proxy / http://localhost:3001
+    }
+
+    # grafana has its own auth
+    grafana.nyarlathotep.barrucadu.co.uk {
+      gzip
+      proxy / http://localhost:3002
+    }
+
+    finder.nyarlathotep.barrucadu.co.uk {
+      basicauth / nyarlathotep ${builtins.readFile /etc/nixos/secrets/basic-auth-password.txt}
+      gzip
+      proxy / http://localhost:3003
+    }
+
+    http://*:80 {
+      status 421 /
+    }
+  '';
 
   # hledger dashboard
   services.grafana = {
