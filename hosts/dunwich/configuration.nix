@@ -7,9 +7,8 @@ with lib;
 
   imports = [
     ../services/bookdb.nix
+    ../services/caddy.nix
     ../services/concourseci.nix
-    ../services/nginx.nix
-    ../services/nginx-phpfpm.nix
     ../services/pleroma.nix
   ];
 
@@ -27,84 +26,141 @@ with lib;
   networking.defaultGateway6 = { address = "fe80::1"; interface = "ens3"; };
 
   # Web server
-  services.nginx.commonHttpConfig = ''
-    log_format combined_vhost '$host '
-                              '$remote_addr - $remote_user [$time_local] '
-                              '"$request" $status $body_bytes_sent '
-                              '"$http_referer" "$http_user_agent"';
-    access_log logs/access.log combined_vhost;
+  services.caddy.enable-phpfpm-pool = true;
+  services.caddy.config = ''
+    (basics) {
+      log / stdout "{host} {combined}"
+      gzip
+    }
+
+    # add headers solely to look good if people run
+    # securityheaders.com on my domains
+    (security_theatre) {
+      header / Access-Control-Allow-Origin "*"
+      header / Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'"
+      header / Referrer-Policy "strict-origin-when-cross-origin"
+      header / Strict-Transport-Security "max-age=31536000; includeSubDomains"
+      header / X-Content-Type-Options "nosniff"
+      header / X-Frame-Options "SAMEORIGIN"
+      header / X-XSS-Protection "1; mode=block"
+    }
+
+    barrucadu.co.uk {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    barrucadu.com {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    www.barrucadu.com {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    barrucadu.uk {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    www.barrucadu.uk {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    www.barrucadu.co.uk {
+      import basics
+      root /srv/http/barrucadu.co.uk/www
+
+      import security_theatre
+      import /srv/http/barrucadu.co.uk/www/caddy.conf
+    }
+
+    ap.barrucadu.co.uk {
+      import basics
+
+      proxy / http://127.0.0.1:${toString config.services.pleroma.port} {
+        websocket
+        transparent
+      }
+    }
+
+    bookdb.barrucadu.co.uk {
+      import basics
+
+      proxy / http://127.0.0.1:3000 {
+        header_downstream Access-Control-Allow-Origin "*"
+        header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+        header_downstream Referrer-Policy "strict-origin-when-cross-origin"
+        header_downstream Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        header_downstream X-Content-Type-Options "nosniff"
+        header_downstream X-Frame-Options "SAMEORIGIN"
+        header_downstream X-XSS-Protection "1; mode=block"
+      }
+    }
+
+    memo.barrucadu.co.uk {
+      import basics
+      root /srv/http/barrucadu.co.uk/memo
+
+      import security_theatre
+    }
+
+    misc.barrucadu.co.uk {
+      import basics
+      root /srv/http/barrucadu.co.uk/misc
+
+      import security_theatre
+    }
+
+    ${config.services.concourseci.domain} {
+      import basics
+
+      proxy / http://127.0.0.1:${toString config.services.concourseci.port} {
+        websocket
+        header_downstream Access-Control-Allow-Origin "*"
+        header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com"
+        header_downstream Referrer-Policy "strict-origin-when-cross-origin"
+        header_downstream Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        header_downstream X-Content-Type-Options "nosniff"
+        header_downstream X-Frame-Options "SAMEORIGIN"
+        header_downstream X-XSS-Protection "1; mode=block"
+      }
+    }
+
+    uzbl.org {
+      redir https://www.uzbl.org{uri}
+    }
+
+    www.uzbl.org {
+      import basics
+      index index.php
+      root /srv/http/uzbl.org/www
+
+      rewrite /archives.php    /index.php
+      rewrite /faq.php         /index.php
+      rewrite /readme.php      /index.php
+      rewrite /keybindings.php /index.php
+      rewrite /get.php         /index.php
+      rewrite /community.php   /index.php
+      rewrite /contribute.php  /index.php
+      rewrite /commits.php     /index.php
+      rewrite /news.php        /index.php
+      rewrite /doesitwork/     /index.php
+      rewrite /fosdem2010/     /index.php
+
+      redir /doesitwork /doesitwork/
+      redir /fosdem2020 /fosdem2020/
+
+      fastcgi / /run/phpfpm/caddy.sock php
+
+      import security_theatre
+    }
+
+    http://*:80 {
+      import basics
+      status 421 /
+
+      import security_theatre
+    }
   '';
-
-  services.nginx.virtualHosts = {
-    default = { default = true; locations."/".root = "/srv/http/default"; };
-
-    "barrucadu.co.uk" = { addSSL = true; enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "barrucadu.com"   = { addSSL = true; enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "barrucadu.uk"    = { addSSL = true; enableACME = true; globalRedirect = "www.barrucadu.co.uk"; };
-    "uzbl.org"        = { addSSL = true; enableACME = true; globalRedirect = "www.uzbl.org"; };
-
-    "www.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      root = "/srv/http/barrucadu.co.uk/www";
-      locations."/bookdb".extraConfig = "rewrite ^/bookdb(.*)$   https://bookdb.barrucadu.co.uk$1 permanent;";
-      extraConfig = "include /srv/http/barrucadu.co.uk/www.conf;";
-    };
-
-    "bookdb.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/".proxyPass = "http://127.0.0.1:3000";
-    };
-
-    "memo.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      root = "/srv/http/barrucadu.co.uk/memo";
-    };
-
-    "misc.barrucadu.co.uk" = {
-      enableACME = true;
-      forceSSL = true;
-      root = "/srv/http/barrucadu.co.uk/misc";
-      locations."~ /7day/.*/".extraConfig    = "autoindex on;";
-      locations."~ /14day/.*/".extraConfig   = "autoindex on;";
-      locations."~ /28day/.*/".extraConfig   = "autoindex on;";
-      locations."~ /forever/.*/".extraConfig = "autoindex on;";
-    };
-
-    "www.uzbl.org" = {
-      enableACME = true;
-      forceSSL = true;
-      root = "/srv/http/uzbl.org/www";
-      locations."= /archives.php".extraConfig    = "rewrite ^(.*) /index.php;";
-      locations."= /faq.php".extraConfig         = "rewrite ^(.*) /index.php;";
-      locations."= /readme.php".extraConfig      = "rewrite ^(.*) /index.php;";
-      locations."= /keybindings.php".extraConfig = "rewrite ^(.*) /index.php;";
-      locations."= /get.php".extraConfig         = "rewrite ^(.*) /index.php;";
-      locations."= /community.php".extraConfig   = "rewrite ^(.*) /index.php;";
-      locations."= /contribute.php".extraConfig  = "rewrite ^(.*) /index.php;";
-      locations."= /commits.php".extraConfig     = "rewrite ^(.*) /index.php;";
-      locations."= /news.php".extraConfig        = "rewrite ^(.*) /index.php;";
-      locations."/doesitwork/".extraConfig       = "rewrite ^(.*) /index.php;";
-      locations."/fosdem2010/".extraConfig       = "rewrite ^(.*) /index.php;";
-      locations."/wiki/".tryFiles = "$uri $uri/ @dokuwiki";
-      locations."~ /wiki/(data/|conf/|bin/|inc/|install.php)".extraConfig = "deny all;";
-      locations."@dokuwiki".extraConfig = ''
-        rewrite ^/wiki/_media/(.*) /wiki/lib/exe/fetch.php?media=$1 last;
-        rewrite ^/wiki/_detail/(.*) /wiki/lib/exe/detail.php?media=$1 last;
-        rewrite ^/wiki/_export/([^/]+)/(.*) /wiki/doku.php?do=export_$1&id=$2 last;
-        rewrite ^/wiki/(.*) /wiki/doku.php?id=$1&$args last;
-      '';
-      locations."~ \.php$".extraConfig = ''
-        include ${pkgs.nginx}/conf/fastcgi_params;
-        fastcgi_pass  unix:/run/phpfpm/phpfpm.sock;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
-      '';
-      extraConfig = "index index.php;";
-    };
-  };
 
   # Clear the misc files every so often
   systemd.tmpfiles.rules =
@@ -112,9 +168,6 @@ with lib;
       "d /srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
       "d /srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
     ];
-
-  # Pleroma
-  services.pleroma.virtualhost = "ap.barrucadu.co.uk";
 
   # Databases
   services.mongodb.enable = true;
@@ -145,7 +198,7 @@ with lib;
   services.concourseci = {
     githubClientId = import /etc/nixos/secrets/concourse-github-client-id.nix;
     githubClientSecret = import /etc/nixos/secrets/concourse-github-client-secret.nix;
-    virtualhost = "ci.dunwich.barrucadu.co.uk";
+    domain = "ci.dunwich.barrucadu.co.uk";
     sshPublicKeys =
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4Ns3Qlja6/CsRb7w9SghjDniKiA6ohv7JRg274cRBc concourseci+worker@ci.dunwich.barrucadu.co.uk" ];
   };
