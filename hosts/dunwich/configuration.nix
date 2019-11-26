@@ -87,7 +87,7 @@ with lib;
 
       proxy / http://127.0.0.1:3000 {
         header_downstream Access-Control-Allow-Origin "*"
-        header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+        header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
         header_downstream Referrer-Policy "strict-origin-when-cross-origin"
         header_downstream Strict-Transport-Security "max-age=31536000; includeSubDomains"
         header_downstream X-Content-Type-Options "nosniff"
