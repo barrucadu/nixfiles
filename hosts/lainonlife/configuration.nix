@@ -146,6 +146,7 @@ in
   services.pleroma.virtualhost = "social.lainon.life";
 
   # Fancy graphs
+  services.influxdb.enable = true;
   services.grafana = {
     enable = true;
     port = 8001;

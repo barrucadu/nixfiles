@@ -88,6 +88,7 @@ in
   '';
 
   # hledger dashboard
+  services.influxdb.enable = true;
   services.grafana = {
     enable = true;
     port = 3002;

@@ -141,43 +141,6 @@ with lib;
     ## Monitoring
     #############################################################################
 
-    services.influxdb.enable = true;
-
-    systemd.services.telegraf= {
-      path = with pkgs; [smartmontools iputils];
-
-      # hacky solution to make ping work
-      serviceConfig.User = lib.mkOverride 99 "root";
-    };
-
-    services.telegraf = {
-      enable = true;
-      extraConfig =
-        let interestingHosts = ["barrucadu.co.uk" "gov.uk" "google.com"];
-            interestingIPs   = ["1.1.1.1" "8.8.8.8"];
-        in {
-        agent = { interval = "30s"; };
-        outputs = {
-          influxdb = { urls = ["http://localhost:8086"]; database = "telegraf"; };
-        };
-        inputs = {
-          cpu = { percpu = true; report_active = true; };
-          disk = { ignore_fs = ["devtmpfs" "devpts" "tmpfs" "hugelbfs" "mqueue" "proc" "nfsd" "ramfs" "sysfs" "securityfs" "cgroup2" "cgroup" "efivarfs" "pstore" "debugfs" "rpc_pipefs"]; };
-          diskio = {};
-          dns_query = { servers = interestingIPs; domains = interestingHosts; };
-          http_response = map (host: {address = "https://www.${host}";}) interestingHosts;
-          mem = {};
-          net = {};
-          netstat = {};
-          ping = { urls = interestingIPs ++ interestingHosts; count = 1; };
-          processes = {};
-          smart = {};
-          system = {};
-          zfs = {};
-        };
-      };
-    };
-
     systemd.timers.monitoring-scripts = {
       wantedBy = [ "timers.target" ];
       timerConfig = {
