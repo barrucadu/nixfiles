@@ -27,7 +27,6 @@ in
   networking.hostName = "lainonlife";
 
   imports = [
-    ../services/nginx.nix
     ../services/pleroma.nix
     ../services/rtorrent.nix
   ];
@@ -57,29 +56,46 @@ in
   networking.firewall.allowedUDPPortRanges = [ { from = 62001; to = 63000; } ];
 
   # Web server
-  services.nginx.virtualHosts."lainon.life" = {
-    serverAliases = [ "www.lainon.life" ];
-    enableACME = true;
-    forceSSL = true;
-    default = true;
-    root = "/srv/http";
-    locations."/".extraConfig = "try_files $uri $uri/ @script;";
-    locations."/radio/".proxyPass  = "http://localhost:8000/";
-    locations."/graphs/".proxyPass = "http://localhost:8001/";
-    locations."@script".proxyPass = "http://localhost:8002";
-  };
+  services.caddy.enable = true;
+  services.caddy.config = ''
+    www.lainon.life {
+      redir https://lainon.life{uri}
+    }
+
+    lainon.life {
+      log / stdout "{host} {combined}"
+      gzip
+
+      root /srv/http
+
+      proxy /radio/ http://localhost:8000 {
+        without /radio
+      }
+
+      proxy /graphs/ http://localhost:8001 {
+        without /graphs
+      }
+
+      proxy /background http://localhost:8002
+      proxy /upload     http://localhost:8002
+      proxy /playlist   http://localhost:8002
+      proxy /dj         http://localhost:8002
+      proxy /admin      http://localhost:8002
+    }
+
+    social.lainon.life {
+      log / stdout "{host} {combined}"
+      gzip
+
+      proxy / http://127.0.0.1:${toString config.services.pleroma.port} {
+        websocket
+        transparent
+      }
+    }
+  '';
 
   services.logrotate.enable = true;
   services.logrotate.config = ''
-/var/spool/nginx/logs/access.log /var/spool/nginx/logs/error.log {
-    daily
-    copytruncate
-    rotate 1
-    compress
-    postrotate
-        systemctl kill nginx.service --signal=USR1
-    endscript
-}
 /var/log/icecast/access.log /var/log/icecast/error.log {
     daily
     copytruncate
@@ -126,7 +142,7 @@ in
       }
 
       { "http-backend" = service {
-          user = config.services.nginx.user;
+          user = "${radio.username}";
           description = "HTTP backend service";
           execstart = "${pkgs.bash}/bin/bash -l -c '/srv/radio/backend/run.sh serve --config=/srv/radio/config.json 8002'";
         };
