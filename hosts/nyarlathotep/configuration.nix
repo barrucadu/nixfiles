@@ -50,34 +50,26 @@ in
   # caddy
   services.caddy.config = ''
     http://nyarlathotep:80 {
-      redir https://nyarlathotep.barrucadu.co.uk{uri}
-    }
-
-    nyarlathotep.barrucadu.co.uk {
       gzip
       root /srv/http
     }
 
-    bookdb.nyarlathotep.barrucadu.co.uk {
-      basicauth / nyarlathotep ${builtins.readFile /etc/nixos/secrets/basic-auth-password.txt}
+    http://bookdb.nyarlathotep:80 {
       gzip
       proxy / http://localhost:3000
     }
 
-    # flood has its own auth
-    flood.nyarlathotep.barrucadu.co.uk {
+    http://flood.nyarlathotep:80 {
       gzip
       proxy / http://localhost:3001
     }
 
-    # grafana has its own auth
-    grafana.nyarlathotep.barrucadu.co.uk {
+    http://grafana.nyarlathotep:80 {
       gzip
       proxy / http://localhost:3002
     }
 
-    finder.nyarlathotep.barrucadu.co.uk {
-      basicauth / nyarlathotep ${builtins.readFile /etc/nixos/secrets/basic-auth-password.txt}
+    http://finder.nyarlathotep:80 {
       gzip
       proxy / http://localhost:3003
     }
@@ -92,8 +84,8 @@ in
   services.grafana = {
     enable = true;
     port = 3002;
-    domain = "grafana.nyarlathotep.barrucadu.co.uk";
-    rootUrl = "https://grafana.nyarlathotep.barrucadu.co.uk/";
+    domain = "grafana.nyarlathotep";
+    rootUrl = "https://grafana.nyarlathotep/";
   };
 
   systemd.timers.hledger-scripts = {
