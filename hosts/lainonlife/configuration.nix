@@ -70,6 +70,7 @@ in
 
       proxy /radio/ http://localhost:8000 {
         without /radio
+        transparent
       }
 
       proxy /graphs/ http://localhost:8001 {
