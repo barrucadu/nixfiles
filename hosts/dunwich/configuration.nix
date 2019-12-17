@@ -71,6 +71,11 @@ with lib;
 
       import security_theatre
       import /srv/http/barrucadu.co.uk/www/caddy.conf
+
+      redir 301 {
+        /bookdb https://bookdb.barrucadu.co.uk
+        /bookdb/ https://bookdb.barrucadu.co.uk
+      }
     }
 
     ap.barrucadu.co.uk {
