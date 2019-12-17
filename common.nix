@@ -175,7 +175,6 @@ with lib;
       openssh.authorizedKeys.keys = [
         (builtins.readFile ./files/azathoth-linux.pubkey)
         (builtins.readFile ./files/azathoth-windows.pubkey)
-        (builtins.readFile ./files/carter.pubkey)
         (builtins.readFile ./files/dunwich.pubkey)
         (builtins.readFile ./files/lainonlife.pubkey)
         (builtins.readFile ./files/nyarlathotep.pubkey)
