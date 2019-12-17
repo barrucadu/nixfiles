@@ -10,7 +10,7 @@ let
 
     services:
       concourse:
-        image: concourse/concourse
+        image: concourse/concourse:5.7
         command: quickstart
         privileged: true
         depends_on: [postgres, registry]
@@ -30,7 +30,7 @@ let
           - ci
 
       postgres:
-        image: postgres
+        image: postgres:9.6
         environment:
           POSTGRES_DB: concourse
           POSTGRES_PASSWORD: concourse
@@ -42,7 +42,7 @@ let
           - pgdata:/database
 
       registry:
-        image: registry
+        image: registry:2.7
         networks:
           ci:
             ipv4_address: "${cfg.registryIP}"
