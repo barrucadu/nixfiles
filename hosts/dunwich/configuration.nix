@@ -70,12 +70,8 @@ with lib;
       root /srv/http/barrucadu.co.uk/www
 
       import security_theatre
-      import /srv/http/barrucadu.co.uk/www/caddy.conf
 
-      redir 301 {
-        /bookdb https://bookdb.barrucadu.co.uk
-        /bookdb/ https://bookdb.barrucadu.co.uk
-      }
+      ${builtins.readFile ../files/www-barrucadu-co-uk.caddyfile}
     }
 
     ap.barrucadu.co.uk {
