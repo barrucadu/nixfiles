@@ -173,12 +173,12 @@ with lib;
 
       # Such pubkey!
       openssh.authorizedKeys.keys = [
-        (import ./files/azathoth-linux-pubkey.nix)
-        (import ./files/azathoth-windows-pubkey.nix)
-        (import ./files/carter-pubkey.nix)
-        (import ./files/dunwich-pubkey.nix)
-        (import ./files/lainonlife-pubkey.nix)
-        (import ./files/nyarlathotep-pubkey.nix)
+        (builtins.readFile ./files/azathoth-linux.pubkey)
+        (builtins.readFile ./files/azathoth-windows.pubkey)
+        (builtins.readFile ./files/carter.pubkey)
+        (builtins.readFile ./files/dunwich.pubkey)
+        (builtins.readFile ./files/lainonlife.pubkey)
+        (builtins.readFile ./files/nyarlathotep.pubkey)
       ];
     };
 
