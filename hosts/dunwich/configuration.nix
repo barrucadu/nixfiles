@@ -109,6 +109,12 @@ with lib;
       root /srv/http/barrucadu.co.uk/misc
 
       import security_theatre
+
+      mime {
+        .md       text/plain
+        .markdown text/plain
+        .rst      text/plain
+      }
     }
 
     ${config.services.concourseci.domain} {
