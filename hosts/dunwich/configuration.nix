@@ -210,8 +210,8 @@ with lib;
 
   # CI
   services.concourseci = {
-    githubClientId = import /etc/nixos/secrets/concourse-github-client-id.nix;
-    githubClientSecret = import /etc/nixos/secrets/concourse-github-client-secret.nix;
+    githubClientId = lib.fileContents /etc/nixos/secrets/concourse-github-client-id.txt;
+    githubClientSecret = lib.fileContents /etc/nixos/secrets/concourse-github-client-secret.txt;
     domain = "ci.dunwich.barrucadu.co.uk";
     sshPublicKeys =
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4Ns3Qlja6/CsRb7w9SghjDniKiA6ohv7JRg274cRBc concourseci+worker@ci.dunwich.barrucadu.co.uk" ];

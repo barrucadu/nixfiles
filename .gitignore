@@ -1,5 +1,5 @@
 # Credentials live here
-secrets/
+secrets
 
 # Symlink to the host directory
 host 
