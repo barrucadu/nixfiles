@@ -176,6 +176,11 @@ with lib;
       "d /srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
     ];
 
+  # bookdb
+  services.bookdb.image = "ci-registry:5000/bookdb:latest";
+  services.bookdb.webRoot = "https://bookdb.barrucadu.co.uk";
+  services.bookdb.readOnly = true;
+
   # Databases
   services.mongodb.enable = true;
 

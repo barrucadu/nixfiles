@@ -39,7 +39,7 @@ let
         networks:
           - ci
         volumes:
-          - pgdata:/database
+          - ci_pgdata:/database
 
       registry:
         image: registry:2.7
@@ -48,7 +48,7 @@ let
             ipv4_address: "${cfg.registryIP}"
             aliases: [ci-registry]
         volumes:
-          - regdata:/var/lib/registry
+          - ci_regdata:/var/lib/registry
 
     networks:
       ci:
@@ -58,8 +58,8 @@ let
             - subnet: ${cfg.subnet}
 
     volumes:
-      pgdata:
-      regdata:
+      ci_pgdata:
+      ci_regdata:
   '';
 in
 {
@@ -82,6 +82,7 @@ in
       enable   = true;
       wantedBy = [ "multi-user.target" ];
       requires = [ "docker.service" ];
+      environment = { COMPOSE_PROJECT_NAME = "concourse"; };
       serviceConfig = {
         ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
         ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";

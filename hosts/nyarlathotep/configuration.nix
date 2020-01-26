@@ -102,20 +102,14 @@ in
     serviceConfig.Group = "users";
   };
 
-  # bookdb database sync
-  systemd.timers.bookdb-sync = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "hourly";
-    };
-  };
-  systemd.services.bookdb-sync = {
-    description = "Upload bookdb data to dunwich";
-    serviceConfig.WorkingDirectory = "/srv/bookdb";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./upload.sh";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
-  };
+  # bookdb - TODO: reimplement sync for postgres world
+  services.bookdb.image = "localhost:5000/bookdb:latest";
+  services.bookdb.webRoot = "http://bookdb.nyarlathotep";
+
+  # docker registry
+  services.dockerRegistry.enable = true;
+  services.dockerRegistry.enableGarbageCollect = true;
+  virtualisation.docker.extraOptions = "--insecure-registry=localhost:5000";
 
   # finder
   services.elasticsearch.enable = true;
