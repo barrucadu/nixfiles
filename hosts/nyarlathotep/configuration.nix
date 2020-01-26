@@ -102,9 +102,22 @@ in
     serviceConfig.Group = "users";
   };
 
-  # bookdb - TODO: reimplement sync for postgres world
+  # bookdb
   services.bookdb.image = "localhost:5000/bookdb:latest";
   services.bookdb.webRoot = "http://bookdb.nyarlathotep";
+
+  systemd.timers.bookdb-sync = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "hourly";
+    };
+  };
+  systemd.services.bookdb-sync = {
+    description = "Upload bookdb data to dunwich";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookdb-sync.sh" (builtins.readFile /etc/nixos/host/bookdb-sync.sh)}";
+    serviceConfig.User = "barrucadu";
+    serviceConfig.Group = "users";
+  };
 
   # docker registry
   services.dockerRegistry.enable = true;
