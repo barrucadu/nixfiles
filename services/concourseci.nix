@@ -84,7 +84,7 @@ in
       requires = [ "docker.service" ];
       serviceConfig = {
         ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-        ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' down";
+        ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
         Restart   = "always";
         User      = "concourseci";
         WorkingDirectory = "/srv/concourseci";
