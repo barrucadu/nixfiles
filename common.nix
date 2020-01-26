@@ -173,11 +173,11 @@ with lib;
 
       # Such pubkey!
       openssh.authorizedKeys.keys = [
-        (builtins.readFile ./files/azathoth-linux.pubkey)
-        (builtins.readFile ./files/azathoth-windows.pubkey)
-        (builtins.readFile ./files/dunwich.pubkey)
-        (builtins.readFile ./files/lainonlife.pubkey)
-        (builtins.readFile ./files/nyarlathotep.pubkey)
+        (fileContents ./files/azathoth-linux.pubkey)
+        (fileContents ./files/azathoth-windows.pubkey)
+        (fileContents ./files/dunwich.pubkey)
+        (fileContents ./files/lainonlife.pubkey)
+        (fileContents ./files/nyarlathotep.pubkey)
       ];
     };
 

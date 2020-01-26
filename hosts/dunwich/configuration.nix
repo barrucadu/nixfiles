@@ -71,7 +71,7 @@ with lib;
 
       import security_theatre
 
-      ${builtins.readFile ../files/www-barrucadu-co-uk.caddyfile}
+      ${fileContents ../files/www-barrucadu-co-uk.caddyfile}
     }
 
     ap.barrucadu.co.uk {

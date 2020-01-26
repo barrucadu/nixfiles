@@ -114,7 +114,7 @@ in
   };
   systemd.services.bookdb-sync = {
     description = "Upload bookdb data to dunwich";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookdb-sync.sh" (builtins.readFile /etc/nixos/host/bookdb-sync.sh)}";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookdb-sync.sh" (fileContents ./bookdb-sync.sh)}";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
   };
