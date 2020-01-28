@@ -1,16 +1,20 @@
 { config, lib, ... }:
 
+with lib;
+
+let
+  cfg = config.services.caddy;
+in
 {
   options = {
     services.caddy.enable-phpfpm-pool = lib.mkOption { default = false; };
   };
 
-  config = {
-    services.caddy.enable = true;
+  config = mkIf cfg.enable {
     services.caddy.agree = true;
     services.caddy.email = "mike@barrucadu.co.uk";
 
-    services.phpfpm = lib.mkIf config.services.caddy.enable-phpfpm-pool {
+    services.phpfpm = lib.mkIf cfg.enable-phpfpm-pool {
       pools.caddy = {
         user = "caddy";
         group = "caddy";

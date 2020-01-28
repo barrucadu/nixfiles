@@ -42,13 +42,14 @@ let
 in
 {
   options.services.bookdb = {
+    enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     port = mkOption { type = types.int; default = 3000; };
     webRoot = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     systemd.services.bookdb = {
       enable   = true;
       wantedBy = [ "multi-user.target" ];

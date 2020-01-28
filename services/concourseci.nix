@@ -64,6 +64,7 @@ let
 in
 {
   options.services.concourseci = {
+    enable = mkOption { type = types.bool; default = false; };
     port = mkOption { type = types.int; default = 3001; };
     domain = mkOption { type = types.str; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
@@ -74,7 +75,7 @@ in
     registryIP = mkOption { type = types.str; default = "172.21.0.254"; };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     networking.hosts."${cfg.registryIP}" = [ "ci-registry" ];
     virtualisation.docker.extraOptions = "--insecure-registry=ci-registry:5000";
 

@@ -26,11 +26,6 @@ in
 {
   networking.hostName = "lainonlife";
 
-  imports = [
-    ../services/pleroma.nix
-    ../services/rtorrent.nix
-  ];
-
   # Bootloader
   boot.loader.grub.enable  = true;
   boot.loader.grub.version = 2;
@@ -160,7 +155,7 @@ in
   };
 
   # Pleroma
-  services.pleroma.virtualhost = "social.lainon.life";
+  services.pleroma.enable = true;
 
   # Fancy graphs
   services.influxdb.enable = true;

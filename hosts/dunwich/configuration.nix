@@ -5,13 +5,6 @@ with lib;
 {
   networking.hostName = "dunwich";
 
-  imports = [
-    ../services/bookdb.nix
-    ../services/caddy.nix
-    ../services/concourseci.nix
-    ../services/pleroma.nix
-  ];
-
   # Bootloader
   boot.loader.grub.enable  = true;
   boot.loader.grub.version = 2;
@@ -26,6 +19,7 @@ with lib;
   networking.defaultGateway6 = { address = "fe80::1"; interface = "ens3"; };
 
   # Web server
+  services.caddy.enable = true;
   services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
     (basics) {
@@ -176,7 +170,11 @@ with lib;
       "d /srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
     ];
 
+  # Pleroma
+  services.pleroma.enable = true;
+
   # bookdb
+  services.bookdb.enable = true;
   services.bookdb.image = "ci-registry:5000/bookdb:latest";
   services.bookdb.webRoot = "https://bookdb.barrucadu.co.uk";
   services.bookdb.readOnly = true;
@@ -210,6 +208,7 @@ with lib;
 
   # CI
   services.concourseci = {
+    enable = true;
     githubClientId = lib.fileContents /etc/nixos/secrets/concourse-github-client-id.txt;
     githubClientSecret = lib.fileContents /etc/nixos/secrets/concourse-github-client-secret.txt;
     domain = "ci.dunwich.barrucadu.co.uk";

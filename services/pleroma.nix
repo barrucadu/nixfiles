@@ -2,13 +2,16 @@
 
 with lib;
 
+let
+  cfg = config.services.pleroma;
+in
 {
   options.services.pleroma = {
-    virtualhost = mkOption { type = types.str; };
-    port        = mkOption { type = types.int; default = 4000; };
+    enable = mkOption { type = types.bool; default = false; };
+    port   = mkOption { type = types.int; default = 4000; };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ elixir erlang ];
 
     systemd.services.pleroma = {
@@ -32,18 +35,6 @@ with lib;
 
     services.postgresql.enable = true;
     services.postgresql.package = pkgs.postgresql96;
-
-    # https://git.pleroma.social/pleroma/pleroma/blob/develop/installation/pleroma.nginx
-    services.nginx.virtualHosts."${config.services.pleroma.virtualhost}" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://localhost:${toString config.services.pleroma.port}/";
-        proxyWebsockets = true;
-        extraConfig = "client_max_body_size 16m;";
-      };
-      locations."/proxy".proxyPass = "http://localhost:${toString config.services.pleroma.port}/";
-    };
 
     users.extraUsers.pleroma = {
       home = "/srv/pleroma";

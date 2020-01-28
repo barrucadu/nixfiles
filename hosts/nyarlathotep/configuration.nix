@@ -12,12 +12,6 @@ in
   networking.hostId = "4a592971"; # ZFS needs one of these
   boot.supportedFilesystems = [ "zfs" ];
 
-  imports = [
-    ../services/bookdb.nix
-    ../services/caddy.nix
-    ../services/rtorrent.nix
-  ];
-
   services.monitoring-scripts.OnCalendar = "0/12:00:00";
 
   # Bootloader
@@ -48,6 +42,7 @@ in
   services.samba.syncPasswordsByPam = true;
 
   # caddy
+  services.caddy.enable = true;
   services.caddy.config = ''
     http://nyarlathotep:80 {
       gzip
@@ -103,6 +98,7 @@ in
   };
 
   # bookdb
+  services.bookdb.enable = true;
   services.bookdb.image = "localhost:5000/bookdb:latest";
   services.bookdb.webRoot = "http://bookdb.nyarlathotep";
 
@@ -123,6 +119,9 @@ in
   services.dockerRegistry.enable = true;
   services.dockerRegistry.enableGarbageCollect = true;
   virtualisation.docker.extraOptions = "--insecure-registry=localhost:5000";
+
+  # rtorrent
+  services.rtorrent.enable = true;
 
   # finder
   services.elasticsearch.enable = true;
