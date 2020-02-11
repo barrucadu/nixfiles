@@ -31,7 +31,7 @@ with lib;
     # securityheaders.com on my domains
     (security_theatre) {
       header / Access-Control-Allow-Origin "*"
-      header / Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'"
+      header / Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
       header / Referrer-Policy "strict-origin-when-cross-origin"
       header / Strict-Transport-Security "max-age=31536000; includeSubDomains"
       header / X-Content-Type-Options "nosniff"
