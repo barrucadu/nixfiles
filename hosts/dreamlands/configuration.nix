@@ -3,8 +3,9 @@
 with lib;
 
 let
-  giteaHttpPort    = 3000;
-  registryHttpPort = 5000;
+  concourseHttpPort = 3001;
+  giteaHttpPort     = 3000;
+  registryHttpPort  = 5000;
 in
 
 {
@@ -44,6 +45,15 @@ in
       }
     }
 
+    cd.barrucadu.dev {
+      import basics
+
+      proxy / http://127.0.0.1:${toString concourseHttpPort} {
+        transparent
+        websocket
+      }
+    }
+
     git.barrucadu.dev {
       import basics
 
@@ -59,6 +69,28 @@ in
   services.dockerRegistry.enableGarbageCollect = true;
   services.dockerRegistry.garbageCollectDates = "daily";
   services.dockerRegistry.port = registryHttpPort;
+
+  # Concourse
+  systemd.services.concourse =
+    let
+      dockerComposeYaml = import ./concourse.docker-compose.nix {
+        httpPort = concourseHttpPort;
+        githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
+        githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
+      };
+      dockerComposeFile = pkgs.writeText "docker-compose.yml" dockerComposeYaml;
+    in
+      {
+        enable   = true;
+        wantedBy = [ "multi-user.target" ];
+        requires = [ "docker.service" ];
+        environment = { COMPOSE_PROJECT_NAME = "concourse"; };
+        serviceConfig = {
+          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
+          ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
+          Restart   = "always";
+        };
+      };
 
   # Gitea
   systemd.services.gitea =
