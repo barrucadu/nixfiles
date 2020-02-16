@@ -3,7 +3,8 @@
 with lib;
 
 let
-  giteaHttpPort = 3000;
+  giteaHttpPort    = 3000;
+  registryHttpPort = 5000;
 in
 
 {
@@ -31,6 +32,18 @@ in
       gzip
     }
 
+    registry.barrucadu.dev {
+      import basics
+
+      basicauth /v2 registry ${fileContents /etc/nixos/secrets/registry-password.txt}
+
+      header /v2 Docker-Distribution-Api-Version "registry/2.0"
+
+      proxy /v2 http://127.0.0.1:${toString registryHttpPort} {
+        transparent
+      }
+    }
+
     git.barrucadu.dev {
       import basics
 
@@ -39,6 +52,13 @@ in
       }
     }
   '';
+
+  # Docker registry
+  services.dockerRegistry.enable = true;
+  services.dockerRegistry.enableDelete = true;
+  services.dockerRegistry.enableGarbageCollect = true;
+  services.dockerRegistry.garbageCollectDates = "daily";
+  services.dockerRegistry.port = registryHttpPort;
 
   # Gitea
   systemd.services.gitea =
