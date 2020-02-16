@@ -176,6 +176,7 @@ with lib;
         (fileContents ./files/azathoth-linux.pubkey)
         (fileContents ./files/azathoth-windows.pubkey)
         (fileContents ./files/dunwich.pubkey)
+        (fileContents ./files/dreamlands.pubkey)
         (fileContents ./files/lainonlife.pubkey)
         (fileContents ./files/nyarlathotep.pubkey)
       ];
