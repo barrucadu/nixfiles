@@ -6,6 +6,23 @@ let
   concourseHttpPort = 3001;
   giteaHttpPort     = 3000;
   registryHttpPort  = 5000;
+
+  dockerComposeService = { name, yaml }:
+    let
+      dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
+    in
+      {
+        enable   = true;
+        wantedBy = [ "multi-user.target" ];
+        requires = [ "docker.service" ];
+        environment = { COMPOSE_PROJECT_NAME = name; };
+        serviceConfig = {
+          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
+          ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
+          Restart   = "always";
+        };
+      };
+
 in
 
 {
@@ -70,43 +87,17 @@ in
   services.dockerRegistry.garbageCollectDates = "daily";
   services.dockerRegistry.port = registryHttpPort;
 
-  # Concourse
-  systemd.services.concourse =
-    let
-      dockerComposeYaml = import ./concourse.docker-compose.nix {
-        httpPort = concourseHttpPort;
-        githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
-        githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
-      };
-      dockerComposeFile = pkgs.writeText "docker-compose.yml" dockerComposeYaml;
-    in
-      {
-        enable   = true;
-        wantedBy = [ "multi-user.target" ];
-        requires = [ "docker.service" ];
-        environment = { COMPOSE_PROJECT_NAME = "concourse"; };
-        serviceConfig = {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart   = "always";
-        };
-      };
+  systemd.services.concourse = dockerComposeService {
+    name = "concourse";
+    yaml = import ./concourse.docker-compose.nix {
+      httpPort = concourseHttpPort;
+      githubClientId     = fileContents /etc/nixos/secrets/concourse-clientid.txt;
+      githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
+    };
+  };
 
-  # Gitea
-  systemd.services.gitea =
-    let
-      dockerComposeYaml = import ./gitea.docker-compose.nix { httpPort = giteaHttpPort; };
-      dockerComposeFile = pkgs.writeText "docker-compose.yml" dockerComposeYaml;
-    in
-      {
-        enable   = true;
-        wantedBy = [ "multi-user.target" ];
-        requires = [ "docker.service" ];
-        environment = { COMPOSE_PROJECT_NAME = "gitea"; };
-        serviceConfig = {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart   = "always";
-        };
-      };
+  systemd.services.gitea = dockerComposeService {
+    name = "gitea";
+    yaml = import ./gitea.docker-compose.nix { httpPort = giteaHttpPort; };
+  };
 }
