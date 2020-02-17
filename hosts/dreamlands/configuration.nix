@@ -4,10 +4,20 @@ with lib;
 
 let
   concourseHttpPort = 3001;
+  eventApiHttpPort  = 3002;
+  frontendHttpPort  = 3003;
   giteaHttpPort     = 3000;
   registryHttpPort  = 5000;
 
-  dockerComposeService = { name, yaml }:
+  pullLocalDockerImage = pkgs.writeShellScript "pull-local-docker-image.sh" ''
+    set -e
+    set -o pipefail
+
+    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
+  '';
+
+  dockerComposeService = { name, yaml, pull ? "" }:
     let
       dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
     in
@@ -16,11 +26,14 @@ let
         wantedBy = [ "multi-user.target" ];
         requires = [ "docker.service" ];
         environment = { COMPOSE_PROJECT_NAME = name; };
-        serviceConfig = {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart   = "always";
-        };
+        serviceConfig = mkMerge [
+          (mkIf (pull != "") { ExecStartPre = "${pullLocalDockerImage} ${pull}"; })
+          {
+            ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
+            ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
+            Restart   = "always";
+          }
+        ];
       };
 
 in
@@ -50,6 +63,14 @@ in
       gzip
     }
 
+    www.barrucadu.dev {
+      import basics
+
+      proxy / http://127.0.0.1:${toString frontendHttpPort} {
+        transparent
+      }
+    }
+
     registry.barrucadu.dev {
       import basics
 
@@ -58,6 +79,14 @@ in
       header /v2 Docker-Distribution-Api-Version "registry/2.0"
 
       proxy /v2 http://127.0.0.1:${toString registryHttpPort} {
+        transparent
+      }
+    }
+
+    event-api.barrucadu.dev {
+      import basics
+
+      proxy / http://127.0.0.1:${toString eventApiHttpPort} {
         transparent
       }
     }
@@ -99,5 +128,20 @@ in
   systemd.services.gitea = dockerComposeService {
     name = "gitea";
     yaml = import ./gitea.docker-compose.nix { httpPort = giteaHttpPort; };
+  };
+
+  systemd.services.frontend = dockerComposeService {
+    name = "frontend";
+    yaml = import ./frontend.docker-compose.nix { httpPort = frontendHttpPort; };
+    pull = "frontend:latest";
+  };
+
+  systemd.services.event-api-server = dockerComposeService {
+    name = "event-api-server";
+    yaml = import ./event-api-server.docker-compose.nix {
+      httpPort  = eventApiHttpPort;
+      jwtSecret = fileContents /etc/nixos/secrets/event-api-server-jwt.txt;
+    };
+    pull = "event-api-server:latest";
   };
 }
