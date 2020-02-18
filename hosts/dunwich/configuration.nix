@@ -2,6 +2,17 @@
 
 with lib;
 
+let
+  pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
+    set -e
+    set -o pipefail
+
+    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
+  '';
+
+in
+
 {
   networking.hostName = "dunwich";
 
@@ -175,9 +186,10 @@ with lib;
 
   # bookdb
   services.bookdb.enable = true;
-  services.bookdb.image = "ci-registry:5000/bookdb:latest";
+  services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
   services.bookdb.webRoot = "https://bookdb.barrucadu.co.uk";
   services.bookdb.readOnly = true;
+  services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
 
   # Databases
   services.mongodb.enable = true;

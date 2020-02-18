@@ -47,6 +47,7 @@ in
     port = mkOption { type = types.int; default = 3000; };
     webRoot = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
+    execStartPre = mkOption { type = types.str; default = ""; };
   };
 
   config = mkIf cfg.enable {
@@ -55,12 +56,14 @@ in
       wantedBy = [ "multi-user.target" ];
       requires = [ "docker.service" ];
       environment = { COMPOSE_PROJECT_NAME = "bookdb"; };
-      serviceConfig = {
-        ExecStart    = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-        ExecStop     = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-        ExecStopPost = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' rm -f bookdb";
-        Restart      = "always";
-      };
+      serviceConfig = mkMerge [
+        (mkIf (cfg.execStartPre != "") { ExecStartPre = "${cfg.execStartPre}"; })
+        {
+          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
+          ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
+          Restart   = "always";
+        }
+      ];
     };
   };
 }
