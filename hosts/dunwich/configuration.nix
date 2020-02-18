@@ -227,10 +227,22 @@ in
     sshPublicKeys =
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4Ns3Qlja6/CsRb7w9SghjDniKiA6ohv7JRg274cRBc concourseci+worker@ci.dunwich.barrucadu.co.uk" ];
   };
-  # for deploying bookdb
   security.sudo.extraRules = [
-    { commands = [ { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; } ]; users = [ "concourseci" ]; }
+    {
+      users = [ "concourse-deploy-robot" ];
+      commands = [
+        { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; }
+      ];
+    }
   ];
+  users.extraUsers.concourse-deploy-robot = {
+    home = "/home/system/concourse-deploy-robot";
+    createHome = true;
+    isSystemUser = true;
+    openssh.authorizedKeys.keys =
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9mdg79dtI9KqxTOG2ATdnKXGhuQaqp2n3mXZ0brPuc concourse-worker@cd.barrucadu.dev" ];
+    shell = pkgs.bashInteractive;
+  };
 
   # 10% of the RAM is too little space
   services.logind.extraConfig = ''
