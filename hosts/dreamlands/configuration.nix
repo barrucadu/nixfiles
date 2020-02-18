@@ -124,6 +124,23 @@ in
       githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
     };
   };
+  security.sudo.extraRules = [
+    {
+      users = [ "concourse-deploy-robot" ];
+      commands = [
+        { command = "${pkgs.systemd}/bin/systemctl restart event-api-server"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl restart frontend";         options = [ "NOPASSWD" ]; }
+      ];
+    }
+  ];
+  users.extraUsers.concourse-deploy-robot = {
+    home = "/home/system/concourse-deploy-robot";
+    createHome = true;
+    isSystemUser = true;
+    openssh.authorizedKeys.keys =
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxmx52eoKFJmdkejuiLZ4ZMaQ/4GQsXADIORQdmmb8N concourse-worker@cd.barrucadu.dev" ];
+    shell = pkgs.bashInteractive;
+  };
 
   systemd.services.gitea = dockerComposeService {
     name = "gitea";
