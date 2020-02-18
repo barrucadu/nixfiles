@@ -122,21 +122,6 @@ in
       }
     }
 
-    ${config.services.concourseci.domain} {
-      import basics
-
-      proxy / http://127.0.0.1:${toString config.services.concourseci.port} {
-        websocket
-        header_downstream Access-Control-Allow-Origin "*"
-        header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com"
-        header_downstream Referrer-Policy "strict-origin-when-cross-origin"
-        header_downstream Strict-Transport-Security "max-age=31536000; includeSubDomains"
-        header_downstream X-Content-Type-Options "nosniff"
-        header_downstream X-Frame-Options "SAMEORIGIN"
-        header_downstream X-XSS-Protection "1; mode=block"
-      }
-    }
-
     uzbl.org {
       redir https://www.uzbl.org{uri}
     }
@@ -218,15 +203,7 @@ in
 }
   '';
 
-  # CI
-  services.concourseci = {
-    enable = true;
-    githubClientId = lib.fileContents /etc/nixos/secrets/concourse-github-client-id.txt;
-    githubClientSecret = lib.fileContents /etc/nixos/secrets/concourse-github-client-secret.txt;
-    domain = "ci.dunwich.barrucadu.co.uk";
-    sshPublicKeys =
-      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4Ns3Qlja6/CsRb7w9SghjDniKiA6ohv7JRg274cRBc concourseci+worker@ci.dunwich.barrucadu.co.uk" ];
-  };
+  # barrucadu.dev concourse access
   security.sudo.extraRules = [
     {
       users = [ "concourse-deploy-robot" ];
