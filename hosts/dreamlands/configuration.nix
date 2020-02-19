@@ -63,6 +63,14 @@ in
       gzip
     }
 
+    barrucadu.dev {
+      redir https://www.barrucadu.dev{uri}
+    }
+
+    dreamlands.barrucadu.co.uk {
+      redir https://www.barrucadu.dev{uri}
+    }
+
     www.barrucadu.dev {
       import basics
 
