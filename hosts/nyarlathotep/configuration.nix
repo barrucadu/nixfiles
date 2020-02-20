@@ -74,29 +74,6 @@ in
     }
   '';
 
-  # hledger dashboard
-  services.influxdb.enable = true;
-  services.grafana = {
-    enable = true;
-    port = 3002;
-    domain = "grafana.nyarlathotep";
-    rootUrl = "https://grafana.nyarlathotep/";
-  };
-
-  systemd.timers.hledger-scripts = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "*-*-* 21:00:00";
-    };
-  };
-  systemd.services.hledger-scripts = {
-    description = "Run hledger scripts";
-    serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./sync.sh";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
-  };
-
   # bookdb
   services.bookdb.enable = true;
   services.bookdb.image = "localhost:5000/bookdb:latest";
@@ -136,9 +113,4 @@ in
       WorkingDirectory = "/srv/finder";
     };
   };
-
-  # Extra packages
-  environment.systemPackages = with pkgs; [
-    influxdb
-  ];
 }
