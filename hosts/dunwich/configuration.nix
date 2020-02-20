@@ -207,6 +207,5 @@ in
     haskellPackages.hledger
     irssi
     perl
-    texlive.combined.scheme-full
   ];
 }
