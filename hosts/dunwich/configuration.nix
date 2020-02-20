@@ -179,20 +179,6 @@ in
   # Databases
   services.mongodb.enable = true;
 
-  # Log files
-  services.logrotate.enable = true;
-  services.logrotate.config = ''
-/var/spool/nginx/logs/access.log /var/spool/nginx/logs/error.log {
-    weekly
-    copytruncate
-    rotate 4
-    compress
-    postrotate
-        systemctl kill nginx.service --signal=USR1
-    endscript
-}
-  '';
-
   # barrucadu.dev concourse access
   security.sudo.extraRules = [
     {
