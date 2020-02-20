@@ -36,9 +36,6 @@ in
   fileSystems."/home/barrucadu/nfs/images"   = nfsShare "images";
   fileSystems."/home/barrucadu/nfs/torrents" = nfsShare "torrents";
 
-  # Virtualisation
-  virtualisation.virtualbox.host.enable = true;
-
   # Enable xorg
   services.xserver.enable = true;
 
