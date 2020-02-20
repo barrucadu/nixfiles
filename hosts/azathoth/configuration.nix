@@ -66,10 +66,8 @@ in
 
   # Extra packages
   environment.systemPackages = with pkgs; [
-    biber
     clementine
     discord
-    easytag
     feh
     haskellPackages.hledger
     gnuplot
