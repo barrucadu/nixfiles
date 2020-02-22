@@ -76,6 +76,10 @@ in
 
       import security_theatre
 
+      header /fonts     Cache-Control "public, immutable, max-age=31536000"
+      header /logos     Cache-Control "public, immutable, max-age=31536000"
+      header /style.css Cache-Control "public, max-age=604800"
+
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
     }
 
@@ -105,6 +109,11 @@ in
     memo.barrucadu.co.uk {
       import basics
       root /srv/http/barrucadu.co.uk/memo
+
+      header /fonts     Cache-Control "public, immutable, max-age=31536000"
+      header /MathJax   Cache-Control "public, max-age=7776000"
+      header /style.css Cache-Control "public, max-age=604800"
+      header /code.css  Cache-Control "public, max-age=604800"
 
       import security_theatre
     }
