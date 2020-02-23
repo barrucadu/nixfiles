@@ -13,6 +13,7 @@ let
         image: ${cfg.image}
         depends_on: [postgres]
         ports: ["127.0.0.1:${toString cfg.port}:3000"]
+        restart: always
         environment:
           BOOKDB_PORT: 3000
           BOOKDB_WEB_ROOT: "${cfg.webRoot}"
@@ -27,6 +28,7 @@ let
 
       postgres:
         image: postgres:9.6
+        restart: always
         environment:
           POSTGRES_DB: bookdb
           POSTGRES_PASSWORD: bookdb
