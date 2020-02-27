@@ -129,6 +129,74 @@ in
         .markdown text/plain
         .rst      text/plain
       }
+
+      # enable directory listings for level 2 directories but not for
+      # the level 1 directories - caddy doesn't support wildcards in
+      # paths, but it does support prefixes, hence this mess.
+      browse /7day/0
+      browse /7day/1
+      browse /7day/2
+      browse /7day/3
+      browse /7day/4
+      browse /7day/5
+      browse /7day/6
+      browse /7day/7
+      browse /7day/8
+      browse /7day/9
+      browse /7day/a
+      browse /7day/b
+      browse /7day/c
+      browse /7day/d
+      browse /7day/e
+      browse /7day/f
+      browse /14day/0
+      browse /14day/1
+      browse /14day/2
+      browse /14day/3
+      browse /14day/4
+      browse /14day/5
+      browse /14day/6
+      browse /14day/7
+      browse /14day/8
+      browse /14day/9
+      browse /14day/a
+      browse /14day/b
+      browse /14day/c
+      browse /14day/d
+      browse /14day/e
+      browse /14day/f
+      browse /28day/0
+      browse /28day/1
+      browse /28day/2
+      browse /28day/3
+      browse /28day/4
+      browse /28day/5
+      browse /28day/6
+      browse /28day/7
+      browse /28day/8
+      browse /28day/9
+      browse /28day/a
+      browse /28day/b
+      browse /28day/c
+      browse /28day/d
+      browse /28day/e
+      browse /28day/f
+      browse /forever/0
+      browse /forever/1
+      browse /forever/2
+      browse /forever/3
+      browse /forever/4
+      browse /forever/5
+      browse /forever/6
+      browse /forever/7
+      browse /forever/8
+      browse /forever/9
+      browse /forever/a
+      browse /forever/b
+      browse /forever/c
+      browse /forever/d
+      browse /forever/e
+      browse /forever/f
     }
 
     uzbl.org {
