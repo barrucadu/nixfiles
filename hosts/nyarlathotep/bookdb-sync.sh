@@ -1,3 +1,5 @@
+set -euo pipefail
+
 export COMPOSE_PROJECT_NAME=bookdb
 
 local_sync_dir="$(mktemp -d)"
@@ -6,7 +8,7 @@ trap "rm -rf $local_sync_dir" EXIT
 
 covers_dir="/bookdb/static/covers"
 
-docker_compose_file="$(systemctl cat bookdb | grep ExecStart | cut -d"'" -f2)"
+docker_compose_file="$(systemctl cat bookdb | grep "ExecStart=" | cut -d"'" -f2)"
 bookdb_container="$(docker-compose -f "$docker_compose_file" ps -q bookdb)"
 postgres_container="$(docker-compose -f "$docker_compose_file" ps -q postgres)"
 
@@ -15,10 +17,12 @@ docker exec -i "${postgres_container}" pg_dump --clean --if-exists -U bookdb -w 
 
 scp -r "$local_sync_dir" "dunwich.barrucadu.co.uk:${remote_sync_dir}"
 ssh dunwich.barrucadu.co.uk <<EOF
+set -euo pipefail
+
 export COMPOSE_PROJECT_NAME=bookdb
 
 trap "rm -rf $remote_sync_dir" EXIT
-docker_compose_file="\$(systemctl cat bookdb | grep ExecStart | cut -d"'" -f2)"
+docker_compose_file="\$(systemctl cat bookdb | grep "ExecStart=" | cut -d"'" -f2)"
 bookdb_container="\$(docker-compose -f "\$docker_compose_file" ps -q bookdb)"
 postgres_container="\$(docker-compose -f "\$docker_compose_file" ps -q postgres)"
 
