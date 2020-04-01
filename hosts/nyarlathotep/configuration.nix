@@ -103,6 +103,21 @@ in
   # finder
   services.elasticsearch.enable = true;
 
+  # hledger prices
+  systemd.timers.hledger-scripts = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 21:00:00";
+    };
+  };
+  systemd.services.hledger-scripts = {
+    description = "Run hledger scripts";
+    serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh only-prices'";
+    serviceConfig.User = "barrucadu";
+    serviceConfig.Group = "users";
+  };
+
   systemd.services.finder = {
     enable   = true;
     wantedBy = [ "multi-user.target" ];
