@@ -253,9 +253,6 @@ in
   services.bookdb.readOnly = true;
   services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
 
-  # Databases
-  services.mongodb.enable = true;
-
   # barrucadu.dev concourse access
   security.sudo.extraRules = [
     {
