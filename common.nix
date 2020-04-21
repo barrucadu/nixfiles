@@ -60,7 +60,7 @@ with lib;
     time.timeZone = "Europe/London";
 
     # Keyboard
-    i18n.consoleKeyMap = "uk";
+    console.keyMap = "uk";
     services.xserver.layout = "gb";
 
 
