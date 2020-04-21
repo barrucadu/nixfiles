@@ -53,7 +53,6 @@ in
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fontconfig.cache32Bit = true;
-    fontconfig.ultimate.preset = "osx";
 
     fonts = with pkgs; [
       terminus_font
