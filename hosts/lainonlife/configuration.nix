@@ -61,7 +61,7 @@ in
       log / stdout "{host} {combined}"
       gzip
 
-      root /srv/http
+      root /srv/http/www
 
       proxy /radio/ http://localhost:8000 {
         without /radio
@@ -168,6 +168,16 @@ in
     security.secretKey = import /etc/nixos/secrets/grafana-key.nix;
     auth.anonymous.enable = true;
     auth.anonymous.org_name = "lainon.life";
+  };
+
+  # barrucadu.dev concourse access
+  users.extraUsers.concourse-deploy-robot = {
+    home = "/home/system/concourse-deploy-robot";
+    createHome = true;
+    isSystemUser = true;
+    openssh.authorizedKeys.keys =
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBkO09nIUCsg9gy6+qZan/r6fkUpwlsvLUeSwJMLO6X3 concourse-worker@cd.barrucadu.dev" ];
+    shell = pkgs.bashInteractive;
   };
 
   # Extra users
