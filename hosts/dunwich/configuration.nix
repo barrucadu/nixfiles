@@ -249,7 +249,7 @@ in
   # bookdb
   services.bookdb.enable = true;
   services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
-  services.bookdb.webRoot = "https://bookdb.barrucadu.co.uk";
+  services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   services.bookdb.readOnly = true;
   services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
 

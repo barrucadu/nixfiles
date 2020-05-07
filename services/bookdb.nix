@@ -11,43 +11,50 @@ let
     services:
       bookdb:
         image: ${cfg.image}
-        depends_on: [postgres]
-        ports: ["127.0.0.1:${toString cfg.port}:3000"]
         restart: always
         environment:
-          BOOKDB_PORT: 3000
-          BOOKDB_WEB_ROOT: "${cfg.webRoot}"
-          BOOKDB_FILE_ROOT: "/bookdb/static"
-          BOOKDB_PG_HOST: postgres
-          BOOKDB_PG_USERNAME: bookdb
-          BOOKDB_PG_PASSWORD: bookdb
-          BOOKDB_PG_DB: bookdb
-          BOOKDB_READ_ONLY: "${if cfg.readOnly then "true" else "false"}"
+          ALLOW_WRITES: "${if cfg.readOnly then "0" else "1"}"
+          BASE_URI: "${cfg.baseURI}"
+          COVER_DIR: "/bookdb-covers"
+          ES_HOST: "http://db:9200"
+        networks:
+          - bookdb
+        ports:
+          - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:8888"
         volumes:
-          - bookdb_covers:/bookdb/static/covers
+          - bookdb_covers:/bookdb-covers
+        depends_on:
+          - db
 
-      postgres:
-        image: postgres:9.6
+      db:
+        image: elasticsearch:${cfg.esTag}
         restart: always
         environment:
-          POSTGRES_DB: bookdb
-          POSTGRES_PASSWORD: bookdb
-          POSTGRES_USER: bookdb
-          PGDATA: /database
+          - http.host=0.0.0.0
+          - discovery.type=single-node
+          - ES_JAVA_OPTS=-Xms1g -Xmx1g
+        networks:
+          - bookdb
         volumes:
-          - bookdb_pgdata:/database
+          - bookdb_esdata:/usr/share/elasticsearch/data
+
+    networks:
+      bookdb:
+        external: false
 
     volumes:
       bookdb_covers:
-      bookdb_pgdata:
+      bookdb_esdata:
   '';
 in
 {
   options.services.bookdb = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
-    port = mkOption { type = types.int; default = 3000; };
-    webRoot = mkOption { type = types.str; };
+    httpPort = mkOption { type = types.int; default = 3000; };
+    internalHTTP = mkOption { type = types.bool; default = true; };
+    esTag = mkOption { type = types.str; default = "7.6.2"; };
+    baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.str; default = ""; };
   };

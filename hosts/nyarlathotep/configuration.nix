@@ -77,7 +77,7 @@ in
   # bookdb
   services.bookdb.enable = true;
   services.bookdb.image = "localhost:5000/bookdb:latest";
-  services.bookdb.webRoot = "http://bookdb.nyarlathotep";
+  services.bookdb.baseURI = "http://bookdb.nyarlathotep";
 
   systemd.timers.bookdb-sync = {
     wantedBy = [ "timers.target" ];
