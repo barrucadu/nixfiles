@@ -128,6 +128,7 @@ in
         .md       text/plain
         .markdown text/plain
         .rst      text/plain
+        .tex      text/plain
       }
 
       # enable directory listings for level 2 directories but not for
