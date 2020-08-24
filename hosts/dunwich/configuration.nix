@@ -266,6 +266,7 @@ in
       users = [ "concourse-deploy-robot" ];
       commands = [
         { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl restart nupleroma"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
