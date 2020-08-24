@@ -83,10 +83,10 @@ in
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
     }
 
-    ap.barrucadu.co.uk {
+    ${config.services.nupleroma.domain} {
       import basics
 
-      proxy / http://127.0.0.1:${toString config.services.pleroma.port} {
+      proxy / http://127.0.0.1:${toString config.services.nupleroma.httpPort} {
         websocket
         transparent
       }
@@ -245,7 +245,13 @@ in
     ];
 
   # Pleroma
-  services.pleroma.enable = true;
+  services.nupleroma.enable = true;
+  services.nupleroma.image = "registry.barrucadu.dev/pleroma:latest";
+  services.nupleroma.domain = "ap.barrucadu.co.uk";
+  services.nupleroma.secretKeyBase = fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
+  services.nupleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
+  services.nupleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
+  services.nupleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
 
   # bookdb
   services.bookdb.enable = true;
