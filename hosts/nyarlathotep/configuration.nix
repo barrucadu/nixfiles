@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 # Bring names from 'lib' into scope.
 with lib;
@@ -51,7 +51,7 @@ in
 
     http://bookdb.nyarlathotep:80 {
       gzip
-      proxy / http://localhost:3000
+      proxy / http://localhost:${toString config.services.bookdb.httpPort}
     }
 
     http://flood.nyarlathotep:80 {
@@ -59,14 +59,9 @@ in
       proxy / http://localhost:3001
     }
 
-    http://grafana.nyarlathotep:80 {
-      gzip
-      proxy / http://localhost:3002
-    }
-
     http://finder.nyarlathotep:80 {
       gzip
-      proxy / http://localhost:3003
+      proxy / http://localhost:${toString config.services.finder.httpPort}
     }
 
     http://*:80 {
@@ -101,7 +96,9 @@ in
   services.rtorrent.enable = true;
 
   # finder
-  services.elasticsearch.enable = true;
+  services.finder.enable = true;
+  services.finder.image = "localhost:5000/finder:latest";
+  services.finder.httpPort = 3002;
 
   # hledger prices
   systemd.timers.hledger-scripts = {
@@ -116,16 +113,5 @@ in
     serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh only-prices'";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
-  };
-
-  systemd.services.finder = {
-    enable   = true;
-    wantedBy = [ "multi-user.target" ];
-    after    = [ "network.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.zsh}/bin/zsh --login -c './run-finder --port=3003'";
-      Restart   = "on-failure";
-      WorkingDirectory = "/srv/finder";
-    };
   };
 }
