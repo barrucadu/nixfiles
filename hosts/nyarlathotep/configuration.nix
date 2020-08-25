@@ -55,6 +55,11 @@ in
       proxy / http://localhost:${toString config.services.bookdb.httpPort}
     }
 
+    http://bookmarks.nyarlathotep:80 {
+      gzip
+      proxy / http://localhost:${toString config.services.bookmarks.httpPort}
+    }
+
     http://flood.nyarlathotep:80 {
       gzip
       proxy / http://localhost:3001
@@ -87,6 +92,12 @@ in
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
   };
+
+  # bookmarks
+  services.bookmarks.enable = true;
+  services.bookmarks.image = "localhost:5000/bookmarks:latest";
+  services.bookmarks.baseURI = "http://bookmarks.nyarlathotep";
+  services.bookmarks.httpPort = 3003;
 
   # docker registry
   services.dockerRegistry.enable = true;
