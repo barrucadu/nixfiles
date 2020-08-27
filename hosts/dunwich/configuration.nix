@@ -95,7 +95,21 @@ in
     bookdb.barrucadu.co.uk {
       import basics
 
-      proxy / http://127.0.0.1:3000 {
+      proxy / http://127.0.0.1:${toString config.services.bookdb.httpPort} {
+        header_downstream Access-Control-Allow-Origin "*"
+        header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
+        header_downstream Referrer-Policy "strict-origin-when-cross-origin"
+        header_downstream Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        header_downstream X-Content-Type-Options "nosniff"
+        header_downstream X-Frame-Options "SAMEORIGIN"
+        header_downstream X-XSS-Protection "1; mode=block"
+      }
+    }
+
+    bookmarks.barrucadu.co.uk {
+      import basics
+
+      proxy / http://127.0.0.1:${toString config.services.bookmarks.httpPort} {
         header_downstream Access-Control-Allow-Origin "*"
         header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
         header_downstream Referrer-Policy "strict-origin-when-cross-origin"
@@ -260,12 +274,21 @@ in
   services.bookdb.readOnly = true;
   services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
 
+  # bookmarks
+  services.bookmarks.enable = true;
+  services.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
+  services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
+  services.bookmarks.readOnly = true;
+  services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
+  services.bookmarks.httpPort = 3003;
+
   # barrucadu.dev concourse access
   security.sudo.extraRules = [
     {
       users = [ "concourse-deploy-robot" ];
       commands = [
         { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl restart bookmarks"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart nupleroma"; options = [ "NOPASSWD" ]; }
       ];
     }
