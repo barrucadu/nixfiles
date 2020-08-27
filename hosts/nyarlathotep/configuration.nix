@@ -99,6 +99,19 @@ in
   services.bookmarks.baseURI = "http://bookmarks.nyarlathotep";
   services.bookmarks.httpPort = 3003;
 
+  systemd.timers.bookmarks-sync = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "hourly";
+    };
+  };
+  systemd.services.bookmarks-sync = {
+    description = "Upload bookmarks data to dunwich";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./bookmarks-sync.sh)}";
+    serviceConfig.User = "barrucadu";
+    serviceConfig.Group = "users";
+  };
+
   # docker registry
   services.dockerRegistry.enable = true;
   services.dockerRegistry.enableGarbageCollect = true;
