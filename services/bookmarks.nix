@@ -16,6 +16,7 @@ let
           ALLOW_WRITES: "${if cfg.readOnly then "0" else "1"}"
           BASE_URI: "${cfg.baseURI}"
           ES_HOST: "http://db:9200"
+          YOUTUBE_API_KEY: "${cfg.youtubeApiKey}"
         networks:
           - bookmarks
         ports:
@@ -53,6 +54,7 @@ in
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.str; default = ""; };
+    youtubeApiKey = mkOption { type = types.str; default = ""; };
   };
 
   config = mkIf cfg.enable {

@@ -98,6 +98,7 @@ in
   services.bookmarks.image = "localhost:5000/bookmarks:latest";
   services.bookmarks.baseURI = "http://bookmarks.nyarlathotep";
   services.bookmarks.httpPort = 3003;
+  services.bookmarks.youtubeApiKey = fileContents /etc/nixos/secrets/bookmarks-youtube-api-key.txt;
 
   systemd.timers.bookmarks-sync = {
     wantedBy = [ "timers.target" ];
