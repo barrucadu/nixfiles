@@ -21,6 +21,14 @@ let
     ; livePassword = import /etc/nixos/secrets/cafe-password-live.nix
     ; }
   ];
+
+  pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
+    set -e
+    set -o pipefail
+
+    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
+  '';
 in
 
 {
@@ -79,11 +87,11 @@ in
       proxy /admin      http://localhost:8002
     }
 
-    social.lainon.life {
+    ${config.services.nupleroma.domain} {
       log / stdout "{host} {combined}"
       gzip
 
-      proxy / http://127.0.0.1:${toString config.services.pleroma.port} {
+      proxy / http://127.0.0.1:${toString config.services.nupleroma.httpPort} {
         websocket
         transparent
       }
@@ -155,7 +163,15 @@ in
   };
 
   # Pleroma
-  services.pleroma.enable = true;
+  services.nupleroma.enable = true;
+  services.nupleroma.image = "registry.barrucadu.dev/pleroma:latest";
+  services.nupleroma.domain = "social.lainon.life";
+  services.nupleroma.secretKeyBase = lib.fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
+  services.nupleroma.signingSalt = lib.fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
+  services.nupleroma.webPushPublicKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
+  services.nupleroma.webPushPrivateKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
+  services.nupleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
+  services.nupleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
 
   # Fancy graphs
   services.influxdb.enable = true;
@@ -171,6 +187,14 @@ in
   };
 
   # barrucadu.dev concourse access
+  security.sudo.extraRules = [
+    {
+      users = [ "concourse-deploy-robot" ];
+      commands = [
+        { command = "${pkgs.systemd}/bin/systemctl restart nupleroma"; options = [ "NOPASSWD" ]; }
+      ];
+    }
+  ];
   users.extraUsers.concourse-deploy-robot = {
     home = "/home/system/concourse-deploy-robot";
     createHome = true;
