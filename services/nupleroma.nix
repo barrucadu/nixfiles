@@ -41,6 +41,7 @@ let
           - pleroma_uploads:/var/lib/pleroma/uploads
           - pleroma_emojis:/var/lib/pleroma/static/emoji/custom
           - ${secretsFile}:/var/lib/pleroma/secret.exs
+          ${if cfg.faviconPath != /no-favicon then "- ${pkgs.copyPathToStore cfg.faviconPath}:/var/lib/pleroma/static/favicon.png" else ""}
         depends_on:
           - db
 
@@ -76,6 +77,7 @@ in
     pgTag = mkOption { type = types.str; default = "13"; };
     execStartPre = mkOption { type = types.str; default = ""; };
     domain = mkOption { type = types.str; };
+    faviconPath = mkOption { type = types.path; default = /no-favicon; };
     instanceName = mkOption { type = types.str; default = cfg.domain; };
     adminEmail = mkOption { type = types.str; default = "mike@barrucadu.co.uk"; };
     notifyEmail = mkOption { type = types.str; default = cfg.adminEmail; };
