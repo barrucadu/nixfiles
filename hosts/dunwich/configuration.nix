@@ -83,10 +83,10 @@ in
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
     }
 
-    ${config.services.nupleroma.domain} {
+    ${config.services.pleroma.domain} {
       import basics
 
-      proxy / http://127.0.0.1:${toString config.services.nupleroma.httpPort} {
+      proxy / http://127.0.0.1:${toString config.services.pleroma.httpPort} {
         websocket
         transparent
       }
@@ -259,14 +259,14 @@ in
     ];
 
   # Pleroma
-  services.nupleroma.enable = true;
-  services.nupleroma.image = "registry.barrucadu.dev/pleroma:latest";
-  services.nupleroma.domain = "ap.barrucadu.co.uk";
-  services.nupleroma.secretKeyBase = fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
-  services.nupleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
-  services.nupleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
-  services.nupleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
-  services.nupleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
+  services.pleroma.enable = true;
+  services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
+  services.pleroma.domain = "ap.barrucadu.co.uk";
+  services.pleroma.secretKeyBase = fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
+  services.pleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
+  services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
+  services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
+  services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
 
   # bookdb
   services.bookdb.enable = true;
@@ -290,7 +290,7 @@ in
       commands = [
         { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart bookmarks"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.systemd}/bin/systemctl restart nupleroma"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl restart pleroma"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];

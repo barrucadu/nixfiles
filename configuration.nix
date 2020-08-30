@@ -7,7 +7,6 @@
     ./services/bookmarks.nix
     ./services/caddy.nix
     ./services/finder.nix
-    ./services/nupleroma.nix
     ./services/pleroma.nix
     ./services/rtorrent.nix
   ];

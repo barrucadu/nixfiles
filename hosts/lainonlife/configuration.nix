@@ -87,11 +87,11 @@ in
       proxy /admin      http://localhost:8002
     }
 
-    ${config.services.nupleroma.domain} {
+    ${config.services.pleroma.domain} {
       log / stdout "{host} {combined}"
       gzip
 
-      proxy / http://127.0.0.1:${toString config.services.nupleroma.httpPort} {
+      proxy / http://127.0.0.1:${toString config.services.pleroma.httpPort} {
         websocket
         transparent
       }
@@ -163,15 +163,15 @@ in
   };
 
   # Pleroma
-  services.nupleroma.enable = true;
-  services.nupleroma.image = "registry.barrucadu.dev/pleroma:latest";
-  services.nupleroma.domain = "social.lainon.life";
-  services.nupleroma.secretKeyBase = lib.fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
-  services.nupleroma.signingSalt = lib.fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
-  services.nupleroma.webPushPublicKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
-  services.nupleroma.webPushPrivateKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
-  services.nupleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
-  services.nupleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
+  services.pleroma.enable = true;
+  services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
+  services.pleroma.domain = "social.lainon.life";
+  services.pleroma.secretKeyBase = lib.fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
+  services.pleroma.signingSalt = lib.fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
+  services.pleroma.webPushPublicKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
+  services.pleroma.webPushPrivateKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
+  services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
+  services.pleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
 
   # Fancy graphs
   services.influxdb.enable = true;
@@ -191,7 +191,7 @@ in
     {
       users = [ "concourse-deploy-robot" ];
       commands = [
-        { command = "${pkgs.systemd}/bin/systemctl restart nupleroma"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl restart pleroma"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
