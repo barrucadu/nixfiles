@@ -266,6 +266,7 @@ in
   services.nupleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
   services.nupleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
   services.nupleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
+  services.nupleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
 
   # bookdb
   services.bookdb.enable = true;
