@@ -8,6 +8,5 @@
     ./services/caddy.nix
     ./services/finder.nix
     ./services/pleroma.nix
-    ./services/rtorrent.nix
   ];
 }
