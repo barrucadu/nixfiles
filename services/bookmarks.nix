@@ -5,6 +5,17 @@ with lib;
 let
   cfg = config.services.bookmarks;
 
+  volumeOpts = path: ''
+    {
+      "driver": "local",
+      "driver_opts": {
+        "o": "bind",
+        "type": "none",
+        "device": "${toString cfg.dockerVolumeDir}/${path}",
+      }
+    }
+  '';
+
   dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
     version: '3'
 
@@ -41,7 +52,7 @@ let
         external: false
 
     volumes:
-      bookmarks_esdata:
+      bookmarks_esdata: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "esdata" else ""}
   '';
 in
 {
@@ -55,6 +66,7 @@ in
     readOnly = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.str; default = ""; };
     youtubeApiKey = mkOption { type = types.str; default = ""; };
+    dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
   };
 
   config = mkIf cfg.enable {

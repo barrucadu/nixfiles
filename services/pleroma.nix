@@ -17,6 +17,17 @@ let
       private_key: "${cfg.webPushPrivateKey}"
   '';
 
+  volumeOpts = path: ''
+    {
+      "driver": "local",
+      "driver_opts": {
+        "o": "bind",
+        "type": "none",
+        "device": "${toString cfg.dockerVolumeDir}/${path}",
+      }
+    }
+  '';
+
   dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
     version: '3'
 
@@ -62,9 +73,9 @@ let
         external: false
 
     volumes:
-      pleroma_uploads:
-      pleroma_emojis:
-      pleroma_pgdata:
+      pleroma_uploads: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "uploads" else ""}
+      pleroma_emojis: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "emojis" else ""}
+      pleroma_pgdata: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "pgdata" else ""}
   '';
 
 in
@@ -85,6 +96,7 @@ in
     signingSalt = mkOption { type = types.str; };
     webPushPublicKey = mkOption { type = types.str; };
     webPushPrivateKey = mkOption { type = types.str; };
+    dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
   };
 
   config = mkIf cfg.enable {

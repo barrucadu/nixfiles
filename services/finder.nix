@@ -5,6 +5,17 @@ with lib;
 let
   cfg = config.services.finder;
 
+  volumeOpts = path: ''
+    {
+      "driver": "local",
+      "driver_opts": {
+        "o": "bind",
+        "type": "none",
+        "device": "${toString cfg.dockerVolumeDir}/${path}",
+      }
+    }
+  '';
+
   dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
     version: '3'
 
@@ -41,8 +52,7 @@ let
         external: false
 
     volumes:
-      finder_covers:
-      finder_esdata:
+      finder_esdata: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "esdata" else ""}
   '';
 in
 {
@@ -53,6 +63,7 @@ in
     internalHTTP = mkOption { type = types.bool; default = true; };
     esTag = mkOption { type = types.str; default = "7.6.2"; };
     execStartPre = mkOption { type = types.str; default = ""; };
+    dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
   };
 
   config = mkIf cfg.enable {
