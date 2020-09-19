@@ -31,7 +31,7 @@ let
         ports:
           - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:8888"
         volumes:
-          - /srv/share/manga:/data
+          - ${toString cfg.mangaDir}:/data
         depends_on:
           - db
 
@@ -64,6 +64,7 @@ in
     esTag = mkOption { type = types.str; default = "7.6.2"; };
     execStartPre = mkOption { type = types.str; default = ""; };
     dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
+    mangaDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
