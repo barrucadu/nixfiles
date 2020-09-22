@@ -13,18 +13,33 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "nyarlathotep/root/nixos";
-      fsType = "zfs";
-    };
-
-  fileSystems."/home" =
-    { device = "nyarlathotep/home";
+    { device = "root/volatile/root";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/B2F0-BB84";
+    { device = "/dev/disk/by-uuid/E488-FDB6";
       fsType = "vfat";
+    };
+
+  fileSystems."/home" =
+    { device = "root/persistent/home";
+      fsType = "zfs";
+    };
+
+  fileSystems."/mnt/nas" =
+    { device = "data/nas";
+      fsType = "zfs";
+    };
+
+  fileSystems."/nix" =
+    { device = "root/persistent/nix";
+      fsType = "zfs";
+    };
+
+  fileSystems."/persist" =
+    { device = "root/persistent/persist";
+      fsType = "zfs";
     };
 
   swapDevices = [ ];
