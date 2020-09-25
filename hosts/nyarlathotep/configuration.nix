@@ -95,6 +95,16 @@ in
       proxy / http://localhost:${toString config.services.finder.httpPort}
     }
 
+    http://prometheus.nyarlathotep:80 {
+      gzip
+      proxy / http://localhost:9090
+    }
+
+    http://grafana.nyarlathotep:80 {
+      gzip
+      proxy / http://localhost:${toString config.services.grafana.port}
+    }
+
     http://*:80 {
       status 421 /
     }
@@ -202,5 +212,72 @@ in
     serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh only-prices'";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
+  };
+
+  # monitoring / dashboards
+  services.grafana = {
+    enable = true;
+    port = 3004;
+    rootUrl = "http://grafana.nyarlathotep";
+    provision = {
+      enable = true;
+      datasources = [
+        {
+          name = "prometheus";
+          url = "http://${config.services.prometheus.listenAddress}";
+          type = "prometheus";
+        }
+      ];
+      dashboards = [
+        {
+          name = "machines-dashboard.json";
+          folder = "My Dashboards";
+          options.path =
+            let hostDetails = [
+                  { rowTitle = "Nyarlathotep"; jobName = "nyarlathotep-node"; iface = "enp4s0"; mountpoints = [ "/" "/boot" "/mnt/nas" ]; }
+                  { rowTitle = "Pi Hole"; jobName = "pihole-node"; iface = "eth0"; mountpoints = [ "/" "/boot" ]; }
+                ];
+            in pkgs.writeTextDir "machines-dashboard.json" (import ./grafana-dashboards/machines.json.nix { inherit lib hostDetails; });
+        }
+        {
+          name = "network-dashboard.json";
+          folder = "My Dashboards";
+          options.path = pkgs.writeTextDir "network-dashboard.json" (import ./grafana-dashboards/network.json.nix { jobName = "pihole-pihole"; });
+        }
+      ];
+    };
+  };
+
+  services.prometheus = {
+    enable = true;
+    listenAddress = "127.0.0.1:9090";
+    globalConfig.scrape_interval = "15s";
+    scrapeConfigs = [
+      {
+        job_name = "nyarlathotep-node";
+        static_configs = [ { targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; } ];
+      }
+      {
+        job_name = "pihole-node";
+        static_configs = [ { targets = [ "pi.hole:9100" ]; } ];
+      }
+      {
+        job_name = "pihole-pihole";
+        static_configs = [ { targets = [ "pi.hole:9617" ]; } ];
+      }
+    ];
+    webExternalUrl = "http://prometheus.nyarlathotep";
+    exporters.node.enable = true;
+  };
+
+  # systemd doesn't like using a symlink for a StateDirectory, but a
+  # bind mount works fine.
+  systemd.services.prometheus-statedir = {
+    enable = true;
+    description = "Bind-mount prometheus StateDirectory";
+    after = ["local-fs.target"];
+    wantedBy = ["prometheus.service"];
+    serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/${config.services.prometheus.stateDir}";
+    serviceConfig.ExecStart = "${pkgs.utillinux}/bin/mount -o bind /persist/var/lib/${config.services.prometheus.stateDir} /var/lib/${config.services.prometheus.stateDir}";
   };
 }
