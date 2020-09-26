@@ -219,6 +219,7 @@ in
     enable = true;
     port = 3004;
     rootUrl = "http://grafana.nyarlathotep";
+    dataDir = "/persist/var/lib/grafana";
     provision = {
       enable = true;
       datasources = [
@@ -230,19 +231,9 @@ in
       ];
       dashboards = [
         {
-          name = "machines-dashboard.json";
+          name = "overview.json";
           folder = "My Dashboards";
-          options.path =
-            let hostDetails = [
-                  { rowTitle = "Nyarlathotep"; jobName = "nyarlathotep-node"; iface = "enp4s0"; mountpoints = [ "/" "/boot" "/mnt/nas" ]; }
-                  { rowTitle = "Pi Hole"; jobName = "pihole-node"; iface = "eth0"; mountpoints = [ "/" "/boot" ]; }
-                ];
-            in pkgs.writeTextDir "machines-dashboard.json" (import ./grafana-dashboards/machines.json.nix { inherit lib hostDetails; });
-        }
-        {
-          name = "network-dashboard.json";
-          folder = "My Dashboards";
-          options.path = pkgs.writeTextDir "network-dashboard.json" (import ./grafana-dashboards/network.json.nix { jobName = "pihole-pihole"; });
+          options.path = pkgs.writeTextDir "overview.json" (fileContents ./grafana-dashboards/overview.json);
         }
       ];
     };
@@ -258,12 +249,22 @@ in
         static_configs = [ { targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; } ];
       }
       {
+        job_name = "nyarlathotep-docker";
+        static_configs = [ { targets = [ "localhost:9417" ]; } ];
+      }
+      {
         job_name = "pihole-node";
         static_configs = [ { targets = [ "pi.hole:9100" ]; } ];
       }
       {
         job_name = "pihole-pihole";
         static_configs = [ { targets = [ "pi.hole:9617" ]; } ];
+      }
+      {
+        job_name = "speedtest";
+        scrape_interval = "5m";
+        scrape_timeout = "2m";
+        static_configs = [ { targets = [ "localhost:9516" ]; } ];
       }
     ];
     webExternalUrl = "http://prometheus.nyarlathotep";
@@ -279,5 +280,32 @@ in
     wantedBy = ["prometheus.service"];
     serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/${config.services.prometheus.stateDir}";
     serviceConfig.ExecStart = "${pkgs.utillinux}/bin/mount -o bind /persist/var/lib/${config.services.prometheus.stateDir} /var/lib/${config.services.prometheus.stateDir}";
+  };
+
+  systemd.services.prometheus-docker-exporter = {
+    enable = true;
+    description = "Docker exporter for Prometheus";
+    after = ["docker.service"];
+    wantedBy = ["prometheus.service"];
+    serviceConfig.Restart = "always";
+    serviceConfig.ExecStartPre = [
+      "-${pkgs.docker}/bin/docker stop prometheus_docker_exporter"
+      "-${pkgs.docker}/bin/docker rm prometheus_docker_exporter"
+      "${pkgs.docker}/bin/docker pull prometheusnet/docker_exporter"
+    ];
+    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_docker_exporter --volume \"/var/run/docker.sock\":\"/var/run/docker.sock\" --publish 9417:9417 prometheusnet/docker_exporter";
+  };
+
+  systemd.services.prometheus-speedtest-exporter = {
+    enable = true;
+    description = "Speedtest.net exporter for Prometheus";
+    after = ["docker.service"];
+    wantedBy = ["prometheus.service"];
+    serviceConfig.Restart = "always";
+    serviceConfig.ExecStartPre = [
+      "-${pkgs.docker}/bin/docker stop prometheus_speedtest_exporter"
+      "-${pkgs.docker}/bin/docker rm prometheus_speedtest_exporter"
+    ];
+    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_speedtest_exporter --publish 9516:8888 localhost:5000/prometheus-speedtest-exporter";
   };
 }
