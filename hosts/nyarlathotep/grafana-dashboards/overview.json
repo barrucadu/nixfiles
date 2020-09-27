@@ -100,6 +100,7 @@
       "targets": [
         {
           "expr": "node_time_seconds{job=\"nyarlathotep-node\"} - node_boot_time_seconds{job=\"nyarlathotep-node\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -168,6 +169,7 @@
       "targets": [
         {
           "expr": "sum(rate(node_cpu_seconds_total{job=\"nyarlathotep-node\",mode!=\"idle\"}[1m])) / count(count by (cpu) (node_cpu_seconds_total{job=\"nyarlathotep-node\"}))",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -232,6 +234,7 @@
       "targets": [
         {
           "expr": "1 - (node_memory_MemAvailable_bytes{job=\"nyarlathotep-node\"} / node_memory_MemTotal_bytes{job=\"nyarlathotep-node\"})",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -307,6 +310,7 @@
       "targets": [
         {
           "expr": "pihole_status{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -400,6 +404,7 @@
       "targets": [
         {
           "expr": "pihole_dns_queries_all_types{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -484,6 +489,7 @@
       "targets": [
         {
           "expr": "pihole_unique_domains{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -559,6 +565,7 @@
       "targets": [
         {
           "expr": "scalar(node_time_seconds{job=\"nyarlathotep-node\"}) - docker_container_start_time_seconds{job=\"nyarlathotep-docker\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "{{name}}",
           "refId": "A"
@@ -639,6 +646,7 @@
       "targets": [
         {
           "expr": "count(count by (cpu) (node_cpu_seconds_total{job=\"nyarlathotep-node\"}))",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -722,6 +730,7 @@
       "targets": [
         {
           "expr": "node_memory_MemTotal_bytes{job=\"nyarlathotep-node\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -805,6 +814,7 @@
       "targets": [
         {
           "expr": "pihole_domains_being_blocked{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -889,6 +899,7 @@
       "targets": [
         {
           "expr": "pihole_ads_blocked_today{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -973,6 +984,7 @@
       "targets": [
         {
           "expr": "pihole_ads_percentage_today{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -1040,6 +1052,7 @@
       "targets": [
         {
           "expr": "1 - (node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=~\"/|/boot|/mnt/nas\"} / node_filesystem_size_bytes{job=\"nyarlathotep-node\",mountpoint=~\"/|/boot|/mnt/nas\"})",
+          "instant": true,
           "interval": "",
           "legendFormat": "{{mountpoint}}",
           "refId": "A"
@@ -1104,6 +1117,7 @@
       "targets": [
         {
           "expr": "avg(node_load5{job=\"nyarlathotep-node\"}) / count(count by (cpu) (node_cpu_seconds_total{job=\"nyarlathotep-node\"}))",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -1168,6 +1182,7 @@
       "targets": [
         {
           "expr": "avg(node_load15{job=\"nyarlathotep-node\"}) / count(count by (cpu) (node_cpu_seconds_total{job=\"nyarlathotep-node\"}))",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -1731,6 +1746,7 @@
       "targets": [
         {
           "expr": "pihole_top_queries{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "{{domain}}",
           "refId": "A"
@@ -1804,6 +1820,7 @@
       "targets": [
         {
           "expr": "pihole_top_ads{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "{{domain}}",
           "refId": "A"
@@ -1877,6 +1894,7 @@
       "targets": [
         {
           "expr": "pihole_top_sources{job=\"pihole-pihole\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "{{source}}",
           "refId": "A"
@@ -1957,12 +1975,14 @@
       "targets": [
         {
           "expr": "node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Free",
           "refId": "A"
         },
         {
           "expr": "node_filesystem_size_bytes{job=\"nyarlathotep-node\",mountpoint=\"/\"} - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Used",
           "refId": "B"
@@ -2012,12 +2032,14 @@
       "targets": [
         {
           "expr": "node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/boot\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Free",
           "refId": "A"
         },
         {
           "expr": "node_filesystem_size_bytes{job=\"nyarlathotep-node\",mountpoint=\"/boot\"} - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/boot\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Used",
           "refId": "B"
@@ -2067,12 +2089,14 @@
       "targets": [
         {
           "expr": "node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/mnt/nas\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Free",
           "refId": "A"
         },
         {
           "expr": "node_filesystem_size_bytes{job=\"nyarlathotep-node\",mountpoint=\"/mnt/nas\"} - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/mnt/nas\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Used",
           "refId": "B"
@@ -2122,12 +2146,14 @@
       "targets": [
         {
           "expr": "node_filesystem_avail_bytes{job=\"pihole-node\",mountpoint=\"/\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Free",
           "refId": "A"
         },
         {
           "expr": "node_filesystem_size_bytes{job=\"pihole-node\",mountpoint=\"/\"} - node_filesystem_avail_bytes{job=\"pihole-node\",mountpoint=\"/\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Used",
           "refId": "B"
@@ -2177,12 +2203,14 @@
       "targets": [
         {
           "expr": "node_filesystem_avail_bytes{job=\"pihole-node\",mountpoint=\"/boot\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Free",
           "refId": "A"
         },
         {
           "expr": "node_filesystem_size_bytes{job=\"pihole-node\",mountpoint=\"/boot\"} - node_filesystem_avail_bytes{job=\"pihole-node\",mountpoint=\"/boot\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Used",
           "refId": "B"
