@@ -23,7 +23,7 @@ in
 
   # Firewall
   networking.firewall.enable = true;
-  networking.firewall.trustedInterfaces = [ "lo" "enp4s0" ];
+  networking.firewall.trustedInterfaces = [ "lo" "docker0" "enp4s0" ];
   networking.firewall.allowedTCPPorts = [ 8888 ]; # for testing stuff
 
   # NFS exports
