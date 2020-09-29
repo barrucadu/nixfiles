@@ -13,17 +13,17 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "root/volatile/root";
+    { device = "local/volatile/root";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/E488-FDB6";
+    { device = "/dev/disk/by-uuid/6491-48C0";
       fsType = "vfat";
     };
 
   fileSystems."/home" =
-    { device = "root/persistent/home";
+    { device = "local/persistent/home";
       fsType = "zfs";
     };
 
@@ -33,12 +33,12 @@
     };
 
   fileSystems."/nix" =
-    { device = "root/persistent/nix";
+    { device = "local/persistent/nix";
       fsType = "zfs";
     };
 
   fileSystems."/persist" =
-    { device = "root/persistent/persist";
+    { device = "local/persistent/persist";
       fsType = "zfs";
     };
 
