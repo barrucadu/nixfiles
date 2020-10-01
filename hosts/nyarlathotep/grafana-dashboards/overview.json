@@ -1240,7 +1240,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(label_replace(pihole_forward_destinations{job=\"pihole-pihole\"}, \"target\", \"$1\", \"destination\", \"(.*)\\\\|(.*)\")) by (target)",
+          "expr": "sum(label_replace(pihole_forward_destinations{job=\"pihole-pihole\",destination=~\".*\\\\|.*\"}, \"target\", \"$1\", \"destination\", \"(.*)\\\\|(.*)\")) by (target)",
           "interval": "",
           "legendFormat": "{{target}}",
           "refId": "A"
