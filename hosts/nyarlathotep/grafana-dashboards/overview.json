@@ -1051,11 +1051,25 @@
       "pluginVersion": "6.7.4",
       "targets": [
         {
-          "expr": "1 - (node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=~\"/|/boot|/mnt/nas\"} / node_filesystem_size_bytes{job=\"nyarlathotep-node\",mountpoint=~\"/|/boot|/mnt/nas\"})",
+          "expr": "1 - (node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=~\"/boot\"} / node_filesystem_size_bytes)",
           "instant": true,
           "interval": "",
           "legendFormat": "{{mountpoint}}",
           "refId": "A"
+        },
+        {
+          "expr": "sum(1 - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",device=~\"local/.*\",mountpoint=~\"/[a-z]*\"} / node_filesystem_size_bytes)",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "\"local\"",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(1 - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",device=~\"data/.*\"} / node_filesystem_size_bytes)",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "\"data\"",
+          "refId": "C"
         }
       ],
       "timeFrom": null,
@@ -1940,8 +1954,7 @@
     },
     {
       "aliasColors": {
-        "Free": "#B877D9",
-        "Used": "#8F3BB8"
+        "Free": "#333333"
       },
       "breakPoint": "50%",
       "cacheTimeout": null,
@@ -1957,63 +1970,6 @@
         "h": 6,
         "w": 4,
         "x": 2,
-        "y": 39
-      },
-      "id": 41,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "percentageDecimals": 2,
-        "show": true,
-        "values": true
-      },
-      "legendType": "Right side",
-      "links": [],
-      "nullPointMode": "connected",
-      "pieType": "donut",
-      "strokeWidth": "1",
-      "targets": [
-        {
-          "expr": "node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/\"}",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Free",
-          "refId": "A"
-        },
-        {
-          "expr": "node_filesystem_size_bytes{job=\"nyarlathotep-node\",mountpoint=\"/\"} - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/\"}",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Used",
-          "refId": "B"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "nyarlathotep /",
-      "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
-    },
-    {
-      "aliasColors": {
-        "Free": "#B877D9",
-        "Used": "#8F3BB8"
-      },
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
-      },
-      "datasource": "prometheus",
-      "decimals": 1,
-      "fontSize": "150%",
-      "format": "bytes",
-      "gridPos": {
-        "h": 6,
-        "w": 4,
-        "x": 6,
         "y": 39
       },
       "id": 40,
@@ -2054,8 +2010,63 @@
     },
     {
       "aliasColors": {
-        "Free": "#B877D9",
-        "Used": "#8F3BB8"
+        "Free": "#333333"
+      },
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "prometheus",
+      "decimals": 1,
+      "fontSize": "150%",
+      "format": "bytes",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 39
+      },
+      "id": 41,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "percentageDecimals": 2,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Right side",
+      "links": [],
+      "nullPointMode": "connected",
+      "pieType": "donut",
+      "strokeWidth": "1",
+      "targets": [
+        {
+          "expr": "node_filesystem_avail_bytes{job=\"nyarlathotep-node\",device=\"local/volatile/root\"}",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Free",
+          "refId": "A"
+        },
+        {
+          "expr": " node_filesystem_size_bytes{job=\"nyarlathotep-node\",device=~\"local/.*\",mountpoint=~\"/[a-z]*\"} - node_filesystem_avail_bytes",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{device}}",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "nyarlathotep \"local\"",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {
+        "Free": "#333333"
       },
       "breakPoint": "50%",
       "cacheTimeout": null,
@@ -2070,7 +2081,7 @@
       "gridPos": {
         "h": 6,
         "w": 4,
-        "x": 10,
+        "x": 12,
         "y": 39
       },
       "id": 42,
@@ -2088,31 +2099,30 @@
       "strokeWidth": "1",
       "targets": [
         {
-          "expr": "node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/mnt/nas\"}",
+          "expr": "node_filesystem_avail_bytes{job=\"nyarlathotep-node\",device=\"data/nas\"}",
           "instant": true,
           "interval": "",
           "legendFormat": "Free",
           "refId": "A"
         },
         {
-          "expr": "node_filesystem_size_bytes{job=\"nyarlathotep-node\",mountpoint=\"/mnt/nas\"} - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=\"/mnt/nas\"}",
+          "expr": " node_filesystem_size_bytes{job=\"nyarlathotep-node\",device=~\"data/.*\"} - node_filesystem_avail_bytes",
           "instant": true,
           "interval": "",
-          "legendFormat": "Used",
+          "legendFormat": "{{device}}",
           "refId": "B"
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "nyarlathotep /mnt/nas",
+      "title": "nyarlathotep \"data\"",
       "transparent": true,
       "type": "grafana-piechart-panel",
       "valueName": "current"
     },
     {
       "aliasColors": {
-        "Free": "#B877D9",
-        "Used": "#8F3BB8"
+        "Free": "#333333"
       },
       "breakPoint": "50%",
       "cacheTimeout": null,
@@ -2127,7 +2137,7 @@
       "gridPos": {
         "h": 6,
         "w": 4,
-        "x": 14,
+        "x": 16,
         "y": 39
       },
       "id": 44,
@@ -2168,8 +2178,7 @@
     },
     {
       "aliasColors": {
-        "Free": "#B877D9",
-        "Used": "#8F3BB8"
+        "Free": "#333333"
       },
       "breakPoint": "50%",
       "cacheTimeout": null,
@@ -2184,7 +2193,7 @@
       "gridPos": {
         "h": 6,
         "w": 4,
-        "x": 18,
+        "x": 20,
         "y": 39
       },
       "id": 43,
