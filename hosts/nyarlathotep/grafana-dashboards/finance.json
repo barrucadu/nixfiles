@@ -1,0 +1,3651 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:321",
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "panels": [],
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "finance",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 21,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "pluginVersion": "6.7.4",
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "",
+          "groupBy": [],
+          "measurement": "count_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"cleared\" + \"pending\" + \"uncleared\" FROM \"count_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cleared"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "10,25",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Transactions",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "finance",
+      "decimals": null,
+      "fontSize": "80%",
+      "format": "currencyGBP",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "id": 4,
+      "interval": null,
+      "legend": {
+        "header": "",
+        "percentage": true,
+        "percentageDecimals": 2,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Right side",
+      "links": [],
+      "nullPointMode": "connected",
+      "pieType": "donut",
+      "strokeWidth": "1",
+      "targets": [
+        {
+          "alias": "Cash",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Investments",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:investments[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Receivable",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:receivable[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:receivable[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Asset Allocation",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "finance",
+      "fontSize": "80%",
+      "format": "currencyGBP",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "id": 2,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "percentageDecimals": 2,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Right side",
+      "links": [],
+      "nullPointMode": "connected",
+      "pieType": "donut",
+      "strokeWidth": "1",
+      "targets": [
+        {
+          "alias": "Nationwide",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash:nationwide[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Starling",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:starling[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash:starling[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Petty Cash",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:petty[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash:petty[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Cash",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "finance",
+      "decimals": null,
+      "fontSize": "80%",
+      "format": "currencyGBP",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "id": 3,
+      "interval": null,
+      "legend": {
+        "header": "",
+        "percentage": true,
+        "percentageDecimals": 2,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Right side",
+      "links": [],
+      "nullPointMode": "connected",
+      "pieType": "donut",
+      "strokeWidth": "1",
+      "targets": [
+        {
+          "alias": "S&S ISA",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:cavendish[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:investments:cavendish[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Innovative Finance ISA",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:fundingcircle[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:investments:fundingcircle[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Premium Bonds",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:nsi:premium_bonds[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:investments:nsi:premium_bonds[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Cryptocurrency",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:coinbase[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:investments:coinbase[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Investments",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "finance",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 3
+      },
+      "id": 17,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "pluginVersion": "6.7.4",
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "",
+          "groupBy": [],
+          "measurement": "count_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT * FROM \"count_total\" WHERE $timeFilter",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cleared"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "10,25",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Cleared",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "finance",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 3,
+        "y": 3
+      },
+      "id": 18,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "pluginVersion": "6.7.4",
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "",
+          "groupBy": [],
+          "measurement": "count_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT * FROM \"count_total\" WHERE $timeFilter",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "uncleared"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "10,25",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Uncleared",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "finance",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 6
+      },
+      "id": 19,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "pluginVersion": "6.7.4",
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "",
+          "groupBy": [],
+          "measurement": "count_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT * FROM \"count_total\" WHERE $timeFilter",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pending"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "10,25",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Bookkeeping",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "finance",
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 3,
+        "y": 6
+      },
+      "id": 20,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "pluginVersion": "6.7.4",
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "",
+          "groupBy": [],
+          "measurement": "count_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"pending\" / (\"pending\" + \"cleared\" + \"uncleared\") FROM \"count_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "/cleared"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "10,25",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Bookkeeping",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {
+        "Delta": "blue",
+        "Total Assets": "green",
+        "Total Liabilities": "red"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 23,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "Total Assets",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Total Liabilities",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"liabilities[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Delta",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets[£]\" +\"liabilities[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Net Worth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Delta": "blue",
+        "Liability": "red",
+        "Put Aside": "green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 9,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 24,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "Put Aside",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:pending:amex[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Liability",
+          "groupBy": [],
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"liabilities:creditcard:amex[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Delta",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "market_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:pending:amex[£]\" +\"liabilities:creditcard:amex[£]\" FROM \"market_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Credit Card",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "columns": [
+        {
+          "text": "Min",
+          "value": "min"
+        },
+        {
+          "text": "Max",
+          "value": "max"
+        },
+        {
+          "text": "Avg",
+          "value": "avg"
+        },
+        {
+          "text": "Current",
+          "value": "current"
+        }
+      ],
+      "datasource": "finance",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 9
+      },
+      "id": 47,
+      "pageSize": null,
+      "pluginVersion": "6.7.4",
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Currency",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": null,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "string",
+          "unit": "none"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 4,
+          "mappingType": 1,
+          "pattern": "/Min|Max|Avg|Current/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "currencyGBP"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "BTC",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"BTC[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "EUR[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "ETH",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"ETH[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "USD[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "LTC",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"LTC[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "USD[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "EUR",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"EUR[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "USD[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "JPY",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"JPY[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "USD[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "USD",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"USD[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "USD[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "VANEA",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"VANEA[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "USD[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Commodities",
+      "transform": "timeseries_aggregations",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 26,
+      "panels": [],
+      "title": "Savings",
+      "type": "row"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": "finance",
+      "decimals": 1,
+      "format": "currencyGBP",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 45,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "#FFA6B0",
+        "full": false,
+        "lineColor": "#FFA6B0",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT\n\"assets:investments:nsi:premium_bonds:emergency[£]\" - 5000 +\n\"assets:cash:nationwide:flexdirect:float[£]\"  + \"assets:cash:starling:float[£]\" - 1000 +\n\"assets:cash:nationwide:flexdirect:saved:food[£]\" - 1000 +\n\"assets:cash:nationwide:flexdirect:saved:gift[£]\" - 150 +\n\"assets:cash:nationwide:flexdirect:saved:graze[£]\" - 50 +\n\"assets:cash:nationwide:flexdirect:saved:health[£]\" - 500 +\n\"assets:cash:nationwide:flexdirect:saved:household[£]\" - 300 +\n\"assets:investments:nsi:premium_bonds:move[£]\" - 5000 +\n\"assets:cash:starling:patreon[£]\" - 20 +\n\"assets:cash:nationwide:flexdirect:saved:phone[£]\" - 100 +\n\"assets:cash:starling:protonmail[£]\" - 50 +\n\"assets:cash:nationwide:flexdirect:saved:rent[£]\" - 4000 +\n\"assets:cash:starling:roll20[£]\" - 20 +\n\"assets:cash:nationwide:flexdirect:saved:travel[£]\" - 750 +\n\"assets:cash:nationwide:flexdirect:saved:utilities[£]\" - 1000 +\n\"assets:cash:starling:web[£]\" - 500\nFROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "-1000,0",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Off By",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 0,
+        "y": 21
+      },
+      "id": 41,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "decimals": 1,
+            "mappings": [],
+            "max": 5000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 2500
+                },
+                {
+                  "color": "green",
+                  "value": 3750
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:nsi:premium_bonds:emergency[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Emergency",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 3,
+        "y": 21
+      },
+      "id": 43,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 1000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 500
+                },
+                {
+                  "color": "green",
+                  "value": 750
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:float[£]\"  + \"assets:cash:starling:float[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Float",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 6,
+        "y": 21
+      },
+      "id": 28,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 1000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 500
+                },
+                {
+                  "color": "green",
+                  "value": 750
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:food[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Food",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 9,
+        "y": 21
+      },
+      "id": 29,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 150,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "green",
+                  "value": 112.5
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:gift[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Gift",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 12,
+        "y": 21
+      },
+      "id": 30,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 50,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 25
+                },
+                {
+                  "color": "green",
+                  "value": 37.5
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:graze[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Graze",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 15,
+        "y": 21
+      },
+      "id": 31,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 500,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 250
+                },
+                {
+                  "color": "green",
+                  "value": 375
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:health[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Health",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 18,
+        "y": 21
+      },
+      "id": 32,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 300,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 150
+                },
+                {
+                  "color": "green",
+                  "value": 225
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:household[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Household",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 21,
+        "y": 21
+      },
+      "id": 42,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "decimals": 1,
+            "mappings": [],
+            "max": 5000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 2500
+                },
+                {
+                  "color": "green",
+                  "value": 3750
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:nsi:premium_bonds:move[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Move",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 0,
+        "y": 27
+      },
+      "id": 37,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 20,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 10
+                },
+                {
+                  "color": "green",
+                  "value": 15
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:starling:patreon[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Patreon",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 3,
+        "y": 27
+      },
+      "id": 33,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 50
+                },
+                {
+                  "color": "green",
+                  "value": 75
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:phone[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Phone",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 6,
+        "y": 27
+      },
+      "id": 38,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 50,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 25
+                },
+                {
+                  "color": "green",
+                  "value": 37.5
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:starling:protonmail[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Protonmail",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 9,
+        "y": 27
+      },
+      "id": 34,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "decimals": 1,
+            "mappings": [],
+            "max": 4000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 2000
+                },
+                {
+                  "color": "green",
+                  "value": 3000
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:rent[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Rent",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 12,
+        "y": 27
+      },
+      "id": 39,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 20,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 10
+                },
+                {
+                  "color": "green",
+                  "value": 15
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:starling:roll20[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Roll20",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 15,
+        "y": 27
+      },
+      "id": 35,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 750,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 375
+                },
+                {
+                  "color": "green",
+                  "value": 562.5
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:travel[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Travel",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 18,
+        "y": 27
+      },
+      "id": 36,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 1000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 500
+                },
+                {
+                  "color": "green",
+                  "value": 750
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:utilities[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Utilities",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "finance",
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 21,
+        "y": 27
+      },
+      "id": 40,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 500,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 250
+                },
+                {
+                  "color": "green",
+                  "value": 375
+                }
+              ]
+            },
+            "unit": "currencyGBP"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "normal_dailies_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:starling:web[£]\" FROM \"normal_dailies_total\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Web",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 49,
+      "panels": [],
+      "title": "Economy",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 34
+      },
+      "hiddenSeries": false,
+      "id": 51,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "BTC",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"BTC[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "BTC[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Bitcoin Unit Value",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1258",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1259",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 34
+      },
+      "hiddenSeries": false,
+      "id": 52,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "ETH",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"ETH[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "BTC[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Ethereum Unit Value",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1258",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1259",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 34
+      },
+      "hiddenSeries": false,
+      "id": 53,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "LTC",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"LTC[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "BTC[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Litecoin Unit Value",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1258",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1259",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 42
+      },
+      "hiddenSeries": false,
+      "id": 54,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "EUR",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"EUR[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "BTC[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Euro Unit Value",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1258",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1259",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 42
+      },
+      "hiddenSeries": false,
+      "id": 55,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "JPY",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"JPY[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "BTC[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Japanese Yen Unit Value",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1258",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1259",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 42
+      },
+      "hiddenSeries": false,
+      "id": 56,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "USD",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"USD[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "BTC[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "US Dollar Unit Value",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1258",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1259",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "finance",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 50
+      },
+      "hiddenSeries": false,
+      "id": 57,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "alias": "VANEA",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"VANEA[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "BTC[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Vanguard LifeStrategy 100% (Acc) Fund Unit Value",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1258",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1259",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 22,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now/y",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Personal Finances",
+  "uid": "H-xV7PFMz",
+  "variables": {
+    "list": []
+  },
+  "version": 1
+}

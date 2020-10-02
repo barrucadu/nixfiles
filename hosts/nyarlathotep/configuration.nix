@@ -231,14 +231,20 @@ in
           url = "http://${config.services.prometheus.listenAddress}";
           type = "prometheus";
         }
-      ];
-      dashboards = [
         {
-          name = "overview.json";
-          folder = "My Dashboards";
-          options.path = pkgs.writeTextDir "overview.json" (fileContents ./grafana-dashboards/overview.json);
+          name = "finance";
+          url = "http://localhost:8086";
+          type = "influxdb";
+          database = "finance";
         }
       ];
+      dashboards =
+        let dashboard = name: json: { name = name; folder = "My Dashboards"; options.path = pkgs.writeTextDir name json; };
+        in
+          [
+            (dashboard "overview.json" (fileContents ./grafana-dashboards/overview.json))
+            (dashboard "finance.json" (fileContents ./grafana-dashboards/finance.json))
+          ];
     };
   };
 
