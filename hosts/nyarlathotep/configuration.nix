@@ -45,7 +45,7 @@ in
 
   # Make / volatile
   boot.initrd.postDeviceCommands = mkAfter ''
-    zfs rollback -r root/volatile/root@blank
+    zfs rollback -r local/volatile/root@blank
   '';
 
   services.openssh.hostKeys = [
