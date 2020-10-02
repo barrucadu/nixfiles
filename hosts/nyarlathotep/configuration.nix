@@ -200,6 +200,9 @@ in
     ];
 
   # hledger prices
+  services.influxdb.enable = true;
+  services.influxdb.dataDir = "/persist/var/lib/influxdb";
+
   systemd.timers.hledger-scripts = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
@@ -209,7 +212,7 @@ in
   systemd.services.hledger-scripts = {
     description = "Run hledger scripts";
     serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh only-prices'";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh'";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
   };
