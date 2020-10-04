@@ -42,6 +42,16 @@ in
     private dir = /persist/var/lib/samba/private
   '';
 
+  # Guest user for NFS / Samba
+  users.extraUsers.notbarrucadu = {
+    uid = 1001;
+    description = "Guest user";
+    isNormalUser = true;
+    group = "users";
+    hashedPassword = fileContents /etc/nixos/secrets/passwd-notbarrucadu.txt;
+    shell = "/run/current-system/sw/bin/nologin";
+  };
+
   # Make / volatile
   boot.initrd.postDeviceCommands = mkAfter ''
     zfs rollback -r local/volatile/root@blank
