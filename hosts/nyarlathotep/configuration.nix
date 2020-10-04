@@ -41,12 +41,15 @@ in
     log file = /var/log/samba/%m.log
     private dir = /persist/var/lib/samba/private
   '';
-  services.samba.syncPasswordsByPam = true;
 
   # Make / volatile
   boot.initrd.postDeviceCommands = mkAfter ''
     zfs rollback -r local/volatile/root@blank
   '';
+
+  users.mutableUsers = mkForce false;
+  users.extraUsers.barrucadu.initialPassword = mkForce null;
+  users.extraUsers.barrucadu.hashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
 
   services.openssh.hostKeys = [
     {
@@ -64,7 +67,6 @@ in
 
   systemd.tmpfiles.rules = [
     "L+ /etc/nixos - - - - /persist/etc/nixos"
-    "L+ /etc/shadow - - - - /persist/etc/shadow"
   ];
 
   # caddy
