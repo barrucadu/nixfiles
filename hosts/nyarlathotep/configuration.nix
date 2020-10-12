@@ -8,10 +8,16 @@ let
 in
 
 {
+  ###############################################################################
+  ## General
+  ###############################################################################
+
   networking.hostName = "nyarlathotep";
   networking.hostId = "4a592971"; # ZFS needs one of these
   boot.supportedFilesystems = [ "zfs" ];
 
+  # Only run monitoring scripts every 12 hours: I can't replace a
+  # broken HDD if I'm away from home.
   services.monitoring-scripts.OnCalendar = "0/12:00:00";
 
   # Bootloader
@@ -25,6 +31,45 @@ in
   networking.firewall.enable = true;
   networking.firewall.trustedInterfaces = [ "lo" "docker0" "enp4s0" ];
   networking.firewall.allowedTCPPorts = [ 8888 ]; # for testing stuff
+
+
+  ###############################################################################
+  ## Make / volatile
+  ###############################################################################
+
+  boot.initrd.postDeviceCommands = mkAfter ''
+    zfs rollback -r local/volatile/root@blank
+  '';
+
+  # Switch back to immutable users
+  users.mutableUsers = mkForce false;
+  users.extraUsers.barrucadu.initialPassword = mkForce null;
+  users.extraUsers.barrucadu.hashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
+
+  # Store data in /persist (see also configuration elsewhere in this
+  # file)
+  services.openssh.hostKeys = [
+    {
+      path = "/persist/etc/ssh/ssh_host_ed25519_key";
+      type = "ed25519";
+    }
+    {
+      path = "/persist/etc/ssh/ssh_host_rsa_key";
+      type = "rsa";
+      bits = 4096;
+    }
+  ];
+
+  services.syncthing.dataDir = "/persist/var/lib/syncthing";
+
+  systemd.tmpfiles.rules = [
+    "L+ /etc/nixos - - - - /persist/etc/nixos"
+  ];
+
+
+  ###############################################################################
+  ## Network storage
+  ###############################################################################
 
   # NFS exports
   services.nfs.server.enable = true;
@@ -52,34 +97,11 @@ in
     shell = "/run/current-system/sw/bin/nologin";
   };
 
-  # Make / volatile
-  boot.initrd.postDeviceCommands = mkAfter ''
-    zfs rollback -r local/volatile/root@blank
-  '';
 
-  users.mutableUsers = mkForce false;
-  users.extraUsers.barrucadu.initialPassword = mkForce null;
-  users.extraUsers.barrucadu.hashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
+  ###############################################################################
+  ## Reverse proxy
+  ###############################################################################
 
-  services.openssh.hostKeys = [
-    {
-      path = "/persist/etc/ssh/ssh_host_ed25519_key";
-      type = "ed25519";
-    }
-    {
-      path = "/persist/etc/ssh/ssh_host_rsa_key";
-      type = "rsa";
-      bits = 4096;
-    }
-  ];
-
-  services.syncthing.dataDir = "/persist/var/lib/syncthing";
-
-  systemd.tmpfiles.rules = [
-    "L+ /etc/nixos - - - - /persist/etc/nixos"
-  ];
-
-  # caddy
   services.caddy.enable = true;
   services.caddy.config = ''
     http://nyarlathotep:80 {
@@ -122,7 +144,11 @@ in
     }
   '';
 
-  # bookdb
+
+  ###############################################################################
+  ## bookdb - https://github.com/barrucadu/bookdb
+  ###############################################################################
+
   services.bookdb.enable = true;
   services.bookdb.image = "localhost:5000/bookdb:latest";
   services.bookdb.baseURI = "http://bookdb.nyarlathotep";
@@ -141,7 +167,11 @@ in
     serviceConfig.Group = "users";
   };
 
-  # bookmarks
+
+  ###############################################################################
+  ## bookmarks - https://github.com/barrucadu/bookmarks
+  ###############################################################################
+
   services.bookmarks.enable = true;
   services.bookmarks.image = "localhost:5000/bookmarks:latest";
   services.bookmarks.baseURI = "http://bookmarks.nyarlathotep";
@@ -162,20 +192,22 @@ in
     serviceConfig.Group = "users";
   };
 
-  # docker registry
-  services.dockerRegistry.enable = true;
-  services.dockerRegistry.enableGarbageCollect = true;
-  services.dockerRegistry.storagePath = "/persist/var/lib/docker-registry";
-  virtualisation.docker.extraOptions = "--insecure-registry=localhost:5000";
 
-  # finder
+  ###############################################################################
+  ## finder
+  ###############################################################################
+
   services.finder.enable = true;
   services.finder.image = "localhost:5000/finder:latest";
   services.finder.httpPort = 3002;
   services.finder.dockerVolumeDir = /persist/docker-volumes/finder;
   services.finder.mangaDir = /mnt/nas/manga;
 
-  # rtorrent
+
+  ###############################################################################
+  ## rTorrent
+  ###############################################################################
+
   systemd.services.rtorrent = {
     enable   = true;
     wantedBy = [ "default.target" ];
@@ -190,6 +222,7 @@ in
     };
   };
 
+  # todo: either dockerise this or properly package it
   systemd.services.flood = {
     enable   = true;
     wantedBy = [ "default.target" ];
@@ -203,25 +236,11 @@ in
     };
   };
 
-  # hledger prices
-  services.influxdb.enable = true;
-  services.influxdb.dataDir = "/persist/var/lib/influxdb";
 
-  systemd.timers.hledger-scripts = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "*-*-* 21:00:00";
-    };
-  };
-  systemd.services.hledger-scripts = {
-    description = "Run hledger scripts";
-    serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh'";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
-  };
+  ###############################################################################
+  # Monitoring & Dashboards
+  ###############################################################################
 
-  # monitoring / dashboards
   services.grafana = {
     enable = true;
     port = 3004;
@@ -322,7 +341,21 @@ in
     serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_speedtest_exporter --publish 9516:8888 localhost:5000/prometheus-speedtest-exporter";
   };
 
-  # auto-tag music files
+
+  ###############################################################################
+  ## Docker registry (currently just used on this machine)
+  ###############################################################################
+
+  services.dockerRegistry.enable = true;
+  services.dockerRegistry.enableGarbageCollect = true;
+  services.dockerRegistry.storagePath = "/persist/var/lib/docker-registry";
+  virtualisation.docker.extraOptions = "--insecure-registry=localhost:5000";
+
+
+  ###############################################################################
+  # Automatic music tagging
+  ###############################################################################
+
   systemd.services.tag-podcasts = {
     enable = true;
     description = "Automatically tag new podcast files";
@@ -354,6 +387,33 @@ in
       Group = "users";
     };
   };
+
+
+  ###############################################################################
+  # Daily hledger price fetch & influxdb import
+  ###############################################################################
+
+  services.influxdb.enable = true;
+  services.influxdb.dataDir = "/persist/var/lib/influxdb";
+
+  systemd.timers.hledger-scripts = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 21:00:00";
+    };
+  };
+  systemd.services.hledger-scripts = {
+    description = "Run hledger scripts";
+    serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh'";
+    serviceConfig.User = "barrucadu";
+    serviceConfig.Group = "users";
+  };
+
+
+  ###############################################################################
+  ## Extra packages
+  ###############################################################################
 
   environment.systemPackages = with pkgs;
     [
