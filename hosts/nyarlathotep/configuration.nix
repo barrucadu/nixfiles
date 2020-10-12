@@ -203,14 +203,6 @@ in
     };
   };
 
-  environment.systemPackages = with pkgs;
-    [
-      mktorrent
-      nodejs-12_x
-      rtorrent
-      tmux
-    ];
-
   # hledger prices
   services.influxdb.enable = true;
   services.influxdb.dataDir = "/persist/var/lib/influxdb";
@@ -329,4 +321,45 @@ in
     ];
     serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_speedtest_exporter --publish 9516:8888 localhost:5000/prometheus-speedtest-exporter";
   };
+
+  # auto-tag music files
+  systemd.services.tag-podcasts = {
+    enable = true;
+    description = "Automatically tag new podcast files";
+    wantedBy = ["multi-user.target"];
+    path = with pkgs; [ inotifyTools id3v2 ];
+    unitConfig.RequiresMountsFor = "/mnt/nas";
+    serviceConfig = {
+      WorkingDirectory = "/mnt/nas/music/Podcasts/";
+      ExecStart = pkgs.writeShellScript "tag-podcasts.sh" (fileContents ./tag-podcasts.sh);
+      User = "barrucadu";
+      Group = "users";
+      Restart = "always";
+    };
+  };
+
+  systemd.paths.flac-and-tag-album = {
+    enable = true;
+    description = "Automatically flac and tag new albums";
+    wantedBy = ["multi-user.target"];
+    unitConfig.RequiresMountsFor = "/mnt/nas";
+    pathConfig.PathExistsGlob = "/mnt/nas/music/to_convert/in/*";
+  };
+  systemd.services.flac-and-tag-album = {
+    path = with pkgs; [ flac ];
+    serviceConfig = {
+      WorkingDirectory = "/mnt/nas/music/to_convert/in/";
+      ExecStart = pkgs.writeShellScript "flac-and-tag-album.sh" (fileContents ./flac-and-tag-album.sh);
+      User = "barrucadu";
+      Group = "users";
+    };
+  };
+
+  environment.systemPackages = with pkgs;
+    [
+      mktorrent
+      nodejs-12_x
+      rtorrent
+      tmux
+    ];
 }
