@@ -104,37 +104,51 @@ in
 
   services.caddy.enable = true;
   services.caddy.config = ''
+    (restrict_vlan) {
+      redir 307 {
+        if {remote} starts_with 10.0.20.
+        / http://help.lan
+      }
+    }
+
     http://nyarlathotep:80 {
+      import restrict_vlan
       gzip
       root /persist/srv/http/nyarlathotep
     }
 
     http://bookdb.nyarlathotep:80 {
+      import restrict_vlan
       gzip
       proxy / http://localhost:${toString config.services.bookdb.httpPort}
     }
 
     http://bookmarks.nyarlathotep:80 {
+      import restrict_vlan
       gzip
       proxy / http://localhost:${toString config.services.bookmarks.httpPort}
     }
 
     http://flood.nyarlathotep:80 {
+      import restrict_vlan
       gzip
       proxy / http://localhost:3001
     }
 
     http://finder.nyarlathotep:80 {
+      import restrict_vlan
       gzip
       proxy / http://localhost:${toString config.services.finder.httpPort}
     }
 
     http://prometheus.nyarlathotep:80 {
+      import restrict_vlan
       gzip
       proxy / http://localhost:9090
     }
 
     http://grafana.nyarlathotep:80 {
+      import restrict_vlan
       gzip
       proxy / http://localhost:${toString config.services.grafana.port}
     }
