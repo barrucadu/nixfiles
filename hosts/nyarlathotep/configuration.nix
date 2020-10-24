@@ -106,7 +106,7 @@ in
   services.caddy.config = ''
     http://nyarlathotep:80 {
       gzip
-      root /persist/srv/http
+      root /persist/srv/http/nyarlathotep
     }
 
     http://bookdb.nyarlathotep:80 {
@@ -137,6 +137,48 @@ in
     http://grafana.nyarlathotep:80 {
       gzip
       proxy / http://localhost:${toString config.services.grafana.port}
+    }
+
+    http://help.lan:80 {
+      redir 302 {
+        if {remote} starts_with 10.0.0.
+        / http://vlan1.help.lan
+      }
+      redir 302 {
+        if {remote} starts_with 10.0.10.
+        / http://vlan10.help.lan
+      }
+      redir 302 {
+        if {remote} starts_with 10.0.20.
+        / http://vlan20.help.lan
+      }
+    }
+
+    http://vlan1.help.lan:80 {
+      redir 302 {
+        if {remote} not_starts_with 10.0.0.
+        / http://help.lan
+      }
+      gzip
+      root /persist/srv/http/vlan1.help.lan
+    }
+
+    http://vlan10.help.lan:80 {
+      redir 302 {
+        if {remote} not_starts_with 10.0.10.
+        / http://help.lan
+      }
+      gzip
+      root /persist/srv/http/vlan10.help.lan
+    }
+
+    http://vlan20.help.lan:80 {
+      redir 302 {
+        if {remote} not_starts_with 10.0.20.
+        / http://help.lan
+      }
+      gzip
+      root /persist/srv/http/vlan20.help.lan
     }
 
     http://*:80 {
