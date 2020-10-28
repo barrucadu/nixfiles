@@ -104,99 +104,102 @@ in
 
   services.caddy.enable = true;
   services.caddy.config = ''
+    (vlan_matchers) {
+      @vlan1 remote_ip 10.0.0.0/24
+      @not_vlan1 not remote_ip 10.0.0.0/24
+
+      @vlan10 remote_ip 10.0.10.0/24
+      @not_vlan10 not remote_ip 10.0.10.0/24
+
+      @vlan20 remote_ip 10.0.20.0/24
+      @not_vlan20 not remote_ip 10.0.20.0/24
+    }
+
     (restrict_vlan) {
-      redir 307 {
-        if {remote} starts_with 10.0.20.
-        / http://help.lan
-      }
+      import vlan_matchers
+      redir @vlan20 http://help.lan 307
     }
 
     http://nyarlathotep:80 {
       import restrict_vlan
-      gzip
-      root /persist/srv/http/nyarlathotep
+      encode gzip
+      file_server {
+        root /persist/srv/http/nyarlathotep
+      }
     }
 
     http://bookdb.nyarlathotep:80 {
       import restrict_vlan
-      gzip
-      proxy / http://localhost:${toString config.services.bookdb.httpPort}
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.bookdb.httpPort}
     }
 
     http://bookmarks.nyarlathotep:80 {
       import restrict_vlan
-      gzip
-      proxy / http://localhost:${toString config.services.bookmarks.httpPort}
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.bookmarks.httpPort}
     }
 
     http://flood.nyarlathotep:80 {
       import restrict_vlan
-      gzip
-      proxy / http://localhost:3001
+      encode gzip
+      reverse_proxy http://localhost:3001
     }
 
     http://finder.nyarlathotep:80 {
       import restrict_vlan
-      gzip
-      proxy / http://localhost:${toString config.services.finder.httpPort}
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.finder.httpPort}
     }
 
     http://prometheus.nyarlathotep:80 {
       import restrict_vlan
-      gzip
-      proxy / http://localhost:9090
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.prometheus.port}
     }
 
     http://grafana.nyarlathotep:80 {
       import restrict_vlan
-      gzip
-      proxy / http://localhost:${toString config.services.grafana.port}
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.grafana.port}
     }
 
     http://help.lan:80 {
-      redir 302 {
-        if {remote} starts_with 10.0.0.
-        / http://vlan1.help.lan
-      }
-      redir 302 {
-        if {remote} starts_with 10.0.10.
-        / http://vlan10.help.lan
-      }
-      redir 302 {
-        if {remote} starts_with 10.0.20.
-        / http://vlan20.help.lan
-      }
+      import vlan_matchers
+      redir @vlan1 http://vlan1.help.lan 302
+      redir @vlan10 http://vlan10.help.lan 302
+      redir @vlan20 http://vlan20.help.lan 302
     }
 
     http://vlan1.help.lan:80 {
-      redir 302 {
-        if {remote} not_starts_with 10.0.0.
-        / http://help.lan
+      import vlan_matchers
+      encode gzip
+      redir @not_vlan1 http://help.lan 302
+      file_server {
+        root /persist/srv/http/vlan1.help.lan
       }
-      gzip
-      root /persist/srv/http/vlan1.help.lan
     }
 
     http://vlan10.help.lan:80 {
-      redir 302 {
-        if {remote} not_starts_with 10.0.10.
-        / http://help.lan
+      import vlan_matchers
+      encode gzip
+      redir @not_vlan10 http://help.lan 302
+      file_server {
+        root /persist/srv/http/vlan10.help.lan
       }
-      gzip
-      root /persist/srv/http/vlan10.help.lan
     }
 
     http://vlan20.help.lan:80 {
-      redir 302 {
-        if {remote} not_starts_with 10.0.20.
-        / http://help.lan
+      import vlan_matchers
+      encode gzip
+      redir @not_vlan20 http://help.lan 302
+      file_server {
+        root /persist/srv/http/vlan20.help.lan
       }
-      gzip
-      root /persist/srv/http/vlan20.help.lan
     }
 
     http://*:80 {
-      status 421 /
+      respond * 421
     }
   '';
 
@@ -307,7 +310,7 @@ in
       datasources = [
         {
           name = "prometheus";
-          url = "http://${config.services.prometheus.listenAddress}";
+          url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
           type = "prometheus";
         }
         {
@@ -329,7 +332,8 @@ in
 
   services.prometheus = {
     enable = true;
-    listenAddress = "127.0.0.1:9090";
+    listenAddress = "127.0.0.1";
+    port = 9090;
     globalConfig.scrape_interval = "15s";
     scrapeConfigs = [
       {
