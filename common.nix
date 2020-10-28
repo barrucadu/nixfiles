@@ -238,7 +238,7 @@ with lib;
 
         # Packages to install if X is not enabled.
         noxorg = [
-          emacs26-nox
+          emacs-nox
         ];
 
         # Packages to install if X is enabled.
