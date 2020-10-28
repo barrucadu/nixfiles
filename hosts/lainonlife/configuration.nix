@@ -66,35 +66,32 @@ in
     }
 
     lainon.life {
-      log / stdout "{host} {combined}"
-      gzip
+      encode gzip
 
-      root /srv/http/www
-
-      proxy /radio/ http://localhost:8000 {
-        without /radio
-        transparent
+      route /radio/* {
+        uri strip_prefix /radio
+        reverse_proxy http://localhost:8000
       }
 
-      proxy /graphs/ http://localhost:8001 {
-        without /graphs
+      route /graphs/* {
+        uri strip_prefix /graphs
+        reverse_proxy http://localhost:8001
       }
 
-      proxy /background http://localhost:8002
-      proxy /upload     http://localhost:8002
-      proxy /playlist   http://localhost:8002
-      proxy /dj         http://localhost:8002
-      proxy /admin      http://localhost:8002
+      reverse_proxy /background http://localhost:8002
+      reverse_proxy /upload     http://localhost:8002
+      reverse_proxy /playlist/* http://localhost:8002
+      reverse_proxy /dj         http://localhost:8002
+      reverse_proxy /admin      http://localhost:8002
+
+      file_server {
+        root /srv/http/www
+      }
     }
 
     ${config.services.pleroma.domain} {
-      log / stdout "{host} {combined}"
-      gzip
-
-      proxy / http://127.0.0.1:${toString config.services.pleroma.httpPort} {
-        websocket
-        transparent
-      }
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
     }
   '';
 
