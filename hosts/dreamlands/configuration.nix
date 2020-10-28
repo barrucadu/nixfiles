@@ -56,13 +56,7 @@ in
 
   # WWW
   services.caddy.enable = true;
-  services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
-    (basics) {
-      log / stdout "{host} {combined}"
-      gzip
-    }
-
     barrucadu.dev {
       redir https://www.barrucadu.dev{uri}
     }
@@ -72,48 +66,32 @@ in
     }
 
     www.barrucadu.dev {
-      import basics
-
-      proxy / http://127.0.0.1:${toString frontendHttpPort} {
-        transparent
-      }
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString frontendHttpPort}
     }
 
     registry.barrucadu.dev {
-      import basics
-
-      basicauth /v2 registry ${fileContents /etc/nixos/secrets/registry-password.txt}
-
-      header /v2 Docker-Distribution-Api-Version "registry/2.0"
-
-      proxy /v2 http://127.0.0.1:${toString registryHttpPort} {
-        transparent
+      encode gzip
+      basicauth /v2/* {
+        registry ${fileContents /etc/nixos/secrets/registry-password-hashed.txt}
       }
+      header /v2/* Docker-Distribution-Api-Version "registry/2.0"
+      reverse_proxy /v2/* http://127.0.0.1:${toString registryHttpPort}
     }
 
     event-api.barrucadu.dev {
-      import basics
-
-      proxy / http://127.0.0.1:${toString eventApiHttpPort} {
-        transparent
-      }
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString eventApiHttpPort}
     }
 
     cd.barrucadu.dev {
-      import basics
-
-      proxy / http://127.0.0.1:${toString concourseHttpPort} {
-        transparent
-        websocket
-      }
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString concourseHttpPort}
     }
 
     git.barrucadu.dev {
-      import basics
-
-      proxy / http://127.0.0.1:${toString giteaHttpPort} {
-        transparent
-      }
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString giteaHttpPort}
     }
   '';
 

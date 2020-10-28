@@ -45,6 +45,12 @@ with lib;
     # Enable passwd and co.
     users.mutableUsers = true;
 
+    # Upgrade packages and reboot if needed
+    system.autoUpgrade.enable = true;
+    system.autoUpgrade.allowReboot = true;
+    system.autoUpgrade.channel = https://nixos.org/channels/nixos-20.09;
+    system.autoUpgrade.dates = "06:45";
+
 
     #############################################################################
     ## Locale
@@ -232,7 +238,7 @@ with lib;
 
         # Packages to install if X is not enabled.
         noxorg = [
-          emacs26-nox
+          emacs-nox
         ];
 
         # Packages to install if X is enabled.

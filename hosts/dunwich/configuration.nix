@@ -33,21 +33,25 @@ in
   services.caddy.enable = true;
   services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
-    (basics) {
-      log / stdout "{host} {combined}"
-      gzip
-    }
-
     # add headers solely to look good if people run
     # securityheaders.com on my domains
     (security_theatre) {
-      header / Access-Control-Allow-Origin "*"
-      header / Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
-      header / Referrer-Policy "strict-origin-when-cross-origin"
-      header / Strict-Transport-Security "max-age=31536000; includeSubDomains"
-      header / X-Content-Type-Options "nosniff"
-      header / X-Frame-Options "SAMEORIGIN"
-      header / X-XSS-Protection "1; mode=block"
+      header * Access-Control-Allow-Origin "*"
+      header * Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
+      header * Referrer-Policy "strict-origin-when-cross-origin"
+      header * Strict-Transport-Security "max-age=31536000; includeSubDomains"
+      header * X-Content-Type-Options "nosniff"
+      header * X-Frame-Options "SAMEORIGIN"
+      header * X-XSS-Protection "1; mode=block"
+    }
+    (reverse_proxy_security_theatre) {
+      header_down * Access-Control-Allow-Origin "*"
+      header_down * Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
+      header_down * Referrer-Policy "strict-origin-when-cross-origin"
+      header_down * Strict-Transport-Security "max-age=31536000; includeSubDomains"
+      header_down * X-Content-Type-Options "nosniff"
+      header_down * X-Frame-Options "SAMEORIGIN"
+      header_down * X-XSS-Protection "1; mode=block"
     }
 
     barrucadu.co.uk {
@@ -71,147 +75,62 @@ in
     }
 
     www.barrucadu.co.uk {
-      import basics
-      root /srv/http/barrucadu.co.uk/www
-
       import security_theatre
+      encode gzip
 
-      header /fonts     Cache-Control "public, immutable, max-age=31536000"
-      header /logos     Cache-Control "public, immutable, max-age=31536000"
+      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
+      header /logos/*   Cache-Control "public, immutable, max-age=31536000"
       header /style.css Cache-Control "public, max-age=604800"
+
+      file_server {
+        root /srv/http/barrucadu.co.uk/www
+      }
 
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
     }
 
     ${config.services.pleroma.domain} {
-      import basics
-
-      proxy / http://127.0.0.1:${toString config.services.pleroma.httpPort} {
-        websocket
-        transparent
-      }
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
     }
 
     bookdb.barrucadu.co.uk {
-      import basics
-
-      proxy / http://127.0.0.1:${toString config.services.bookdb.httpPort} {
-        header_downstream Access-Control-Allow-Origin "*"
-        header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
-        header_downstream Referrer-Policy "strict-origin-when-cross-origin"
-        header_downstream Strict-Transport-Security "max-age=31536000; includeSubDomains"
-        header_downstream X-Content-Type-Options "nosniff"
-        header_downstream X-Frame-Options "SAMEORIGIN"
-        header_downstream X-XSS-Protection "1; mode=block"
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.bookdb.httpPort} {
+        import reverse_proxy_security_theatre
       }
     }
 
     bookmarks.barrucadu.co.uk {
-      import basics
-
-      proxy / http://127.0.0.1:${toString config.services.bookmarks.httpPort} {
-        header_downstream Access-Control-Allow-Origin "*"
-        header_downstream Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
-        header_downstream Referrer-Policy "strict-origin-when-cross-origin"
-        header_downstream Strict-Transport-Security "max-age=31536000; includeSubDomains"
-        header_downstream X-Content-Type-Options "nosniff"
-        header_downstream X-Frame-Options "SAMEORIGIN"
-        header_downstream X-XSS-Protection "1; mode=block"
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.httpPort} {
+        import reverse_proxy_security_theatre
       }
     }
 
     memo.barrucadu.co.uk {
-      import basics
-      root /srv/http/barrucadu.co.uk/memo
+      import security_theatre
+      encode gzip
 
-      header /fonts     Cache-Control "public, immutable, max-age=31536000"
-      header /MathJax   Cache-Control "public, max-age=7776000"
+      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
+      header /MathJax/* Cache-Control "public, max-age=7776000"
       header /style.css Cache-Control "public, max-age=604800"
       header /code.css  Cache-Control "public, max-age=604800"
 
-      import security_theatre
+      file_server  {
+        root /srv/http/barrucadu.co.uk/memo
+      }
     }
 
     misc.barrucadu.co.uk {
-      import basics
-      root /srv/http/barrucadu.co.uk/misc
-
       import security_theatre
+      encode gzip
 
-      mime {
-        .md       text/plain
-        .markdown text/plain
-        .rst      text/plain
-        .tex      text/plain
-      }
+      @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
 
-      # enable directory listings for level 2 directories but not for
-      # the level 1 directories - caddy doesn't support wildcards in
-      # paths, but it does support prefixes, hence this mess.
-      browse /7day/0
-      browse /7day/1
-      browse /7day/2
-      browse /7day/3
-      browse /7day/4
-      browse /7day/5
-      browse /7day/6
-      browse /7day/7
-      browse /7day/8
-      browse /7day/9
-      browse /7day/a
-      browse /7day/b
-      browse /7day/c
-      browse /7day/d
-      browse /7day/e
-      browse /7day/f
-      browse /14day/0
-      browse /14day/1
-      browse /14day/2
-      browse /14day/3
-      browse /14day/4
-      browse /14day/5
-      browse /14day/6
-      browse /14day/7
-      browse /14day/8
-      browse /14day/9
-      browse /14day/a
-      browse /14day/b
-      browse /14day/c
-      browse /14day/d
-      browse /14day/e
-      browse /14day/f
-      browse /28day/0
-      browse /28day/1
-      browse /28day/2
-      browse /28day/3
-      browse /28day/4
-      browse /28day/5
-      browse /28day/6
-      browse /28day/7
-      browse /28day/8
-      browse /28day/9
-      browse /28day/a
-      browse /28day/b
-      browse /28day/c
-      browse /28day/d
-      browse /28day/e
-      browse /28day/f
-      browse /forever/0
-      browse /forever/1
-      browse /forever/2
-      browse /forever/3
-      browse /forever/4
-      browse /forever/5
-      browse /forever/6
-      browse /forever/7
-      browse /forever/8
-      browse /forever/9
-      browse /forever/a
-      browse /forever/b
-      browse /forever/c
-      browse /forever/d
-      browse /forever/e
-      browse /forever/f
+      root * /srv/http/barrucadu.co.uk/misc
+      file_server @subdirectory browse
+      file_server
     }
 
     uzbl.org {
@@ -219,9 +138,8 @@ in
     }
 
     www.uzbl.org {
-      import basics
-      index index.php
-      root /srv/http/uzbl.org/www
+      import security_theatre
+      encode gzip
 
       rewrite /archives.php    /index.php
       rewrite /faq.php         /index.php
@@ -238,16 +156,9 @@ in
       redir /doesitwork /doesitwork/
       redir /fosdem2020 /fosdem2020/
 
-      fastcgi / /run/phpfpm/caddy.sock php
-
-      import security_theatre
-    }
-
-    http://*:80 {
-      import basics
-      status 421 /
-
-      import security_theatre
+      root * /srv/http/uzbl.org/www
+      php_fastcgi unix//run/phpfpm/caddy.sock
+      file_server
     }
   '';
 
