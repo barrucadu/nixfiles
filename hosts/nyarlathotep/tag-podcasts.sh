@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sleep 60
+
 for mp3file in */in/*.mp3; do
   dir="$(echo "$mp3file" | sed 's:/in/.*::')"
   f="$(basename "$mp3file")"
