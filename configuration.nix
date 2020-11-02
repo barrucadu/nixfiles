@@ -7,6 +7,7 @@
     ./services/bookmarks.nix
     ./services/caddy.nix
     ./services/finder.nix
+    ./services/minecraft.nix
     ./services/pleroma.nix
   ];
 }
