@@ -22,7 +22,7 @@ in
   boot.loader.grub.device  = "/dev/sda";
 
   # Networking
-  networking.firewall.allowedTCPPorts = [ 80 443 25565 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   networking.interfaces.ens3 = {
     ipv6.addresses = [ { address = "2a01:4f8:c2c:2b22::"; prefixLength = 64; } ];
@@ -193,6 +193,9 @@ in
   services.bookmarks.readOnly = true;
   services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
   services.bookmarks.httpPort = 3003;
+
+  # minecraft
+  services.minecraft.enable = true;
 
   # barrucadu.dev concourse access
   security.sudo.extraRules = [
