@@ -61,7 +61,7 @@ in
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
     internalHTTP = mkOption { type = types.bool; default = true; };
-    esTag = mkOption { type = types.str; default = "7.6.2"; };
+    esTag = mkOption { type = types.str; default = "7.9.3"; };
     execStartPre = mkOption { type = types.str; default = ""; };
     dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
     mangaDir = mkOption { type = types.path; };
