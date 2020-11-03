@@ -1,6 +1,6 @@
 { httpPort     ? 3001
 , internalHTTP ? true
-, concourseTag ? "5.8"
+, concourseTag ? "6.7"
 , postgresTag  ? "9.6"
 , githubUser   ? "barrucadu"
 , githubClientId
