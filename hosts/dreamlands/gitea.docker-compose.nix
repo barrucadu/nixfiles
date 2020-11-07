@@ -3,7 +3,7 @@
 , internalHTTP        ? true
 , internalSSH         ? false
 , giteaTag            ? "1.11"
-, postgresTag         ? "9.6"
+, postgresTag         ? "13"
 }:
 
 ''
@@ -57,4 +57,9 @@ networks:
 volumes:
   gitea_data:
   gitea_postgres:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /docker-volumes/gitea/postgres/${postgresTag}
 ''

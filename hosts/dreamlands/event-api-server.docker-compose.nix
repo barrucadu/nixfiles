@@ -1,7 +1,7 @@
 { httpPort     ? 3001
 , internalHTTP ? true
 , eventApiTag  ? "latest"
-, postgresTag  ? "9.6"
+, postgresTag  ? "13"
 , jwtSecret
 }:
 
@@ -44,4 +44,9 @@ networks:
 
 volumes:
   event_api_server_postgres:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /docker-volumes/event-api-server/postgres/${postgresTag}
 ''
