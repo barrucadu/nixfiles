@@ -86,7 +86,9 @@ in
 
     cd.barrucadu.dev {
       encode gzip
-      reverse_proxy http://127.0.0.1:${toString concourseHttpPort}
+      reverse_proxy http://127.0.0.1:${toString concourseHttpPort} {
+        flush_interval -1
+      }
     }
 
     git.barrucadu.dev {
