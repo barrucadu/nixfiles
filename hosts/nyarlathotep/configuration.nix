@@ -120,45 +120,45 @@ in
       redir @vlan20 http://help.lan 307
     }
 
-    http://nyarlathotep:80 {
+    http://nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
       file_server {
-        root /persist/srv/http/nyarlathotep
+        root /persist/srv/http/nyarlathotep.lan
       }
     }
 
-    http://bookdb.nyarlathotep:80 {
+    http://bookdb.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
       reverse_proxy http://localhost:${toString config.services.bookdb.httpPort}
     }
 
-    http://bookmarks.nyarlathotep:80 {
+    http://bookmarks.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
       reverse_proxy http://localhost:${toString config.services.bookmarks.httpPort}
     }
 
-    http://flood.nyarlathotep:80 {
+    http://flood.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
       reverse_proxy http://localhost:3001
     }
 
-    http://finder.nyarlathotep:80 {
+    http://finder.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
       reverse_proxy http://localhost:${toString config.services.finder.httpPort}
     }
 
-    http://prometheus.nyarlathotep:80 {
+    http://prometheus.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
       reverse_proxy http://localhost:${toString config.services.prometheus.port}
     }
 
-    http://grafana.nyarlathotep:80 {
+    http://grafana.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
       reverse_proxy http://localhost:${toString config.services.grafana.port}
@@ -210,7 +210,7 @@ in
 
   services.bookdb.enable = true;
   services.bookdb.image = "localhost:5000/bookdb:latest";
-  services.bookdb.baseURI = "http://bookdb.nyarlathotep";
+  services.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
   services.bookdb.dockerVolumeDir = /persist/docker-volumes/bookdb;
 
   systemd.timers.bookdb-sync = {
@@ -233,7 +233,7 @@ in
 
   services.bookmarks.enable = true;
   services.bookmarks.image = "localhost:5000/bookmarks:latest";
-  services.bookmarks.baseURI = "http://bookmarks.nyarlathotep";
+  services.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
   services.bookmarks.httpPort = 3003;
   services.bookmarks.youtubeApiKey = fileContents /etc/nixos/secrets/bookmarks-youtube-api-key.txt;
   services.bookmarks.dockerVolumeDir = /persist/docker-volumes/bookmarks;
@@ -303,7 +303,7 @@ in
   services.grafana = {
     enable = true;
     port = 3004;
-    rootUrl = "http://grafana.nyarlathotep";
+    rootUrl = "http://grafana.nyarlathotep.lan";
     dataDir = "/persist/var/lib/grafana";
     provision = {
       enable = true;
@@ -359,7 +359,7 @@ in
         static_configs = [ { targets = [ "localhost:9516" ]; } ];
       }
     ];
-    webExternalUrl = "http://prometheus.nyarlathotep";
+    webExternalUrl = "http://prometheus.nyarlathotep.lan";
     exporters.node.enable = true;
   };
 
