@@ -30,6 +30,7 @@ in
   # Nyarlathotep
   fileSystems."/home/barrucadu/nfs/anime"    = nfsShare "anime";
   fileSystems."/home/barrucadu/nfs/manga"    = nfsShare "manga";
+  fileSystems."/home/barrucadu/nfs/misc"     = nfsShare "misc";
   fileSystems."/home/barrucadu/nfs/music"    = nfsShare "music";
   fileSystems."/home/barrucadu/nfs/movies"   = nfsShare "movies";
   fileSystems."/home/barrucadu/nfs/tv"       = nfsShare "tv";
