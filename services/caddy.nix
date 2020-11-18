@@ -11,7 +11,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.caddy.agree = true;
     services.caddy.email = "mike@barrucadu.co.uk";
 
     services.phpfpm = lib.mkIf cfg.enable-phpfpm-pool {
