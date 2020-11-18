@@ -206,12 +206,12 @@ with lib;
           bind
           docker_compose
           file
+          fortune
           fzf
           git
+          gnum4
           gnupg
           gnupg1compat
-          gnum4
-          fortune
           htop
           imagemagick
           iotop
@@ -231,9 +231,9 @@ with lib;
           unzip
           vim
           vnstat
+          wget
           which
           whois
-          wget
         ];
 
         # Packages to install if X is not enabled.
