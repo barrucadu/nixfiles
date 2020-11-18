@@ -220,6 +220,7 @@ with lib;
           man-pages
           ncdu
           nmap
+          proselint
           psmisc
           python3
           ripgrep
@@ -229,6 +230,7 @@ with lib;
           stow
           tmux
           unzip
+          vale
           vim
           vnstat
           wget
