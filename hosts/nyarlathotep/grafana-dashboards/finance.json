@@ -42,6 +42,12 @@
         "#d44a3a"
       ],
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -144,6 +150,12 @@
       },
       "datasource": "finance",
       "decimals": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "80%",
       "format": "currencyGBP",
       "gridPos": {
@@ -251,6 +263,12 @@
         "threshold": 0
       },
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "80%",
       "format": "currencyGBP",
       "gridPos": {
@@ -357,6 +375,12 @@
       },
       "datasource": "finance",
       "decimals": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "80%",
       "format": "currencyGBP",
       "gridPos": {
@@ -487,6 +511,12 @@
         "#d44a3a"
       ],
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -589,6 +619,12 @@
         "#d44a3a"
       ],
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -691,6 +727,12 @@
         "#d44a3a"
       ],
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -793,6 +835,12 @@
         "#d44a3a"
       ],
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percentunit",
       "gauge": {
         "maxValue": 100,
@@ -901,6 +949,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -926,9 +981,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1081,6 +1137,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1106,9 +1169,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1271,6 +1335,12 @@
         }
       ],
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 8,
@@ -1483,7 +1553,7 @@
       "title": "Commodities",
       "transform": "timeseries_aggregations",
       "transparent": true,
-      "type": "table"
+      "type": "table-old"
     },
     {
       "collapsed": false,
@@ -1510,6 +1580,12 @@
       ],
       "datasource": "finance",
       "decimals": 1,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "currencyGBP",
       "gauge": {
         "maxValue": 100,
@@ -1618,6 +1694,34 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 1,
+          "mappings": [],
+          "max": 5000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 2500
+              },
+              {
+                "color": "green",
+                "value": 3750
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -1626,42 +1730,18 @@
       },
       "id": 41,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "decimals": 1,
-            "mappings": [],
-            "max": 5000,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 2500
-                },
-                {
-                  "color": "green",
-                  "value": 3750
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -1693,6 +1773,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 1000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 500
+              },
+              {
+                "color": "green",
+                "value": 750
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -1701,41 +1808,18 @@
       },
       "id": 43,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 1000,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 500
-                },
-                {
-                  "color": "green",
-                  "value": 750
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -1767,6 +1851,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 1000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 500
+              },
+              {
+                "color": "green",
+                "value": 750
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -1775,41 +1886,18 @@
       },
       "id": 28,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 1000,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 500
-                },
-                {
-                  "color": "green",
-                  "value": 750
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -1841,6 +1929,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 150,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "green",
+                "value": 112.5
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -1849,41 +1964,18 @@
       },
       "id": 29,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 150,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 75
-                },
-                {
-                  "color": "green",
-                  "value": 112.5
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -1915,6 +2007,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 50,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 25
+              },
+              {
+                "color": "green",
+                "value": 37.5
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -1923,41 +2042,18 @@
       },
       "id": 30,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 50,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 25
-                },
-                {
-                  "color": "green",
-                  "value": 37.5
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -1989,6 +2085,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 500,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 250
+              },
+              {
+                "color": "green",
+                "value": 375
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -1997,41 +2120,18 @@
       },
       "id": 31,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 500,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 250
-                },
-                {
-                  "color": "green",
-                  "value": 375
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2063,6 +2163,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 300,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 150
+              },
+              {
+                "color": "green",
+                "value": 225
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2071,41 +2198,18 @@
       },
       "id": 32,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 300,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 150
-                },
-                {
-                  "color": "green",
-                  "value": 225
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2137,6 +2241,34 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 1,
+          "mappings": [],
+          "max": 5000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 2500
+              },
+              {
+                "color": "green",
+                "value": 3750
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2145,42 +2277,18 @@
       },
       "id": 42,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "decimals": 1,
-            "mappings": [],
-            "max": 5000,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 2500
-                },
-                {
-                  "color": "green",
-                  "value": 3750
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2212,6 +2320,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 20,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "green",
+                "value": 15
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2220,41 +2355,18 @@
       },
       "id": 37,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 20,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 10
-                },
-                {
-                  "color": "green",
-                  "value": 15
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2286,6 +2398,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 75
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2294,41 +2433,18 @@
       },
       "id": 33,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 50
-                },
-                {
-                  "color": "green",
-                  "value": 75
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2360,6 +2476,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 50,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 25
+              },
+              {
+                "color": "green",
+                "value": 37.5
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2368,41 +2511,18 @@
       },
       "id": 38,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 50,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 25
-                },
-                {
-                  "color": "green",
-                  "value": 37.5
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2434,6 +2554,34 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 1,
+          "mappings": [],
+          "max": 4000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 2000
+              },
+              {
+                "color": "green",
+                "value": 3000
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2442,42 +2590,18 @@
       },
       "id": 34,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "decimals": 1,
-            "mappings": [],
-            "max": 4000,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 2000
-                },
-                {
-                  "color": "green",
-                  "value": 3000
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2509,6 +2633,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 20,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "green",
+                "value": 15
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2517,41 +2668,18 @@
       },
       "id": 39,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 20,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 10
-                },
-                {
-                  "color": "green",
-                  "value": 15
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2583,6 +2711,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 750,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 375
+              },
+              {
+                "color": "green",
+                "value": 562.5
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2591,41 +2746,18 @@
       },
       "id": 35,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 750,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 375
-                },
-                {
-                  "color": "green",
-                  "value": 562.5
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2657,6 +2789,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 1000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 500
+              },
+              {
+                "color": "green",
+                "value": 750
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2665,41 +2824,18 @@
       },
       "id": 36,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 1000,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 500
-                },
-                {
-                  "color": "green",
-                  "value": 750
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2731,6 +2867,33 @@
     },
     {
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 500,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 250
+              },
+              {
+                "color": "green",
+                "value": 375
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 3,
@@ -2739,41 +2902,18 @@
       },
       "id": 40,
       "options": {
-        "fieldOptions": {
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 500,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 250
-                },
-                {
-                  "color": "green",
-                  "value": 375
-                }
-              ]
-            },
-            "unit": "currencyGBP"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2824,6 +2964,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -2852,10 +2999,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2938,6 +3085,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -2966,10 +3120,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -3052,6 +3206,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -3080,10 +3241,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -3166,6 +3327,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -3194,10 +3362,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -3280,6 +3448,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -3308,10 +3483,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -3394,6 +3569,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -3422,10 +3604,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -3508,6 +3690,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -3536,10 +3725,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "7.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -3617,7 +3806,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 22,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -3644,8 +3833,5 @@
   "timezone": "",
   "title": "Personal Finances",
   "uid": "H-xV7PFMz",
-  "variables": {
-    "list": []
-  },
   "version": 1
 }
