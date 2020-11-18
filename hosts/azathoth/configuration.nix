@@ -15,6 +15,9 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Enable memtest
+  boot.loader.systemd-boot.memtest86.enable = true;
+
   # Enable nvidia graphics
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl.driSupport32Bit = true;
