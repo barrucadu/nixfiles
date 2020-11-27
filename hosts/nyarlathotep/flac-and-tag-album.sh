@@ -4,11 +4,11 @@ set -e
 
 for artist in *; do
   if [[ -d $artist ]]; then
-    pushd $artist
+    pushd "$artist"
     for album in *; do
       if [[ -d $album ]]; then
         echo "===== $artist - $album" >&2
-        pushd $album
+        pushd "$album"
         if [[ ! -e "$artist - $album.log" ]]; then
           echo "(missing log file)" >&2
         fi
@@ -27,10 +27,10 @@ for artist in *; do
         done
         popd
         echo
-        mv $album "../../out/$artist - $album"
+        mv "$album" "../../out/$artist - $album"
       fi
     done
     popd
-    rmdir $artist
+    rmdir "$artist"
   fi
 done
