@@ -19,13 +19,580 @@
   "links": [],
   "panels": [
     {
+      "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 61,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.2",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets[£]\" +\"liabilities[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Net Worth",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 0.33
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "id": 62,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.2",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT (\"assets[£]\"-\"expenses[£]\" )/\"assets[£]\" FROM \"period\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Savings Rate",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "green",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "d"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 63,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.2",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT (last(\"assets:cash[£]\") + last(\"assets:investments:nsi:premium_bonds[£]\")) / (last(\"expenses[£]\") / count(\"expenses[£]\")) FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Short Runway",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "green",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "d"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 64,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.2",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"assets[£]\")  / (last(\"expenses[£]\") / count(\"expenses[£]\")) FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Long Runway",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": -10000
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 0
+      },
+      "id": 65,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.2",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"liabilities:loan:slc[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Student Loan",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 25000
+              },
+              {
+                "color": "green",
+                "value": 50000
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 66,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.2",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "House Deposit",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 5
       },
       "id": 7,
       "panels": [],
@@ -60,7 +627,7 @@
         "h": 2,
         "w": 6,
         "x": 0,
-        "y": 1
+        "y": 6
       },
       "id": 21,
       "interval": null,
@@ -162,7 +729,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 1
+        "y": 6
       },
       "id": 4,
       "interval": null,
@@ -275,7 +842,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 1
+        "y": 6
       },
       "id": 2,
       "interval": null,
@@ -387,7 +954,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 1
+        "y": 6
       },
       "id": 3,
       "interval": null,
@@ -529,7 +1096,7 @@
         "h": 3,
         "w": 3,
         "x": 0,
-        "y": 3
+        "y": 8
       },
       "id": 17,
       "interval": null,
@@ -637,7 +1204,7 @@
         "h": 3,
         "w": 3,
         "x": 3,
-        "y": 3
+        "y": 8
       },
       "id": 18,
       "interval": null,
@@ -745,7 +1312,7 @@
         "h": 3,
         "w": 3,
         "x": 0,
-        "y": 6
+        "y": 11
       },
       "id": 19,
       "interval": null,
@@ -853,7 +1420,7 @@
         "h": 3,
         "w": 3,
         "x": 3,
-        "y": 6
+        "y": 11
       },
       "id": 20,
       "interval": null,
@@ -960,9 +1527,9 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
-        "w": 9,
+        "w": 8,
         "x": 0,
-        "y": 9
+        "y": 14
       },
       "hiddenSeries": false,
       "id": 23,
@@ -1106,6 +1673,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1784",
           "format": "currencyGBP",
           "label": null,
           "logBase": 1,
@@ -1114,6 +1682,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1785",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1148,9 +1717,9 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
-        "w": 9,
-        "x": 9,
-        "y": 9
+        "w": 8,
+        "x": 8,
+        "y": 14
       },
       "hiddenSeries": false,
       "id": 24,
@@ -1316,90 +1885,97 @@
       }
     },
     {
-      "columns": [
-        {
-          "text": "Min",
-          "value": "min"
-        },
-        {
-          "text": "Max",
-          "value": "max"
-        },
-        {
-          "text": "Avg",
-          "value": "avg"
-        },
-        {
-          "text": "Current",
-          "value": "current"
-        }
-      ],
+      "aliasColors": {
+        "Delta": "orange",
+        "Expenses": "red",
+        "Income (net)": "green",
+        "Savings Rate": "dark-blue",
+        "Total Assets": "green",
+        "Total Liabilities": "red"
+      },
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "fontSize": "100%",
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
-        "w": 6,
-        "x": 18,
-        "y": 9
+        "w": 8,
+        "x": 16,
+        "y": 14
       },
-      "id": 47,
-      "pageSize": null,
-      "pluginVersion": "6.7.4",
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": false
+      "hiddenSeries": false,
+      "id": 58,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
       },
-      "styles": [
+      "lines": false,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
         {
-          "alias": "Currency",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": null,
-          "mappingType": 1,
-          "pattern": "Metric",
-          "thresholds": [],
-          "type": "string",
-          "unit": "none"
+          "$$hashKey": "object:230",
+          "alias": "/(Delta|Savings Rate)/",
+          "bars": false,
+          "lines": true,
+          "linewidth": 3,
+          "steppedLine": false
         },
         {
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 4,
-          "mappingType": 1,
-          "pattern": "/Min|Max|Avg|Current/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "currencyGBP"
+          "$$hashKey": "object:739",
+          "alias": "Savings Rate",
+          "yaxis": 2
         }
       ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
       "targets": [
         {
-          "alias": "BTC",
+          "alias": "Income (net)",
           "groupBy": [],
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"BTC[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"assets[£]\"   FROM \"period\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1407,7 +1983,15 @@
             [
               {
                 "params": [
-                  "EUR[£]"
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
                 ],
                 "type": "field"
               }
@@ -1416,12 +2000,12 @@
           "tags": []
         },
         {
-          "alias": "ETH",
+          "alias": "Expenses",
           "groupBy": [],
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"ETH[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT -\"expenses[£]\"   FROM \"period\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1429,7 +2013,15 @@
             [
               {
                 "params": [
-                  "USD[£]"
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
                 ],
                 "type": "field"
               }
@@ -1438,12 +2030,13 @@
           "tags": []
         },
         {
-          "alias": "LTC",
+          "alias": "Delta",
           "groupBy": [],
+          "hide": false,
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"LTC[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"assets[£]\"-\"expenses[£]\"  FROM \"period\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1451,7 +2044,15 @@
             [
               {
                 "params": [
-                  "USD[£]"
+                  "assets[£]"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "liabilities[£]"
                 ],
                 "type": "field"
               }
@@ -1460,12 +2061,13 @@
           "tags": []
         },
         {
-          "alias": "EUR",
+          "alias": "Savings Rate",
           "groupBy": [],
+          "hide": false,
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"EUR[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT (\"assets[£]\"-\"expenses[£]\" )/\"assets[£]\" FROM \"period\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1473,73 +2075,15 @@
             [
               {
                 "params": [
-                  "USD[£]"
+                  "assets[£]"
                 ],
                 "type": "field"
               }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "JPY",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"JPY[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
+            ],
             [
               {
                 "params": [
-                  "USD[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "USD",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"USD[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "F",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "USD[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "VANEA",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"VANEA[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "G",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "USD[£]"
+                  "liabilities[£]"
                 ],
                 "type": "field"
               }
@@ -1548,12 +2092,50 @@
           "tags": []
         }
       ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Commodities",
-      "transform": "timeseries_aggregations",
+      "title": "Cash Flow",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
       "transparent": true,
-      "type": "table-old"
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:144",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:145",
+          "decimals": null,
+          "format": "percentunit",
+          "label": null,
+          "logBase": 1,
+          "max": "1",
+          "min": "-1",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "collapsed": false,
@@ -1562,135 +2144,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 22
       },
       "id": 26,
       "panels": [],
       "title": "Savings",
       "type": "row"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": true,
-      "colorValue": false,
-      "colors": [
-        "#d44a3a",
-        "rgba(237, 129, 40, 0.89)",
-        "#299c46"
-      ],
-      "datasource": "finance",
-      "decimals": 1,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "format": "currencyGBP",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 24,
-        "x": 0,
-        "y": 18
-      },
-      "id": 45,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "#FFA6B0",
-        "full": false,
-        "lineColor": "#FFA6B0",
-        "show": false,
-        "ymax": null,
-        "ymin": null
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT\n\"assets:investments:nsi:premium_bonds:emergency[£]\" - 5000 +\n\"assets:cash:nationwide:flexdirect:float[£]\"  + \"assets:cash:starling:float[£]\" - 1000 +\n\"assets:cash:nationwide:flexdirect:saved:food[£]\" - 1000 +\n\"assets:cash:nationwide:flexdirect:saved:gift[£]\" - 150 +\n\"assets:cash:nationwide:flexdirect:saved:graze[£]\" - 50 +\n\"assets:cash:nationwide:flexdirect:saved:health[£]\" - 500 +\n\"assets:cash:nationwide:flexdirect:saved:household[£]\" - 300 +\n\"assets:investments:nsi:premium_bonds:move[£]\" - 5000 +\n\"assets:cash:starling:patreon[£]\" - 20 +\n\"assets:cash:nationwide:flexdirect:saved:phone[£]\" - 100 +\n\"assets:cash:starling:protonmail[£]\" - 50 +\n\"assets:cash:nationwide:flexdirect:saved:rent[£]\" - 4000 +\n\"assets:cash:starling:roll20[£]\" - 20 +\n\"assets:cash:nationwide:flexdirect:saved:travel[£]\" - 750 +\n\"assets:cash:nationwide:flexdirect:saved:utilities[£]\" - 1000 +\n\"assets:cash:starling:web[£]\" - 500\nFROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": "-1000,0",
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Off By",
-      "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "current"
     },
     {
       "datasource": "finance",
@@ -1726,7 +2185,7 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 21
+        "y": 23
       },
       "id": 41,
       "options": {
@@ -1804,7 +2263,7 @@
         "h": 6,
         "w": 3,
         "x": 3,
-        "y": 21
+        "y": 23
       },
       "id": 43,
       "options": {
@@ -1882,7 +2341,7 @@
         "h": 6,
         "w": 3,
         "x": 6,
-        "y": 21
+        "y": 23
       },
       "id": 28,
       "options": {
@@ -1960,7 +2419,7 @@
         "h": 6,
         "w": 3,
         "x": 9,
-        "y": 21
+        "y": 23
       },
       "id": 29,
       "options": {
@@ -2038,7 +2497,7 @@
         "h": 6,
         "w": 3,
         "x": 12,
-        "y": 21
+        "y": 23
       },
       "id": 30,
       "options": {
@@ -2116,7 +2575,7 @@
         "h": 6,
         "w": 3,
         "x": 15,
-        "y": 21
+        "y": 23
       },
       "id": 31,
       "options": {
@@ -2194,7 +2653,7 @@
         "h": 6,
         "w": 3,
         "x": 18,
-        "y": 21
+        "y": 23
       },
       "id": 32,
       "options": {
@@ -2273,7 +2732,7 @@
         "h": 6,
         "w": 3,
         "x": 21,
-        "y": 21
+        "y": 23
       },
       "id": 42,
       "options": {
@@ -2351,7 +2810,7 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 27
+        "y": 29
       },
       "id": 37,
       "options": {
@@ -2429,7 +2888,7 @@
         "h": 6,
         "w": 3,
         "x": 3,
-        "y": 27
+        "y": 29
       },
       "id": 33,
       "options": {
@@ -2507,7 +2966,7 @@
         "h": 6,
         "w": 3,
         "x": 6,
-        "y": 27
+        "y": 29
       },
       "id": 38,
       "options": {
@@ -2586,7 +3045,7 @@
         "h": 6,
         "w": 3,
         "x": 9,
-        "y": 27
+        "y": 29
       },
       "id": 34,
       "options": {
@@ -2664,7 +3123,7 @@
         "h": 6,
         "w": 3,
         "x": 12,
-        "y": 27
+        "y": 29
       },
       "id": 39,
       "options": {
@@ -2742,7 +3201,7 @@
         "h": 6,
         "w": 3,
         "x": 15,
-        "y": 27
+        "y": 29
       },
       "id": 35,
       "options": {
@@ -2820,7 +3279,7 @@
         "h": 6,
         "w": 3,
         "x": 18,
-        "y": 27
+        "y": 29
       },
       "id": 36,
       "options": {
@@ -2898,7 +3357,7 @@
         "h": 6,
         "w": 3,
         "x": 21,
-        "y": 27
+        "y": 29
       },
       "id": 40,
       "options": {
@@ -2950,7 +3409,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 35
       },
       "id": 49,
       "panels": [],
@@ -2977,7 +3436,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 34
+        "y": 36
       },
       "hiddenSeries": false,
       "id": 51,
@@ -3017,7 +3476,7 @@
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"BTC[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"BTC[£]\" FROM \"commodities\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3098,7 +3557,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 34
+        "y": 36
       },
       "hiddenSeries": false,
       "id": 52,
@@ -3138,7 +3597,7 @@
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"ETH[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"ETH[£]\" FROM \"commodities\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3219,7 +3678,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 34
+        "y": 36
       },
       "hiddenSeries": false,
       "id": 53,
@@ -3259,7 +3718,7 @@
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"LTC[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"LTC[£]\" FROM \"commodities\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3340,7 +3799,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 42
+        "y": 44
       },
       "hiddenSeries": false,
       "id": 54,
@@ -3380,7 +3839,7 @@
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"EUR[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"EUR[£]\" FROM \"commodities\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3461,7 +3920,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 42
+        "y": 44
       },
       "hiddenSeries": false,
       "id": 55,
@@ -3501,7 +3960,7 @@
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"JPY[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"JPY[£]\" FROM \"commodities\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3582,7 +4041,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 42
+        "y": 44
       },
       "hiddenSeries": false,
       "id": 56,
@@ -3622,7 +4081,7 @@
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"USD[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"USD[£]\" FROM \"commodities\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3703,7 +4162,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 50
+        "y": 52
       },
       "hiddenSeries": false,
       "id": 57,
@@ -3743,7 +4202,7 @@
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"VANEA[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"VANEA[£]\" FROM \"commodities\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
