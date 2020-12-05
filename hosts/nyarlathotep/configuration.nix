@@ -325,11 +325,18 @@ in
         }
       ];
       dashboards =
-        let dashboard = name: json: { name = name; folder = "My Dashboards"; options.path = pkgs.writeTextDir name json; };
+        let
+          dashboard = folder: name: path: { name = name; folder = folder; options.path = pkgs.writeTextDir name (fileContents path); };
         in
           [
-            (dashboard "overview.json" (fileContents ./grafana-dashboards/overview.json))
-            (dashboard "finance.json" (fileContents ./grafana-dashboards/finance.json))
+            (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
+            (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
+            (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
+            (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
+            (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
+            (dashboard "UniFi" "unifi-poller-uap-insights.json" ./grafana-dashboards/unifi-poller-uap-insights.json)
+            (dashboard "UniFi" "unifi-poller-usg-insights.json" ./grafana-dashboards/unifi-poller-usg-insights.json)
+            (dashboard "UniFi" "unifi-poller-usw-insights.json" ./grafana-dashboards/unifi-poller-usw-insights.json)
           ];
     };
   };
