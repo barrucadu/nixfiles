@@ -362,6 +362,10 @@ in
         scrape_timeout = "2m";
         static_configs = [ { targets = [ "localhost:9516" ]; } ];
       }
+      {
+        job_name = "unifipoller";
+        static_configs = [ { targets = [ "localhost:9130" ]; } ];
+      }
     ];
     webExternalUrl = "http://prometheus.nyarlathotep.lan";
     exporters.node.enable = true;
@@ -403,6 +407,19 @@ in
       "-${pkgs.docker}/bin/docker rm prometheus_speedtest_exporter"
     ];
     serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_speedtest_exporter --publish 9516:8888 localhost:5000/prometheus-speedtest-exporter";
+  };
+
+  systemd.services.prometheus-unifipoller-exporter = {
+    enable = true;
+    description = "UniFi Poller exporter for Prometheus";
+    after = ["docker.service"];
+    wantedBy = ["prometheus.service"];
+    serviceConfig.Restart = "always";
+    serviceConfig.ExecStartPre = [
+      "-${pkgs.docker}/bin/docker stop prometheus_unifipoller_exporter"
+      "-${pkgs.docker}/bin/docker rm prometheus_unifipoller_exporter"
+    ];
+    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_unifipoller_exporter -e UP_UNIFI_DEFAULT_URL=https://router.lan -e UP_UNIFI_DEFAULT_PASS=${fileContents /etc/nixos/secrets/unifipoller-password.txt} -e UP_UNIFI_DEFAULT_SAVE_DPI=true -e UP_INFLUXDB_DISABLE=true --publish 9130:9130 golift/unifi-poller";
   };
 
 
