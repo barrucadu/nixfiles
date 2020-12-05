@@ -270,19 +270,20 @@ in
   ## rTorrent
   ###############################################################################
 
-  systemd.services.rtorrent = {
-    enable   = true;
-    wantedBy = [ "default.target" ];
-    after    = [ "network.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.zsh}/bin/zsh --login -c \"${pkgs.tmux}/bin/tmux new-session -d -s rtorrent '${pkgs.rtorrent}/bin/rtorrent -n -O directory=/mnt/nas/torrents/files -O scgi_local=/tmp/rtorrent-rpc.socket -O session=/persist/rtorrent/session -O dht=auto -O encryption=allow_incoming,try_outgoing,require,require_RC4 -O port_random=yes -O port_range=62001-63000 -O schedule=watch.directory,5,5,load.start=/mnt/nas/torrents/watch/\\*.torrent -O check_hash=yes -O encoding_list=UTF-8'\"";
-      ExecStop  = "${pkgs.zsh}/bin/zsh --login -c '${pkgs.tmux}/bin/tmux send-keys -t rtorrent C-q'";
-      User      = "barrucadu";
-      KillMode  = "none";
-      Type      = "forking";
-      Restart   = "on-failure";
-    };
-  };
+  systemd.services.rtorrent =
+    let
+      rtorrentrc = pkgs.writeText "rtorrent.rc" (fileContents ./rtorrent.rc);
+    in
+      {
+        enable   = true;
+        wantedBy = [ "default.target" ];
+        after    = [ "network.target" ];
+        serviceConfig = {
+          ExecStart = "${pkgs.rtorrent}/bin/rtorrent -n -o system.daemon.set=true -o import=${rtorrentrc}";
+          User      = "barrucadu";
+          Restart   = "on-failure";
+        };
+      };
 
   # todo: either dockerise this or properly package it
   systemd.services.flood = {
@@ -482,7 +483,6 @@ in
     [
       mktorrent
       nodejs-12_x
-      rtorrent
       tmux
     ];
 }
