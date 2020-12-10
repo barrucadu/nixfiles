@@ -327,6 +327,12 @@ in
           type = "influxdb";
           database = "finance";
         }
+        {
+          name = "quantified_self";
+          url = "http://localhost:8086";
+          type = "influxdb";
+          database = "quantified_self";
+        }
       ];
       dashboards =
         let
@@ -335,6 +341,7 @@ in
           [
             (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
             (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
+            (dashboard "My Dashboards" "quantified-self.json" ./grafana-dashboards/quantified-self.json)
             (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
             (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
             (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
@@ -482,7 +489,7 @@ in
 
 
   ###############################################################################
-  # Daily hledger price fetch & influxdb import
+  # Quantified Self stuff
   ###############################################################################
 
   services.influxdb.enable = true;
@@ -497,6 +504,20 @@ in
   systemd.services.hledger-scripts = {
     description = "Run hledger scripts";
     serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh'";
+    serviceConfig.User = "barrucadu";
+    serviceConfig.Group = "users";
+  };
+
+  systemd.timers.quantified-self-scripts = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 21:00:00";
+    };
+  };
+  systemd.services.quantified-self-scripts = {
+    description = "Run quantified self scripts";
+    serviceConfig.WorkingDirectory = "/home/barrucadu/projects/quantified-self-scripts";
     serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh'";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
