@@ -26,6 +26,10 @@ in
   # Enable memtest
   boot.loader.systemd-boot.memtest86.enable = true;
 
+  # Weekly ZFS trim
+  services.zfs.trim.enable = true;
+  services.zfs.trim.interval = "weekly";
+
   # Monthly ZFS scrub
   services.zfs.autoScrub.enable = true;
   services.zfs.autoScrub.interval = "monthly";
