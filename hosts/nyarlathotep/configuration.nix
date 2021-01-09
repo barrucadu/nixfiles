@@ -504,7 +504,7 @@ in
   systemd.services.hledger-scripts = {
     description = "Run hledger scripts";
     serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './sync.sh'";
+    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c 'env LEDGER_FILE=/home/barrucadu/s/ledger/combined.journal ./sync.sh'";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
   };
