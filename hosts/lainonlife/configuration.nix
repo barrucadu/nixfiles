@@ -79,10 +79,7 @@ in
       }
 
       reverse_proxy /background http://localhost:8002
-      reverse_proxy /upload     http://localhost:8002
       reverse_proxy /playlist/* http://localhost:8002
-      reverse_proxy /dj         http://localhost:8002
-      reverse_proxy /admin      http://localhost:8002
 
       file_server {
         root /srv/http/www
@@ -145,7 +142,7 @@ in
       { "http-backend" = service {
           user = "${radio.username}";
           description = "HTTP backend service";
-          execstart = "${pkgs.bash}/bin/bash -l -c '/srv/radio/backend/run.sh serve --config=/srv/radio/config.json 8002'";
+          execstart = "${pkgs.bash}/bin/bash -l -c 'env CONFIG=/srv/radio/config.json PORT=8002 /srv/radio/backend/run.sh'";
         };
       }
     ];
