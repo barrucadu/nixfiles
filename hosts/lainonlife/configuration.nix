@@ -179,6 +179,19 @@ in
     auth.anonymous.enable = true;
     auth.anonymous.org_name = "lainon.life";
   };
+  services.prometheus = {
+    enable = true;
+    listenAddress = "127.0.0.1";
+    port = 9090;
+    globalConfig.scrape_interval = "15s";
+    scrapeConfigs = [
+      {
+        job_name = "node";
+        static_configs = [ { targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; } ];
+      }
+    ];
+    exporters.node.enable = true;
+  };
 
   # barrucadu.dev concourse access
   security.sudo.extraRules = [
