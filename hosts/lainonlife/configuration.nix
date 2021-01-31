@@ -22,6 +22,8 @@ let
     ; }
   ];
 
+  backendPort = 8002;
+
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
     set -o pipefail
@@ -70,16 +72,16 @@ in
 
       route /radio/* {
         uri strip_prefix /radio
-        reverse_proxy http://localhost:8000
+        reverse_proxy http://localhost:${toString config.services.icecast.listen.port}
       }
 
       route /graphs/* {
         uri strip_prefix /graphs
-        reverse_proxy http://localhost:8001
+        reverse_proxy http://localhost:${toString config.services.grafana.port}
       }
 
-      reverse_proxy /background http://localhost:8002
-      reverse_proxy /playlist/* http://localhost:8002
+      reverse_proxy /background http://localhost:${toString backendPort}
+      reverse_proxy /playlist/* http://localhost:${toString backendPort}
 
       file_server {
         root /srv/http/www
@@ -122,27 +124,16 @@ in
       { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3"; }
       { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg"; }
 
-      # Because I am defining systemd.services in its entirety here, all services defined in this
-      # file need to live in this list too.
-      { metrics =
-          let penv = pkgs.python3.buildEnv.override {
-                extraLibs = with pkgs.python3Packages; [docopt influxdb psutil];
-              };
-          in service {
-            # This needs to run as root so that `du` can measure everything.
-            user = "root";
-            description = "Report metrics";
-            execstart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/metrics.py";
-            environment = {
-              PYTHONPATH = "${penv}/${pkgs.python3.sitePackages}/";
-            };
-          };
-      }
-
       { "http-backend" = service {
           user = "${radio.username}";
           description = "HTTP backend service";
-          execstart = "${pkgs.bash}/bin/bash -l -c 'env CONFIG=/srv/radio/config.json PORT=8002 /srv/radio/backend/run.sh'";
+          execstart = "${pkgs.bash}/bin/bash -l -c /srv/radio/backend/run.sh";
+          environment = {
+            CONFIG     = "/srv/radio/config.json";
+            PORT       = toString backendPort;
+            ICECAST    = "http://localhost:${toString config.services.icecast.listen.port}";
+            PROMETHEUS = "http://localhost:${toString config.services.prometheus.port}";
+          };
         };
       }
     ];
@@ -168,7 +159,6 @@ in
   services.pleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
 
   # Fancy graphs
-  services.influxdb.enable = true;
   services.grafana = {
     enable = true;
     port = 8001;
@@ -188,6 +178,10 @@ in
       {
         job_name = "node";
         static_configs = [ { targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; } ];
+      }
+      {
+        job_name = "radio";
+        static_configs = [ { targets = [ "localhost:${toString backendPort}" ]; } ];
       }
     ];
     exporters.node.enable = true;
