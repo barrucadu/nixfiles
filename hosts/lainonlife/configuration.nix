@@ -168,6 +168,22 @@ in
     security.secretKey = import /etc/nixos/secrets/grafana-key.nix;
     auth.anonymous.enable = true;
     auth.anonymous.org_name = "lainon.life";
+    provision = {
+      enable = true;
+      datasources = [
+        {
+          name = "prometheus";
+          url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
+          type = "prometheus";
+        }
+      ];
+      dashboards = [
+        {
+          name = "lainon.life";
+          options.path = pkgs.writeTextDir "lainon.life" (lib.fileContents ./grafana-dashboards/main.json);
+        }
+      ];
+    };
   };
   services.prometheus = {
     enable = true;
