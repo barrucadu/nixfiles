@@ -342,6 +342,7 @@ in
             (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
             (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
             (dashboard "My Dashboards" "quantified-self.json" ./grafana-dashboards/quantified-self.json)
+            (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
             (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
             (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
             (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
@@ -383,6 +384,10 @@ in
       {
         job_name = "unifipoller";
         static_configs = [ { targets = [ "localhost:9130" ]; } ];
+      }
+      {
+        job_name = "awair";
+        static_configs = [ { targets = [ "localhost:9517" ]; } ];
       }
     ];
     webExternalUrl = "http://prometheus.nyarlathotep.lan";
@@ -439,6 +444,20 @@ in
     ];
     serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_unifipoller_exporter -e UP_UNIFI_DEFAULT_URL=https://router.lan -e UP_UNIFI_DEFAULT_PASS=${fileContents /etc/nixos/secrets/unifipoller-password.txt} -e UP_UNIFI_DEFAULT_SAVE_DPI=true -e UP_INFLUXDB_DISABLE=true --publish 9130:9130 golift/unifi-poller";
   };
+
+  systemd.services.prometheus-awair-exporter = {
+    enable = true;
+    description = "Speedtest.net exporter for Awair";
+    after = ["docker.service"];
+    wantedBy = ["prometheus.service"];
+    serviceConfig.Restart = "always";
+    serviceConfig.ExecStartPre = [
+      "-${pkgs.docker}/bin/docker stop prometheus_awair_exporter"
+      "-${pkgs.docker}/bin/docker rm prometheus_awair_exporter"
+    ];
+    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_awair_exporter -e SENSORS=living-room=10.0.20.117 --publish 9517:8888 localhost:5000/prometheus-awair-exporter";
+  };
+
 
 
   ###############################################################################
