@@ -447,7 +447,7 @@ in
 
   systemd.services.prometheus-awair-exporter = {
     enable = true;
-    description = "Speedtest.net exporter for Awair";
+    description = "Awair exporter for Prometheus";
     after = ["docker.service"];
     wantedBy = ["prometheus.service"];
     serviceConfig.Restart = "always";
