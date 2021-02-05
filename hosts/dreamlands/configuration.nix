@@ -9,14 +9,6 @@ let
   giteaHttpPort     = 3000;
   registryHttpPort  = 5000;
 
-  pullLocalDockerImage = pkgs.writeShellScript "pull-local-docker-image.sh" ''
-    set -e
-    set -o pipefail
-
-    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
-    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
-  '';
-
   dockerComposeService = { name, yaml, pull ? "" }:
     let
       dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
@@ -27,7 +19,7 @@ let
         requires = [ "docker.service" ];
         environment = { COMPOSE_PROJECT_NAME = name; };
         serviceConfig = mkMerge [
-          (mkIf (pull != "") { ExecStartPre = "${pullLocalDockerImage} ${pull}"; })
+          (mkIf (pull != "") { ExecStartPre = "${pkgs.docker}/bin/docker pull registry.barrucadu.dev/${pull}"; })
           {
             ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
             ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
@@ -72,9 +64,17 @@ in
 
     registry.barrucadu.dev {
       encode gzip
-      basicauth /v2/* {
+
+      @writeaccess {
+        path /v2/*
+        not {
+          method GET HEAD
+        }
+      }
+      basicauth @writeaccess {
         registry ${fileContents /etc/nixos/secrets/registry-password-hashed.txt}
       }
+
       header /v2/* Docker-Distribution-Api-Version "registry/2.0"
       reverse_proxy /v2/* http://127.0.0.1:${toString registryHttpPort}
     }
