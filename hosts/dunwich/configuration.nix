@@ -122,6 +122,19 @@ with lib;
       file_server
     }
 
+    lookwhattheshoggothdraggedin.com {
+      redir https://www.lookwhattheshoggothdraggedin.com{uri}
+    }
+
+    www.lookwhattheshoggothdraggedin.com {
+      import security_theatre
+      encode gzip
+
+      file_server {
+        root /srv/http/lookwhattheshoggothdraggedin.com/www
+      }
+    }
+
     uzbl.org {
       redir https://www.uzbl.org{uri}
     }
