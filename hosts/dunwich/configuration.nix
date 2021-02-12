@@ -155,8 +155,15 @@ in
 
       encode gzip
 
-      file_server {
-        root /srv/http/lookwhattheshoggothdraggedin.com/www
+      root * /srv/http/lookwhattheshoggothdraggedin.com/www
+      file_server
+
+      handle_errors {
+        @404 {
+          expression {http.error.status_code} == 404
+        }
+        rewrite @404 /404.html
+        file_server
       }
     }
 
