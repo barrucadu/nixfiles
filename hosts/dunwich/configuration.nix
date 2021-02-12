@@ -2,6 +2,29 @@
 
 with lib;
 
+let
+  shoggothCommentoHttpPort = 3004;
+
+  dockerComposeService = { name, yaml }:
+    let
+      dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
+    in
+      {
+        enable   = true;
+        wantedBy = [ "multi-user.target" ];
+        requires = [ "docker.service" ];
+        environment = { COMPOSE_PROJECT_NAME = name; };
+        serviceConfig = mkMerge [
+          {
+            ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
+            ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
+            Restart   = "always";
+          }
+        ];
+      };
+
+in
+
 {
   networking.hostName = "dunwich";
 
@@ -128,10 +151,19 @@ with lib;
 
     www.lookwhattheshoggothdraggedin.com {
       import security_theatre
+      header * Content-Security-Policy "default-src 'self' commento.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com; img-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com data:"
+
       encode gzip
 
       file_server {
         root /srv/http/lookwhattheshoggothdraggedin.com/www
+      }
+    }
+
+    commento.lookwhattheshoggothdraggedin.com {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString shoggothCommentoHttpPort} {
+        import reverse_proxy_security_theatre
       }
     }
 
@@ -198,6 +230,22 @@ with lib;
 
   # minecraft
   services.minecraft.enable = true;
+
+  # Look what the Shoggoth Dragged In blog
+  systemd.services.shoggoth-commento = dockerComposeService {
+    name = "shoggoth-commento";
+    yaml = import ./commento.docker-compose.nix {
+      httpPort = shoggothCommentoHttpPort;
+      externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
+      githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
+      githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
+      googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
+      googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
+      twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
+      twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
+    };
+  };
+
 
   # barrucadu.dev concourse access
   security.sudo.extraRules = [
