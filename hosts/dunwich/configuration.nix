@@ -4,6 +4,7 @@ with lib;
 
 let
   shoggothCommentoHttpPort = 3004;
+  shoggothUmamiHttpPort = 3005;
 
   dockerComposeService = { name, yaml }:
     let
@@ -151,7 +152,7 @@ in
 
     www.lookwhattheshoggothdraggedin.com {
       import security_theatre
-      header * Content-Security-Policy "default-src 'self' commento.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com; img-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com data:"
+      header * Content-Security-Policy "default-src 'self' commento.lookwhattheshoggothdraggedin.com umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com; img-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com data:"
 
       encode gzip
 
@@ -170,6 +171,13 @@ in
     commento.lookwhattheshoggothdraggedin.com {
       encode gzip
       reverse_proxy http://127.0.0.1:${toString shoggothCommentoHttpPort} {
+        import reverse_proxy_security_theatre
+      }
+    }
+
+    umami.lookwhattheshoggothdraggedin.com {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString shoggothUmamiHttpPort} {
         import reverse_proxy_security_theatre
       }
     }
@@ -250,6 +258,13 @@ in
       googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
       twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
       twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
+    };
+  };
+  systemd.services.shoggoth-umami = dockerComposeService {
+    name = "shoggoth-umami";
+    yaml = import ./umami.docker-compose.nix {
+      httpPort = shoggothUmamiHttpPort;
+      hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
     };
   };
 
