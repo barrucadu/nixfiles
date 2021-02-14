@@ -29,6 +29,8 @@ in
 {
   networking.hostName = "dunwich";
 
+  system.autoUpgrade.allowReboot = mkForce false;
+
   # Bootloader
   boot.loader.grub.enable  = true;
   boot.loader.grub.version = 2;
