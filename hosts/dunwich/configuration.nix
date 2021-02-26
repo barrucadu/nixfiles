@@ -158,6 +158,13 @@ in
 
       encode gzip
 
+      header /files/*         Cache-Control "public, max-age=604800, immutable"
+      header /fonts/*         Cache-Control "public, max-age=604800, immutable"
+      header /logo.png        Cache-Control "public, max-age=604800, immutable"
+      header /style.css       Cache-Control "public, max-age=604800"
+      header /twitter-cards/* Cache-Control "public, max-age=604800, immutable"
+      header /webfonts.css    Cache-Control "public, max-age=604800"
+
       root * /srv/http/lookwhattheshoggothdraggedin.com/www
       file_server
 
