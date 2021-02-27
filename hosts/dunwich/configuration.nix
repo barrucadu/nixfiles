@@ -150,6 +150,15 @@ in
       file_server
     }
 
+    pad.barrucadu.co.uk {
+      basicauth {
+        ${fileContents /etc/nixos/secrets/etherpad-basic-auth-credentials.txt}
+      }
+
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.etherpad.httpPort}
+    }
+
     lookwhattheshoggothdraggedin.com {
       redir https://www.lookwhattheshoggothdraggedin.com{uri}
     }
@@ -253,6 +262,11 @@ in
   services.bookmarks.readOnly = true;
   services.bookmarks.execStartPre = "${pkgs.docker}/bin/docker pull registry.barrucadu.dev/bookmarks:latest";
   services.bookmarks.httpPort = 3003;
+
+  # etherpad
+  services.etherpad.enable = true;
+  services.etherpad.image = "etherpad/etherpad:stable";
+  services.etherpad.httpPort = 3006;
 
   # minecraft
   services.minecraft.enable = true;
