@@ -159,16 +159,22 @@ in
       reverse_proxy http://localhost:${toString config.services.finder.httpPort}
     }
 
-    http://prometheus.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.services.prometheus.port}
-    }
-
     http://grafana.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
       reverse_proxy http://localhost:${toString config.services.grafana.port}
+    }
+
+    http://pad.nyarlathotep.lan:80 {
+      import restrict_vlan
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.etherpad.httpPort}
+    }
+
+    http://prometheus.nyarlathotep.lan:80 {
+      import restrict_vlan
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.prometheus.port}
     }
 
     http://help.lan:80 {
@@ -268,6 +274,16 @@ in
   services.finder.httpPort = 3002;
   services.finder.dockerVolumeDir = /persist/docker-volumes/finder;
   services.finder.mangaDir = /mnt/nas/manga;
+
+
+  ###############################################################################
+  ## etherpad
+  ###############################################################################
+
+  services.etherpad.enable = true;
+  services.etherpad.image = "etherpad/etherpad:stable";
+  services.etherpad.httpPort = 3005;
+  services.etherpad.dockerVolumeDir = /persist/docker-volumes/etherpad;
 
 
   ###############################################################################
