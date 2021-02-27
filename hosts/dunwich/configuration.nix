@@ -135,6 +135,8 @@ in
       file_server  {
         root /srv/http/barrucadu.co.uk/memo
       }
+
+      ${fileContents ./memo-barrucadu-co-uk.caddyfile}
     }
 
     misc.barrucadu.co.uk {
