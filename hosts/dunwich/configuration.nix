@@ -24,6 +24,14 @@ let
         ];
       };
 
+  pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
+    set -e
+    set -o pipefail
+
+    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
+  '';
+
 in
 
 {
@@ -246,21 +254,21 @@ in
   services.pleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
   services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
   services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
-  services.pleroma.execStartPre = "${pkgs.docker}/bin/docker pull registry.barrucadu.dev/pleroma:latest";
+  services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
 
   # bookdb
   services.bookdb.enable = true;
   services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
   services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   services.bookdb.readOnly = true;
-  services.bookdb.execStartPre = "${pkgs.docker}/bin/docker pull registry.barrucadu.dev/bookdb:latest";
+  services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
 
   # bookmarks
   services.bookmarks.enable = true;
   services.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
   services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
   services.bookmarks.readOnly = true;
-  services.bookmarks.execStartPre = "${pkgs.docker}/bin/docker pull registry.barrucadu.dev/bookmarks:latest";
+  services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
   services.bookmarks.httpPort = 3003;
 
   # etherpad

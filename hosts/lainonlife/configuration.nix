@@ -24,6 +24,13 @@ let
 
   backendPort = 8002;
 
+  pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
+    set -e
+    set -o pipefail
+
+    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
+  '';
 in
 
 {
@@ -148,7 +155,7 @@ in
   services.pleroma.signingSalt = lib.fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
   services.pleroma.webPushPublicKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
   services.pleroma.webPushPrivateKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
-  services.pleroma.execStartPre = "${pkgs.docker}/bin/docker pull registry.barrucadu.dev/pleroma:latest";
+  services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
   services.pleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
 
   # Fancy graphs
