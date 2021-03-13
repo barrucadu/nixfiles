@@ -90,6 +90,9 @@ in
       httpPort = concourseHttpPort;
       githubClientId     = fileContents /etc/nixos/secrets/concourse-clientid.txt;
       githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
+      enableSSM = true;
+      ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
+      ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
     };
   };
 

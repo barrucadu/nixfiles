@@ -5,6 +5,10 @@
 , githubUser   ? "barrucadu"
 , githubClientId
 , githubClientSecret
+, enableSSM    ? false
+, ssmRegion    ? "eu-west-2"
+, ssmAccessKey ? ""
+, ssmSecretKey ? ""
 }:
 
 ''
@@ -27,6 +31,9 @@ services:
       CONCOURSE_GITHUB_CLIENT_SECRET: "${githubClientSecret}"
       CONCOURSE_LOG_LEVEL: error
       CONCOURSE_GARDEN_LOG_LEVEL: error
+      ${if enableSSM then "CONCOURSE_AWS_SSM_REGION: \"${ssmRegion}\"" else ""}
+      ${if enableSSM then "CONCOURSE_AWS_SSM_ACCESS_KEY: \"${ssmAccessKey}\"" else ""}
+      ${if enableSSM then "CONCOURSE_AWS_SSM_SECRET_KEY: \"${ssmSecretKey}\"" else ""}
     networks:
       - concourse
     ports:
