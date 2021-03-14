@@ -193,6 +193,9 @@ with lib;
     ## Package management
     #############################################################################
 
+    # gnupg doesn't come with pinentry, so require the agent
+    programs.gnupg.agent.enable = true;
+
     # Allow packages with non-free licenses.
     nixpkgs.config.allowUnfree = true;
 
