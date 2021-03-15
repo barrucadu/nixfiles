@@ -6,7 +6,7 @@
 , githubClientId
 , githubClientSecret
 , enableSSM    ? false
-, ssmRegion    ? "eu-west-2"
+, ssmRegion    ? "eu-west-1"
 , ssmAccessKey ? ""
 , ssmSecretKey ? ""
 }:
