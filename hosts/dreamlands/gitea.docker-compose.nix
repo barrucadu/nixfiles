@@ -2,7 +2,7 @@
 , sshPort             ? 222
 , internalHTTP        ? true
 , internalSSH         ? false
-, giteaTag            ? "1.11"
+, giteaTag            ? "1.13.4"
 , postgresTag         ? "13"
 }:
 
