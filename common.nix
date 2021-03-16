@@ -179,11 +179,11 @@ with lib;
 
       # Such pubkey!
       openssh.authorizedKeys.keys = [
-        (fileContents ./files/azathoth-linux.pubkey)
-        (fileContents ./files/azathoth-windows.pubkey)
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIP5QUiJZ9TX1/fNAAg4UdtSM4AnpIgdSp7FsH1s1mnz barrucadu@azathoth"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDGsbaoX0seFfMTXePyaQchxU3g58xFMUipZPvddCT8c azathoth-windows"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFu01w8xJAWNuLFKLv1eZEX7QvOBYfUqi5Ed4yYT70kF barrucadu@dunwich"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPBk5s00T7a7YQXNtR6YmxmKRzI/6vfqI93RaVRDuML barrucadu@dreamlands"
-        (fileContents ./files/lainonlife.pubkey)
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBuyrbZH+Lqu1qUE9NpoOpyv1/avEArueJTco8X3cXlh barrucadu@lainonlife"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKohcTDKF18ionBANAnGbcG/6lyJqCJWEza5nOss+Sh0 barrucadu@nyarlathotep"
       ];
     };
