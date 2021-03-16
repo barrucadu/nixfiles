@@ -184,7 +184,7 @@ with lib;
         (fileContents ./files/dunwich.pubkey)
         (fileContents ./files/dreamlands.pubkey)
         (fileContents ./files/lainonlife.pubkey)
-        (fileContents ./files/nyarlathotep.pubkey)
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKohcTDKF18ionBANAnGbcG/6lyJqCJWEza5nOss+Sh0 barrucadu@nyarlathotep"
       ];
     };
 
