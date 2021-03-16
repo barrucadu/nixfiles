@@ -318,7 +318,7 @@ in
     createHome = true;
     isSystemUser = true;
     openssh.authorizedKeys.keys =
-      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9mdg79dtI9KqxTOG2ATdnKXGhuQaqp2n3mXZ0brPuc concourse-worker@cd.barrucadu.dev" ];
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE/YTj08251qhEjYcQHMRHcwlOJPGrt8dM/YqYi9J5kM concourse-worker@cd.barrucadu.dev" ];
     shell = pkgs.bashInteractive;
   };
 
