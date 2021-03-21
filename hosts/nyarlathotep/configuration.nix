@@ -329,6 +329,7 @@ in
     port = 3004;
     rootUrl = "http://grafana.nyarlathotep.lan";
     dataDir = "/persist/var/lib/grafana";
+    auth.anonymous.enable = true;
     provision = {
       enable = true;
       datasources = [
