@@ -370,46 +370,31 @@ in
     };
   };
 
-  services.prometheus = {
-    enable = true;
-    listenAddress = "127.0.0.1";
-    port = 9090;
-    globalConfig.scrape_interval = "15s";
-    scrapeConfigs = [
-      {
-        job_name = "nyarlathotep-node";
-        static_configs = [ { targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; } ];
-      }
-      {
-        job_name = "nyarlathotep-docker";
-        static_configs = [ { targets = [ "localhost:9417" ]; } ];
-      }
-      {
-        job_name = "pihole-node";
-        static_configs = [ { targets = [ "pi.hole:9100" ]; } ];
-      }
-      {
-        job_name = "pihole-pihole";
-        static_configs = [ { targets = [ "pi.hole:9617" ]; } ];
-      }
-      {
-        job_name = "speedtest";
-        scrape_interval = "5m";
-        scrape_timeout = "2m";
-        static_configs = [ { targets = [ "localhost:9516" ]; } ];
-      }
-      {
-        job_name = "unifipoller";
-        static_configs = [ { targets = [ "localhost:9130" ]; } ];
-      }
-      {
-        job_name = "awair";
-        static_configs = [ { targets = [ "localhost:9517" ]; } ];
-      }
-    ];
-    webExternalUrl = "http://prometheus.nyarlathotep.lan";
-    exporters.node.enable = true;
-  };
+  services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "pihole-node";
+      static_configs = [ { targets = [ "pi.hole:9100" ]; } ];
+    }
+    {
+      job_name = "pihole-pihole";
+      static_configs = [ { targets = [ "pi.hole:9617" ]; } ];
+    }
+    {
+      job_name = "speedtest";
+      scrape_interval = "5m";
+      scrape_timeout = "2m";
+      static_configs = [ { targets = [ "localhost:9516" ]; } ];
+    }
+    {
+      job_name = "unifipoller";
+      static_configs = [ { targets = [ "localhost:9130" ]; } ];
+    }
+    {
+      job_name = "awair";
+      static_configs = [ { targets = [ "localhost:9517" ]; } ];
+    }
+  ];
 
   # systemd doesn't like using a symlink for a StateDirectory, but a
   # bind mount works fine.
@@ -420,20 +405,6 @@ in
     wantedBy = ["prometheus.service"];
     serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/${config.services.prometheus.stateDir}";
     serviceConfig.ExecStart = "${pkgs.utillinux}/bin/mount -o bind /persist/var/lib/${config.services.prometheus.stateDir} /var/lib/${config.services.prometheus.stateDir}";
-  };
-
-  systemd.services.prometheus-docker-exporter = {
-    enable = true;
-    description = "Docker exporter for Prometheus";
-    after = ["docker.service"];
-    wantedBy = ["prometheus.service"];
-    serviceConfig.Restart = "always";
-    serviceConfig.ExecStartPre = [
-      "-${pkgs.docker}/bin/docker stop prometheus_docker_exporter"
-      "-${pkgs.docker}/bin/docker rm prometheus_docker_exporter"
-      "${pkgs.docker}/bin/docker pull prometheusnet/docker_exporter"
-    ];
-    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_docker_exporter --volume \"/var/run/docker.sock\":\"/var/run/docker.sock\" --publish 9417:9417 prometheusnet/docker_exporter";
   };
 
   systemd.services.prometheus-speedtest-exporter = {

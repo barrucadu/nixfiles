@@ -185,23 +185,12 @@ in
       ];
     };
   };
-  services.prometheus = {
-    enable = true;
-    listenAddress = "127.0.0.1";
-    port = 9090;
-    globalConfig.scrape_interval = "15s";
-    scrapeConfigs = [
-      {
-        job_name = "node";
-        static_configs = [ { targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; } ];
-      }
-      {
-        job_name = "radio";
-        static_configs = [ { targets = [ "localhost:${toString backendPort}" ]; } ];
-      }
-    ];
-    exporters.node.enable = true;
-  };
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "radio";
+      static_configs = [ { targets = [ "localhost:${toString backendPort}" ]; } ];
+    }
+  ];
 
   # barrucadu.dev concourse access
   security.sudo.extraRules = [

@@ -162,6 +162,41 @@ with lib;
       serviceConfig.Group = config.services.monitoring-scripts.Group;
     };
 
+    services.prometheus = {
+      enable = true;
+      listenAddress = "127.0.0.1";
+      port = 9090;
+      globalConfig.scrape_interval = "15s";
+      scrapeConfigs = [
+        {
+          job_name = "${config.networking.hostName}-node";
+          static_configs = [ { targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; } ];
+        }
+        {
+          job_name = "${config.networking.hostName}-docker";
+          static_configs = [ { targets = [ "localhost:9417" ]; } ];
+        }
+      ];
+    };
+
+    services.prometheus.exporters.node.enable = config.services.prometheus.enable;
+
+    systemd.services.prometheus-docker-exporter = {
+      enable = config.services.prometheus.enable;
+      description = "Docker exporter for Prometheus";
+      after = ["docker.service"];
+      wantedBy = ["prometheus.service"];
+      serviceConfig = {
+        Restart = "always";
+        ExecStartPre = [
+          "-${pkgs.docker}/bin/docker stop prometheus_docker_exporter"
+          "-${pkgs.docker}/bin/docker rm prometheus_docker_exporter"
+          "${pkgs.docker}/bin/docker pull prometheusnet/docker_exporter"
+        ];
+        ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_docker_exporter --volume \"/var/run/docker.sock\":\"/var/run/docker.sock\" --publish 9417:9417 prometheusnet/docker_exporter";
+      };
+    };
+
     #############################################################################
     ## User accounts
     #############################################################################
