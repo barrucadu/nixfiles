@@ -40,17 +40,14 @@ in
   fileSystems."/home/barrucadu/nfs/images"   = nfsShare "images";
   fileSystems."/home/barrucadu/nfs/torrents" = nfsShare "torrents";
 
-  # Enable xorg
-  services.xserver.enable = true;
-
-  # Set the default x session to herbstluftwm
-  services.xserver.windowManager.herbstluftwm.enable = true;
-
-  # Enable C-M-Bksp to kill X
-  services.xserver.enableCtrlAltBackspace = true;
-
-  # Use lightdm instead of slim
-  services.xserver.displayManager.lightdm.enable = true;
+  # Enable Xorg, to auto-login to herbstluftwm, with C-M-Bksp enabled.
+  services.xserver = {
+    enable = true;
+    enableCtrlAltBackspace = true;
+    displayManager.autoLogin.enable = true;
+    displayManager.autoLogin.user = "barrucadu";
+    windowManager.herbstluftwm.enable = true;
+  };
 
   # Sane font defaults
   fonts = {
@@ -74,7 +71,6 @@ in
     feh
     haskellPackages.hledger
     gnuplot
-    lightdm
     python3Packages.pygments
     (texlive.combine { inherit (texlive) scheme-full; })
   ];
