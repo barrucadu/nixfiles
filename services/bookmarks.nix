@@ -61,7 +61,7 @@ in
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
     internalHTTP = mkOption { type = types.bool; default = true; };
-    esTag = mkOption { type = types.str; default = "7.9.3"; };
+    esTag = mkOption { type = types.str; default = "7.11.2"; };
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.str; default = ""; };
