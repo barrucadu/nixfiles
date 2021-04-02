@@ -101,9 +101,8 @@ in
       import security_theatre
       encode gzip
 
-      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-      header /logos/*   Cache-Control "public, immutable, max-age=31536000"
-      header /style.css Cache-Control "public, max-age=604800"
+      header /fonts/* Cache-Control "public, immutable, max-age=31536000"
+      header /*.css   Cache-Control "public, immutable, max-age=31536000"
 
       file_server {
         root /srv/http/barrucadu.co.uk/www
@@ -136,9 +135,8 @@ in
       encode gzip
 
       header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-      header /MathJax/* Cache-Control "public, max-age=7776000"
-      header /style.css Cache-Control "public, max-age=604800"
-      header /code.css  Cache-Control "public, max-age=604800"
+      header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
+      header /*.css     Cache-Control "public, immutable, max-age=31536000"
 
       file_server  {
         root /srv/http/barrucadu.co.uk/memo
@@ -177,12 +175,11 @@ in
 
       encode gzip
 
-      header /files/*         Cache-Control "public, max-age=604800, immutable"
-      header /fonts/*         Cache-Control "public, max-age=604800, immutable"
-      header /logo.png        Cache-Control "public, max-age=604800, immutable"
-      header /style.css       Cache-Control "public, max-age=604800"
-      header /twitter-cards/* Cache-Control "public, max-age=604800, immutable"
-      header /webfonts.css    Cache-Control "public, max-age=604800"
+      header /files/*         Cache-Control "public, immutable, max-age=604800"
+      header /fonts/*         Cache-Control "public, immutable, max-age=31536000"
+      header /logo.png        Cache-Control "public, immutable, max-age=604800"
+      header /*.css           Cache-Control "public, immutable, max-age=31536000"
+      header /twitter-cards/* Cache-Control "public, immutable, max-age=604800"
 
       root * /srv/http/lookwhattheshoggothdraggedin.com/www
       file_server
