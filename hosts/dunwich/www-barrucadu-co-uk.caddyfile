@@ -35,6 +35,10 @@ respond /posts/relnotes/2017-02-21-concurrency-1.1.0.0-dejafu-0.5.0.1-release.ht
 redir /bookdb   https://bookdb.barrucadu.co.uk permanent
 redir /bookdb/* https://bookdb.barrucadu.co.uk permanent
 
+# Removed files
+respond /sitemap.xml 410
+respond /now.html 410
+
 # Moved files
 redir /publications/coco-flops18-prelim.pdf /publications/coco-flops18.pdf permanent
 redir /publications/coco-flops18-prelim.bib /publications/coco-flops18.bib permanent
