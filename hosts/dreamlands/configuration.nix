@@ -53,6 +53,14 @@ in
   # WWW
   services.caddy.enable = true;
   services.caddy.config = ''
+    barrucadu.dev {
+      redir https://www.barrucadu.co.uk
+    }
+
+    www.barrucadu.dev {
+      redir https://www.barrucadu.co.uk
+    }
+
     registry.barrucadu.dev {
       encode gzip
       basicauth /v2/* {
