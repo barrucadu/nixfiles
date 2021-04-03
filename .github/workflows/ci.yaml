@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: cachix/install-nix-action@v13
+      - name: Setup
         run: |
           nix-env --install nix-linter nixpkgs-fmt
       - name: Lint
