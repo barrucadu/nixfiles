@@ -6,17 +6,17 @@ with lib;
   options = {
     services = {
       backup-scripts = {
-        OnCalendarFull   = lib.mkOption { default = "monthly"; };
-        OnCalendarIncr   = lib.mkOption { default = "Mon, 04:00"; };
+        OnCalendarFull = lib.mkOption { default = "monthly"; };
+        OnCalendarIncr = lib.mkOption { default = "Mon, 04:00"; };
         WorkingDirectory = lib.mkOption { default = "/home/barrucadu/backup-scripts"; };
-        User             = lib.mkOption { default = "barrucadu"; };
-        Group            = lib.mkOption { default = "users"; };
+        User = lib.mkOption { default = "barrucadu"; };
+        Group = lib.mkOption { default = "users"; };
       };
       monitoring-scripts = {
-        OnCalendar       = lib.mkOption { default = "hourly"; };
+        OnCalendar = lib.mkOption { default = "hourly"; };
         WorkingDirectory = lib.mkOption { default = "/home/barrucadu/monitoring-scripts"; };
-        User             = lib.mkOption { default = "barrucadu"; };
-        Group            = lib.mkOption { default = "users"; };
+        User = lib.mkOption { default = "barrucadu"; };
+        Group = lib.mkOption { default = "users"; };
       };
       zfs = {
         automation = {
@@ -44,8 +44,10 @@ with lib;
     # Clear out /tmp after a fortnight and give all normal users a ~/tmp
     # cleaned out weekly.
     systemd.tmpfiles.rules = [ "d /tmp 1777 root root 14d" ] ++
-      (let mkTmpDir = n: u: "d ${u.home}/tmp 0700 ${n} ${u.group} 7d";
-       in mapAttrsToList mkTmpDir (filterAttrs (n: u: u.isNormalUser) config.users.extraUsers));
+      (
+        let mkTmpDir = n: u: "d ${u.home}/tmp 0700 ${n} ${u.group} 7d";
+        in mapAttrsToList mkTmpDir (filterAttrs (_: u: u.isNormalUser) config.users.extraUsers)
+      );
 
     # Enable passwd and co.
     users.mutableUsers = true;
@@ -83,9 +85,7 @@ with lib;
     i18n.defaultLocale = "en_GB.UTF-8";
 
     # Timezone
-    services.timesyncd.enable = true; # this is enabled by default, but
-                                      # I like being explicit about it,
-                                      # to remind me.
+    services.timesyncd.enable = true;
     time.timeZone = "Europe/London";
 
     # Keyboard
@@ -122,7 +122,7 @@ with lib;
     # Syncthing for shared folders (configured directly in the syncthing client)
     services.syncthing = {
       enable = true;
-      user   = "barrucadu";
+      user = "barrucadu";
       openDefaultPorts = true;
     };
 
@@ -193,11 +193,11 @@ with lib;
       scrapeConfigs = [
         {
           job_name = "${config.networking.hostName}-node";
-          static_configs = [ { targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; } ];
+          static_configs = [{ targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; }];
         }
         {
           job_name = "${config.networking.hostName}-docker";
-          static_configs = [ { targets = [ "localhost:9417" ]; } ];
+          static_configs = [{ targets = [ "localhost:9417" ]; }];
         }
       ];
     };
@@ -207,8 +207,8 @@ with lib;
     systemd.services.prometheus-docker-exporter = {
       enable = config.services.prometheus.enable;
       description = "Docker exporter for Prometheus";
-      after = ["docker.service"];
-      wantedBy = ["prometheus.service"];
+      after = [ "docker.service" ];
+      wantedBy = [ "prometheus.service" ];
       serviceConfig = {
         Restart = "always";
         ExecStartPre = [
@@ -318,6 +318,7 @@ with lib;
           scrot
           xclip
         ];
-      in common ++ (if config.services.xserver.enable then xorg else noxorg);
+      in
+      common ++ (if config.services.xserver.enable then xorg else noxorg);
   };
 }

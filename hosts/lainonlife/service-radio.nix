@@ -2,18 +2,17 @@
 { pkgs, lib, ... }:
 
 with lib;
-
 let
   # Configuration for the radio user.
-  user  = "radio";
+  user = "radio";
   group = "audio";
   homeDir = "/srv/radio";
-  dataDirFor  = channel: "${homeDir}/data/${channel}";
+  dataDirFor = channel: "${homeDir}/data/${channel}";
   musicDirFor = channel: "${homeDir}/music/${channel}";
 
   # Configuration for the Icecast server.
-  icecastAdminPassword    = import /etc/nixos/secrets/icecast-admin-password.nix;
-  icecastFallbackPassword = import /etc/nixos/secrets/icecast-fallback-password.nix;
+  icecastAdminPassword = fileContents /etc/nixos/secrets/icecast-admin-password.txt;
+  icecastFallbackPassword = fileContents /etc/nixos/secrets/icecast-fallback-password.txt;
   fallbackMP3Mount = "fallback.mp3";
   fallbackOggMount = "fallback.ogg";
 
@@ -34,8 +33,9 @@ let
         format      "44100:16:2"
         always_on   "yes"
       }
-      '';
-    in pkgs.writeText "mpd-${channel}.conf" ''
+    '';
+    in
+    pkgs.writeText "mpd-${channel}.conf" ''
       music_directory     "${musicDirFor channel}"
       playlist_directory  "${dataDirFor channel}/playlists"
       db_file             "${dataDirFor channel}/db"
@@ -46,7 +46,7 @@ let
       port                "${toString port}"
 
       ${shoutConfig "vorbis" "ogg"}
-      ${shoutConfig "lame"   "mp3"}
+      ${shoutConfig "lame" "mp3"}
 
       audio_output {
         type "null"
@@ -66,24 +66,24 @@ let
     '';
 
   # A systemd service
-  service = {environment ? {}, description, preStart ? null, startAt ? null, PermissionsStartOnly ? false, ExecStart, Type ? "simple", Restart ? "on-failure" }:
+  service = { environment ? { }, description, preStart ? null, startAt ? null, PermissionsStartOnly ? false, ExecStart, Type ? "simple", Restart ? "on-failure" }:
     mkMerge [
-      { inherit environment description;
-        after    = [ "network.target" "sound.target" ];
+      {
+        inherit environment description;
+        after = [ "network.target" "sound.target" ];
         wantedBy = [ "multi-user.target" ];
 
         serviceConfig = {
           inherit ExecStart PermissionsStartOnly Type Restart;
-          User  = user;
+          User = user;
           Group = group;
         };
       }
       (if preStart != null then { inherit preStart; } else { })
-      (if startAt  != null then { inherit startAt;  } else { })
+      (if startAt != null then { inherit startAt; } else { })
     ];
 
 in
-
 {
   # The radio runs as its own user, with music files stored in $HOME/music/$CHANNEL and state files
   # in $HOME/data/$CHANNEL.
@@ -110,16 +110,16 @@ in
       let
         channelMount = { channel, description, mpdPassword, livePassword, ... }:
           let mount = ismpd: ext: ''
-              <mount>
-                <mount-name>/${if ismpd then "mpd-${channel}" else channel}.${ext}</mount-name>
-                <password>${if ismpd then mpdPassword else livePassword}</password>
-                <fallback-mount>/${if ismpd then "fallback" else "mpd-${channel}"}.${ext}</fallback-mount>
-                <fallback-override>1</fallback-override>
-                <stream-name>${if ismpd then "[mpd] " else ""}${channel} (${ext})</stream-name>
-                <stream-description>${description}</stream-description>
-                <public>${if ismpd then "0" else "1"}</public>
-              </mount>
-            '';
+            <mount>
+              <mount-name>/${if ismpd then "mpd-${channel}" else channel}.${ext}</mount-name>
+              <password>${if ismpd then mpdPassword else livePassword}</password>
+              <fallback-mount>/${if ismpd then "fallback" else "mpd-${channel}"}.${ext}</fallback-mount>
+              <fallback-override>1</fallback-override>
+              <stream-name>${if ismpd then "[mpd] " else ""}${channel} (${ext})</stream-name>
+              <stream-description>${description}</stream-description>
+              <public>${if ismpd then "0" else "1"}</public>
+            </mount>
+          '';
           in mount false "mp3" + mount true "mp3" + mount false "ogg" + mount true "ogg";
 
         fallbackMount = ext: ''
@@ -138,7 +138,8 @@ in
             <header name="Referrer-Policy" value="no-referrer" />
           </http-headers>
         '';
-      in concatMapStringsSep "\n" channelMount channels + fallbackMount "mp3" + fallbackMount "ogg" + headers;
+      in
+      concatMapStringsSep "\n" channelMount channels + fallbackMount "mp3" + fallbackMount "ogg" + headers;
   };
 
   # MPD service settings.
@@ -170,11 +171,12 @@ in
   # Programming service settings.
   #
   # > systemd.services."programme-random" = radio.programmingServiceFor channel_spec;
-  programmingServiceFor = {channel, port, ...}:
+  programmingServiceFor = { channel, port, ... }:
     let penv = pkgs.python3.buildEnv.override {
-          extraLibs = with pkgs.python3Packages; [docopt mpd2];
-        };
-    in service {
+      extraLibs = with pkgs.python3Packages; [ docopt mpd2 ];
+    };
+    in
+    service {
       description = "Radio Programming (channel ${channel})";
       startAt = "0/3:00:00";
       ExecStart = "${pkgs.python3}/bin/python3 /srv/radio/scripts/schedule.py ${toString port}";

@@ -1,13 +1,12 @@
 { pkgs, ... }:
-
 let
   nfsShare = name:
-    { device = "nyarlathotep:/${name}"
-    ; fsType = "nfs"
-    ; options = [ "x-systemd.automount" "noauto" ]
-    ; };
+    {
+      device = "nyarlathotep:/${name}";
+      fsType = "nfs";
+      options = [ "x-systemd.automount" "noauto" ];
+    };
 in
-
 {
   networking.hostName = "azathoth";
 
@@ -31,13 +30,13 @@ in
   networking.firewall.trustedInterfaces = [ "lo" "enp6s0" ];
 
   # Nyarlathotep
-  fileSystems."/home/barrucadu/nfs/anime"    = nfsShare "anime";
-  fileSystems."/home/barrucadu/nfs/manga"    = nfsShare "manga";
-  fileSystems."/home/barrucadu/nfs/misc"     = nfsShare "misc";
-  fileSystems."/home/barrucadu/nfs/music"    = nfsShare "music";
-  fileSystems."/home/barrucadu/nfs/movies"   = nfsShare "movies";
-  fileSystems."/home/barrucadu/nfs/tv"       = nfsShare "tv";
-  fileSystems."/home/barrucadu/nfs/images"   = nfsShare "images";
+  fileSystems."/home/barrucadu/nfs/anime" = nfsShare "anime";
+  fileSystems."/home/barrucadu/nfs/manga" = nfsShare "manga";
+  fileSystems."/home/barrucadu/nfs/misc" = nfsShare "misc";
+  fileSystems."/home/barrucadu/nfs/music" = nfsShare "music";
+  fileSystems."/home/barrucadu/nfs/movies" = nfsShare "movies";
+  fileSystems."/home/barrucadu/nfs/tv" = nfsShare "tv";
+  fileSystems."/home/barrucadu/nfs/images" = nfsShare "images";
   fileSystems."/home/barrucadu/nfs/torrents" = nfsShare "torrents";
 
   # Enable Xorg, to auto-login to herbstluftwm, with C-M-Bksp enabled.

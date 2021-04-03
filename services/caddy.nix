@@ -1,7 +1,6 @@
 { config, lib, ... }:
 
 with lib;
-
 let
   cfg = config.services.caddy;
 in

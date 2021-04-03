@@ -1,7 +1,6 @@
-{ config, lib, pkgs, ...}:
+{ config, lib, pkgs, ... }:
 
 with lib;
-
 let
   cfg = config.services.bookmarks;
 
@@ -71,7 +70,7 @@ in
 
   config = mkIf cfg.enable {
     systemd.services.bookmarks = {
-      enable   = true;
+      enable = true;
       wantedBy = [ "multi-user.target" ];
       requires = [ "docker.service" ];
       environment = { COMPOSE_PROJECT_NAME = "bookmarks"; };
@@ -79,8 +78,8 @@ in
         (mkIf (cfg.execStartPre != "") { ExecStartPre = "${cfg.execStartPre}"; })
         {
           ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart   = "always";
+          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
+          Restart = "always";
         }
       ];
     };
