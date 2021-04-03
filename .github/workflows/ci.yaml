@@ -8,12 +8,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: cachix/install-nix-action@v13
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
       - name: Setup
         run: |
-          nix-env --install nix-linter nixpkgs-fmt
+          nix-env -f '<nixpkgs>' --install nix-linter-unstable nixpkgs-fmt
       - name: Lint
         run: |
           set -ex
           find . -name '*.nix' -exec nixpkgs-fmt {} \;
-          nix-lint -r .
+          nix-linter -r .
           git diff --exit-code
