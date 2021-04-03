@@ -348,7 +348,7 @@ in
       ];
       dashboards =
         let
-          dashboard = folder: name: path: { name = name; folder = folder; options.path = pkgs.writeTextDir name (fileContents path); };
+          dashboard = folder: name: path: { inherit name folder; options.path = pkgs.writeTextDir name (fileContents path); };
         in
           [
             (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)

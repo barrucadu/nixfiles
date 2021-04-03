@@ -45,7 +45,7 @@ with lib;
     # cleaned out weekly.
     systemd.tmpfiles.rules = [ "d /tmp 1777 root root 14d" ] ++
       (let mkTmpDir = n: u: "d ${u.home}/tmp 0700 ${n} ${u.group} 7d";
-       in mapAttrsToList mkTmpDir (filterAttrs (n: u: u.isNormalUser) config.users.extraUsers));
+       in mapAttrsToList mkTmpDir (filterAttrs (_: u: u.isNormalUser) config.users.extraUsers));
 
     # Enable passwd and co.
     users.mutableUsers = true;
