@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+    [
+      <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
@@ -13,32 +14,38 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "local/volatile/root";
+    {
+      device = "local/volatile/root";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/6491-48C0";
+    {
+      device = "/dev/disk/by-uuid/6491-48C0";
       fsType = "vfat";
     };
 
   fileSystems."/home" =
-    { device = "local/persistent/home";
+    {
+      device = "local/persistent/home";
       fsType = "zfs";
     };
 
   fileSystems."/mnt/nas" =
-    { device = "data/nas";
+    {
+      device = "data/nas";
       fsType = "zfs";
     };
 
   fileSystems."/nix" =
-    { device = "local/persistent/nix";
+    {
+      device = "local/persistent/nix";
       fsType = "zfs";
     };
 
   fileSystems."/persist" =
-    { device = "local/persistent/persist";
+    {
+      device = "local/persistent/persist";
       fsType = "zfs";
     };
 

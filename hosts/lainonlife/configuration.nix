@@ -1,25 +1,36 @@
 { config, pkgs, lib, ... }:
-
 let
   radio = import ./service-radio.nix { inherit lib pkgs; };
 
   radioChannels = [
-    { channel = "everything"; port = 6600; description = "all the music, all the time"
-    ; mpdPassword  = import /etc/nixos/secrets/everything-password-mpd.nix
-    ; livePassword = import /etc/nixos/secrets/everything-password-live.nix
-    ; }
-    { channel = "cyberia"; port = 6601; description = "classic lainchan radio: electronic, chiptune, weeb"
-    ; mpdPassword  = import /etc/nixos/secrets/cyberia-password-mpd.nix
-    ; livePassword = import /etc/nixos/secrets/cyberia-password-live.nix
-    ; }
-    { channel = "swing"; port = 6602; description = "swing, electroswing, and jazz"
-    ; mpdPassword  = import /etc/nixos/secrets/swing-password-mpd.nix
-    ; livePassword = import /etc/nixos/secrets/swing-password-live.nix
-    ; }
-    { channel = "cafe"; port = 6603; description = "music to drink tea to"
-    ; mpdPassword  = import /etc/nixos/secrets/cafe-password-mpd.nix
-    ; livePassword = import /etc/nixos/secrets/cafe-password-live.nix
-    ; }
+    {
+      channel = "everything";
+      port = 6600;
+      description = "all the music, all the time";
+      mpdPassword = import /etc/nixos/secrets/everything-password-mpd.nix;
+      livePassword = import /etc/nixos/secrets/everything-password-live.nix;
+    }
+    {
+      channel = "cyberia";
+      port = 6601;
+      description = "classic lainchan radio: electronic, chiptune, weeb";
+      mpdPassword = import /etc/nixos/secrets/cyberia-password-mpd.nix;
+      livePassword = import /etc/nixos/secrets/cyberia-password-live.nix;
+    }
+    {
+      channel = "swing";
+      port = 6602;
+      description = "swing, electroswing, and jazz";
+      mpdPassword = import /etc/nixos/secrets/swing-password-mpd.nix;
+      livePassword = import /etc/nixos/secrets/swing-password-live.nix;
+    }
+    {
+      channel = "cafe";
+      port = 6603;
+      description = "music to drink tea to";
+      mpdPassword = import /etc/nixos/secrets/cafe-password-mpd.nix;
+      livePassword = import /etc/nixos/secrets/cafe-password-live.nix;
+    }
   ];
 
   backendPort = 8002;
@@ -32,22 +43,21 @@ let
     ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
   '';
 in
-
 {
   networking.hostName = "lainonlife";
 
   # Bootloader
-  boot.loader.grub.enable  = true;
+  boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  boot.loader.grub.device  = "/dev/sda";
+  boot.loader.grub.device = "/dev/sda";
 
   # OVH network set up
   networking.interfaces.eno1 = {
-    ipv4.addresses = [ { address = "91.121.0.148";           prefixLength = 24;  } ];
-    ipv6.addresses = [ { address = "2001:41d0:0001:5394::1"; prefixLength = 128; } ];
+    ipv4.addresses = [{ address = "91.121.0.148"; prefixLength = 24; }];
+    ipv6.addresses = [{ address = "2001:41d0:0001:5394::1"; prefixLength = 128; }];
   };
 
-  networking.defaultGateway  = "91.121.0.254";
+  networking.defaultGateway = "91.121.0.254";
   networking.defaultGateway6 = "2001:41d0:0001:53ff:ff:ff:ff:ff";
 
   networking.nameservers = [ "213.186.33.99" "2001:41d0:3:1c7::1" ];
@@ -57,8 +67,8 @@ in
 
   # Firewall
   networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
-  networking.firewall.allowedTCPPortRanges = [ { from = 62001; to = 63000; } ];
-  networking.firewall.allowedUDPPortRanges = [ { from = 62001; to = 63000; } ];
+  networking.firewall.allowedTCPPortRanges = [{ from = 62001; to = 63000; }];
+  networking.firewall.allowedUDPPortRanges = [{ from = 62001; to = 63000; }];
 
   # Web server
   services.caddy.enable = true;
@@ -96,47 +106,50 @@ in
 
   services.logrotate.enable = true;
   services.logrotate.config = ''
-/var/log/icecast/access.log /var/log/icecast/error.log {
-    daily
-    copytruncate
-    rotate 1
-    compress
-    postrotate
-        systemctl kill icecast.service --signal=HUP
-    endscript
-}
+    /var/log/icecast/access.log /var/log/icecast/error.log {
+        daily
+        copytruncate
+        rotate 1
+        compress
+        postrotate
+            systemctl kill icecast.service --signal=HUP
+        endscript
+    }
   '';
 
   # Radio
   users.extraUsers."${radio.username}" = radio.userSettings;
   services.icecast = radio.icecastSettingsFor radioChannels;
   systemd.services =
-    let service = {user, description, execstart, environment ? {}, ...}: {
-          inherit environment description;
-          after         = [ "network.target" ];
-          wantedBy      = [ "multi-user.target" ];
-          serviceConfig = { User = user; ExecStart = execstart; Restart = "on-failure"; };
-        };
-    in lib.mkMerge
-      [ (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "mpd-${channel}"       (radio.mpdServiceFor         c)) radioChannels))
-        (lib.listToAttrs (map (c@{channel, ...}: lib.nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
+    let service = { user, description, execstart, environment ? { }, ... }: {
+      inherit environment description;
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = { User = user; ExecStart = execstart; Restart = "on-failure"; };
+    };
+    in
+    lib.mkMerge
+      [
+        (lib.listToAttrs (map (c@{ channel, ... }: lib.nameValuePair "mpd-${channel}" (radio.mpdServiceFor c)) radioChannels))
+        (lib.listToAttrs (map (c@{ channel, ... }: lib.nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
 
-      { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3"; }
-      { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg"; }
+        { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3"; }
+        { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg"; }
 
-      { "http-backend" = service {
-          user = "${radio.username}";
-          description = "HTTP backend service";
-          execstart = "${pkgs.bash}/bin/bash -l -c /srv/radio/backend/run.sh";
-          environment = {
-            CONFIG     = "/srv/radio/config.json";
-            PORT       = toString backendPort;
-            ICECAST    = "http://localhost:${toString config.services.icecast.listen.port}";
-            PROMETHEUS = "http://localhost:${toString config.services.prometheus.port}";
+        {
+          "http-backend" = service {
+            user = "${radio.username}";
+            description = "HTTP backend service";
+            execstart = "${pkgs.bash}/bin/bash -l -c /srv/radio/backend/run.sh";
+            environment = {
+              CONFIG = "/srv/radio/config.json";
+              PORT = toString backendPort;
+              ICECAST = "http://localhost:${toString config.services.icecast.listen.port}";
+              PROMETHEUS = "http://localhost:${toString config.services.prometheus.port}";
+            };
           };
-        };
-      }
-    ];
+        }
+      ];
 
   environment.systemPackages = with pkgs; [ flac id3v2 ncmpcpp openssl python3Packages.virtualenv ];
 
@@ -188,7 +201,7 @@ in
   services.prometheus.scrapeConfigs = [
     {
       job_name = "radio";
-      static_configs = [ { targets = [ "localhost:${toString backendPort}" ]; } ];
+      static_configs = [{ targets = [ "localhost:${toString backendPort}" ]; }];
     }
   ];
 

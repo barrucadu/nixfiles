@@ -2,11 +2,9 @@
 
 # Bring names from 'lib' into scope.
 with lib;
-
 let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
 in
-
 {
   ###############################################################################
   ## General
@@ -289,27 +287,27 @@ in
     let
       rtorrentrc = pkgs.writeText "rtorrent.rc" (fileContents ./rtorrent.rc);
     in
-      {
-        enable   = true;
-        wantedBy = [ "default.target" ];
-        after    = [ "network.target" ];
-        serviceConfig = {
-          ExecStart = "${pkgs.rtorrent}/bin/rtorrent -n -o system.daemon.set=true -o import=${rtorrentrc}";
-          User      = "barrucadu";
-          Restart   = "on-failure";
-        };
+    {
+      enable = true;
+      wantedBy = [ "default.target" ];
+      after = [ "network.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.rtorrent}/bin/rtorrent -n -o system.daemon.set=true -o import=${rtorrentrc}";
+        User = "barrucadu";
+        Restart = "on-failure";
       };
+    };
 
   # todo: either dockerise this or properly package it
   systemd.services.flood = {
-    enable   = true;
+    enable = true;
     wantedBy = [ "default.target" ];
-    after    = [ "network.target" ];
+    after = [ "network.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.zsh}/bin/zsh --login -c '${pkgs.nodejs-12_x}/bin/npm start'";
-      User      = "barrucadu";
-      KillMode  = "none";
-      Restart   = "on-failure";
+      User = "barrucadu";
+      KillMode = "none";
+      Restart = "on-failure";
       WorkingDirectory = "/persist/flood";
     };
   };
@@ -350,18 +348,18 @@ in
         let
           dashboard = folder: name: path: { inherit name folder; options.path = pkgs.writeTextDir name (fileContents path); };
         in
-          [
-            (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
-            (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
-            (dashboard "My Dashboards" "quantified-self.json" ./grafana-dashboards/quantified-self.json)
-            (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
-            (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
-            (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
-            (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
-            (dashboard "UniFi" "unifi-poller-uap-insights.json" ./grafana-dashboards/unifi-poller-uap-insights.json)
-            (dashboard "UniFi" "unifi-poller-usg-insights.json" ./grafana-dashboards/unifi-poller-usg-insights.json)
-            (dashboard "UniFi" "unifi-poller-usw-insights.json" ./grafana-dashboards/unifi-poller-usw-insights.json)
-          ];
+        [
+          (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
+          (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
+          (dashboard "My Dashboards" "quantified-self.json" ./grafana-dashboards/quantified-self.json)
+          (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
+          (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
+          (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
+          (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
+          (dashboard "UniFi" "unifi-poller-uap-insights.json" ./grafana-dashboards/unifi-poller-uap-insights.json)
+          (dashboard "UniFi" "unifi-poller-usg-insights.json" ./grafana-dashboards/unifi-poller-usg-insights.json)
+          (dashboard "UniFi" "unifi-poller-usw-insights.json" ./grafana-dashboards/unifi-poller-usw-insights.json)
+        ];
     };
   };
 
@@ -369,25 +367,25 @@ in
   services.prometheus.scrapeConfigs = [
     {
       job_name = "pihole-node";
-      static_configs = [ { targets = [ "pi.hole:9100" ]; } ];
+      static_configs = [{ targets = [ "pi.hole:9100" ]; }];
     }
     {
       job_name = "pihole-pihole";
-      static_configs = [ { targets = [ "pi.hole:9617" ]; } ];
+      static_configs = [{ targets = [ "pi.hole:9617" ]; }];
     }
     {
       job_name = "speedtest";
       scrape_interval = "5m";
       scrape_timeout = "2m";
-      static_configs = [ { targets = [ "localhost:9516" ]; } ];
+      static_configs = [{ targets = [ "localhost:9516" ]; }];
     }
     {
       job_name = "unifipoller";
-      static_configs = [ { targets = [ "localhost:9130" ]; } ];
+      static_configs = [{ targets = [ "localhost:9130" ]; }];
     }
     {
       job_name = "awair";
-      static_configs = [ { targets = [ "localhost:9517" ]; } ];
+      static_configs = [{ targets = [ "localhost:9517" ]; }];
     }
   ];
 
@@ -396,8 +394,8 @@ in
   systemd.services.prometheus-statedir = {
     enable = true;
     description = "Bind-mount prometheus StateDirectory";
-    after = ["local-fs.target"];
-    wantedBy = ["prometheus.service"];
+    after = [ "local-fs.target" ];
+    wantedBy = [ "prometheus.service" ];
     serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/${config.services.prometheus.stateDir}";
     serviceConfig.ExecStart = "${pkgs.utillinux}/bin/mount -o bind /persist/var/lib/${config.services.prometheus.stateDir} /var/lib/${config.services.prometheus.stateDir}";
   };
@@ -405,8 +403,8 @@ in
   systemd.services.prometheus-speedtest-exporter = {
     enable = true;
     description = "Speedtest.net exporter for Prometheus";
-    after = ["docker.service"];
-    wantedBy = ["prometheus.service"];
+    after = [ "docker.service" ];
+    wantedBy = [ "prometheus.service" ];
     serviceConfig.Restart = "always";
     serviceConfig.ExecStartPre = [
       "-${pkgs.docker}/bin/docker stop prometheus_speedtest_exporter"
@@ -418,8 +416,8 @@ in
   systemd.services.prometheus-unifipoller-exporter = {
     enable = true;
     description = "UniFi Poller exporter for Prometheus";
-    after = ["docker.service"];
-    wantedBy = ["prometheus.service"];
+    after = [ "docker.service" ];
+    wantedBy = [ "prometheus.service" ];
     serviceConfig.Restart = "always";
     serviceConfig.ExecStartPre = [
       "-${pkgs.docker}/bin/docker stop prometheus_unifipoller_exporter"
@@ -431,8 +429,8 @@ in
   systemd.services.prometheus-awair-exporter = {
     enable = true;
     description = "Awair exporter for Prometheus";
-    after = ["docker.service"];
-    wantedBy = ["prometheus.service"];
+    after = [ "docker.service" ];
+    wantedBy = [ "prometheus.service" ];
     serviceConfig.Restart = "always";
     serviceConfig.ExecStartPre = [
       "-${pkgs.docker}/bin/docker stop prometheus_awair_exporter"
@@ -460,7 +458,7 @@ in
   systemd.services.tag-podcasts = {
     enable = true;
     description = "Automatically tag new podcast files";
-    wantedBy = ["multi-user.target"];
+    wantedBy = [ "multi-user.target" ];
     path = with pkgs; [ inotifyTools id3v2 ];
     unitConfig.RequiresMountsFor = "/mnt/nas";
     serviceConfig = {
@@ -475,7 +473,7 @@ in
   systemd.paths.flac-and-tag-album = {
     enable = true;
     description = "Automatically flac and tag new albums";
-    wantedBy = ["multi-user.target"];
+    wantedBy = [ "multi-user.target" ];
     unitConfig.RequiresMountsFor = "/mnt/nas";
     pathConfig.PathExistsGlob = "/mnt/nas/music/to_convert/in/*";
   };

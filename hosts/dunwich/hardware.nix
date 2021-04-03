@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ <nixpkgs/nixos/modules/profiles/qemu-guest.nix>
+    [
+      <nixpkgs/nixos/modules/profiles/qemu-guest.nix>
     ];
 
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sd_mod" "sr_mod" ];
@@ -13,7 +14,8 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b50d5b3c-6801-4993-bc66-120e0be670c6";
+    {
+      device = "/dev/disk/by-uuid/b50d5b3c-6801-4993-bc66-120e0be670c6";
       fsType = "ext4";
     };
 

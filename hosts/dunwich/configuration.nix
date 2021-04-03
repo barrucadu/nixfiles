@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
 with lib;
-
 let
   shoggothCommentoHttpPort = 3004;
   shoggothUmamiHttpPort = 3005;
@@ -10,19 +9,19 @@ let
     let
       dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
     in
-      {
-        enable   = true;
-        wantedBy = [ "multi-user.target" ];
-        requires = [ "docker.service" ];
-        environment = { COMPOSE_PROJECT_NAME = name; };
-        serviceConfig = mkMerge [
-          {
-            ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-            ExecStop  = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-            Restart   = "always";
-          }
-        ];
-      };
+    {
+      enable = true;
+      wantedBy = [ "multi-user.target" ];
+      requires = [ "docker.service" ];
+      environment = { COMPOSE_PROJECT_NAME = name; };
+      serviceConfig = mkMerge [
+        {
+          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
+          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
+          Restart = "always";
+        }
+      ];
+    };
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -33,22 +32,21 @@ let
   '';
 
 in
-
 {
   networking.hostName = "dunwich";
 
   system.autoUpgrade.allowReboot = mkForce false;
 
   # Bootloader
-  boot.loader.grub.enable  = true;
+  boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  boot.loader.grub.device  = "/dev/sda";
+  boot.loader.grub.device = "/dev/sda";
 
   # Networking
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   networking.interfaces.ens3 = {
-    ipv6.addresses = [ { address = "2a01:4f8:c2c:2b22::"; prefixLength = 64; } ];
+    ipv6.addresses = [{ address = "2a01:4f8:c2c:2b22::"; prefixLength = 64; }];
   };
   networking.defaultGateway6 = { address = "fe80::1"; interface = "ens3"; };
 
@@ -238,7 +236,8 @@ in
 
   # Clear the misc files every so often
   systemd.tmpfiles.rules =
-    [ "d /srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
+    [
+      "d /srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
       "d /srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
       "d /srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
     ];
