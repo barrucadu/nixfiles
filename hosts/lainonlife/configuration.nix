@@ -1,4 +1,5 @@
 { config, pkgs, lib, ... }:
+with lib;
 let
   radio = import ./service-radio.nix { inherit lib pkgs; };
 
@@ -7,29 +8,29 @@ let
       channel = "everything";
       port = 6600;
       description = "all the music, all the time";
-      mpdPassword = import /etc/nixos/secrets/everything-password-mpd.nix;
-      livePassword = import /etc/nixos/secrets/everything-password-live.nix;
+      mpdPassword = fileContents /etc/nixos/secrets/everything-password-mpd.txt;
+      livePassword = fileContents /etc/nixos/secrets/everything-password-live.txt;
     }
     {
       channel = "cyberia";
       port = 6601;
       description = "classic lainchan radio: electronic, chiptune, weeb";
-      mpdPassword = import /etc/nixos/secrets/cyberia-password-mpd.nix;
-      livePassword = import /etc/nixos/secrets/cyberia-password-live.nix;
+      mpdPassword = fileContents /etc/nixos/secrets/cyberia-password-mpd.txt;
+      livePassword = fileContents /etc/nixos/secrets/cyberia-password-live.txt;
     }
     {
       channel = "swing";
       port = 6602;
       description = "swing, electroswing, and jazz";
-      mpdPassword = import /etc/nixos/secrets/swing-password-mpd.nix;
-      livePassword = import /etc/nixos/secrets/swing-password-live.nix;
+      mpdPassword = fileContents /etc/nixos/secrets/swing-password-mpd.txt;
+      livePassword = fileContents /etc/nixos/secrets/swing-password-live.txt;
     }
     {
       channel = "cafe";
       port = 6603;
       description = "music to drink tea to";
-      mpdPassword = import /etc/nixos/secrets/cafe-password-mpd.nix;
-      livePassword = import /etc/nixos/secrets/cafe-password-live.nix;
+      mpdPassword = fileContents /etc/nixos/secrets/cafe-password-mpd.txt;
+      livePassword = fileContents /etc/nixos/secrets/cafe-password-live.txt;
     }
   ];
 
@@ -63,7 +64,7 @@ in
   networking.nameservers = [ "213.186.33.99" "2001:41d0:3:1c7::1" ];
 
   # No syncthing
-  services.syncthing.enable = lib.mkForce false;
+  services.syncthing.enable = mkForce false;
 
   # Firewall
   networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
@@ -128,10 +129,10 @@ in
       serviceConfig = { User = user; ExecStart = execstart; Restart = "on-failure"; };
     };
     in
-    lib.mkMerge
+    mkMerge
       [
-        (lib.listToAttrs (map (c@{ channel, ... }: lib.nameValuePair "mpd-${channel}" (radio.mpdServiceFor c)) radioChannels))
-        (lib.listToAttrs (map (c@{ channel, ... }: lib.nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
+        (listToAttrs (map (c@{ channel, ... }: nameValuePair "mpd-${channel}" (radio.mpdServiceFor c)) radioChannels))
+        (listToAttrs (map (c@{ channel, ... }: nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
 
         { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3"; }
         { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg"; }
@@ -164,10 +165,10 @@ in
   services.pleroma.enable = true;
   services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
   services.pleroma.domain = "social.lainon.life";
-  services.pleroma.secretKeyBase = lib.fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
-  services.pleroma.signingSalt = lib.fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
-  services.pleroma.webPushPublicKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
-  services.pleroma.webPushPrivateKey = lib.fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
+  services.pleroma.secretKeyBase = fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
+  services.pleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
+  services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
+  services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
   services.pleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
 
@@ -177,8 +178,8 @@ in
     port = 8001;
     domain = "lainon.life";
     rootUrl = "https://lainon.life/graphs/";
-    security.adminPassword = import /etc/nixos/secrets/grafana-admin-password.nix;
-    security.secretKey = import /etc/nixos/secrets/grafana-key.nix;
+    security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
+    security.secretKey = fileContents /etc/nixos/secrets/grafana-key.txt;
     auth.anonymous.enable = true;
     auth.anonymous.org_name = "lainon.life";
     provision = {
@@ -193,7 +194,7 @@ in
       dashboards = [
         {
           name = "lainon.life";
-          options.path = pkgs.writeTextDir "lainon.life" (lib.fileContents ./grafana-dashboards/main.json);
+          options.path = pkgs.writeTextDir "lainon.life" (fileContents ./grafana-dashboards/main.json);
         }
       ];
     };

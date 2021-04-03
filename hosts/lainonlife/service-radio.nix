@@ -11,8 +11,8 @@ let
   musicDirFor = channel: "${homeDir}/music/${channel}";
 
   # Configuration for the Icecast server.
-  icecastAdminPassword = import /etc/nixos/secrets/icecast-admin-password.nix;
-  icecastFallbackPassword = import /etc/nixos/secrets/icecast-fallback-password.nix;
+  icecastAdminPassword = fileContents /etc/nixos/secrets/icecast-admin-password.txt;
+  icecastFallbackPassword = fileContents /etc/nixos/secrets/icecast-fallback-password.txt;
   fallbackMP3Mount = "fallback.mp3";
   fallbackOggMount = "fallback.ogg";
 
