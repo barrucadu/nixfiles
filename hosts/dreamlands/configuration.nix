@@ -1,38 +1,10 @@
-{ pkgs, lib, ... }:
+{ lib, ... }:
 
 with lib;
 let
   concourseHttpPort = 3001;
   giteaHttpPort = 3000;
   registryHttpPort = 5000;
-
-  pullLocalDockerImage = pkgs.writeShellScript "pull-local-docker-image.sh" ''
-    set -e
-    set -o pipefail
-
-    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
-    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
-  '';
-
-  dockerComposeService = { name, yaml, pull ? "" }:
-    let
-      dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
-    in
-    {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = name; };
-      serviceConfig = mkMerge [
-        (mkIf (pull != "") { ExecStartPre = "${pullLocalDockerImage} ${pull}"; })
-        {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart = "always";
-        }
-      ];
-    };
-
 in
 {
   networking.hostName = "dreamlands";
@@ -99,11 +71,7 @@ in
   services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
   services.concourse.dockerVolumeDir = /persist/docker-volumes/concourse;
 
-  systemd.services.gitea = dockerComposeService {
-    name = "gitea";
-    yaml = import ./gitea.docker-compose.nix {
-      httpPort = giteaHttpPort;
-      dockerVolumeDir = /persist/docker-volumes/gitea;
-    };
-  };
+  services.gitea.enable = true;
+  services.gitea.httpPort = giteaHttpPort;
+  services.gitea.dockerVolumeDir = /persist/docker-volumes/gitea;
 }

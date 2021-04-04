@@ -1,10 +1,11 @@
-{ httpPort ? 3000
-, sshPort ? 222
+{ dockerVolumeDir
+, giteaTag ? "1.13.4"
+, httpPort ? 3000
 , internalHTTP ? true
 , internalSSH ? false
-, giteaTag ? "1.13.4"
 , postgresTag ? "13"
-, dockerVolumeDir
+, sshPort ? 222
+, ...
 }:
 
 ''
