@@ -6,9 +6,9 @@
 , githubUser ? "barrucadu"
 , httpPort ? 3001
 , postgresTag ? "13"
-, ssmAccessKey ? ""
+, ssmAccessKey ? null
 , ssmRegion ? "eu-west-1"
-, ssmSecretKey ? ""
+, ssmSecretKey ? null
 , ...
 }:
 

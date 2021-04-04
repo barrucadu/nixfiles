@@ -3,7 +3,7 @@
 , image
 , secretsFile
 , adminEmail ? "mike@barrucadu.co.uk"
-, faviconPath ? /no-favicon
+, faviconPath ? null
 , httpPort ? 4000
 , instanceName ? domain
 , notifyEmail ? adminEmail
@@ -33,7 +33,7 @@
         - ${toString dockerVolumeDir}/uploads:/var/lib/pleroma/uploads
         - ${toString dockerVolumeDir}/emojis:/var/lib/pleroma/static/emoji/custom
         - ${secretsFile}:/var/lib/pleroma/secret.exs
-        ${if faviconPath == /no-favicon then "" else "- ${faviconPath}:/var/lib/pleroma/static/favicon.png"}
+        ${if faviconPath == null then "" else "- ${faviconPath}:/var/lib/pleroma/static/favicon.png"}
       depends_on:
         - db
 

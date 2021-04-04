@@ -15,7 +15,7 @@ in
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
-    youtubeApiKey = mkOption { type = types.str; default = ""; };
+    youtubeApiKey = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
   };
 

@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.services.pleroma;
 
-  faviconPath = if cfg.faviconPath == /no-favicon then /no-favicon else pkgs.copyPathToStore cfg.faviconPath;
+  faviconPath = if cfg.faviconPath == null then null else pkgs.copyPathToStore cfg.faviconPath;
 
   secretsFile = pkgs.writeText "pleroma-secrets.exc" ''
     import Config
@@ -39,7 +39,7 @@ in
     pgTag = mkOption { type = types.str; default = "13"; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     domain = mkOption { type = types.str; };
-    faviconPath = mkOption { type = types.path; default = /no-favicon; };
+    faviconPath = mkOption { type = types.nullOr types.path; default = null; };
     instanceName = mkOption { type = types.str; default = cfg.domain; };
     adminEmail = mkOption { type = types.str; default = "mike@barrucadu.co.uk"; };
     notifyEmail = mkOption { type = types.str; default = cfg.adminEmail; };

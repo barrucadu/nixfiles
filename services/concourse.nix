@@ -18,9 +18,9 @@ in
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
     httpPort = mkOption { type = types.int; default = 3001; };
     postgresTag = mkOption { type = types.str; default = "13"; };
-    ssmAccessKey = mkOption { type = types.str; default = ""; };
+    ssmAccessKey = mkOption { type = types.nullOr types.str; default = null; };
     ssmRegion = mkOption { type = types.str; default = "eu-west-1"; };
-    ssmSecretKey = mkOption { type = types.str; default = ""; };
+    ssmSecretKey = mkOption { type = types.nullOr types.str; default = null; };
   };
 
   config = mkIf cfg.enable {
