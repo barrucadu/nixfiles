@@ -251,6 +251,7 @@ in
   services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
   services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
+  services.pleroma.dockerVolumeDir = /persist/docker-volumes/pleroma;
 
   # bookdb
   services.bookdb.enable = true;
@@ -258,6 +259,7 @@ in
   services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   services.bookdb.readOnly = true;
   services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
+  services.bookdb.dockerVolumeDir = /persist/docker-volumes/bookdb;
 
   # bookmarks
   services.bookmarks.enable = true;
@@ -266,11 +268,13 @@ in
   services.bookmarks.readOnly = true;
   services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
   services.bookmarks.httpPort = 3003;
+  services.bookmarks.dockerVolumeDir = /persist/docker-volumes/bookmarks;
 
   # etherpad
   services.etherpad.enable = true;
   services.etherpad.image = "etherpad/etherpad:stable";
   services.etherpad.httpPort = 3006;
+  services.etherpad.dockerVolumeDir = /persist/docker-volumes/etherpad;
 
   # minecraft
   services.minecraft.enable = true;

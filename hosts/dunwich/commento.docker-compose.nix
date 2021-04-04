@@ -47,12 +47,17 @@
       networks:
         - commento
       volumes:
-        - commento_postgres:/var/lib/postgresql/data
+        - commento_pgdata:/var/lib/postgresql/data
 
   networks:
     commento:
       external: false
 
   volumes:
-    commento_postgres:
+    commento_pgdata:
+      driver: local
+      driver_opts:
+        o: bind,
+        type: none,
+        device: /persist/docker-volumes/commento/pgdata
 ''
