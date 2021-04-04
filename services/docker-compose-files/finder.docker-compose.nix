@@ -17,8 +17,6 @@
       environment:
         DATA_DIR: "/data"
         ES_HOST: "http://db:9200"
-      networks:
-        - finder
       ports:
         - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8888"
       volumes:
@@ -33,12 +31,6 @@
         - http.host=0.0.0.0
         - discovery.type=single-node
         - ES_JAVA_OPTS=-Xms1g -Xmx1g
-      networks:
-        - finder
       volumes:
         - ${toString dockerVolumeDir}/esdata:/usr/share/elasticsearch/data
-
-  networks:
-    finder:
-      external: false
 ''

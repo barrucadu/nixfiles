@@ -21,8 +21,6 @@
         BASE_URI: "${baseURI}"
         ES_HOST: "http://db:9200"
         YOUTUBE_API_KEY: "${youtubeApiKey}"
-      networks:
-        - bookmarks
       ports:
         - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8888"
       depends_on:
@@ -35,12 +33,6 @@
         - http.host=0.0.0.0
         - discovery.type=single-node
         - ES_JAVA_OPTS=-Xms1g -Xmx1g
-      networks:
-        - bookmarks
       volumes:
         - ${toString dockerVolumeDir}/esdata:/usr/share/elasticsearch/data
-
-  networks:
-    bookmarks:
-      external: false
 ''

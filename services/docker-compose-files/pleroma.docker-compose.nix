@@ -28,8 +28,6 @@
         DB_PASS: "pleroma"
         DB_NAME: "pleroma"
         DB_HOST: "db"
-      networks:
-        - pleroma
       ports:
         - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:4000"
       volumes:
@@ -47,12 +45,6 @@
         POSTGRES_USER: pleroma
         POSTGRES_PASSWORD: pleroma
         POSTGRES_DB: pleroma
-      networks:
-        - pleroma
       volumes:
         - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
-
-  networks:
-    pleroma:
-      external: false
 ''

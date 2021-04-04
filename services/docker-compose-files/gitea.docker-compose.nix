@@ -30,8 +30,6 @@
         - USER_UID=1000
         - USER_GID=1000
       restart: always
-      networks:
-        - gitea
       volumes:
         - ${toString dockerVolumeDir}/data:/data
       ports:
@@ -47,12 +45,6 @@
         - POSTGRES_USER=gitea
         - POSTGRES_PASSWORD=gitea
         - POSTGRES_DB=gitea
-      networks:
-        - gitea
       volumes:
         - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
-
-  networks:
-    gitea:
-      external: false
 ''

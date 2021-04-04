@@ -21,8 +21,6 @@
         DB_USER: "etherpad"
         DB_PASS: "etherpad"
         TRUST_PROXY: "true"
-      networks:
-        - etherpad
       ports:
         - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:9001"
       depends_on:
@@ -35,12 +33,6 @@
         POSTGRES_USER: etherpad
         POSTGRES_PASSWORD: etherpad
         POSTGRES_DB: etherpad
-      networks:
-        - etherpad
       volumes:
         - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
-
-  networks:
-    etherpad:
-      external: false
 ''

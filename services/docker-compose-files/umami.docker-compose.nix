@@ -17,8 +17,6 @@
       environment:
         DATABASE_URL: postgres://umami:umami@db/umami
         HASH_SALT: ${hashSalt}
-      networks:
-        - umami
       ports:
         - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:3000"
       depends_on:
@@ -31,12 +29,6 @@
         POSTGRES_DB: umami
         POSTGRES_USER: umami
         POSTGRES_PASSWORD: umami
-      networks:
-        - umami
       volumes:
         - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
-
-  networks:
-    umami:
-      external: false
 ''

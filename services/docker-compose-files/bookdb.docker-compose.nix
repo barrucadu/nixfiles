@@ -20,8 +20,6 @@
         BASE_URI: "${baseURI}"
         COVER_DIR: "/bookdb-covers"
         ES_HOST: "http://db:9200"
-      networks:
-        - bookdb
       ports:
         - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8888"
       volumes:
@@ -36,12 +34,6 @@
         - http.host=0.0.0.0
         - discovery.type=single-node
         - ES_JAVA_OPTS=-Xms1g -Xmx1g
-      networks:
-        - bookdb
       volumes:
         - ${toString dockerVolumeDir}/esdata:/usr/share/elasticsearch/data
-
-  networks:
-    bookdb:
-      external: false
 ''

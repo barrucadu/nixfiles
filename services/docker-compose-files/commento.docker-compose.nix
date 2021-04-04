@@ -32,8 +32,6 @@
         ${if googleSecret != null then "COMMENTO_GOOGLE_SECRET: \"${googleSecret}\"" else ""}
         ${if twitterKey != null then "COMMENTO_TWITTER_KEY: \"${twitterKey}\"" else ""}
         ${if twitterSecret != null then "COMMENTO_TWITTER_SECRET: \"${twitterSecret}\"" else ""}
-      networks:
-        - commento
       ports:
         - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8080"
       depends_on:
@@ -46,12 +44,6 @@
         POSTGRES_DB: commento
         POSTGRES_USER: commento
         POSTGRES_PASSWORD: commento
-      networks:
-        - commento
       volumes:
         - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
-
-  networks:
-    commento:
-      external: false
 ''
