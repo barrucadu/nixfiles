@@ -32,12 +32,17 @@
       networks:
         - umami
       volumes:
-        - umami_postgres:/var/lib/postgresql/data
+        - umami_pgdata:/var/lib/postgresql/data
 
   networks:
     umami:
       external: false
 
   volumes:
-    umami_postgres:
+    umami_pgdata:
+      driver: local
+      driver_opts:
+        o: bind,
+        type: none,
+        device: /persist/docker-volumes/umami/pgdata
 ''
