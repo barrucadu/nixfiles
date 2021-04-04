@@ -1,16 +1,17 @@
-{ httpPort ? 3004
-, internalHTTP ? true
+{ dockerVolumeDir
+, externalUrl
 , commentoTag ? "latest"
-, postgresTag ? "13"
 , forbidNewOwners ? true
 , githubKey ? null
 , githubSecret ? null
 , googleKey ? null
 , googleSecret ? null
+, httpPort ? 3004
+, internalHTTP ? true
+, postgresTag ? "13"
 , twitterKey ? null
 , twitterSecret ? null
-, externalUrl
-, dockerVolumeDir
+, ...
 }:
 
 ''

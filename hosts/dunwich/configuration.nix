@@ -280,20 +280,17 @@ in
   services.minecraft.enable = true;
 
   # Look what the Shoggoth Dragged In blog
-  systemd.services.shoggoth-commento = dockerComposeService {
-    name = "shoggoth-commento";
-    yaml = import ./commento.docker-compose.nix {
-      httpPort = shoggothCommentoHttpPort;
-      externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
-      githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
-      githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
-      googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
-      googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
-      twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
-      twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
-      dockerVolumeDir = /persist/docker-volumes/commento;
-    };
-  };
+  services.commento.enable = true;
+  services.commento.httpPort = shoggothCommentoHttpPort;
+  services.commento.externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
+  services.commento.githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
+  services.commento.githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
+  services.commento.googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
+  services.commento.googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
+  services.commento.twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
+  services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
+  services.commento.dockerVolumeDir = /persist/docker-volumes/commento;
+
   systemd.services.shoggoth-umami = dockerComposeService {
     name = "shoggoth-umami";
     yaml = import ./umami.docker-compose.nix {
