@@ -99,11 +99,15 @@ in
       enableSSM = true;
       ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
       ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
+      dockerVolumeDir = /persist/docker-volumes/concourse;
     };
   };
 
   systemd.services.gitea = dockerComposeService {
     name = "gitea";
-    yaml = import ./gitea.docker-compose.nix { httpPort = giteaHttpPort; };
+    yaml = import ./gitea.docker-compose.nix {
+      httpPort = giteaHttpPort;
+      dockerVolumeDir = /persist/docker-volumes/gitea;
+    };
   };
 }

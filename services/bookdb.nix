@@ -4,17 +4,6 @@ with lib;
 let
   cfg = config.services.bookdb;
 
-  volumeOpts = path: ''
-    {
-      "driver": "local",
-      "driver_opts": {
-        "o": "bind",
-        "type": "none",
-        "device": "${toString cfg.dockerVolumeDir}/${path}",
-      }
-    }
-  '';
-
   dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
     version: '3'
 
@@ -32,7 +21,7 @@ let
         ports:
           - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:8888"
         volumes:
-          - bookdb_covers:/bookdb-covers
+          - ${toString cfg.dockerVolumeDir}/covers:/bookdb-covers
         depends_on:
           - db
 
@@ -46,15 +35,11 @@ let
         networks:
           - bookdb
         volumes:
-          - bookdb_esdata:/usr/share/elasticsearch/data
+          - ${toString cfg.dockerVolumeDir}/esdata:/usr/share/elasticsearch/data
 
     networks:
       bookdb:
         external: false
-
-    volumes:
-      bookdb_covers: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "covers" else ""}
-      bookdb_esdata: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "esdata" else ""}
   '';
 in
 {
@@ -67,7 +52,7 @@ in
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.str; default = ""; };
-    dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
+    dockerVolumeDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {

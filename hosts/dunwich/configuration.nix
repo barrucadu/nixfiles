@@ -291,6 +291,7 @@ in
       googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
       twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
       twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
+      dockerVolumeDir = /persist/docker-volumes/commento;
     };
   };
   systemd.services.shoggoth-umami = dockerComposeService {
@@ -298,6 +299,7 @@ in
     yaml = import ./umami.docker-compose.nix {
       httpPort = shoggothUmamiHttpPort;
       hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
+      dockerVolumeDir = /persist/docker-volumes/umami;
     };
   };
 

@@ -4,17 +4,6 @@ with lib;
 let
   cfg = config.services.etherpad;
 
-  volumeOpts = path: ''
-    {
-      "driver": "local",
-      "driver_opts": {
-        "o": "bind",
-        "type": "none",
-        "device": "${toString cfg.dockerVolumeDir}/${path}",
-      }
-    }
-  '';
-
   dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
     version: '3'
 
@@ -47,14 +36,11 @@ let
         networks:
           - etherpad
         volumes:
-          - etherpad_pgdata:/var/lib/postgresql/data
+          - ${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data
 
     networks:
       etherpad:
         external: false
-
-    volumes:
-      etherpad_pgdata: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "pgdata" else ""}
   '';
 in
 {
@@ -65,7 +51,7 @@ in
     internalHTTP = mkOption { type = types.bool; default = true; };
     pgTag = mkOption { type = types.str; default = "13"; };
     execStartPre = mkOption { type = types.str; default = ""; };
-    dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
+    dockerVolumeDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {

@@ -9,6 +9,7 @@
 , ssmRegion ? "eu-west-1"
 , ssmAccessKey ? ""
 , ssmSecretKey ? ""
+, dockerVolumeDir
 }:
 
 ''
@@ -52,17 +53,9 @@
       networks:
         - concourse
       volumes:
-        - concourse_postgres:/database
+        - ${toString dockerVolumeDir}/pgdata:/database
 
   networks:
     concourse:
       external: false
-
-  volumes:
-    concourse_postgres:
-      driver: local
-      driver_opts:
-        o: bind
-        type: none
-        device: /docker-volumes/concourse/postgres/${postgresTag}
 ''

@@ -16,17 +16,6 @@ let
       private_key: "${cfg.webPushPrivateKey}"
   '';
 
-  volumeOpts = path: ''
-    {
-      "driver": "local",
-      "driver_opts": {
-        "o": "bind",
-        "type": "none",
-        "device": "${toString cfg.dockerVolumeDir}/${path}",
-      }
-    }
-  '';
-
   dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
     version: '3'
 
@@ -48,8 +37,8 @@ let
         ports:
           - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:4000"
         volumes:
-          - pleroma_uploads:/var/lib/pleroma/uploads
-          - pleroma_emojis:/var/lib/pleroma/static/emoji/custom
+          - ${toString cfg.dockerVolumeDir}/uploads:/var/lib/pleroma/uploads
+          - ${toString cfg.dockerVolumeDir}/emojis:/var/lib/pleroma/static/emoji/custom
           - ${secretsFile}:/var/lib/pleroma/secret.exs
           ${if cfg.faviconPath != /no-favicon then "- ${pkgs.copyPathToStore cfg.faviconPath}:/var/lib/pleroma/static/favicon.png" else ""}
         depends_on:
@@ -65,16 +54,11 @@ let
         networks:
           - pleroma
         volumes:
-          - pleroma_pgdata:/var/lib/postgresql/data
+          - ${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data
 
     networks:
       pleroma:
         external: false
-
-    volumes:
-      pleroma_uploads: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "uploads" else ""}
-      pleroma_emojis: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "emojis" else ""}
-      pleroma_pgdata: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "pgdata" else ""}
   '';
 
 in
@@ -95,7 +79,7 @@ in
     signingSalt = mkOption { type = types.str; };
     webPushPublicKey = mkOption { type = types.str; };
     webPushPrivateKey = mkOption { type = types.str; };
-    dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
+    dockerVolumeDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {

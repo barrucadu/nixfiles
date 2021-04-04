@@ -4,6 +4,7 @@
 , internalSSH ? false
 , giteaTag ? "1.13.4"
 , postgresTag ? "13"
+, dockerVolumeDir
 }:
 
 ''
@@ -31,7 +32,7 @@
       networks:
         - gitea
       volumes:
-        - gitea_data:/data
+        - ${toString dockerVolumeDir}/data:/data
       ports:
         - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:3000"
         - "${if internalSSH then "127.0.0.1:" else ""}${toString sshPort}:22"
@@ -48,23 +49,9 @@
       networks:
         - gitea
       volumes:
-        - gitea_postgres:/var/lib/postgresql/data
+        - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
 
   networks:
     gitea:
       external: false
-
-  volumes:
-    gitea_data:
-      driver: local
-      driver_opts:
-        o: bind
-        type: none
-        device: /docker-volumes/gitea/data
-    gitea_postgres:
-      driver: local
-      driver_opts:
-        o: bind
-        type: none
-        device: /docker-volumes/gitea/postgres/${postgresTag}
 ''

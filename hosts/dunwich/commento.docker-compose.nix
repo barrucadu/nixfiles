@@ -10,6 +10,7 @@
 , twitterKey ? null
 , twitterSecret ? null
 , externalUrl
+, dockerVolumeDir
 }:
 
 ''
@@ -47,17 +48,9 @@
       networks:
         - commento
       volumes:
-        - commento_pgdata:/var/lib/postgresql/data
+        - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
 
   networks:
     commento:
       external: false
-
-  volumes:
-    commento_pgdata:
-      driver: local
-      driver_opts:
-        o: bind,
-        type: none,
-        device: /persist/docker-volumes/commento/pgdata
 ''

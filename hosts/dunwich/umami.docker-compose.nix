@@ -3,6 +3,7 @@
 , umamiTag ? "postgresql-latest"
 , postgresTag ? "13"
 , hashSalt
+, dockerVolumeDir
 }:
 
 ''
@@ -32,17 +33,9 @@
       networks:
         - umami
       volumes:
-        - umami_pgdata:/var/lib/postgresql/data
+        - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
 
   networks:
     umami:
       external: false
-
-  volumes:
-    umami_pgdata:
-      driver: local
-      driver_opts:
-        o: bind,
-        type: none,
-        device: /persist/docker-volumes/umami/pgdata
 ''
