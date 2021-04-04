@@ -5,8 +5,6 @@ let
   cfg = config.services.gitea;
 
   yaml = import ./docker-compose-files/gitea.docker-compose.nix cfg;
-
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
 in
 {
   # TODO: consider switching to the standard gitea module
@@ -17,6 +15,7 @@ in
   options.services.gitea = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
+    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     giteaTag = mkOption { type = types.str; default = "1.13.4"; };
     httpPort = mkOption { type = types.int; default = 3000; };
     postgresTag = mkOption { type = types.str; default = "13"; };
@@ -24,16 +23,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.gitea = {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = "gitea"; };
-      serviceConfig = {
-        ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-        ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-        Restart = "always";
-      };
+    systemd.services.gitea = import ./snippets/docker-compose-service.nix {
+      inherit lib pkgs yaml;
+      composeProjectName = "gitea";
+      execStartPre = cfg.execStartPre;
     };
   };
 }

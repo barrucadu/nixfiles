@@ -5,8 +5,6 @@ let
   cfg = config.services.etherpad;
 
   yaml = import ./docker-compose-files/etherpad.docker-compose.nix cfg;
-
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
 in
 {
   options.services.etherpad = {
@@ -14,24 +12,15 @@ in
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
     pgTag = mkOption { type = types.str; default = "13"; };
-    execStartPre = mkOption { type = types.str; default = ""; };
+    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
-    systemd.services.etherpad = {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = "etherpad"; };
-      serviceConfig = mkMerge [
-        (mkIf (cfg.execStartPre != "") { ExecStartPre = "${cfg.execStartPre}"; })
-        {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart = "always";
-        }
-      ];
+    systemd.services.etherpad = import ./snippets/docker-compose-service.nix {
+      inherit lib pkgs yaml;
+      composeProjectName = "etherpad";
+      execStartPre = cfg.execStartPre;
     };
   };
 }

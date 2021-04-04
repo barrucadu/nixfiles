@@ -5,12 +5,11 @@ let
   cfg = config.services.concourse;
 
   yaml = import ./docker-compose-files/concourse.docker-compose.nix cfg;
-
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
 in
 {
   options.services.concourse = {
     enable = mkOption { type = types.bool; default = false; };
+    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
     githubClientId = mkOption { type = types.str; };
     githubClientSecret = mkOption { type = types.str; };
@@ -25,16 +24,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.concourse = {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = "concourse"; };
-      serviceConfig = {
-        ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-        ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-        Restart = "always";
-      };
+    systemd.services.concourse = import ./snippets/docker-compose-service.nix {
+      inherit lib pkgs yaml;
+      composeProjectName = "concourse";
+      execStartPre = cfg.execStartPre;
     };
   };
 }

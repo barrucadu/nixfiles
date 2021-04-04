@@ -30,8 +30,6 @@ let
     pgTag = cfg.pgTag;
   };
 
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
-
 in
 {
   options.services.pleroma = {
@@ -39,7 +37,7 @@ in
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 4000; };
     pgTag = mkOption { type = types.str; default = "13"; };
-    execStartPre = mkOption { type = types.str; default = ""; };
+    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     domain = mkOption { type = types.str; };
     faviconPath = mkOption { type = types.path; default = /no-favicon; };
     instanceName = mkOption { type = types.str; default = cfg.domain; };
@@ -53,19 +51,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.pleroma = {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = "pleroma"; };
-      serviceConfig = mkMerge [
-        (mkIf (cfg.execStartPre != "") { ExecStartPre = "${cfg.execStartPre}"; })
-        {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart = "always";
-        }
-      ];
+    systemd.services.pleroma = import ./snippets/docker-compose-service.nix {
+      inherit lib pkgs yaml;
+      composeProjectName = "pleroma";
+      execStartPre = cfg.execStartPre;
     };
   };
 }
