@@ -4,41 +4,9 @@ with lib;
 let
   cfg = config.services.finder;
 
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
-    version: '3'
+  yaml = import ./docker-compose-files/finder.docker-compose.nix cfg;
 
-    services:
-      finder:
-        image: ${cfg.image}
-        restart: always
-        environment:
-          DATA_DIR: "/data"
-          ES_HOST: "http://db:9200"
-        networks:
-          - finder
-        ports:
-          - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:8888"
-        volumes:
-          - ${toString cfg.mangaDir}:/data
-        depends_on:
-          - db
-
-      db:
-        image: elasticsearch:${cfg.esTag}
-        restart: always
-        environment:
-          - http.host=0.0.0.0
-          - discovery.type=single-node
-          - ES_JAVA_OPTS=-Xms1g -Xmx1g
-        networks:
-          - finder
-        volumes:
-          - ${toString cfg.dockerVolumeDir}/esdata:/usr/share/elasticsearch/data
-
-    networks:
-      finder:
-        external: false
-  '';
+  dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
 in
 {
   options.services.finder = {

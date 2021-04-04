@@ -4,44 +4,9 @@ with lib;
 let
   cfg = config.services.etherpad;
 
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
-    version: '3'
+  yaml = import ./docker-compose-files/etherpad.docker-compose.nix cfg;
 
-    services:
-      etherpad:
-        image: ${cfg.image}
-        restart: always
-        environment:
-          DB_TYPE: "postgres"
-          DB_HOST: "db"
-          DB_PORT: "5432"
-          DB_NAME: "etherpad"
-          DB_USER: "etherpad"
-          DB_PASS: "etherpad"
-          TRUST_PROXY: "true"
-        networks:
-          - etherpad
-        ports:
-          - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:9001"
-        depends_on:
-          - db
-
-      db:
-        image: postgres:${cfg.pgTag}
-        restart: always
-        environment:
-          POSTGRES_USER: etherpad
-          POSTGRES_PASSWORD: etherpad
-          POSTGRES_DB: etherpad
-        networks:
-          - etherpad
-        volumes:
-          - ${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data
-
-    networks:
-      etherpad:
-        external: false
-  '';
+  dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
 in
 {
   options.services.etherpad = {

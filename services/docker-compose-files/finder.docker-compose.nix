@@ -1,0 +1,44 @@
+{ dockerVolumeDir
+, image
+, mangaDir
+, esTag ? "7.11.2"
+, httpPort ? 3000
+, internalHTTP ? true
+, ...
+}:
+
+''
+  version: "3"
+
+  services:
+    finder:
+      image: ${image}
+      restart: always
+      environment:
+        DATA_DIR: "/data"
+        ES_HOST: "http://db:9200"
+      networks:
+        - finder
+      ports:
+        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8888"
+      volumes:
+        - ${toString mangaDir}:/data
+      depends_on:
+        - db
+
+    db:
+      image: elasticsearch:${esTag}
+      restart: always
+      environment:
+        - http.host=0.0.0.0
+        - discovery.type=single-node
+        - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      networks:
+        - finder
+      volumes:
+        - ${toString dockerVolumeDir}/esdata:/usr/share/elasticsearch/data
+
+  networks:
+    finder:
+      external: false
+''

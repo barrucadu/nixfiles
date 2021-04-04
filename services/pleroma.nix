@@ -4,6 +4,8 @@ with lib;
 let
   cfg = config.services.pleroma;
 
+  faviconPath = if cfg.faviconPath == /no-favicon then /no-favicon else pkgs.copyPathToStore cfg.faviconPath;
+
   secretsFile = pkgs.writeText "pleroma-secrets.exc" ''
     import Config
 
@@ -16,50 +18,20 @@ let
       private_key: "${cfg.webPushPrivateKey}"
   '';
 
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
-    version: '3'
+  yaml = import ./docker-compose-files/pleroma.docker-compose.nix {
+    inherit faviconPath secretsFile;
+    dockerVolumeDir = cfg.dockerVolumeDir;
+    domain = cfg.domain;
+    image = cfg.image;
+    adminEmail = cfg.adminEmail;
+    httpPort = cfg.httpPort;
+    instanceName = cfg.instanceName;
+    internalHTTP = cfg.internalHTTP;
+    notifyEmail = cfg.notifyEmail;
+    pgTag = cfg.pgTag;
+  };
 
-    services:
-      pleroma:
-        image: ${cfg.image}
-        restart: always
-        environment:
-          DOMAIN: "${cfg.domain}"
-          INSTANCE_NAME: "${cfg.instanceName}"
-          ADMIN_EMAIL: "${cfg.adminEmail}"
-          NOTIFY_EMAIL: "${cfg.notifyEmail}"
-          DB_USER: "pleroma"
-          DB_PASS: "pleroma"
-          DB_NAME: "pleroma"
-          DB_HOST: "db"
-        networks:
-          - pleroma
-        ports:
-          - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:4000"
-        volumes:
-          - ${toString cfg.dockerVolumeDir}/uploads:/var/lib/pleroma/uploads
-          - ${toString cfg.dockerVolumeDir}/emojis:/var/lib/pleroma/static/emoji/custom
-          - ${secretsFile}:/var/lib/pleroma/secret.exs
-          ${if cfg.faviconPath != /no-favicon then "- ${pkgs.copyPathToStore cfg.faviconPath}:/var/lib/pleroma/static/favicon.png" else ""}
-        depends_on:
-          - db
-
-      db:
-        image: postgres:${cfg.pgTag}
-        restart: always
-        environment:
-          POSTGRES_USER: pleroma
-          POSTGRES_PASSWORD: pleroma
-          POSTGRES_DB: pleroma
-        networks:
-          - pleroma
-        volumes:
-          - ${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data
-
-    networks:
-      pleroma:
-        external: false
-  '';
+  dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
 
 in
 {

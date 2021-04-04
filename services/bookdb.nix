@@ -4,43 +4,9 @@ with lib;
 let
   cfg = config.services.bookdb;
 
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
-    version: '3'
+  yaml = import ./docker-compose-files/bookdb.docker-compose.nix cfg;
 
-    services:
-      bookdb:
-        image: ${cfg.image}
-        restart: always
-        environment:
-          ALLOW_WRITES: "${if cfg.readOnly then "0" else "1"}"
-          BASE_URI: "${cfg.baseURI}"
-          COVER_DIR: "/bookdb-covers"
-          ES_HOST: "http://db:9200"
-        networks:
-          - bookdb
-        ports:
-          - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:8888"
-        volumes:
-          - ${toString cfg.dockerVolumeDir}/covers:/bookdb-covers
-        depends_on:
-          - db
-
-      db:
-        image: elasticsearch:${cfg.esTag}
-        restart: always
-        environment:
-          - http.host=0.0.0.0
-          - discovery.type=single-node
-          - ES_JAVA_OPTS=-Xms1g -Xmx1g
-        networks:
-          - bookdb
-        volumes:
-          - ${toString cfg.dockerVolumeDir}/esdata:/usr/share/elasticsearch/data
-
-    networks:
-      bookdb:
-        external: false
-  '';
+  dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
 in
 {
   options.services.bookdb = {
