@@ -26,7 +26,6 @@ let
     adminEmail = cfg.adminEmail;
     httpPort = cfg.httpPort;
     instanceName = cfg.instanceName;
-    internalHTTP = cfg.internalHTTP;
     notifyEmail = cfg.notifyEmail;
     pgTag = cfg.pgTag;
   };
@@ -39,7 +38,6 @@ in
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 4000; };
-    internalHTTP = mkOption { type = types.bool; default = true; };
     pgTag = mkOption { type = types.str; default = "13"; };
     execStartPre = mkOption { type = types.str; default = ""; };
     domain = mkOption { type = types.str; };

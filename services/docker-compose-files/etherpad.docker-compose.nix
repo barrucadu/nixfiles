@@ -1,7 +1,6 @@
 { dockerVolumeDir
 , image
 , httpPort ? 3000
-, internalHTTP ? true
 , pgTag ? "13"
 , ...
 }:
@@ -22,7 +21,7 @@
         DB_PASS: "etherpad"
         TRUST_PROXY: "true"
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:9001"
+        - "127.0.0.1:${toString httpPort}:9001"
       depends_on:
         - db
 

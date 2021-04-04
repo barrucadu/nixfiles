@@ -19,8 +19,6 @@ in
     dockerVolumeDir = mkOption { type = types.path; };
     giteaTag = mkOption { type = types.str; default = "1.13.4"; };
     httpPort = mkOption { type = types.int; default = 3000; };
-    internalHTTP = mkOption { type = types.bool; default = true; };
-    internalSSH = mkOption { type = types.bool; default = false; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     sshPort = mkOption { type = types.int; default = 222; };
   };

@@ -5,7 +5,6 @@
 , enableSSM ? false
 , githubUser ? "barrucadu"
 , httpPort ? 3001
-, internalHTTP ? true
 , postgresTag ? "13"
 , ssmAccessKey ? ""
 , ssmRegion ? "eu-west-1"
@@ -37,7 +36,7 @@
         ${if enableSSM then "CONCOURSE_AWS_SSM_ACCESS_KEY: \"${ssmAccessKey}\"" else ""}
         ${if enableSSM then "CONCOURSE_AWS_SSM_SECRET_KEY: \"${ssmSecretKey}\"" else ""}
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8080"
+        - "127.0.0.1:${toString httpPort}:8080"
       depends_on:
         - db
 

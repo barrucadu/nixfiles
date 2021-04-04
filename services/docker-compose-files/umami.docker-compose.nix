@@ -1,7 +1,6 @@
 { dockerVolumeDir
 , hashSalt
 , httpPort ? 3005
-, internalHTTP ? true
 , postgresTag ? "13"
 , umamiTag ? "postgresql-latest"
 , ...
@@ -18,7 +17,7 @@
         DATABASE_URL: postgres://umami:umami@db/umami
         HASH_SALT: ${hashSalt}
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:3000"
+        - "127.0.0.1:${toString httpPort}:3000"
       depends_on:
         - db
 

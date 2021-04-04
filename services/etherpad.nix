@@ -13,7 +13,6 @@ in
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
-    internalHTTP = mkOption { type = types.bool; default = true; };
     pgTag = mkOption { type = types.str; default = "13"; };
     execStartPre = mkOption { type = types.str; default = ""; };
     dockerVolumeDir = mkOption { type = types.path; };

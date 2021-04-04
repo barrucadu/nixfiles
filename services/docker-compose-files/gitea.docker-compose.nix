@@ -1,8 +1,6 @@
 { dockerVolumeDir
 , giteaTag ? "1.13.4"
 , httpPort ? 3000
-, internalHTTP ? true
-, internalSSH ? false
 , postgresTag ? "13"
 , sshPort ? 222
 , ...
@@ -33,8 +31,8 @@
       volumes:
         - ${toString dockerVolumeDir}/data:/data
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:3000"
-        - "${if internalSSH then "127.0.0.1:" else ""}${toString sshPort}:22"
+        - "127.0.0.1:${toString httpPort}:3000"
+        - "${toString sshPort}:22"
       depends_on:
         - db
 

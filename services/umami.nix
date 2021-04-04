@@ -14,7 +14,6 @@ in
     dockerVolumeDir = mkOption { type = types.path; };
     hashSalt = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
-    internalHTTP = mkOption { type = types.bool; default = true; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     umamiTag = mkOption { type = types.str; default = "postgresql-latest"; };
   };

@@ -3,7 +3,6 @@
 , mangaDir
 , esTag ? "7.11.2"
 , httpPort ? 3000
-, internalHTTP ? true
 , ...
 }:
 
@@ -18,7 +17,7 @@
         DATA_DIR: "/data"
         ES_HOST: "http://db:9200"
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8888"
+        - "127.0.0.1:${toString httpPort}:8888"
       volumes:
         - ${toString mangaDir}:/data
       depends_on:

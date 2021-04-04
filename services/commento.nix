@@ -20,7 +20,6 @@ in
     googleKey = mkOption { type = types.str; default = null; };
     googleSecret = mkOption { type = types.str; default = null; };
     httpPort = mkOption { type = types.int; default = 3000; };
-    internalHTTP = mkOption { type = types.bool; default = true; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     twitterKey = mkOption { type = types.str; default = null; };
     twitterSecret = mkOption { type = types.str; default = null; };

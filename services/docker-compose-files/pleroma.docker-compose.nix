@@ -6,7 +6,6 @@
 , faviconPath ? /no-favicon
 , httpPort ? 4000
 , instanceName ? domain
-, internalHTTP ? true
 , notifyEmail ? adminEmail
 , pgTag ? "13"
 , ...
@@ -29,7 +28,7 @@
         DB_NAME: "pleroma"
         DB_HOST: "db"
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:4000"
+        - "127.0.0.1:${toString httpPort}:4000"
       volumes:
         - ${toString dockerVolumeDir}/uploads:/var/lib/pleroma/uploads
         - ${toString dockerVolumeDir}/emojis:/var/lib/pleroma/static/emoji/custom

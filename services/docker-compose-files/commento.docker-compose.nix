@@ -7,7 +7,6 @@
 , googleKey ? null
 , googleSecret ? null
 , httpPort ? 3004
-, internalHTTP ? true
 , postgresTag ? "13"
 , twitterKey ? null
 , twitterSecret ? null
@@ -33,7 +32,7 @@
         ${if twitterKey != null then "COMMENTO_TWITTER_KEY: \"${twitterKey}\"" else ""}
         ${if twitterSecret != null then "COMMENTO_TWITTER_SECRET: \"${twitterSecret}\"" else ""}
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8080"
+        - "127.0.0.1:${toString httpPort}:8080"
       depends_on:
         - db
 
