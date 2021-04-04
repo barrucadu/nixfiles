@@ -1,15 +1,16 @@
-{ httpPort ? 3001
-, internalHTTP ? true
-, concourseTag ? "7.1"
-, postgresTag ? "13"
-, githubUser ? "barrucadu"
+{ dockerVolumeDir
 , githubClientId
 , githubClientSecret
+, concourseTag ? "7.1"
 , enableSSM ? false
-, ssmRegion ? "eu-west-1"
+, githubUser ? "barrucadu"
+, httpPort ? 3001
+, internalHTTP ? true
+, postgresTag ? "13"
 , ssmAccessKey ? ""
+, ssmRegion ? "eu-west-1"
 , ssmSecretKey ? ""
-, dockerVolumeDir
+, ...
 }:
 
 ''

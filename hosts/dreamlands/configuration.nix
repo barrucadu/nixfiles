@@ -90,18 +90,14 @@ in
   services.dockerRegistry.garbageCollectDates = "daily";
   services.dockerRegistry.port = registryHttpPort;
 
-  systemd.services.concourse = dockerComposeService {
-    name = "concourse";
-    yaml = import ./concourse.docker-compose.nix {
-      httpPort = concourseHttpPort;
-      githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
-      githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
-      enableSSM = true;
-      ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
-      ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
-      dockerVolumeDir = /persist/docker-volumes/concourse;
-    };
-  };
+  services.concourse.enable = true;
+  services.concourse.httpPort = concourseHttpPort;
+  services.concourse.githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
+  services.concourse.githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
+  services.concourse.enableSSM = true;
+  services.concourse.ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
+  services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
+  services.concourse.dockerVolumeDir = /persist/docker-volumes/concourse;
 
   systemd.services.gitea = dockerComposeService {
     name = "gitea";

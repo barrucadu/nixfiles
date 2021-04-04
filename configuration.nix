@@ -6,6 +6,7 @@
     ./services/bookdb.nix
     ./services/bookmarks.nix
     ./services/caddy.nix
+    ./services/concourse.nix
     ./services/etherpad.nix
     ./services/finder.nix
     ./services/minecraft.nix
