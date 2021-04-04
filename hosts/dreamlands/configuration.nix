@@ -1,38 +1,10 @@
-{ pkgs, lib, ... }:
+{ lib, ... }:
 
 with lib;
 let
   concourseHttpPort = 3001;
   giteaHttpPort = 3000;
   registryHttpPort = 5000;
-
-  pullLocalDockerImage = pkgs.writeShellScript "pull-local-docker-image.sh" ''
-    set -e
-    set -o pipefail
-
-    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
-    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
-  '';
-
-  dockerComposeService = { name, yaml, pull ? "" }:
-    let
-      dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
-    in
-    {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = name; };
-      serviceConfig = mkMerge [
-        (mkIf (pull != "") { ExecStartPre = "${pullLocalDockerImage} ${pull}"; })
-        {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart = "always";
-        }
-      ];
-    };
-
 in
 {
   networking.hostName = "dreamlands";
@@ -90,20 +62,16 @@ in
   services.dockerRegistry.garbageCollectDates = "daily";
   services.dockerRegistry.port = registryHttpPort;
 
-  systemd.services.concourse = dockerComposeService {
-    name = "concourse";
-    yaml = import ./concourse.docker-compose.nix {
-      httpPort = concourseHttpPort;
-      githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
-      githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
-      enableSSM = true;
-      ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
-      ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
-    };
-  };
+  services.concourse.enable = true;
+  services.concourse.httpPort = concourseHttpPort;
+  services.concourse.githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
+  services.concourse.githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
+  services.concourse.enableSSM = true;
+  services.concourse.ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
+  services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
+  services.concourse.dockerVolumeDir = /persist/docker-volumes/concourse;
 
-  systemd.services.gitea = dockerComposeService {
-    name = "gitea";
-    yaml = import ./gitea.docker-compose.nix { httpPort = giteaHttpPort; };
-  };
+  services.gitea.enable = true;
+  services.gitea.httpPort = giteaHttpPort;
+  services.gitea.dockerVolumeDir = /persist/docker-volumes/gitea;
 }

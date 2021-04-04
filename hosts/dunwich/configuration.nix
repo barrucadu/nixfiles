@@ -5,24 +5,6 @@ let
   shoggothCommentoHttpPort = 3004;
   shoggothUmamiHttpPort = 3005;
 
-  dockerComposeService = { name, yaml }:
-    let
-      dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
-    in
-    {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = name; };
-      serviceConfig = mkMerge [
-        {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart = "always";
-        }
-      ];
-    };
-
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
     set -o pipefail
@@ -280,27 +262,21 @@ in
   services.minecraft.enable = true;
 
   # Look what the Shoggoth Dragged In blog
-  systemd.services.shoggoth-commento = dockerComposeService {
-    name = "shoggoth-commento";
-    yaml = import ./commento.docker-compose.nix {
-      httpPort = shoggothCommentoHttpPort;
-      externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
-      githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
-      githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
-      googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
-      googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
-      twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
-      twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
-    };
-  };
-  systemd.services.shoggoth-umami = dockerComposeService {
-    name = "shoggoth-umami";
-    yaml = import ./umami.docker-compose.nix {
-      httpPort = shoggothUmamiHttpPort;
-      hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
-    };
-  };
+  services.commento.enable = true;
+  services.commento.httpPort = shoggothCommentoHttpPort;
+  services.commento.externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
+  services.commento.githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
+  services.commento.githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
+  services.commento.googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
+  services.commento.googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
+  services.commento.twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
+  services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
+  services.commento.dockerVolumeDir = /persist/docker-volumes/commento;
 
+  services.umami.enable = true;
+  services.umami.httpPort = shoggothUmamiHttpPort;
+  services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
+  services.umami.dockerVolumeDir = /persist/docker-volumes/umami;
 
   # barrucadu.dev concourse access
   security.sudo.extraRules = [

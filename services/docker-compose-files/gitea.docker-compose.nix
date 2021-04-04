@@ -1,9 +1,9 @@
-{ httpPort ? 3000
-, sshPort ? 222
-, internalHTTP ? true
-, internalSSH ? false
+{ dockerVolumeDir
 , giteaTag ? "1.13.4"
+, httpPort ? 3000
 , postgresTag ? "13"
+, sshPort ? 222
+, ...
 }:
 
 ''
@@ -28,13 +28,11 @@
         - USER_UID=1000
         - USER_GID=1000
       restart: always
-      networks:
-        - gitea
       volumes:
-        - gitea_data:/data
+        - ${toString dockerVolumeDir}/data:/data
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:3000"
-        - "${if internalSSH then "127.0.0.1:" else ""}${toString sshPort}:22"
+        - "127.0.0.1:${toString httpPort}:3000"
+        - "${toString sshPort}:22"
       depends_on:
         - db
 
@@ -45,26 +43,6 @@
         - POSTGRES_USER=gitea
         - POSTGRES_PASSWORD=gitea
         - POSTGRES_DB=gitea
-      networks:
-        - gitea
       volumes:
-        - gitea_postgres:/var/lib/postgresql/data
-
-  networks:
-    gitea:
-      external: false
-
-  volumes:
-    gitea_data:
-      driver: local
-      driver_opts:
-        o: bind
-        type: none
-        device: /docker-volumes/gitea/data
-    gitea_postgres:
-      driver: local
-      driver_opts:
-        o: bind
-        type: none
-        device: /docker-volumes/gitea/postgres/${postgresTag}
+        - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
 ''

@@ -4,6 +4,8 @@ with lib;
 let
   cfg = config.services.pleroma;
 
+  faviconPath = if cfg.faviconPath == null then null else pkgs.copyPathToStore cfg.faviconPath;
+
   secretsFile = pkgs.writeText "pleroma-secrets.exc" ''
     import Config
 
@@ -16,66 +18,17 @@ let
       private_key: "${cfg.webPushPrivateKey}"
   '';
 
-  volumeOpts = path: ''
-    {
-      "driver": "local",
-      "driver_opts": {
-        "o": "bind",
-        "type": "none",
-        "device": "${toString cfg.dockerVolumeDir}/${path}",
-      }
-    }
-  '';
-
-  dockerComposeFile = pkgs.writeText "docker-compose.yml" ''
-    version: '3'
-
-    services:
-      pleroma:
-        image: ${cfg.image}
-        restart: always
-        environment:
-          DOMAIN: "${cfg.domain}"
-          INSTANCE_NAME: "${cfg.instanceName}"
-          ADMIN_EMAIL: "${cfg.adminEmail}"
-          NOTIFY_EMAIL: "${cfg.notifyEmail}"
-          DB_USER: "pleroma"
-          DB_PASS: "pleroma"
-          DB_NAME: "pleroma"
-          DB_HOST: "db"
-        networks:
-          - pleroma
-        ports:
-          - "${if cfg.internalHTTP then "127.0.0.1:" else ""}${toString cfg.httpPort}:4000"
-        volumes:
-          - pleroma_uploads:/var/lib/pleroma/uploads
-          - pleroma_emojis:/var/lib/pleroma/static/emoji/custom
-          - ${secretsFile}:/var/lib/pleroma/secret.exs
-          ${if cfg.faviconPath != /no-favicon then "- ${pkgs.copyPathToStore cfg.faviconPath}:/var/lib/pleroma/static/favicon.png" else ""}
-        depends_on:
-          - db
-
-      db:
-        image: postgres:${cfg.pgTag}
-        restart: always
-        environment:
-          POSTGRES_USER: pleroma
-          POSTGRES_PASSWORD: pleroma
-          POSTGRES_DB: pleroma
-        networks:
-          - pleroma
-        volumes:
-          - pleroma_pgdata:/var/lib/postgresql/data
-
-    networks:
-      pleroma:
-        external: false
-
-    volumes:
-      pleroma_uploads: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "uploads" else ""}
-      pleroma_emojis: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "emojis" else ""}
-      pleroma_pgdata: ${if cfg.dockerVolumeDir != /no-path then volumeOpts "pgdata" else ""}
-  '';
+  yaml = import ./docker-compose-files/pleroma.docker-compose.nix {
+    inherit faviconPath secretsFile;
+    dockerVolumeDir = cfg.dockerVolumeDir;
+    domain = cfg.domain;
+    image = cfg.image;
+    adminEmail = cfg.adminEmail;
+    httpPort = cfg.httpPort;
+    instanceName = cfg.instanceName;
+    notifyEmail = cfg.notifyEmail;
+    pgTag = cfg.pgTag;
+  };
 
 in
 {
@@ -83,11 +36,10 @@ in
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 4000; };
-    internalHTTP = mkOption { type = types.bool; default = true; };
     pgTag = mkOption { type = types.str; default = "13"; };
-    execStartPre = mkOption { type = types.str; default = ""; };
+    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     domain = mkOption { type = types.str; };
-    faviconPath = mkOption { type = types.path; default = /no-favicon; };
+    faviconPath = mkOption { type = types.nullOr types.path; default = null; };
     instanceName = mkOption { type = types.str; default = cfg.domain; };
     adminEmail = mkOption { type = types.str; default = "mike@barrucadu.co.uk"; };
     notifyEmail = mkOption { type = types.str; default = cfg.adminEmail; };
@@ -95,23 +47,14 @@ in
     signingSalt = mkOption { type = types.str; };
     webPushPublicKey = mkOption { type = types.str; };
     webPushPrivateKey = mkOption { type = types.str; };
-    dockerVolumeDir = mkOption { type = types.path; default = /no-path; };
+    dockerVolumeDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
-    systemd.services.pleroma = {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = "pleroma"; };
-      serviceConfig = mkMerge [
-        (mkIf (cfg.execStartPre != "") { ExecStartPre = "${cfg.execStartPre}"; })
-        {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart = "always";
-        }
-      ];
+    systemd.services.pleroma = import ./snippets/docker-compose-service.nix {
+      inherit lib pkgs yaml;
+      composeProjectName = "pleroma";
+      execStartPre = cfg.execStartPre;
     };
   };
 }

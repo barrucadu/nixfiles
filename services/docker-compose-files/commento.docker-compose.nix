@@ -1,15 +1,16 @@
-{ httpPort ? 3004
-, internalHTTP ? true
+{ dockerVolumeDir
+, externalUrl
 , commentoTag ? "latest"
-, postgresTag ? "13"
 , forbidNewOwners ? true
 , githubKey ? null
 , githubSecret ? null
 , googleKey ? null
 , googleSecret ? null
+, httpPort ? 3004
+, postgresTag ? "13"
 , twitterKey ? null
 , twitterSecret ? null
-, externalUrl
+, ...
 }:
 
 ''
@@ -30,10 +31,8 @@
         ${if googleSecret != null then "COMMENTO_GOOGLE_SECRET: \"${googleSecret}\"" else ""}
         ${if twitterKey != null then "COMMENTO_TWITTER_KEY: \"${twitterKey}\"" else ""}
         ${if twitterSecret != null then "COMMENTO_TWITTER_SECRET: \"${twitterSecret}\"" else ""}
-      networks:
-        - commento
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8080"
+        - "127.0.0.1:${toString httpPort}:8080"
       depends_on:
         - db
 
@@ -44,20 +43,6 @@
         POSTGRES_DB: commento
         POSTGRES_USER: commento
         POSTGRES_PASSWORD: commento
-      networks:
-        - commento
       volumes:
-        - commento_pgdata:/var/lib/postgresql/data
-
-  networks:
-    commento:
-      external: false
-
-  volumes:
-    commento_pgdata:
-      driver: local
-      driver_opts:
-        o: bind,
-        type: none,
-        device: /persist/docker-volumes/commento/pgdata
+        - ${toString dockerVolumeDir}/pgdata:/var/lib/postgresql/data
 ''

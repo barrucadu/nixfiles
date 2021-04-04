@@ -1,14 +1,15 @@
-{ httpPort ? 3001
-, internalHTTP ? true
-, concourseTag ? "7.1"
-, postgresTag ? "13"
-, githubUser ? "barrucadu"
+{ dockerVolumeDir
 , githubClientId
 , githubClientSecret
+, concourseTag ? "7.1"
 , enableSSM ? false
+, githubUser ? "barrucadu"
+, httpPort ? 3001
+, postgresTag ? "13"
+, ssmAccessKey ? null
 , ssmRegion ? "eu-west-1"
-, ssmAccessKey ? ""
-, ssmSecretKey ? ""
+, ssmSecretKey ? null
+, ...
 }:
 
 ''
@@ -34,10 +35,8 @@
         ${if enableSSM then "CONCOURSE_AWS_SSM_REGION: \"${ssmRegion}\"" else ""}
         ${if enableSSM then "CONCOURSE_AWS_SSM_ACCESS_KEY: \"${ssmAccessKey}\"" else ""}
         ${if enableSSM then "CONCOURSE_AWS_SSM_SECRET_KEY: \"${ssmSecretKey}\"" else ""}
-      networks:
-        - concourse
       ports:
-        - "${if internalHTTP then "127.0.0.1:" else ""}${toString httpPort}:8080"
+        - "127.0.0.1:${toString httpPort}:8080"
       depends_on:
         - db
 
@@ -49,20 +48,6 @@
         POSTGRES_PASSWORD: concourse
         POSTGRES_USER: concourse
         PGDATA: /database
-      networks:
-        - concourse
       volumes:
-        - concourse_postgres:/database
-
-  networks:
-    concourse:
-      external: false
-
-  volumes:
-    concourse_postgres:
-      driver: local
-      driver_opts:
-        o: bind
-        type: none
-        device: /docker-volumes/concourse/postgres/${postgresTag}
+        - ${toString dockerVolumeDir}/pgdata:/database
 ''
