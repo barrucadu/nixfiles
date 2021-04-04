@@ -13,5 +13,6 @@
     ./services/gitea.nix
     ./services/minecraft.nix
     ./services/pleroma.nix
+    ./services/umami.nix
   ];
 }

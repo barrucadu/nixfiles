@@ -5,24 +5,6 @@ let
   shoggothCommentoHttpPort = 3004;
   shoggothUmamiHttpPort = 3005;
 
-  dockerComposeService = { name, yaml }:
-    let
-      dockerComposeFile = pkgs.writeText "docker-compose.yml" yaml;
-    in
-    {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "docker.service" ];
-      environment = { COMPOSE_PROJECT_NAME = name; };
-      serviceConfig = mkMerge [
-        {
-          ExecStart = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' up";
-          ExecStop = "${pkgs.docker_compose}/bin/docker-compose -f '${dockerComposeFile}' stop";
-          Restart = "always";
-        }
-      ];
-    };
-
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
     set -o pipefail
@@ -291,15 +273,10 @@ in
   services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
   services.commento.dockerVolumeDir = /persist/docker-volumes/commento;
 
-  systemd.services.shoggoth-umami = dockerComposeService {
-    name = "shoggoth-umami";
-    yaml = import ./umami.docker-compose.nix {
-      httpPort = shoggothUmamiHttpPort;
-      hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
-      dockerVolumeDir = /persist/docker-volumes/umami;
-    };
-  };
-
+  services.umami.enable = true;
+  services.umami.httpPort = shoggothUmamiHttpPort;
+  services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
+  services.umami.dockerVolumeDir = /persist/docker-volumes/umami;
 
   # barrucadu.dev concourse access
   security.sudo.extraRules = [

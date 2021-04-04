@@ -1,9 +1,10 @@
-{ httpPort ? 3005
-, internalHTTP ? true
-, umamiTag ? "postgresql-latest"
-, postgresTag ? "13"
+{ dockerVolumeDir
 , hashSalt
-, dockerVolumeDir
+, httpPort ? 3005
+, internalHTTP ? true
+, postgresTag ? "13"
+, umamiTag ? "postgresql-latest"
+, ...
 }:
 
 ''
