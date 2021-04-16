@@ -9,6 +9,7 @@ let
   giteaPort = 3004;
   commentoPort = 3005;
   umamiPort = 3006;
+  pleromaPort = 3007;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -123,6 +124,11 @@ in
       }
 
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
+    }
+
+    ap.barrucadu.co.uk {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
     }
 
     bookdb.barrucadu.co.uk {
@@ -279,6 +285,18 @@ in
   services.bookmarks.dockerVolumeDir = "/persist/docker-volumes/bookmarks";
   services.bookmarks.httpPort = bookmarksPort;
 
+  # pleroma
+  services.pleroma.enable = true;
+  services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
+  services.pleroma.httpPort = pleromaPort;
+  services.pleroma.domain = "ap.barrucadu.co.uk";
+  services.pleroma.secretKeyBase = fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
+  services.pleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
+  services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
+  services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
+  services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
+  services.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
+
   # concourse
   services.concourse.enable = true;
   services.concourse.httpPort = concoursePort;
@@ -336,6 +354,7 @@ in
       commands = [
         { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart bookmarks"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl restart pleroma"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
