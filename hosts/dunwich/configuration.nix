@@ -50,13 +50,6 @@ in
       reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
     }
 
-    bookmarks.barrucadu.co.uk {
-      encode gzip
-      reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.httpPort} {
-        import reverse_proxy_security_theatre
-      }
-    }
-
     pad.barrucadu.co.uk {
       basicauth {
         ${fileContents /etc/nixos/secrets/etherpad-basic-auth-credentials.txt}
@@ -92,15 +85,6 @@ in
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
   services.pleroma.dockerVolumeDir = /persist/docker-volumes/pleroma;
 
-  # bookmarks
-  services.bookmarks.enable = true;
-  services.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
-  services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
-  services.bookmarks.readOnly = true;
-  services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
-  services.bookmarks.httpPort = 3003;
-  services.bookmarks.dockerVolumeDir = /persist/docker-volumes/bookmarks;
-
   # etherpad
   services.etherpad.enable = true;
   services.etherpad.image = "etherpad/etherpad:stable";
@@ -132,7 +116,6 @@ in
     {
       users = [ "concourse-deploy-robot" ];
       commands = [
-        { command = "${pkgs.systemd}/bin/systemctl restart bookmarks"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart pleroma"; options = [ "NOPASSWD" ]; }
       ];
     }

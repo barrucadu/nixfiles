@@ -251,7 +251,7 @@ in
     };
   };
   systemd.services.bookmarks-sync = {
-    description = "Upload bookmarks data to dunwich";
+    description = "Upload bookmarks data to carcosa";
     serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./bookmarks-sync.sh)}";
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";

@@ -4,6 +4,7 @@ with lib;
 let
   dockerRegistryPort = 3000;
   bookdbPort = 3001;
+  bookmarksPort = 3002;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -125,6 +126,11 @@ in
       reverse_proxy http://127.0.0.1:${toString config.services.bookdb.httpPort}
     }
 
+    bookmarks.barrucadu.co.uk {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.httpPort}
+    }
+
     memo.barrucadu.co.uk {
       encode gzip
 
@@ -238,6 +244,15 @@ in
   services.bookdb.dockerVolumeDir = "/persist/docker-volumes/bookdb";
   services.bookdb.httpPort = bookdbPort;
 
+  # bookmarks
+  services.bookmarks.enable = true;
+  services.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
+  services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
+  services.bookmarks.readOnly = true;
+  services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
+  services.bookmarks.dockerVolumeDir = "/persist/docker-volumes/bookmarks";
+  services.bookmarks.httpPort = bookmarksPort;
+
 
   ###############################################################################
   ## Miscellaneous
@@ -257,6 +272,7 @@ in
       users = [ "concourse-deploy-robot" ];
       commands = [
         { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl restart bookmarks"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
