@@ -34,7 +34,6 @@ in
 
   # Web server
   services.caddy.enable = true;
-  services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
     # add headers solely to look good if people run
     # securityheaders.com on my domains
@@ -185,34 +184,6 @@ in
       reverse_proxy http://127.0.0.1:${toString shoggothUmamiHttpPort} {
         import reverse_proxy_security_theatre
       }
-    }
-
-    uzbl.org {
-      redir https://www.uzbl.org{uri}
-    }
-
-    www.uzbl.org {
-      import security_theatre
-      encode gzip
-
-      rewrite /archives.php    /index.php
-      rewrite /faq.php         /index.php
-      rewrite /readme.php      /index.php
-      rewrite /keybindings.php /index.php
-      rewrite /get.php         /index.php
-      rewrite /community.php   /index.php
-      rewrite /contribute.php  /index.php
-      rewrite /commits.php     /index.php
-      rewrite /news.php        /index.php
-      rewrite /doesitwork/     /index.php
-      rewrite /fosdem2010/     /index.php
-
-      redir /doesitwork /doesitwork/
-      redir /fosdem2020 /fosdem2020/
-
-      root * /srv/http/uzbl.org/www
-      php_fastcgi unix//run/phpfpm/caddy.sock
-      file_server
     }
   '';
 

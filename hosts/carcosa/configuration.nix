@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
@@ -72,6 +72,7 @@ in
 
   # WWW
   services.caddy.enable = true;
+  services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
     registry.barrucadu.dev {
       encode gzip
@@ -80,6 +81,33 @@ in
       }
       header /v2/* Docker-Distribution-Api-Version "registry/2.0"
       reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
+    }
+
+    uzbl.org {
+      redir https://www.uzbl.org{uri}
+    }
+
+    www.uzbl.org {
+      encode gzip
+
+      rewrite /archives.php    /index.php
+      rewrite /faq.php         /index.php
+      rewrite /readme.php      /index.php
+      rewrite /keybindings.php /index.php
+      rewrite /get.php         /index.php
+      rewrite /community.php   /index.php
+      rewrite /contribute.php  /index.php
+      rewrite /commits.php     /index.php
+      rewrite /news.php        /index.php
+      rewrite /doesitwork/     /index.php
+      rewrite /fosdem2010/     /index.php
+
+      redir /doesitwork /doesitwork/
+      redir /fosdem2020 /fosdem2020/
+
+      root * /persist/srv/http/uzbl.org/www
+      php_fastcgi unix//run/phpfpm/caddy.sock
+      file_server
     }
   '';
 
@@ -90,4 +118,19 @@ in
   services.dockerRegistry.garbageCollectDates = "daily";
   services.dockerRegistry.storagePath = "/persist/var/lib/docker-registry";
   services.dockerRegistry.port = dockerRegistryPort;
+
+
+  ###############################################################################
+  ## Miscellaneous
+  ###############################################################################
+
+  # Concourse access
+  users.extraUsers.concourse-deploy-robot = {
+    home = "/home/system/concourse-deploy-robot";
+    createHome = true;
+    isSystemUser = true;
+    openssh.authorizedKeys.keys =
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFilTWek5xNpl82V48oQ99briJhn9BqwCACeRq1dQnZn concourse-worker@cd.barrucadu.dev" ];
+    shell = pkgs.bashInteractive;
+  };
 }
