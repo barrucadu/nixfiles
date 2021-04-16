@@ -8,6 +8,7 @@ let
   concoursePort = 3003;
   giteaPort = 3004;
   commentoPort = 3005;
+  umamiPort = 3006;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -219,6 +220,11 @@ in
       reverse_proxy http://127.0.0.1:${toString config.services.commento.httpPort}
     }
 
+    umami.lookwhattheshoggothdraggedin.com {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.umami.httpPort}
+    }
+
     uzbl.org {
       redir https://www.uzbl.org{uri}
     }
@@ -300,6 +306,11 @@ in
   services.commento.twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
   services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
   services.commento.dockerVolumeDir = "/persist/docker-volumes/commento";
+
+  services.umami.enable = true;
+  services.umami.httpPort = umamiPort;
+  services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
+  services.umami.dockerVolumeDir = "/persist/docker-volumes/umami";
 
   ###############################################################################
   ## Miscellaneous

@@ -2,8 +2,6 @@
 
 with lib;
 let
-  shoggothUmamiHttpPort = 3005;
-
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
     set -o pipefail
@@ -34,16 +32,6 @@ in
   # Web server
   services.caddy.enable = true;
   services.caddy.config = ''
-    (reverse_proxy_security_theatre) {
-      header_down * Access-Control-Allow-Origin "*"
-      header_down * Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
-      header_down * Referrer-Policy "strict-origin-when-cross-origin"
-      header_down * Strict-Transport-Security "max-age=31536000; includeSubDomains"
-      header_down * X-Content-Type-Options "nosniff"
-      header_down * X-Frame-Options "SAMEORIGIN"
-      header_down * X-XSS-Protection "1; mode=block"
-    }
-
     ${config.services.pleroma.domain} {
       encode gzip
       reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
@@ -56,13 +44,6 @@ in
 
       encode gzip
       reverse_proxy http://127.0.0.1:${toString config.services.etherpad.httpPort}
-    }
-
-    umami.lookwhattheshoggothdraggedin.com {
-      encode gzip
-      reverse_proxy http://127.0.0.1:${toString shoggothUmamiHttpPort} {
-        import reverse_proxy_security_theatre
-      }
     }
   '';
 
@@ -85,12 +66,6 @@ in
 
   # minecraft
   services.minecraft.enable = true;
-
-  # Look what the Shoggoth Dragged In blog
-  services.umami.enable = true;
-  services.umami.httpPort = shoggothUmamiHttpPort;
-  services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
-  services.umami.dockerVolumeDir = /persist/docker-volumes/umami;
 
   # barrucadu.dev concourse access
   security.sudo.extraRules = [
