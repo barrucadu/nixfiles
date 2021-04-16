@@ -7,6 +7,7 @@ let
   bookmarksPort = 3002;
   concoursePort = 3003;
   giteaPort = 3004;
+  commentoPort = 3005;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -213,6 +214,11 @@ in
       }
     }
 
+    commento.lookwhattheshoggothdraggedin.com {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.commento.httpPort}
+    }
+
     uzbl.org {
       redir https://www.uzbl.org{uri}
     }
@@ -282,6 +288,18 @@ in
   services.gitea.enable = true;
   services.gitea.httpPort = giteaPort;
   services.gitea.dockerVolumeDir = "/persist/docker-volumes/gitea";
+
+  # Look what the Shoggoth Dragged In
+  services.commento.enable = true;
+  services.commento.httpPort = commentoPort;
+  services.commento.externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
+  services.commento.githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
+  services.commento.githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
+  services.commento.googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
+  services.commento.googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
+  services.commento.twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
+  services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
+  services.commento.dockerVolumeDir = "/persist/docker-volumes/commento";
 
   ###############################################################################
   ## Miscellaneous

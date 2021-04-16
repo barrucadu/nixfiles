@@ -2,7 +2,6 @@
 
 with lib;
 let
-  shoggothCommentoHttpPort = 3004;
   shoggothUmamiHttpPort = 3005;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
@@ -59,13 +58,6 @@ in
       reverse_proxy http://127.0.0.1:${toString config.services.etherpad.httpPort}
     }
 
-    commento.lookwhattheshoggothdraggedin.com {
-      encode gzip
-      reverse_proxy http://127.0.0.1:${toString shoggothCommentoHttpPort} {
-        import reverse_proxy_security_theatre
-      }
-    }
-
     umami.lookwhattheshoggothdraggedin.com {
       encode gzip
       reverse_proxy http://127.0.0.1:${toString shoggothUmamiHttpPort} {
@@ -95,17 +87,6 @@ in
   services.minecraft.enable = true;
 
   # Look what the Shoggoth Dragged In blog
-  services.commento.enable = true;
-  services.commento.httpPort = shoggothCommentoHttpPort;
-  services.commento.externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
-  services.commento.githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
-  services.commento.githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
-  services.commento.googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
-  services.commento.googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
-  services.commento.twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
-  services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
-  services.commento.dockerVolumeDir = /persist/docker-volumes/commento;
-
   services.umami.enable = true;
   services.umami.httpPort = shoggothUmamiHttpPort;
   services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
