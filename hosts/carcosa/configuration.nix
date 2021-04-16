@@ -312,6 +312,11 @@ in
   services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
   services.umami.dockerVolumeDir = "/persist/docker-volumes/umami";
 
+  # minecraft
+  services.minecraft.enable = true;
+  services.minecraft.dataDir = "/persist/srv/minecraft";
+
+
   ###############################################################################
   ## Miscellaneous
   ###############################################################################

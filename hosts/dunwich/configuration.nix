@@ -64,9 +64,6 @@ in
   services.etherpad.httpPort = 3006;
   services.etherpad.dockerVolumeDir = /persist/docker-volumes/etherpad;
 
-  # minecraft
-  services.minecraft.enable = true;
-
   # barrucadu.dev concourse access
   security.sudo.extraRules = [
     {
