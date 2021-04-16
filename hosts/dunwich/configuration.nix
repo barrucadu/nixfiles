@@ -50,13 +50,6 @@ in
       reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
     }
 
-    bookdb.barrucadu.co.uk {
-      encode gzip
-      reverse_proxy http://127.0.0.1:${toString config.services.bookdb.httpPort} {
-        import reverse_proxy_security_theatre
-      }
-    }
-
     bookmarks.barrucadu.co.uk {
       encode gzip
       reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.httpPort} {
@@ -99,14 +92,6 @@ in
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
   services.pleroma.dockerVolumeDir = /persist/docker-volumes/pleroma;
 
-  # bookdb
-  services.bookdb.enable = true;
-  services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
-  services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
-  services.bookdb.readOnly = true;
-  services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
-  services.bookdb.dockerVolumeDir = /persist/docker-volumes/bookdb;
-
   # bookmarks
   services.bookmarks.enable = true;
   services.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
@@ -147,7 +132,6 @@ in
     {
       users = [ "concourse-deploy-robot" ];
       commands = [
-        { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart bookmarks"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart pleroma"; options = [ "NOPASSWD" ]; }
       ];

@@ -3,6 +3,16 @@
 with lib;
 let
   dockerRegistryPort = 3000;
+  bookdbPort = 3001;
+
+  pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
+    set -e
+    set -o pipefail
+
+    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
+  '';
+
 in
 {
   ###############################################################################
@@ -110,6 +120,11 @@ in
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
     }
 
+    bookdb.barrucadu.co.uk {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.bookdb.httpPort}
+    }
+
     memo.barrucadu.co.uk {
       encode gzip
 
@@ -214,6 +229,15 @@ in
   services.dockerRegistry.storagePath = "/persist/var/lib/docker-registry";
   services.dockerRegistry.port = dockerRegistryPort;
 
+  # bookdb
+  services.bookdb.enable = true;
+  services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
+  services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
+  services.bookdb.readOnly = true;
+  services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
+  services.bookdb.dockerVolumeDir = "/persist/docker-volumes/bookdb";
+  services.bookdb.httpPort = bookdbPort;
+
 
   ###############################################################################
   ## Miscellaneous
@@ -228,4 +252,12 @@ in
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFilTWek5xNpl82V48oQ99briJhn9BqwCACeRq1dQnZn concourse-worker@cd.barrucadu.dev" ];
     shell = pkgs.bashInteractive;
   };
+  security.sudo.extraRules = [
+    {
+      users = [ "concourse-deploy-robot" ];
+      commands = [
+        { command = "${pkgs.systemd}/bin/systemctl restart bookdb"; options = [ "NOPASSWD" ]; }
+      ];
+    }
+  ];
 }
