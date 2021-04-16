@@ -4,7 +4,6 @@ with lib;
 let
   concourseHttpPort = 3001;
   giteaHttpPort = 3000;
-  registryHttpPort = 5000;
 in
 {
   networking.hostName = "dreamlands";
@@ -33,15 +32,6 @@ in
       redir https://www.barrucadu.co.uk
     }
 
-    registry.barrucadu.dev {
-      encode gzip
-      basicauth /v2/* {
-        registry ${fileContents /etc/nixos/secrets/registry-password-hashed.txt}
-      }
-      header /v2/* Docker-Distribution-Api-Version "registry/2.0"
-      reverse_proxy /v2/* http://127.0.0.1:${toString registryHttpPort}
-    }
-
     cd.barrucadu.dev {
       encode gzip
       reverse_proxy http://127.0.0.1:${toString concourseHttpPort} {
@@ -54,13 +44,6 @@ in
       reverse_proxy http://127.0.0.1:${toString giteaHttpPort}
     }
   '';
-
-  # Docker registry
-  services.dockerRegistry.enable = true;
-  services.dockerRegistry.enableDelete = true;
-  services.dockerRegistry.enableGarbageCollect = true;
-  services.dockerRegistry.garbageCollectDates = "daily";
-  services.dockerRegistry.port = registryHttpPort;
 
   services.concourse.enable = true;
   services.concourse.httpPort = concourseHttpPort;

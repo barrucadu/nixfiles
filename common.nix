@@ -243,6 +243,7 @@ with lib;
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPBk5s00T7a7YQXNtR6YmxmKRzI/6vfqI93RaVRDuML barrucadu@dreamlands"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBuyrbZH+Lqu1qUE9NpoOpyv1/avEArueJTco8X3cXlh barrucadu@lainonlife"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKohcTDKF18ionBANAnGbcG/6lyJqCJWEza5nOss+Sh0 barrucadu@nyarlathotep"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVnNyKbBcHMY7Tcak07bL6svb/x8KXCL5WJRck9PaDI barrucadu@carcosa"
       ];
     };
 
