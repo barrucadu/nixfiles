@@ -1,6 +1,9 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
 with lib;
+let
+  dockerRegistryPort = 3000;
+in
 {
   ###############################################################################
   ## General
@@ -20,6 +23,7 @@ with lib;
 
   # Networking
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.trustedInterfaces = [ "lo" "docker0" ];
 
   networking.interfaces.enp1s0 = {
@@ -60,4 +64,30 @@ with lib;
   systemd.tmpfiles.rules = [
     "L+ /etc/nixos - - - - /persist/etc/nixos"
   ];
+
+
+  ###############################################################################
+  ## Services
+  ###############################################################################
+
+  # WWW
+  services.caddy.enable = true;
+  services.caddy.config = ''
+    registry.barrucadu.dev {
+      encode gzip
+      basicauth /v2/* {
+        registry ${fileContents /etc/nixos/secrets/registry-password-hashed.txt}
+      }
+      header /v2/* Docker-Distribution-Api-Version "registry/2.0"
+      reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
+    }
+  '';
+
+  # Docker registry
+  services.dockerRegistry.enable = true;
+  services.dockerRegistry.enableDelete = true;
+  services.dockerRegistry.enableGarbageCollect = true;
+  services.dockerRegistry.garbageCollectDates = "daily";
+  services.dockerRegistry.storagePath = "/persist/var/lib/docker-registry";
+  services.dockerRegistry.port = dockerRegistryPort;
 }
