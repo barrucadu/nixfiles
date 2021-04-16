@@ -35,17 +35,6 @@ in
   # Web server
   services.caddy.enable = true;
   services.caddy.config = ''
-    # add headers solely to look good if people run
-    # securityheaders.com on my domains
-    (security_theatre) {
-      header * Access-Control-Allow-Origin "*"
-      header * Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
-      header * Referrer-Policy "strict-origin-when-cross-origin"
-      header * Strict-Transport-Security "max-age=31536000; includeSubDomains"
-      header * X-Content-Type-Options "nosniff"
-      header * X-Frame-Options "SAMEORIGIN"
-      header * X-XSS-Protection "1; mode=block"
-    }
     (reverse_proxy_security_theatre) {
       header_down * Access-Control-Allow-Origin "*"
       header_down * Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
@@ -54,40 +43,6 @@ in
       header_down * X-Content-Type-Options "nosniff"
       header_down * X-Frame-Options "SAMEORIGIN"
       header_down * X-XSS-Protection "1; mode=block"
-    }
-
-    barrucadu.co.uk {
-      redir https://www.barrucadu.co.uk{uri}
-    }
-
-    barrucadu.com {
-      redir https://www.barrucadu.co.uk{uri}
-    }
-
-    www.barrucadu.com {
-      redir https://www.barrucadu.co.uk{uri}
-    }
-
-    barrucadu.uk {
-      redir https://www.barrucadu.co.uk{uri}
-    }
-
-    www.barrucadu.uk {
-      redir https://www.barrucadu.co.uk{uri}
-    }
-
-    www.barrucadu.co.uk {
-      import security_theatre
-      encode gzip
-
-      header /fonts/* Cache-Control "public, immutable, max-age=31536000"
-      header /*.css   Cache-Control "public, immutable, max-age=31536000"
-
-      file_server {
-        root /srv/http/barrucadu.co.uk/www
-      }
-
-      ${fileContents ./www-barrucadu-co-uk.caddyfile}
     }
 
     ${config.services.pleroma.domain} {
@@ -109,32 +64,6 @@ in
       }
     }
 
-    memo.barrucadu.co.uk {
-      import security_theatre
-      encode gzip
-
-      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-      header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
-      header /*.css     Cache-Control "public, immutable, max-age=31536000"
-
-      file_server  {
-        root /srv/http/barrucadu.co.uk/memo
-      }
-
-      ${fileContents ./memo-barrucadu-co-uk.caddyfile}
-    }
-
-    misc.barrucadu.co.uk {
-      import security_theatre
-      encode gzip
-
-      @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
-
-      root * /srv/http/barrucadu.co.uk/misc
-      file_server @subdirectory browse
-      file_server
-    }
-
     pad.barrucadu.co.uk {
       basicauth {
         ${fileContents /etc/nixos/secrets/etherpad-basic-auth-credentials.txt}
@@ -142,34 +71,6 @@ in
 
       encode gzip
       reverse_proxy http://127.0.0.1:${toString config.services.etherpad.httpPort}
-    }
-
-    lookwhattheshoggothdraggedin.com {
-      redir https://www.lookwhattheshoggothdraggedin.com{uri}
-    }
-
-    www.lookwhattheshoggothdraggedin.com {
-      import security_theatre
-      header * Content-Security-Policy "default-src 'self' commento.lookwhattheshoggothdraggedin.com umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com; img-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com data:"
-
-      encode gzip
-
-      header /files/*         Cache-Control "public, immutable, max-age=604800"
-      header /fonts/*         Cache-Control "public, immutable, max-age=31536000"
-      header /logo.png        Cache-Control "public, immutable, max-age=604800"
-      header /*.css           Cache-Control "public, immutable, max-age=31536000"
-      header /twitter-cards/* Cache-Control "public, immutable, max-age=604800"
-
-      root * /srv/http/lookwhattheshoggothdraggedin.com/www
-      file_server
-
-      handle_errors {
-        @404 {
-          expression {http.error.status_code} == 404
-        }
-        rewrite @404 /404.html
-        file_server
-      }
     }
 
     commento.lookwhattheshoggothdraggedin.com {
@@ -186,14 +87,6 @@ in
       }
     }
   '';
-
-  # Clear the misc files every so often
-  systemd.tmpfiles.rules =
-    [
-      "d /srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
-      "d /srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
-      "d /srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
-    ];
 
   # Pleroma
   services.pleroma.enable = true;

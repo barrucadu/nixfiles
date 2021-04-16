@@ -63,6 +63,9 @@ in
 
   systemd.tmpfiles.rules = [
     "L+ /etc/nixos - - - - /persist/etc/nixos"
+    "d /persist/srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
+    "d /persist/srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
+    "d /persist/srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
   ];
 
 
@@ -74,6 +77,71 @@ in
   services.caddy.enable = true;
   services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
+    barrucadu.co.uk {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    barrucadu.com {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    www.barrucadu.com {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    barrucadu.uk {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    www.barrucadu.uk {
+      redir https://www.barrucadu.co.uk{uri}
+    }
+
+    www.barrucadu.co.uk {
+      encode gzip
+
+      header /fonts/* Cache-Control "public, immutable, max-age=31536000"
+      header /*.css   Cache-Control "public, immutable, max-age=31536000"
+
+      file_server {
+        root /persist/srv/http/barrucadu.co.uk/www
+      }
+
+      ${fileContents ./www-barrucadu-co-uk.caddyfile}
+    }
+
+    memo.barrucadu.co.uk {
+      encode gzip
+
+      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
+      header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
+      header /*.css     Cache-Control "public, immutable, max-age=31536000"
+
+      file_server  {
+        root /persist/srv/http/barrucadu.co.uk/memo
+      }
+
+      ${fileContents ./memo-barrucadu-co-uk.caddyfile}
+    }
+
+    misc.barrucadu.co.uk {
+      encode gzip
+
+      @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
+
+      root * /persist/srv/http/barrucadu.co.uk/misc
+      file_server @subdirectory browse
+      file_server
+    }
+
+    barrucadu.dev {
+      redir https://www.barrucadu.co.uk
+    }
+
+    www.barrucadu.dev {
+      redir https://www.barrucadu.co.uk
+    }
+
     registry.barrucadu.dev {
       encode gzip
       basicauth /v2/* {
@@ -81,6 +149,33 @@ in
       }
       header /v2/* Docker-Distribution-Api-Version "registry/2.0"
       reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
+    }
+
+    lookwhattheshoggothdraggedin.com {
+      redir https://www.lookwhattheshoggothdraggedin.com{uri}
+    }
+
+    www.lookwhattheshoggothdraggedin.com {
+      header * Content-Security-Policy "default-src 'self' commento.lookwhattheshoggothdraggedin.com umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com; img-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com data:"
+
+      encode gzip
+
+      header /files/*         Cache-Control "public, immutable, max-age=604800"
+      header /fonts/*         Cache-Control "public, immutable, max-age=31536000"
+      header /logo.png        Cache-Control "public, immutable, max-age=604800"
+      header /*.css           Cache-Control "public, immutable, max-age=31536000"
+      header /twitter-cards/* Cache-Control "public, immutable, max-age=604800"
+
+      root * /persist/srv/http/lookwhattheshoggothdraggedin.com/www
+      file_server
+
+      handle_errors {
+        @404 {
+          expression {http.error.status_code} == 404
+        }
+        rewrite @404 /404.html
+        file_server
+      }
     }
 
     uzbl.org {

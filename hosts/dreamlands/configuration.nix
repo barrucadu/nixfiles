@@ -24,14 +24,6 @@ in
   # WWW
   services.caddy.enable = true;
   services.caddy.config = ''
-    barrucadu.dev {
-      redir https://www.barrucadu.co.uk
-    }
-
-    www.barrucadu.dev {
-      redir https://www.barrucadu.co.uk
-    }
-
     cd.barrucadu.dev {
       encode gzip
       reverse_proxy http://127.0.0.1:${toString concourseHttpPort} {
