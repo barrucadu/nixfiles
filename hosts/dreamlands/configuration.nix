@@ -2,7 +2,6 @@
 
 with lib;
 let
-  concourseHttpPort = 3001;
   giteaHttpPort = 3000;
 in
 {
@@ -24,27 +23,11 @@ in
   # WWW
   services.caddy.enable = true;
   services.caddy.config = ''
-    cd.barrucadu.dev {
-      encode gzip
-      reverse_proxy http://127.0.0.1:${toString concourseHttpPort} {
-        flush_interval -1
-      }
-    }
-
     git.barrucadu.dev {
       encode gzip
       reverse_proxy http://127.0.0.1:${toString giteaHttpPort}
     }
   '';
-
-  services.concourse.enable = true;
-  services.concourse.httpPort = concourseHttpPort;
-  services.concourse.githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
-  services.concourse.githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
-  services.concourse.enableSSM = true;
-  services.concourse.ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
-  services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
-  services.concourse.dockerVolumeDir = /persist/docker-volumes/concourse;
 
   services.gitea.enable = true;
   services.gitea.httpPort = giteaHttpPort;

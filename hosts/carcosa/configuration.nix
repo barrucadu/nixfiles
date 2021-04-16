@@ -5,6 +5,7 @@ let
   dockerRegistryPort = 3000;
   bookdbPort = 3001;
   bookmarksPort = 3002;
+  concoursePort = 3003;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -163,6 +164,13 @@ in
       redir https://www.barrucadu.co.uk
     }
 
+    cd.barrucadu.dev {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.concourse.httpPort} {
+        flush_interval -1
+      }
+    }
+
     registry.barrucadu.dev {
       encode gzip
       basicauth /v2/* {
@@ -252,6 +260,17 @@ in
   services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
   services.bookmarks.dockerVolumeDir = "/persist/docker-volumes/bookmarks";
   services.bookmarks.httpPort = bookmarksPort;
+
+  # concourse
+  services.concourse.enable = true;
+  services.concourse.httpPort = concoursePort;
+  services.concourse.githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
+  services.concourse.githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
+  services.concourse.enableSSM = true;
+  services.concourse.ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
+  services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
+  services.concourse.dockerVolumeDir = "/persist/docker-volumes/concourse";
+  services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
 
 
   ###############################################################################

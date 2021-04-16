@@ -41,6 +41,12 @@
       fsType = "zfs";
     };
 
+  fileSystems."/var/concourse-worker-scratch" =
+    {
+      device = "/dev/disk/by-uuid/bbc94c9d-9e32-435b-9fe7-1290acb96a40";
+      fsType = "ext4";
+    };
+
   fileSystems."/boot" =
     {
       device = "/dev/disk/by-uuid/C83B-AA71";
