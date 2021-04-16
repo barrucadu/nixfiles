@@ -6,6 +6,7 @@ let
   bookdbPort = 3001;
   bookmarksPort = 3002;
   concoursePort = 3003;
+  giteaPort = 3004;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -35,7 +36,7 @@ in
 
   # Networking
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 80 222 443 ];
   networking.firewall.trustedInterfaces = [ "lo" "docker0" ];
 
   networking.interfaces.enp1s0 = {
@@ -171,6 +172,11 @@ in
       }
     }
 
+    git.barrucadu.dev {
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.gitea.httpPort}
+    }
+
     registry.barrucadu.dev {
       encode gzip
       basicauth /v2/* {
@@ -272,6 +278,10 @@ in
   services.concourse.dockerVolumeDir = "/persist/docker-volumes/concourse";
   services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
 
+  # gitea
+  services.gitea.enable = true;
+  services.gitea.httpPort = giteaPort;
+  services.gitea.dockerVolumeDir = "/persist/docker-volumes/gitea";
 
   ###############################################################################
   ## Miscellaneous
