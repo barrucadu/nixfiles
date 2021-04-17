@@ -95,6 +95,7 @@ in
 
   # WWW
   services.caddy.enable = true;
+  services.caddy.dataDir = "/persist/var/lib/caddy";
   services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
     barrucadu.co.uk {
