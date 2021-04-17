@@ -179,6 +179,11 @@ in
       reverse_proxy http://127.0.0.1:${toString config.services.etherpad.httpPort}
     }
 
+    prometheus.carcosa.barrucadu.co.uk {
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.prometheus.port}
+    }
+
     barrucadu.dev {
       redir https://www.barrucadu.co.uk
     }
@@ -358,6 +363,17 @@ in
   ###############################################################################
   ## Miscellaneous
   ###############################################################################
+
+  # Metrics
+  services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
+  systemd.services.prometheus-statedir = {
+    enable = true;
+    description = "Bind-mount prometheus StateDirectory";
+    after = [ "local-fs.target" ];
+    wantedBy = [ "prometheus.service" ];
+    serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/${config.services.prometheus.stateDir}";
+    serviceConfig.ExecStart = "${pkgs.utillinux}/bin/mount -o bind /persist/var/lib/${config.services.prometheus.stateDir} /var/lib/${config.services.prometheus.stateDir}";
+  };
 
   # Concourse access
   users.extraUsers.concourse-deploy-robot = {
