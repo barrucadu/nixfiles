@@ -10,6 +10,7 @@ let
   commentoPort = 3005;
   umamiPort = 3006;
   pleromaPort = 3007;
+  etherpadPort = 3008;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -165,6 +166,15 @@ in
       file_server
     }
 
+    pad.barrucadu.co.uk {
+      basicauth {
+        ${fileContents /etc/nixos/secrets/etherpad-basic-auth-credentials.txt}
+      }
+
+      encode gzip
+      reverse_proxy http://127.0.0.1:${toString config.services.etherpad.httpPort}
+    }
+
     barrucadu.dev {
       redir https://www.barrucadu.co.uk
     }
@@ -296,6 +306,12 @@ in
   services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
   services.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
+
+  # etherpad
+  services.etherpad.enable = true;
+  services.etherpad.image = "etherpad/etherpad:stable";
+  services.etherpad.httpPort = etherpadPort;
+  services.etherpad.dockerVolumeDir = "/persist/docker-volumes/etherpad";
 
   # concourse
   services.concourse.enable = true;
