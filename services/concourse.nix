@@ -21,6 +21,7 @@ in
     ssmAccessKey = mkOption { type = types.nullOr types.str; default = null; };
     ssmRegion = mkOption { type = types.str; default = "eu-west-1"; };
     ssmSecretKey = mkOption { type = types.nullOr types.str; default = null; };
+    workerScratchDir = mkOption { type = types.nullOr types.path; default = null; };
   };
 
   config = mkIf cfg.enable {

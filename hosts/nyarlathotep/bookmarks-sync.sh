@@ -11,8 +11,8 @@ bookmarks_container="$(docker-compose -f "$docker_compose_file" ps -q bookmarks)
 
 docker exec -i "${bookmarks_container}" env ES_HOST=http://db:9200 /app/dump-index.py > "${local_sync_dir}/dump.json"
 
-scp -r "$local_sync_dir" "dunwich.barrucadu.co.uk:${remote_sync_dir}"
-ssh dunwich.barrucadu.co.uk <<EOF
+scp -r "$local_sync_dir" "carcosa.barrucadu.co.uk:${remote_sync_dir}"
+ssh carcosa.barrucadu.co.uk <<EOF
 set -euo pipefail
 
 export COMPOSE_PROJECT_NAME=bookmarks
