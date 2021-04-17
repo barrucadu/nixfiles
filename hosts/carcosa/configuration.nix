@@ -48,6 +48,9 @@ in
   };
   networking.defaultGateway6 = { address = "fe80::1"; interface = "enp1s0"; };
 
+  # No automatic reboots (for irssi)
+  system.autoUpgrade.allowReboot = mkForce false;
+
 
   ###############################################################################
   ## Make / volatile
