@@ -48,7 +48,7 @@
 
     worker:
       image: concourse/concourse:${concourseTag}
-      command: worker
+      command: ["worker", "--ephemeral"]
       privileged: true
       restart: always
       environment:
