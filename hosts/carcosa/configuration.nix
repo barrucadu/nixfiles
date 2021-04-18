@@ -368,6 +368,13 @@ in
 
   # Metrics
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "${config.networking.hostName}-concourse";
+      static_configs = [{ targets = [ "localhost:${toString config.services.concourse.metricsPort}" ]; }];
+    }
+  ];
+
   systemd.services.prometheus-statedir = {
     enable = true;
     description = "Bind-mount prometheus StateDirectory";
