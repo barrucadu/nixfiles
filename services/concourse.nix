@@ -17,6 +17,7 @@ in
     enableSSM = mkOption { type = types.bool; default = false; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
     httpPort = mkOption { type = types.int; default = 3001; };
+    metricsPort = mkOption { type = types.int; default = 9001; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     ssmAccessKey = mkOption { type = types.nullOr types.str; default = null; };
     ssmRegion = mkOption { type = types.str; default = "eu-west-1"; };
