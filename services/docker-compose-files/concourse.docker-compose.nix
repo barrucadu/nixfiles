@@ -5,6 +5,7 @@
 , enableSSM ? false
 , githubUser ? "barrucadu"
 , httpPort ? 3001
+, metricsPort ? 9001
 , postgresTag ? "13"
 , ssmAccessKey ? null
 , ssmRegion ? "eu-west-1"
@@ -32,6 +33,8 @@
         CONCOURSE_GITHUB_CLIENT_SECRET: "${githubClientSecret}"
         CONCOURSE_LOG_LEVEL: error
         CONCOURSE_GARDEN_LOG_LEVEL: error
+        CONCOURSE_PROMETHEUS_BIND_IP: "0.0.0.0"
+        CONCOURSE_PROMETHEUS_BIND_PORT: "8088"
         ${if enableSSM then "CONCOURSE_AWS_SSM_REGION: \"${ssmRegion}\"" else ""}
         ${if enableSSM then "CONCOURSE_AWS_SSM_ACCESS_KEY: \"${ssmAccessKey}\"" else ""}
         ${if enableSSM then "CONCOURSE_AWS_SSM_SECRET_KEY: \"${ssmSecretKey}\"" else ""}
@@ -39,6 +42,7 @@
         - ${toString dockerVolumeDir}/keys/web:/concourse-keys
       ports:
         - "127.0.0.1:${toString httpPort}:8080"
+        - "127.0.0.1:${toString metricsPort}:8088"
       depends_on:
         - db
 

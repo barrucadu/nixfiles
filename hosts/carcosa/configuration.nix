@@ -11,6 +11,7 @@ let
   umamiPort = 3006;
   pleromaPort = 3007;
   etherpadPort = 3008;
+  concourseMetricsPort = 3009;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -325,6 +326,7 @@ in
   # concourse
   services.concourse.enable = true;
   services.concourse.httpPort = concoursePort;
+  services.concourse.metricsPort = concourseMetricsPort;
   services.concourse.githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
   services.concourse.githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
   services.concourse.enableSSM = true;
