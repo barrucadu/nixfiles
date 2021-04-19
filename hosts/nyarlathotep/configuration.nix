@@ -384,7 +384,6 @@ in
   ###############################################################################
 
   services.dockerRegistry.enable = true;
-  services.dockerRegistry.enableGarbageCollect = true;
   virtualisation.docker.extraOptions = "--insecure-registry=localhost:5000";
 
 

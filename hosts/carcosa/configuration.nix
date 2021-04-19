@@ -274,7 +274,6 @@ in
   # Docker registry
   services.dockerRegistry.enable = true;
   services.dockerRegistry.enableDelete = true;
-  services.dockerRegistry.enableGarbageCollect = true;
   services.dockerRegistry.garbageCollectDates = "daily";
   services.dockerRegistry.port = dockerRegistryPort;
 

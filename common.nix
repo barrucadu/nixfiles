@@ -84,9 +84,10 @@ with lib;
       openDefaultPorts = true;
     };
 
-    # Run the docker daemon, just in case it's handy.
+    # Run the docker daemon & registry, just in case it's handy.
     virtualisation.docker.enable = true;
     virtualisation.docker.autoPrune.enable = true;
+    services.dockerRegistry.enableGarbageCollect = config.services.dockerRegistry.enable;
 
 
     #############################################################################
