@@ -64,7 +64,6 @@ in
 
   # WWW
   services.caddy.enable = true;
-  services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
     barrucadu.co.uk {
       redir https://www.barrucadu.co.uk{uri}
@@ -250,6 +249,21 @@ in
       file_server
     }
   '';
+
+  services.phpfpm.pools.caddy = {
+    user = "caddy";
+    group = "caddy";
+    settings = {
+      "listen" = "/run/phpfpm/caddy.sock";
+      "listen.owner" = "caddy";
+      "listen.group" = "caddy";
+      "pm" = "dynamic";
+      "pm.max_children" = "5";
+      "pm.start_servers" = "2";
+      "pm.min_spare_servers" = "1";
+      "pm.max_spare_servers" = "3";
+    };
+  };
 
   systemd.tmpfiles.rules = [
     "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"

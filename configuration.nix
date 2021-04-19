@@ -9,7 +9,6 @@
     ./modules/zfs-automation.nix
     ./services/bookdb.nix
     ./services/bookmarks.nix
-    ./services/caddy.nix
     ./services/commento.nix
     ./services/concourse.nix
     ./services/etherpad.nix
