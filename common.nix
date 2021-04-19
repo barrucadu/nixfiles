@@ -93,6 +93,19 @@ with lib;
     ## Monitoring
     #############################################################################
 
+    services.grafana = {
+      enable = config.services.prometheus.enable;
+      auth.anonymous.enable = true;
+      provision.enable = true;
+      provision.datasources = [
+        {
+          name = "prometheus";
+          url = "http://localhost:${toString config.services.prometheus.port}";
+          type = "prometheus";
+        }
+      ];
+    };
+
     services.prometheus = {
       enable = true;
       listenAddress = "127.0.0.1";

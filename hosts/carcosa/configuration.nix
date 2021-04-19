@@ -349,28 +349,16 @@ in
   ###############################################################################
 
   # Metrics
-  services.grafana.enable = true;
   services.grafana.port = grafanaPort;
   services.grafana.rootUrl = "https://grafana.carcosa.barrucadu.co.uk";
-  services.grafana.auth.anonymous.enable = true;
   services.grafana.security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
-  services.grafana.provision = {
-    enable = true;
-    datasources = [
-      {
-        name = "prometheus";
-        url = "http://localhost:${toString config.services.prometheus.port}";
-        type = "prometheus";
-      }
-    ];
-    dashboards = [
-      {
-        name = "overview.json";
-        folder = "My Dashboards";
-        options.path = pkgs.writeTextDir "overview.json" (fileContents ./grafana-dashboards/overview.json);
-      }
-    ];
-  };
+  services.grafana.provision.dashboards = [
+    {
+      name = "overview.json";
+      folder = "My Dashboards";
+      options.path = pkgs.writeTextDir "overview.json" (fileContents ./grafana-dashboards/overview.json);
+    }
+  ];
 
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
   services.prometheus.scrapeConfigs = [

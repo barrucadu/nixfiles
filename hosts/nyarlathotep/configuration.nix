@@ -279,50 +279,38 @@ in
   # Monitoring & Dashboards
   ###############################################################################
 
-  services.grafana = {
-    enable = true;
-    port = 3004;
-    rootUrl = "http://grafana.nyarlathotep.lan";
-    auth.anonymous.enable = true;
-    provision = {
-      enable = true;
-      datasources = [
-        {
-          name = "prometheus";
-          url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
-          type = "prometheus";
-        }
-        {
-          name = "finance";
-          url = "http://localhost:8086";
-          type = "influxdb";
-          database = "finance";
-        }
-        {
-          name = "quantified_self";
-          url = "http://localhost:8086";
-          type = "influxdb";
-          database = "quantified_self";
-        }
-      ];
-      dashboards =
-        let
-          dashboard = folder: name: path: { inherit name folder; options.path = pkgs.writeTextDir name (fileContents path); };
-        in
-        [
-          (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
-          (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
-          (dashboard "My Dashboards" "quantified-self.json" ./grafana-dashboards/quantified-self.json)
-          (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
-          (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
-          (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
-          (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
-          (dashboard "UniFi" "unifi-poller-uap-insights.json" ./grafana-dashboards/unifi-poller-uap-insights.json)
-          (dashboard "UniFi" "unifi-poller-usg-insights.json" ./grafana-dashboards/unifi-poller-usg-insights.json)
-          (dashboard "UniFi" "unifi-poller-usw-insights.json" ./grafana-dashboards/unifi-poller-usw-insights.json)
-        ];
-    };
-  };
+  services.grafana.port = 3004;
+  services.grafana.rootUrl = "http://grafana.nyarlathotep.lan";
+  services.grafana.provision.datasources = [
+    {
+      name = "finance";
+      url = "http://localhost:8086";
+      type = "influxdb";
+      database = "finance";
+    }
+    {
+      name = "quantified_self";
+      url = "http://localhost:8086";
+      type = "influxdb";
+      database = "quantified_self";
+    }
+  ];
+  services.grafana.provision.dashboards =
+    let
+      dashboard = folder: name: path: { inherit name folder; options.path = pkgs.writeTextDir name (fileContents path); };
+    in
+    [
+      (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
+      (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
+      (dashboard "My Dashboards" "quantified-self.json" ./grafana-dashboards/quantified-self.json)
+      (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
+      (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
+      (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
+      (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
+      (dashboard "UniFi" "unifi-poller-uap-insights.json" ./grafana-dashboards/unifi-poller-uap-insights.json)
+      (dashboard "UniFi" "unifi-poller-usg-insights.json" ./grafana-dashboards/unifi-poller-usg-insights.json)
+      (dashboard "UniFi" "unifi-poller-usw-insights.json" ./grafana-dashboards/unifi-poller-usw-insights.json)
+    ];
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
   services.prometheus.scrapeConfigs = [
