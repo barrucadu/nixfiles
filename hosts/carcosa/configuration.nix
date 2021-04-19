@@ -436,7 +436,6 @@ in
 
   # Extra packages
   environment.systemPackages = with pkgs; [
-    haskellPackages.hledger
     irssi
     perl
   ];

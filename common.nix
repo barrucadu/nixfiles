@@ -257,67 +257,44 @@ with lib;
     nixpkgs.config.allowUnfree = true;
 
     # System-wide packages
-    environment.systemPackages = with pkgs;
-      let
-        # Packages to always install.
-        common = [
-          aspell
-          aspellDicts.en
-          bind
-          docker_compose
-          file
-          fortune
-          fzf
-          git
-          gnum4
-          gnupg
-          gnupg1compat
-          htop
-          imagemagick
-          iotop
-          lsof
-          lynx
-          man-pages
-          ncdu
-          nmap
-          proselint
-          psmisc
-          python3
-          ripgrep
-          rsync
-          rxvt_unicode.terminfo
-          smartmontools
-          stow
-          tmux
-          unzip
-          vale
-          vim
-          vnstat
-          wget
-          which
-          whois
-        ];
-
-        # Packages to install if X is not enabled.
-        noxorg = [
-          emacs-nox
-        ];
-
-        # Packages to install if X is enabled.
-        xorg = [
-          chromium
-          emacs
-          evince
-          firefox
-          gimp
-          gmrun
-          keepassxc
-          mpv
-          rxvt_unicode
-          scrot
-          xclip
-        ];
-      in
-      common ++ (if config.services.xserver.enable then xorg else noxorg);
+    environment.systemPackages = with pkgs; [
+      aspell
+      aspellDicts.en
+      bind
+      docker_compose
+      file
+      fortune
+      fzf
+      git
+      gnum4
+      gnupg
+      gnupg1compat
+      haskellPackages.hledger
+      htop
+      imagemagick
+      iotop
+      lsof
+      lynx
+      man-pages
+      ncdu
+      nmap
+      proselint
+      psmisc
+      python3
+      ripgrep
+      rsync
+      rxvt_unicode.terminfo
+      smartmontools
+      stow
+      tmux
+      unzip
+      vale
+      vim
+      vnstat
+      wget
+      which
+      whois
+      (if config.services.xserver.enable then emacs else emacs-nox)
+    ];
   };
 }

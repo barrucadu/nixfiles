@@ -65,12 +65,20 @@ in
 
   # Extra packages
   environment.systemPackages = with pkgs; [
+    chromium
     clementine
     discord
+    emacs
+    evince
     feh
-    haskellPackages.hledger
-    gnuplot
-    python3Packages.pygments
+    firefox
+    gimp
+    gmrun
+    keepassxc
+    mpv
+    rxvt_unicode
+    scrot
+    xclip
     (texlive.combine { inherit (texlive) scheme-full; })
   ];
 }

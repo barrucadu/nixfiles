@@ -522,16 +522,4 @@ in
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
   };
-
-
-  ###############################################################################
-  ## Extra packages
-  ###############################################################################
-
-  environment.systemPackages = with pkgs;
-    [
-      mktorrent
-      nodejs-12_x
-      tmux
-    ];
 }
