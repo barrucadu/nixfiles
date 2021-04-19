@@ -3,9 +3,12 @@
     ./common.nix
     ./host/configuration.nix
     ./host/hardware.nix
+    ./modules/backup-scripts.nix
+    ./modules/erase-your-darlings.nix
+    ./modules/monitoring-scripts.nix
+    ./modules/zfs-automation.nix
     ./services/bookdb.nix
     ./services/bookmarks.nix
-    ./services/caddy.nix
     ./services/commento.nix
     ./services/concourse.nix
     ./services/etherpad.nix

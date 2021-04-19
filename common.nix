@@ -3,29 +3,6 @@
 with lib;
 
 {
-  options = {
-    services = {
-      backup-scripts = {
-        OnCalendarFull = lib.mkOption { default = "monthly"; };
-        OnCalendarIncr = lib.mkOption { default = "Mon, 04:00"; };
-        WorkingDirectory = lib.mkOption { default = "/home/barrucadu/backup-scripts"; };
-        User = lib.mkOption { default = "barrucadu"; };
-        Group = lib.mkOption { default = "users"; };
-      };
-      monitoring-scripts = {
-        OnCalendar = lib.mkOption { default = "hourly"; };
-        WorkingDirectory = lib.mkOption { default = "/home/barrucadu/monitoring-scripts"; };
-        User = lib.mkOption { default = "barrucadu"; };
-        Group = lib.mkOption { default = "users"; };
-      };
-      zfs = {
-        automation = {
-          enable = lib.mkOption { default = false; };
-        };
-      };
-    };
-  };
-
   config = {
     #############################################################################
     ## General
@@ -57,25 +34,6 @@ with lib;
     system.autoUpgrade.allowReboot = true;
     system.autoUpgrade.channel = https://nixos.org/channels/nixos-20.09;
     system.autoUpgrade.dates = "06:45";
-
-    #############################################################################
-    ## ZFS
-    #############################################################################
-
-    # Auto-trim is enabled per-pool:
-    # run `sudo zpool set autotrim=on <pool>`
-    services.zfs.trim.enable = config.services.zfs.automation.enable;
-    services.zfs.trim.interval = "weekly";
-
-    # Auto-scrub applies to all pools, no need to set any pool
-    # properties.
-    services.zfs.autoScrub.enable = config.services.zfs.automation.enable;
-    services.zfs.autoScrub.interval = "monthly";
-
-    # Auto-snapshot is enabled per dataset:
-    # run `sudo zfs set com.sun:auto-snapshot=true <dataset>`
-    services.zfs.autoSnapshot.enable = config.services.zfs.automation.enable;
-
 
     #############################################################################
     ## Locale
@@ -126,63 +84,27 @@ with lib;
       openDefaultPorts = true;
     };
 
-    # Run the docker daemon, just in case it's handy.
+    # Run the docker daemon & registry, just in case it's handy.
     virtualisation.docker.enable = true;
     virtualisation.docker.autoPrune.enable = true;
-
-
-    #############################################################################
-    ## Backups
-    #############################################################################
-
-    systemd.timers.backup-scripts-full = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = config.services.backup-scripts.OnCalendarFull;
-      };
-    };
-
-    systemd.timers.backup-scripts-incr = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = config.services.backup-scripts.OnCalendarIncr;
-      };
-    };
-
-    systemd.services.backup-scripts-full = {
-      description = "Take a full backup";
-      serviceConfig.WorkingDirectory = config.services.backup-scripts.WorkingDirectory;
-      serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './backup.sh full'";
-      serviceConfig.User = config.services.backup-scripts.User;
-      serviceConfig.Group = config.services.backup-scripts.Group;
-    };
-
-    systemd.services.backup-scripts-incr = {
-      description = "Take an incremental backup";
-      serviceConfig.WorkingDirectory = config.services.backup-scripts.WorkingDirectory;
-      serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c './backup.sh incr'";
-      serviceConfig.User = config.services.backup-scripts.User;
-      serviceConfig.Group = config.services.backup-scripts.Group;
-    };
+    services.dockerRegistry.enableGarbageCollect = config.services.dockerRegistry.enable;
 
 
     #############################################################################
     ## Monitoring
     #############################################################################
 
-    systemd.timers.monitoring-scripts = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = config.services.monitoring-scripts.OnCalendar;
-      };
-    };
-
-    systemd.services.monitoring-scripts = {
-      description = "Run monitoring scripts";
-      serviceConfig.WorkingDirectory = config.services.monitoring-scripts.WorkingDirectory;
-      serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./monitor.sh";
-      serviceConfig.User = config.services.monitoring-scripts.User;
-      serviceConfig.Group = config.services.monitoring-scripts.Group;
+    services.grafana = {
+      enable = config.services.prometheus.enable;
+      auth.anonymous.enable = true;
+      provision.enable = true;
+      provision.datasources = [
+        {
+          name = "prometheus";
+          url = "http://localhost:${toString config.services.prometheus.port}";
+          type = "prometheus";
+        }
+      ];
     };
 
     services.prometheus = {
@@ -257,67 +179,44 @@ with lib;
     nixpkgs.config.allowUnfree = true;
 
     # System-wide packages
-    environment.systemPackages = with pkgs;
-      let
-        # Packages to always install.
-        common = [
-          aspell
-          aspellDicts.en
-          bind
-          docker_compose
-          file
-          fortune
-          fzf
-          git
-          gnum4
-          gnupg
-          gnupg1compat
-          htop
-          imagemagick
-          iotop
-          lsof
-          lynx
-          man-pages
-          ncdu
-          nmap
-          proselint
-          psmisc
-          python3
-          ripgrep
-          rsync
-          rxvt_unicode.terminfo
-          smartmontools
-          stow
-          tmux
-          unzip
-          vale
-          vim
-          vnstat
-          wget
-          which
-          whois
-        ];
-
-        # Packages to install if X is not enabled.
-        noxorg = [
-          emacs-nox
-        ];
-
-        # Packages to install if X is enabled.
-        xorg = [
-          chromium
-          emacs
-          evince
-          firefox
-          gimp
-          gmrun
-          keepassxc
-          mpv
-          rxvt_unicode
-          scrot
-          xclip
-        ];
-      in
-      common ++ (if config.services.xserver.enable then xorg else noxorg);
+    environment.systemPackages = with pkgs; [
+      aspell
+      aspellDicts.en
+      bind
+      docker_compose
+      file
+      fortune
+      fzf
+      git
+      gnum4
+      gnupg
+      gnupg1compat
+      haskellPackages.hledger
+      htop
+      imagemagick
+      iotop
+      lsof
+      lynx
+      man-pages
+      ncdu
+      nmap
+      proselint
+      psmisc
+      python3
+      ripgrep
+      rsync
+      rxvt_unicode.terminfo
+      smartmontools
+      stow
+      tmux
+      unzip
+      vale
+      vim
+      vnstat
+      wget
+      which
+      whois
+      (if config.services.xserver.enable then emacs else emacs-nox)
+    ];
   };
 }

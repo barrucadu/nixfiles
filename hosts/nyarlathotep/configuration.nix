@@ -16,7 +16,7 @@ in
 
   # Only run monitoring scripts every 12 hours: I can't replace a
   # broken HDD if I'm away from home.
-  services.monitoring-scripts.OnCalendar = "0/12:00:00";
+  modules.monitoringScripts.onCalendar = "0/12:00:00";
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -25,46 +25,16 @@ in
   boot.loader.systemd-boot.memtest86.enable = true;
 
   # ZFS auto trim, scrub, & snapshot
-  services.zfs.automation.enable = true;
+  modules.zfsAutomation.enable = true;
 
   # Firewall
   networking.firewall.enable = true;
   networking.firewall.trustedInterfaces = [ "lo" "docker0" "enp4s0" ];
   networking.firewall.allowedTCPPorts = [ 8888 ]; # for testing stuff
 
-
-  ###############################################################################
-  ## Make / volatile
-  ###############################################################################
-
-  boot.initrd.postDeviceCommands = mkAfter ''
-    zfs rollback -r local/volatile/root@blank
-  '';
-
-  # Switch back to immutable users
-  users.mutableUsers = mkForce false;
-  users.extraUsers.barrucadu.initialPassword = mkForce null;
-  users.extraUsers.barrucadu.hashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
-
-  # Store data in /persist (see also configuration elsewhere in this
-  # file)
-  services.openssh.hostKeys = [
-    {
-      path = "/persist/etc/ssh/ssh_host_ed25519_key";
-      type = "ed25519";
-    }
-    {
-      path = "/persist/etc/ssh/ssh_host_rsa_key";
-      type = "rsa";
-      bits = 4096;
-    }
-  ];
-
-  services.syncthing.dataDir = "/persist/var/lib/syncthing";
-
-  systemd.tmpfiles.rules = [
-    "L+ /etc/nixos - - - - /persist/etc/nixos"
-  ];
+  # Wipe / on boot
+  modules.eraseYourDarlings.enable = true;
+  modules.eraseYourDarlings.barrucaduHashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
 
 
   ###############################################################################
@@ -82,10 +52,6 @@ in
   services.samba.enable = true;
   services.samba.shares = listToAttrs
     (map (n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; }) shares);
-  services.samba.extraConfig = ''
-    log file = /var/log/samba/%m.log
-    private dir = /persist/var/lib/samba/private
-  '';
 
   # Guest user for NFS / Samba
   users.extraUsers.notbarrucadu = {
@@ -124,7 +90,7 @@ in
       import restrict_vlan
       encode gzip
       file_server {
-        root /persist/srv/http/nyarlathotep.lan
+        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/nyarlathotep.lan
       }
     }
 
@@ -182,7 +148,7 @@ in
       encode gzip
       redir @not_vlan1 http://help.lan 302
       file_server {
-        root /persist/srv/http/vlan1.help.lan
+        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan1.help.lan
       }
     }
 
@@ -191,7 +157,7 @@ in
       encode gzip
       redir @not_vlan10 http://help.lan 302
       file_server {
-        root /persist/srv/http/vlan10.help.lan
+        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan10.help.lan
       }
     }
 
@@ -200,7 +166,7 @@ in
       encode gzip
       redir @not_vlan20 http://help.lan 302
       file_server {
-        root /persist/srv/http/vlan20.help.lan
+        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan20.help.lan
       }
     }
 
@@ -217,7 +183,6 @@ in
   services.bookdb.enable = true;
   services.bookdb.image = "localhost:5000/bookdb:latest";
   services.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
-  services.bookdb.dockerVolumeDir = /persist/docker-volumes/bookdb;
 
   systemd.timers.bookdb-sync = {
     wantedBy = [ "timers.target" ];
@@ -242,7 +207,6 @@ in
   services.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
   services.bookmarks.httpPort = 3003;
   services.bookmarks.youtubeApiKey = fileContents /etc/nixos/secrets/bookmarks-youtube-api-key.txt;
-  services.bookmarks.dockerVolumeDir = /persist/docker-volumes/bookmarks;
 
   systemd.timers.bookmarks-sync = {
     wantedBy = [ "timers.target" ];
@@ -265,8 +229,7 @@ in
   services.finder.enable = true;
   services.finder.image = "localhost:5000/finder:latest";
   services.finder.httpPort = 3002;
-  services.finder.dockerVolumeDir = /persist/docker-volumes/finder;
-  services.finder.mangaDir = /mnt/nas/manga;
+  services.finder.mangaDir = "/mnt/nas/manga";
 
 
   ###############################################################################
@@ -276,7 +239,6 @@ in
   services.etherpad.enable = true;
   services.etherpad.image = "etherpad/etherpad:stable";
   services.etherpad.httpPort = 3005;
-  services.etherpad.dockerVolumeDir = /persist/docker-volumes/etherpad;
 
 
   ###############################################################################
@@ -308,7 +270,7 @@ in
       User = "barrucadu";
       KillMode = "none";
       Restart = "on-failure";
-      WorkingDirectory = "/persist/flood";
+      WorkingDirectory = "${toString config.modules.eraseYourDarlings.persistDir}/flood";
     };
   };
 
@@ -317,51 +279,38 @@ in
   # Monitoring & Dashboards
   ###############################################################################
 
-  services.grafana = {
-    enable = true;
-    port = 3004;
-    rootUrl = "http://grafana.nyarlathotep.lan";
-    dataDir = "/persist/var/lib/grafana";
-    auth.anonymous.enable = true;
-    provision = {
-      enable = true;
-      datasources = [
-        {
-          name = "prometheus";
-          url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
-          type = "prometheus";
-        }
-        {
-          name = "finance";
-          url = "http://localhost:8086";
-          type = "influxdb";
-          database = "finance";
-        }
-        {
-          name = "quantified_self";
-          url = "http://localhost:8086";
-          type = "influxdb";
-          database = "quantified_self";
-        }
-      ];
-      dashboards =
-        let
-          dashboard = folder: name: path: { inherit name folder; options.path = pkgs.writeTextDir name (fileContents path); };
-        in
-        [
-          (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
-          (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
-          (dashboard "My Dashboards" "quantified-self.json" ./grafana-dashboards/quantified-self.json)
-          (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
-          (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
-          (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
-          (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
-          (dashboard "UniFi" "unifi-poller-uap-insights.json" ./grafana-dashboards/unifi-poller-uap-insights.json)
-          (dashboard "UniFi" "unifi-poller-usg-insights.json" ./grafana-dashboards/unifi-poller-usg-insights.json)
-          (dashboard "UniFi" "unifi-poller-usw-insights.json" ./grafana-dashboards/unifi-poller-usw-insights.json)
-        ];
-    };
-  };
+  services.grafana.port = 3004;
+  services.grafana.rootUrl = "http://grafana.nyarlathotep.lan";
+  services.grafana.provision.datasources = [
+    {
+      name = "finance";
+      url = "http://localhost:8086";
+      type = "influxdb";
+      database = "finance";
+    }
+    {
+      name = "quantified_self";
+      url = "http://localhost:8086";
+      type = "influxdb";
+      database = "quantified_self";
+    }
+  ];
+  services.grafana.provision.dashboards =
+    let
+      dashboard = folder: name: path: { inherit name folder; options.path = pkgs.writeTextDir name (fileContents path); };
+    in
+    [
+      (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
+      (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
+      (dashboard "My Dashboards" "quantified-self.json" ./grafana-dashboards/quantified-self.json)
+      (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
+      (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
+      (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
+      (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
+      (dashboard "UniFi" "unifi-poller-uap-insights.json" ./grafana-dashboards/unifi-poller-uap-insights.json)
+      (dashboard "UniFi" "unifi-poller-usg-insights.json" ./grafana-dashboards/unifi-poller-usg-insights.json)
+      (dashboard "UniFi" "unifi-poller-usw-insights.json" ./grafana-dashboards/unifi-poller-usw-insights.json)
+    ];
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
   services.prometheus.scrapeConfigs = [
@@ -388,17 +337,6 @@ in
       static_configs = [{ targets = [ "localhost:9517" ]; }];
     }
   ];
-
-  # systemd doesn't like using a symlink for a StateDirectory, but a
-  # bind mount works fine.
-  systemd.services.prometheus-statedir = {
-    enable = true;
-    description = "Bind-mount prometheus StateDirectory";
-    after = [ "local-fs.target" ];
-    wantedBy = [ "prometheus.service" ];
-    serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/${config.services.prometheus.stateDir}";
-    serviceConfig.ExecStart = "${pkgs.utillinux}/bin/mount -o bind /persist/var/lib/${config.services.prometheus.stateDir} /var/lib/${config.services.prometheus.stateDir}";
-  };
 
   systemd.services.prometheus-speedtest-exporter = {
     enable = true;
@@ -446,8 +384,6 @@ in
   ###############################################################################
 
   services.dockerRegistry.enable = true;
-  services.dockerRegistry.enableGarbageCollect = true;
-  services.dockerRegistry.storagePath = "/persist/var/lib/docker-registry";
   virtualisation.docker.extraOptions = "--insecure-registry=localhost:5000";
 
 
@@ -493,7 +429,6 @@ in
   ###############################################################################
 
   services.influxdb.enable = true;
-  services.influxdb.dataDir = "/persist/var/lib/influxdb";
 
   systemd.timers.hledger-scripts = {
     wantedBy = [ "timers.target" ];
@@ -522,16 +457,4 @@ in
     serviceConfig.User = "barrucadu";
     serviceConfig.Group = "users";
   };
-
-
-  ###############################################################################
-  ## Extra packages
-  ###############################################################################
-
-  environment.systemPackages = with pkgs;
-    [
-      mktorrent
-      nodejs-12_x
-      tmux
-    ];
 }

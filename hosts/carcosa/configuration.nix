@@ -38,7 +38,7 @@ in
   boot.loader.grub.device = "/dev/sda";
 
   # ZFS auto trim, scrub, & snapshot
-  services.zfs.automation.enable = true;
+  modules.zfsAutomation.enable = true;
 
   # Networking
   networking.firewall.enable = true;
@@ -53,42 +53,9 @@ in
   # No automatic reboots (for irssi)
   system.autoUpgrade.allowReboot = mkForce false;
 
-
-  ###############################################################################
-  ## Make / volatile
-  ###############################################################################
-
-  boot.initrd.postDeviceCommands = mkAfter ''
-    zfs rollback -r local/volatile/root@blank
-  '';
-
-  # Switch back to immutable users
-  users.mutableUsers = mkForce false;
-  users.extraUsers.barrucadu.initialPassword = mkForce null;
-  users.extraUsers.barrucadu.hashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
-
-  # Store data in /persist (see also configuration elsewhere in this
-  # file)
-  services.openssh.hostKeys = [
-    {
-      path = "/persist/etc/ssh/ssh_host_ed25519_key";
-      type = "ed25519";
-    }
-    {
-      path = "/persist/etc/ssh/ssh_host_rsa_key";
-      type = "rsa";
-      bits = 4096;
-    }
-  ];
-
-  services.syncthing.dataDir = "/persist/var/lib/syncthing";
-
-  systemd.tmpfiles.rules = [
-    "L+ /etc/nixos - - - - /persist/etc/nixos"
-    "d /persist/srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
-    "d /persist/srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
-    "d /persist/srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
-  ];
+  # Wipe / on boot
+  modules.eraseYourDarlings.enable = true;
+  modules.eraseYourDarlings.barrucaduHashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
 
 
   ###############################################################################
@@ -97,8 +64,6 @@ in
 
   # WWW
   services.caddy.enable = true;
-  services.caddy.dataDir = "/persist/var/lib/caddy";
-  services.caddy.enable-phpfpm-pool = true;
   services.caddy.config = ''
     barrucadu.co.uk {
       redir https://www.barrucadu.co.uk{uri}
@@ -127,7 +92,7 @@ in
       header /*.css   Cache-Control "public, immutable, max-age=31536000"
 
       file_server {
-        root /persist/srv/http/barrucadu.co.uk/www
+        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/www
       }
 
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
@@ -156,7 +121,7 @@ in
       header /*.css     Cache-Control "public, immutable, max-age=31536000"
 
       file_server  {
-        root /persist/srv/http/barrucadu.co.uk/memo
+        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/memo
       }
 
       ${fileContents ./memo-barrucadu-co-uk.caddyfile}
@@ -167,7 +132,7 @@ in
 
       @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
 
-      root * /persist/srv/http/barrucadu.co.uk/misc
+      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc
       file_server @subdirectory browse
       file_server
     }
@@ -235,7 +200,7 @@ in
       header /*.css           Cache-Control "public, immutable, max-age=31536000"
       header /twitter-cards/* Cache-Control "public, immutable, max-age=604800"
 
-      root * /persist/srv/http/lookwhattheshoggothdraggedin.com/www
+      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/lookwhattheshoggothdraggedin.com/www
       file_server
 
       handle_errors {
@@ -279,18 +244,37 @@ in
       redir /doesitwork /doesitwork/
       redir /fosdem2020 /fosdem2020/
 
-      root * /persist/srv/http/uzbl.org/www
+      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/uzbl.org/www
       php_fastcgi unix//run/phpfpm/caddy.sock
       file_server
     }
   '';
 
+  services.phpfpm.pools.caddy = {
+    user = "caddy";
+    group = "caddy";
+    settings = {
+      "listen" = "/run/phpfpm/caddy.sock";
+      "listen.owner" = "caddy";
+      "listen.group" = "caddy";
+      "pm" = "dynamic";
+      "pm.max_children" = "5";
+      "pm.start_servers" = "2";
+      "pm.min_spare_servers" = "1";
+      "pm.max_spare_servers" = "3";
+    };
+  };
+
+  systemd.tmpfiles.rules = [
+    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
+    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
+    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
+  ];
+
   # Docker registry
   services.dockerRegistry.enable = true;
   services.dockerRegistry.enableDelete = true;
-  services.dockerRegistry.enableGarbageCollect = true;
   services.dockerRegistry.garbageCollectDates = "daily";
-  services.dockerRegistry.storagePath = "/persist/var/lib/docker-registry";
   services.dockerRegistry.port = dockerRegistryPort;
 
   # bookdb
@@ -299,7 +283,6 @@ in
   services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   services.bookdb.readOnly = true;
   services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
-  services.bookdb.dockerVolumeDir = "/persist/docker-volumes/bookdb";
   services.bookdb.httpPort = bookdbPort;
 
   # bookmarks
@@ -308,7 +291,6 @@ in
   services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
   services.bookmarks.readOnly = true;
   services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
-  services.bookmarks.dockerVolumeDir = "/persist/docker-volumes/bookmarks";
   services.bookmarks.httpPort = bookmarksPort;
 
   # pleroma
@@ -321,13 +303,11 @@ in
   services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
   services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
-  services.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
 
   # etherpad
   services.etherpad.enable = true;
   services.etherpad.image = "etherpad/etherpad:stable";
   services.etherpad.httpPort = etherpadPort;
-  services.etherpad.dockerVolumeDir = "/persist/docker-volumes/etherpad";
 
   # concourse
   services.concourse.enable = true;
@@ -338,13 +318,11 @@ in
   services.concourse.enableSSM = true;
   services.concourse.ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
   services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
-  services.concourse.dockerVolumeDir = "/persist/docker-volumes/concourse";
   services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
 
   # gitea
   services.gitea.enable = true;
   services.gitea.httpPort = giteaPort;
-  services.gitea.dockerVolumeDir = "/persist/docker-volumes/gitea";
 
   # Look what the Shoggoth Dragged In
   services.commento.enable = true;
@@ -356,16 +334,13 @@ in
   services.commento.googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
   services.commento.twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
   services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
-  services.commento.dockerVolumeDir = "/persist/docker-volumes/commento";
 
   services.umami.enable = true;
   services.umami.httpPort = umamiPort;
   services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
-  services.umami.dockerVolumeDir = "/persist/docker-volumes/umami";
 
   # minecraft
   services.minecraft.enable = true;
-  services.minecraft.dataDir = "/persist/srv/minecraft";
 
 
   ###############################################################################
@@ -373,29 +348,16 @@ in
   ###############################################################################
 
   # Metrics
-  services.grafana.enable = true;
   services.grafana.port = grafanaPort;
   services.grafana.rootUrl = "https://grafana.carcosa.barrucadu.co.uk";
-  services.grafana.dataDir = "/persist/var/lib/grafana";
-  services.grafana.auth.anonymous.enable = true;
   services.grafana.security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
-  services.grafana.provision = {
-    enable = true;
-    datasources = [
-      {
-        name = "prometheus";
-        url = "http://localhost:${toString config.services.prometheus.port}";
-        type = "prometheus";
-      }
-    ];
-    dashboards = [
-      {
-        name = "overview.json";
-        folder = "My Dashboards";
-        options.path = pkgs.writeTextDir "overview.json" (fileContents ./grafana-dashboards/overview.json);
-      }
-    ];
-  };
+  services.grafana.provision.dashboards = [
+    {
+      name = "overview.json";
+      folder = "My Dashboards";
+      options.path = pkgs.writeTextDir "overview.json" (fileContents ./grafana-dashboards/overview.json);
+    }
+  ];
 
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
   services.prometheus.scrapeConfigs = [
@@ -404,15 +366,6 @@ in
       static_configs = [{ targets = [ "localhost:${toString config.services.concourse.metricsPort}" ]; }];
     }
   ];
-
-  systemd.services.prometheus-statedir = {
-    enable = true;
-    description = "Bind-mount prometheus StateDirectory";
-    after = [ "local-fs.target" ];
-    wantedBy = [ "prometheus.service" ];
-    serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/${config.services.prometheus.stateDir}";
-    serviceConfig.ExecStart = "${pkgs.utillinux}/bin/mount -o bind /persist/var/lib/${config.services.prometheus.stateDir} /var/lib/${config.services.prometheus.stateDir}";
-  };
 
   # Concourse access
   users.extraUsers.concourse-deploy-robot = {
@@ -436,7 +389,6 @@ in
 
   # Extra packages
   environment.systemPackages = with pkgs; [
-    haskellPackages.hledger
     irssi
     perl
   ];
