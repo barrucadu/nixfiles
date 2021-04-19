@@ -47,9 +47,7 @@
       "decimals": 1,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "dtdurations",
@@ -102,7 +100,7 @@
         "ymax": null,
         "ymin": null
       },
-      "tableColumn": "{instance=\"localhost:9100\", job=\"nyarlathotep-node\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "node_time_seconds{job=\"nyarlathotep-node\"} - node_boot_time_seconds{job=\"nyarlathotep-node\"}",
@@ -126,7 +124,6 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 2,
           "mappings": [],
           "max": 1,
@@ -173,9 +170,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "expr": "sum(rate(node_cpu_seconds_total{job=\"nyarlathotep-node\",mode!=\"idle\"}[1m])) / count(count by (cpu) (node_cpu_seconds_total{job=\"nyarlathotep-node\"}))",
@@ -195,7 +193,6 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 2,
           "mappings": [],
           "max": 1,
@@ -242,9 +239,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "expr": "1 - (node_memory_MemAvailable_bytes{job=\"nyarlathotep-node\"} / node_memory_MemTotal_bytes{job=\"nyarlathotep-node\"})",
@@ -271,9 +269,7 @@
       ],
       "datasource": "prometheus",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -326,7 +322,7 @@
         "ymax": null,
         "ymin": null
       },
-      "tableColumn": "pihole_status{hostname=\"pi.hole\", instance=\"pi.hole:9617\", job=\"pihole-pihole\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "pihole_status{job=\"pihole-pihole\"}",
@@ -371,9 +367,7 @@
       "decimals": 0,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -426,7 +420,7 @@
         "ymax": null,
         "ymin": null
       },
-      "tableColumn": "pihole_dns_queries_all_types{hostname=\"pi.hole\", instance=\"pi.hole:9617\", job=\"pihole-pihole\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "pihole_dns_queries_all_types{job=\"pihole-pihole\"}",
@@ -460,9 +454,7 @@
       "decimals": 0,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -517,7 +509,7 @@
         "ymax": null,
         "ymin": null
       },
-      "tableColumn": "pihole_unique_domains{hostname=\"pi.hole\", instance=\"pi.hole:9617\", job=\"pihole-pihole\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "pihole_unique_domains{job=\"pihole-pihole\"}",
@@ -545,9 +537,7 @@
       ],
       "datasource": "prometheus",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "100%",
@@ -631,9 +621,7 @@
       "decimals": 0,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "short",
@@ -721,9 +709,7 @@
       "decimals": 1,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "bytes",
@@ -776,7 +762,7 @@
         "ymax": null,
         "ymin": null
       },
-      "tableColumn": "node_memory_MemTotal_bytes{instance=\"localhost:9100\", job=\"nyarlathotep-node\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "node_memory_MemTotal_bytes{job=\"nyarlathotep-node\"}",
@@ -811,9 +797,7 @@
       "decimals": 0,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -866,7 +850,7 @@
         "ymax": null,
         "ymin": null
       },
-      "tableColumn": "pihole_domains_being_blocked{hostname=\"pi.hole\", instance=\"pi.hole:9617\", job=\"pihole-pihole\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "pihole_domains_being_blocked{job=\"pihole-pihole\"}",
@@ -900,9 +884,7 @@
       "decimals": 0,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -957,7 +939,7 @@
         "ymax": null,
         "ymin": null
       },
-      "tableColumn": "pihole_ads_blocked_today{hostname=\"pi.hole\", instance=\"pi.hole:9617\", job=\"pihole-pihole\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "pihole_ads_blocked_today{job=\"pihole-pihole\"}",
@@ -991,9 +973,7 @@
       "decimals": 2,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "percent",
@@ -1048,7 +1028,7 @@
         "ymax": null,
         "ymin": null
       },
-      "tableColumn": "pihole_ads_percentage_today{hostname=\"pi.hole\", instance=\"pi.hole:9617\", job=\"pihole-pihole\"}",
+      "tableColumn": "",
       "targets": [
         {
           "expr": "pihole_ads_percentage_today{job=\"pihole-pihole\"}",
@@ -1071,7 +1051,6 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 2,
           "mappings": [],
           "max": 1,
@@ -1118,9 +1097,10 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showUnfilled": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "expr": "1 - (node_filesystem_avail_bytes{job=\"nyarlathotep-node\",mountpoint=~\"/boot\"} / node_filesystem_size_bytes)",
@@ -1130,7 +1110,8 @@
           "refId": "A"
         },
         {
-          "expr": "sum(1 - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",device=~\"local/.*\",mountpoint=~\"/[a-z]*\"} / node_filesystem_size_bytes)",
+          "exemplar": true,
+          "expr": "sum(1 - node_filesystem_avail_bytes{job=\"nyarlathotep-node\",device=~\"local/.*\",mountpoint=~\"(/|/home|/nix|/persist|/var/log)\"} / node_filesystem_size_bytes)",
           "instant": true,
           "interval": "",
           "legendFormat": "\"local\"",
@@ -1154,7 +1135,6 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 2,
           "mappings": [],
           "max": 1,
@@ -1201,9 +1181,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "expr": "avg(node_load5{job=\"nyarlathotep-node\"}) / count(count by (cpu) (node_cpu_seconds_total{job=\"nyarlathotep-node\"}))",
@@ -1223,7 +1204,6 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 2,
           "mappings": [],
           "max": 1,
@@ -1270,9 +1250,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "expr": "avg(node_load15{job=\"nyarlathotep-node\"}) / count(count by (cpu) (node_cpu_seconds_total{job=\"nyarlathotep-node\"}))",
@@ -1297,7 +1278,6 @@
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1332,7 +1312,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1412,10 +1392,8 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "displayName": "",
           "mappings": [],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1461,9 +1439,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "expr": "scalar(speedtest_upload)",
@@ -1483,10 +1462,8 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "displayName": "",
           "mappings": [],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1532,9 +1509,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "expr": "scalar(speedtest_ping_latency)",
@@ -1554,10 +1532,8 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "displayName": "",
           "mappings": [],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1603,9 +1579,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "expr": "scalar(speedtest_download)",
@@ -1628,7 +1605,6 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1661,7 +1637,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1741,9 +1717,7 @@
       ],
       "datasource": "prometheus",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "100%",
@@ -1821,9 +1795,7 @@
       ],
       "datasource": "prometheus",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "100%",
@@ -1901,9 +1873,7 @@
       ],
       "datasource": "prometheus",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "100%",
@@ -1989,9 +1959,7 @@
     {
       "datasource": null,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -2005,10 +1973,9 @@
         "content": "# Disk usage:",
         "mode": "markdown"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "timeFrom": null,
       "timeShift": null,
-      "title": "",
       "transparent": true,
       "type": "text"
     },
@@ -2025,9 +1992,7 @@
       "datasource": "prometheus",
       "decimals": 1,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "150%",
@@ -2087,9 +2052,7 @@
       "datasource": "prometheus",
       "decimals": 1,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "150%",
@@ -2122,7 +2085,8 @@
           "refId": "A"
         },
         {
-          "expr": " node_filesystem_size_bytes{job=\"nyarlathotep-node\",device=~\"local/.*\",mountpoint=~\"/[a-z]*\"} - node_filesystem_avail_bytes",
+          "exemplar": true,
+          "expr": " node_filesystem_size_bytes{job=\"nyarlathotep-node\",device=~\"local/.*\",mountpoint=~\"(/|/home|/nix|/persist|/var/log)\"} - node_filesystem_avail_bytes",
           "instant": true,
           "interval": "",
           "legendFormat": "{{device}}",
@@ -2149,9 +2113,7 @@
       "datasource": "prometheus",
       "decimals": 1,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "150%",
@@ -2211,9 +2173,7 @@
       "datasource": "prometheus",
       "decimals": 1,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "150%",
@@ -2273,9 +2233,7 @@
       "datasource": "prometheus",
       "decimals": 1,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "150%",
@@ -2331,7 +2289,6 @@
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2364,7 +2321,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2434,7 +2391,6 @@
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2467,7 +2423,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2531,9 +2487,7 @@
     {
       "datasource": null,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -2547,19 +2501,16 @@
         "content": "# CPU usage:",
         "mode": "markdown"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "timeFrom": null,
       "timeShift": null,
-      "title": "",
       "transparent": true,
       "type": "text"
     },
     {
       "datasource": null,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -2573,10 +2524,9 @@
         "content": "# RAM usage:",
         "mode": "markdown"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "timeFrom": null,
       "timeShift": null,
-      "title": "",
       "transparent": true,
       "type": "text"
     },
@@ -2589,7 +2539,6 @@
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2622,7 +2571,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2710,7 +2659,6 @@
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2743,7 +2691,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2825,9 +2773,7 @@
     {
       "datasource": null,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -2841,10 +2787,9 @@
         "content": "# Network usage:",
         "mode": "markdown"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "timeFrom": null,
       "timeShift": null,
-      "title": "",
       "transparent": true,
       "type": "text"
     },
@@ -2856,7 +2801,6 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2889,7 +2833,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2968,7 +2912,6 @@
       "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3001,7 +2944,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -3073,7 +3016,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {

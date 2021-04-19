@@ -49,6 +49,12 @@
       fsType = "zfs";
     };
 
+  fileSystems."/var/log" =
+    {
+      device = "local/persistent/var-log";
+      fsType = "zfs";
+    };
+
   swapDevices = [ ];
 
   nix.maxJobs = lib.mkDefault 4;
