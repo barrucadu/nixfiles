@@ -5,6 +5,7 @@
     ./host/hardware.nix
     ./modules/backup-scripts.nix
     ./modules/monitoring-scripts.nix
+    ./modules/zfs-automation.nix
     ./services/bookdb.nix
     ./services/bookmarks.nix
     ./services/caddy.nix

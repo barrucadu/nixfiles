@@ -25,7 +25,7 @@ in
   boot.loader.systemd-boot.memtest86.enable = true;
 
   # ZFS auto trim, scrub, & snapshot
-  services.zfs.automation.enable = true;
+  modules.zfsAutomation.enable = true;
 
   # Firewall
   networking.firewall.enable = true;

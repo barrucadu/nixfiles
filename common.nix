@@ -3,16 +3,6 @@
 with lib;
 
 {
-  options = {
-    services = {
-      zfs = {
-        automation = {
-          enable = lib.mkOption { default = false; };
-        };
-      };
-    };
-  };
-
   config = {
     #############################################################################
     ## General
@@ -44,25 +34,6 @@ with lib;
     system.autoUpgrade.allowReboot = true;
     system.autoUpgrade.channel = https://nixos.org/channels/nixos-20.09;
     system.autoUpgrade.dates = "06:45";
-
-    #############################################################################
-    ## ZFS
-    #############################################################################
-
-    # Auto-trim is enabled per-pool:
-    # run `sudo zpool set autotrim=on <pool>`
-    services.zfs.trim.enable = config.services.zfs.automation.enable;
-    services.zfs.trim.interval = "weekly";
-
-    # Auto-scrub applies to all pools, no need to set any pool
-    # properties.
-    services.zfs.autoScrub.enable = config.services.zfs.automation.enable;
-    services.zfs.autoScrub.interval = "monthly";
-
-    # Auto-snapshot is enabled per dataset:
-    # run `sudo zfs set com.sun:auto-snapshot=true <dataset>`
-    services.zfs.autoSnapshot.enable = config.services.zfs.automation.enable;
-
 
     #############################################################################
     ## Locale

@@ -38,7 +38,7 @@ in
   boot.loader.grub.device = "/dev/sda";
 
   # ZFS auto trim, scrub, & snapshot
-  services.zfs.automation.enable = true;
+  modules.zfsAutomation.enable = true;
 
   # Networking
   networking.firewall.enable = true;
