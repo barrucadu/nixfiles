@@ -3,6 +3,7 @@
     ./common.nix
     ./host/configuration.nix
     ./host/hardware.nix
+    ./modules/backup-scripts.nix
     ./services/bookdb.nix
     ./services/bookmarks.nix
     ./services/caddy.nix
