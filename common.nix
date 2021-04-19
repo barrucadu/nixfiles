@@ -5,12 +5,6 @@ with lib;
 {
   options = {
     services = {
-      monitoring-scripts = {
-        OnCalendar = lib.mkOption { default = "hourly"; };
-        WorkingDirectory = lib.mkOption { default = "/home/barrucadu/monitoring-scripts"; };
-        User = lib.mkOption { default = "barrucadu"; };
-        Group = lib.mkOption { default = "users"; };
-      };
       zfs = {
         automation = {
           enable = lib.mkOption { default = false; };
@@ -127,21 +121,6 @@ with lib;
     #############################################################################
     ## Monitoring
     #############################################################################
-
-    systemd.timers.monitoring-scripts = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = config.services.monitoring-scripts.OnCalendar;
-      };
-    };
-
-    systemd.services.monitoring-scripts = {
-      description = "Run monitoring scripts";
-      serviceConfig.WorkingDirectory = config.services.monitoring-scripts.WorkingDirectory;
-      serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ./monitor.sh";
-      serviceConfig.User = config.services.monitoring-scripts.User;
-      serviceConfig.Group = config.services.monitoring-scripts.Group;
-    };
 
     services.prometheus = {
       enable = true;

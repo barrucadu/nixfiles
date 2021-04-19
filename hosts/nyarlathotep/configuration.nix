@@ -16,7 +16,7 @@ in
 
   # Only run monitoring scripts every 12 hours: I can't replace a
   # broken HDD if I'm away from home.
-  services.monitoring-scripts.OnCalendar = "0/12:00:00";
+  modules.monitoringScripts.onCalendar = "0/12:00:00";
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
