@@ -14,6 +14,7 @@ in
   enable = true;
   wantedBy = [ "multi-user.target" ];
   requires = [ "docker.service" ];
+  after = [ "docker.service" ];
   environment = { COMPOSE_PROJECT_NAME = composeProjectName; };
   serviceConfig = lib.mkMerge [
     (lib.mkIf (execStartPre != null) { ExecStartPre = "${execStartPre}"; })
