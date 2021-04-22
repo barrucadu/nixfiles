@@ -342,6 +342,7 @@ in
     enable = true;
     description = "Speedtest.net exporter for Prometheus";
     after = [ "docker.service" ];
+    requires = [ "docker.service" ];
     wantedBy = [ "prometheus.service" ];
     serviceConfig.Restart = "always";
     serviceConfig.ExecStartPre = [
@@ -355,6 +356,7 @@ in
     enable = true;
     description = "UniFi Poller exporter for Prometheus";
     after = [ "docker.service" ];
+    requires = [ "docker.service" ];
     wantedBy = [ "prometheus.service" ];
     serviceConfig.Restart = "always";
     serviceConfig.ExecStartPre = [
@@ -368,6 +370,7 @@ in
     enable = true;
     description = "Awair exporter for Prometheus";
     after = [ "docker.service" ];
+    requires = [ "docker.service" ];
     wantedBy = [ "prometheus.service" ];
     serviceConfig.Restart = "always";
     serviceConfig.ExecStartPre = [

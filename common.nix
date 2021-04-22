@@ -130,6 +130,7 @@ with lib;
       enable = config.services.prometheus.enable;
       description = "Docker exporter for Prometheus";
       after = [ "docker.service" ];
+      bindsTo = [ "docker.service" ];
       wantedBy = [ "prometheus.service" ];
       serviceConfig = {
         Restart = "always";
