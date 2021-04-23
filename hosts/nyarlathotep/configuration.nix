@@ -265,8 +265,9 @@ in
     enable = true;
     wantedBy = [ "default.target" ];
     after = [ "network.target" ];
+    path = [ pkgs.bash pkgs.nodejs-12_x ];
     serviceConfig = {
-      ExecStart = "${pkgs.zsh}/bin/zsh --login -c '${pkgs.nodejs-12_x}/bin/npm start'";
+      ExecStart = "${pkgs.nodejs-12_x}/bin/npm start";
       User = "barrucadu";
       KillMode = "none";
       Restart = "on-failure";
