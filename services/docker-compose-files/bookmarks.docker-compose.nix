@@ -31,7 +31,7 @@
       environment:
         - http.host=0.0.0.0
         - discovery.type=single-node
-        - ES_JAVA_OPTS=-Xms1g -Xmx1g
+        - ES_JAVA_OPTS=-Xms512M -Xmx512M
       volumes:
         - ${toString dockerVolumeDir}/esdata:/usr/share/elasticsearch/data
 ''

@@ -13,7 +13,7 @@ in
     port = mkOption { type = types.int; default = 25565; };
     dataDir = mkOption { type = types.path; default = "/srv/minecraft"; };
     jar = mkOption { type = types.str; default = "fabric-server-launch.jar"; };
-    jvmOpts = mkOption { type = types.separatedString " "; default = "-Xmx6144M -Xms6144M"; };
+    jvmOpts = mkOption { type = types.separatedString " "; default = "-Xmx4096M -Xms4096M"; };
   };
 
   config = mkIf cfg.enable {
