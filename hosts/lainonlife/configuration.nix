@@ -74,12 +74,25 @@ in
   # Web server
   services.caddy.enable = true;
   services.caddy.config = ''
+    (common_config) {
+      encode gzip
+
+      header Permissions-Policy "interest-cohort=()"
+      header Referrer-Policy "strict-origin-when-cross-origin"
+      header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+      header X-Content-Type-Options "nosniff"
+      header X-Frame-Options "SAMEORIGIN"
+
+      header -Server
+    }
+
     www.lainon.life {
+      import common_config
       redir https://lainon.life{uri}
     }
 
     lainon.life {
-      encode gzip
+      import common_config
 
       route /radio/* {
         uri strip_prefix /radio
@@ -100,7 +113,7 @@ in
     }
 
     ${config.services.pleroma.domain} {
-      encode gzip
+      import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
     }
   '';

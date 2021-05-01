@@ -65,28 +65,45 @@ in
   # WWW
   services.caddy.enable = true;
   services.caddy.config = ''
+    (common_config) {
+      encode gzip
+
+      header Permissions-Policy "interest-cohort=()"
+      header Referrer-Policy "strict-origin-when-cross-origin"
+      header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+      header X-Content-Type-Options "nosniff"
+      header X-Frame-Options "SAMEORIGIN"
+
+      header -Server
+    }
+
     barrucadu.co.uk {
+      import common_config
       redir https://www.barrucadu.co.uk{uri}
     }
 
     barrucadu.com {
+      import common_config
       redir https://www.barrucadu.co.uk{uri}
     }
 
     www.barrucadu.com {
+      import common_config
       redir https://www.barrucadu.co.uk{uri}
     }
 
     barrucadu.uk {
+      import common_config
       redir https://www.barrucadu.co.uk{uri}
     }
 
     www.barrucadu.uk {
+      import common_config
       redir https://www.barrucadu.co.uk{uri}
     }
 
     www.barrucadu.co.uk {
-      encode gzip
+      import common_config
 
       header /fonts/* Cache-Control "public, immutable, max-age=31536000"
       header /*.css   Cache-Control "public, immutable, max-age=31536000"
@@ -99,22 +116,22 @@ in
     }
 
     ap.barrucadu.co.uk {
-      encode gzip
+      import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
     }
 
     bookdb.barrucadu.co.uk {
-      encode gzip
+      import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.bookdb.httpPort}
     }
 
     bookmarks.barrucadu.co.uk {
-      encode gzip
+      import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.httpPort}
     }
 
     memo.barrucadu.co.uk {
-      encode gzip
+      import common_config
 
       header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
       header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
@@ -128,7 +145,7 @@ in
     }
 
     misc.barrucadu.co.uk {
-      encode gzip
+      import common_config
 
       @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
 
@@ -138,46 +155,49 @@ in
     }
 
     pad.barrucadu.co.uk {
+      import common_config
+
       basicauth {
         ${fileContents /etc/nixos/secrets/etherpad-basic-auth-credentials.txt}
       }
 
-      encode gzip
       reverse_proxy http://127.0.0.1:${toString config.services.etherpad.httpPort}
     }
 
     grafana.carcosa.barrucadu.co.uk {
-      encode gzip
+      import common_config
       reverse_proxy http://localhost:${toString config.services.grafana.port}
     }
 
     prometheus.carcosa.barrucadu.co.uk {
-      encode gzip
+      import common_config
       reverse_proxy http://localhost:${toString config.services.prometheus.port}
     }
 
     barrucadu.dev {
+      import common_config
       redir https://www.barrucadu.co.uk
     }
 
     www.barrucadu.dev {
+      import common_config
       redir https://www.barrucadu.co.uk
     }
 
     cd.barrucadu.dev {
-      encode gzip
+      import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.concourse.httpPort} {
         flush_interval -1
       }
     }
 
     git.barrucadu.dev {
-      encode gzip
+      import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.gitea.httpPort}
     }
 
     registry.barrucadu.dev {
-      encode gzip
+      import common_config
       basicauth /v2/* {
         registry ${fileContents /etc/nixos/secrets/registry-password-hashed.txt}
       }
@@ -186,13 +206,14 @@ in
     }
 
     lookwhattheshoggothdraggedin.com {
+      import common_config
       redir https://www.lookwhattheshoggothdraggedin.com{uri}
     }
 
     www.lookwhattheshoggothdraggedin.com {
-      header * Content-Security-Policy "default-src 'self' commento.lookwhattheshoggothdraggedin.com umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com; img-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com data:"
+      import common_config
 
-      encode gzip
+      header Content-Security-Policy "default-src 'self' commento.lookwhattheshoggothdraggedin.com umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com; img-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com data:"
 
       header /files/*         Cache-Control "public, immutable, max-age=604800"
       header /fonts/*         Cache-Control "public, immutable, max-age=31536000"
@@ -213,21 +234,22 @@ in
     }
 
     commento.lookwhattheshoggothdraggedin.com {
-      encode gzip
+      import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.commento.httpPort}
     }
 
     umami.lookwhattheshoggothdraggedin.com {
-      encode gzip
+      import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.umami.httpPort}
     }
 
     uzbl.org {
+      import common_config
       redir https://www.uzbl.org{uri}
     }
 
     www.uzbl.org {
-      encode gzip
+      import common_config
 
       rewrite /archives.php    /index.php
       rewrite /faq.php         /index.php
