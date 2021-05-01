@@ -68,6 +68,7 @@ in
     (common_config) {
       encode gzip
       header Permissions-Policy "interest-cohort=()"
+      header Strict-Transport-Security "max-age=31536000; includeSubDomains"
     }
 
     barrucadu.co.uk {
