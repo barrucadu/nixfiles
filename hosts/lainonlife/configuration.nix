@@ -184,6 +184,7 @@ in
   services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
   services.pleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
+  services.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
 
   # Fancy graphs
   services.grafana = {
