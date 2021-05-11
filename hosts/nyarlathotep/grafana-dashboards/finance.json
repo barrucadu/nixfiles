@@ -22,7 +22,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 1,
           "mappings": [],
           "thresholds": {
@@ -61,9 +60,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [
@@ -114,7 +114,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 1,
           "mappings": [],
           "thresholds": {
@@ -157,9 +156,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [
@@ -210,7 +210,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 0,
           "mappings": [],
           "thresholds": {
@@ -253,9 +252,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [
@@ -274,7 +274,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT (last(\"assets:cash[£]\") + last(\"assets:investments:nsi:premium_bonds[£]\")) / ((last(\"expenses[£]\") - first(\"expenses[£]\")) / count(\"expenses[£]\")) FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT (last(\"assets:cash[£]\") + last(\"assets:investments:nsi:premium_bonds:emergency[£]\")) / ((last(\"expenses[£]\") - first(\"expenses[£]\") - last(\"expenses:gross[£]\") + first(\"expenses:gross[£]\")) / count(\"expenses[£]\")) FROM \"market\" WHERE $timeFilter",
           "queryType": "randomWalk",
           "rawQuery": true,
           "refId": "A",
@@ -306,7 +306,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 0,
           "mappings": [],
           "thresholds": {
@@ -318,11 +317,11 @@
               },
               {
                 "color": "yellow",
-                "value": 60
+                "value": 182
               },
               {
                 "color": "green",
-                "value": 90
+                "value": 365
               }
             ]
           },
@@ -349,9 +348,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [
@@ -370,7 +370,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"assets[£]\")  / ((last(\"expenses[£]\") - first(\"expenses[£]\")) / count(\"expenses[£]\")) FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT last(\"assets[£]\")  / ((last(\"expenses[£]\") - first(\"expenses[£]\") - last(\"expenses:gross[£]\") + first(\"expenses:gross[£]\")) / count(\"expenses[£]\")) FROM \"market\" WHERE $timeFilter",
           "queryType": "randomWalk",
           "rawQuery": true,
           "refId": "A",
@@ -402,7 +402,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 1,
           "mappings": [],
           "thresholds": {
@@ -414,7 +413,99 @@
               },
               {
                 "color": "yellow",
-                "value": -10000
+                "value": 25000
+              },
+              {
+                "color": "green",
+                "value": 50000
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 0
+      },
+      "id": 66,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "7.5.2",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:ajbell[£]\" + \"assets:investments:nsi:premium_bonds:house[£]\" FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash:nationwide:flexdirect:pending:ajbell[£]"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "House Deposit",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
               },
               {
                 "color": "green",
@@ -429,7 +520,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 16,
+        "x": 20,
         "y": 0
       },
       "id": 65,
@@ -445,9 +536,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [
@@ -495,113 +587,6 @@
       "type": "stat"
     },
     {
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 25000
-              },
-              {
-                "color": "green",
-                "value": 50000
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 20,
-        "y": 0
-      },
-      "id": 66,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "7.3.4",
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "House Deposit",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 5
-      },
-      "id": 7,
-      "panels": [],
-      "title": "Overview",
-      "type": "row"
-    },
-    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
@@ -612,9 +597,7 @@
       ],
       "datasource": "finance",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -629,7 +612,7 @@
         "h": 2,
         "w": 6,
         "x": 0,
-        "y": 6
+        "y": 5
       },
       "id": 21,
       "interval": null,
@@ -720,9 +703,7 @@
       "datasource": "finance",
       "decimals": null,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "80%",
@@ -731,7 +712,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 6
+        "y": 5
       },
       "id": 4,
       "interval": null,
@@ -833,9 +814,7 @@
       },
       "datasource": "finance",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "80%",
@@ -844,7 +823,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 6
+        "y": 5
       },
       "id": 2,
       "interval": null,
@@ -945,9 +924,7 @@
       "datasource": "finance",
       "decimals": null,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fontSize": "80%",
@@ -956,7 +933,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 6
+        "y": 5
       },
       "id": 3,
       "interval": null,
@@ -997,12 +974,12 @@
           "tags": []
         },
         {
-          "alias": "Innovative Finance ISA",
+          "alias": "S&S LISA",
           "groupBy": [],
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"assets:investments:fundingcircle[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"assets:investments:ajbell[£]\" FROM \"market\" WHERE $timeFilter",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1039,28 +1016,6 @@
             ]
           ],
           "tags": []
-        },
-        {
-          "alias": "Cryptocurrency",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:coinbase[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:investments:coinbase[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
         }
       ],
       "timeFrom": null,
@@ -1081,9 +1036,7 @@
       ],
       "datasource": "finance",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -1098,7 +1051,7 @@
         "h": 3,
         "w": 3,
         "x": 0,
-        "y": 8
+        "y": 7
       },
       "id": 17,
       "interval": null,
@@ -1189,9 +1142,7 @@
       ],
       "datasource": "finance",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -1206,7 +1157,7 @@
         "h": 3,
         "w": 3,
         "x": 3,
-        "y": 8
+        "y": 7
       },
       "id": 18,
       "interval": null,
@@ -1297,9 +1248,7 @@
       ],
       "datasource": "finance",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -1314,7 +1263,7 @@
         "h": 3,
         "w": 3,
         "x": 0,
-        "y": 11
+        "y": 10
       },
       "id": 19,
       "interval": null,
@@ -1405,9 +1354,7 @@
       ],
       "datasource": "finance",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "percentunit",
@@ -1422,7 +1369,7 @@
         "h": 3,
         "w": 3,
         "x": 3,
-        "y": 11
+        "y": 10
       },
       "id": 20,
       "interval": null,
@@ -1520,7 +1467,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1531,7 +1477,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 14
+        "y": 13
       },
       "hiddenSeries": false,
       "id": 23,
@@ -1553,7 +1499,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1710,7 +1656,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1721,7 +1666,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 14
+        "y": 13
       },
       "hiddenSeries": false,
       "id": 24,
@@ -1743,7 +1688,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1901,22 +1846,7 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "links": []
         },
         "overrides": []
       },
@@ -1926,7 +1856,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 14
+        "y": 13
       },
       "hiddenSeries": false,
       "id": 58,
@@ -1948,7 +1878,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2140,24 +2070,9 @@
       }
     },
     {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 22
-      },
-      "id": 26,
-      "panels": [],
-      "title": "Savings",
-      "type": "row"
-    },
-    {
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 1,
           "mappings": [],
           "max": 5000,
@@ -2187,7 +2102,7 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 23
+        "y": 21
       },
       "id": 41,
       "options": {
@@ -2200,9 +2115,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2236,7 +2152,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 1000,
           "min": 0,
@@ -2265,7 +2180,7 @@
         "h": 6,
         "w": 3,
         "x": 3,
-        "y": 23
+        "y": 21
       },
       "id": 43,
       "options": {
@@ -2278,9 +2193,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2314,7 +2230,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 1000,
           "min": 0,
@@ -2343,7 +2258,7 @@
         "h": 6,
         "w": 3,
         "x": 6,
-        "y": 23
+        "y": 21
       },
       "id": 28,
       "options": {
@@ -2356,9 +2271,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2392,7 +2308,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 250,
           "min": 0,
@@ -2421,7 +2336,7 @@
         "h": 6,
         "w": 3,
         "x": 9,
-        "y": 23
+        "y": 21
       },
       "id": 29,
       "options": {
@@ -2434,9 +2349,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2470,7 +2386,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 50,
           "min": 0,
@@ -2499,7 +2414,7 @@
         "h": 6,
         "w": 3,
         "x": 12,
-        "y": 23
+        "y": 21
       },
       "id": 30,
       "options": {
@@ -2512,9 +2427,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2548,7 +2464,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 500,
           "min": 0,
@@ -2577,7 +2492,7 @@
         "h": 6,
         "w": 3,
         "x": 15,
-        "y": 23
+        "y": 21
       },
       "id": 31,
       "options": {
@@ -2590,9 +2505,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2626,7 +2542,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 300,
           "min": 0,
@@ -2655,7 +2570,7 @@
         "h": 6,
         "w": 3,
         "x": 18,
-        "y": 23
+        "y": 21
       },
       "id": 32,
       "options": {
@@ -2668,9 +2583,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2704,7 +2620,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 1,
           "mappings": [],
           "max": 5000,
@@ -2734,7 +2649,7 @@
         "h": 6,
         "w": 3,
         "x": 21,
-        "y": 23
+        "y": 21
       },
       "id": 42,
       "options": {
@@ -2747,9 +2662,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2783,7 +2699,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 20,
           "min": 0,
@@ -2812,7 +2727,7 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 29
+        "y": 27
       },
       "id": 37,
       "options": {
@@ -2825,9 +2740,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2861,7 +2777,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 100,
           "min": 0,
@@ -2890,7 +2805,7 @@
         "h": 6,
         "w": 3,
         "x": 3,
-        "y": 29
+        "y": 27
       },
       "id": 33,
       "options": {
@@ -2903,9 +2818,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -2939,7 +2855,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 50,
           "min": 0,
@@ -2968,7 +2883,7 @@
         "h": 6,
         "w": 3,
         "x": 6,
-        "y": 29
+        "y": 27
       },
       "id": 38,
       "options": {
@@ -2981,9 +2896,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -3017,7 +2933,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 1,
           "mappings": [],
           "max": 4000,
@@ -3047,7 +2962,7 @@
         "h": 6,
         "w": 3,
         "x": 9,
-        "y": 29
+        "y": 27
       },
       "id": 34,
       "options": {
@@ -3060,9 +2975,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -3096,7 +3012,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 20,
           "min": 0,
@@ -3125,7 +3040,7 @@
         "h": 6,
         "w": 3,
         "x": 12,
-        "y": 29
+        "y": 27
       },
       "id": 39,
       "options": {
@@ -3138,9 +3053,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -3174,7 +3090,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 750,
           "min": 0,
@@ -3203,7 +3118,7 @@
         "h": 6,
         "w": 3,
         "x": 15,
-        "y": 29
+        "y": 27
       },
       "id": 35,
       "options": {
@@ -3216,9 +3131,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -3252,7 +3168,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 1000,
           "min": 0,
@@ -3281,7 +3196,7 @@
         "h": 6,
         "w": 3,
         "x": 18,
-        "y": 29
+        "y": 27
       },
       "id": 36,
       "options": {
@@ -3294,9 +3209,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -3330,7 +3246,6 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 500,
           "min": 0,
@@ -3359,7 +3274,7 @@
         "h": 6,
         "w": 3,
         "x": 21,
-        "y": 29
+        "y": 27
       },
       "id": 40,
       "options": {
@@ -3372,9 +3287,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "groupBy": [],
@@ -3405,869 +3321,863 @@
       "type": "gauge"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 33
       },
       "id": 49,
-      "panels": [],
-      "title": "Economy",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "finance",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 34
+          },
+          "hiddenSeries": false,
+          "id": 51,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "alias": "BTC",
+              "groupBy": [],
+              "measurement": "market",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"BTC[£]\" FROM \"commodities\" WHERE $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "BTC[£]"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Bitcoin Unit Value",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1258",
+              "format": "currencyGBP",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1259",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "finance",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 34
+          },
+          "hiddenSeries": false,
+          "id": 52,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "alias": "ETH",
+              "groupBy": [],
+              "measurement": "market",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"ETH[£]\" FROM \"commodities\" WHERE $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "BTC[£]"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Ethereum Unit Value",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1258",
+              "format": "currencyGBP",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1259",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "finance",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 34
+          },
+          "hiddenSeries": false,
+          "id": 53,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "alias": "LTC",
+              "groupBy": [],
+              "measurement": "market",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"LTC[£]\" FROM \"commodities\" WHERE $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "BTC[£]"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Litecoin Unit Value",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1258",
+              "format": "currencyGBP",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1259",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "finance",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 42
+          },
+          "hiddenSeries": false,
+          "id": 54,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "alias": "EUR",
+              "groupBy": [],
+              "measurement": "market",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"EUR[£]\" FROM \"commodities\" WHERE $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "BTC[£]"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Euro Unit Value",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1258",
+              "format": "currencyGBP",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1259",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "finance",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 42
+          },
+          "hiddenSeries": false,
+          "id": 55,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "alias": "JPY",
+              "groupBy": [],
+              "measurement": "market",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"JPY[£]\" FROM \"commodities\" WHERE $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "BTC[£]"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Japanese Yen Unit Value",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1258",
+              "format": "currencyGBP",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1259",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "finance",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 42
+          },
+          "hiddenSeries": false,
+          "id": 56,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "alias": "USD",
+              "groupBy": [],
+              "measurement": "market",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"USD[£]\" FROM \"commodities\" WHERE $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "BTC[£]"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "US Dollar Unit Value",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1258",
+              "format": "currencyGBP",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1259",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "finance",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 50
+          },
+          "hiddenSeries": false,
+          "id": 57,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "alias": "VANEA",
+              "groupBy": [],
+              "measurement": "market",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"VANEA[£]\" FROM \"commodities\" WHERE $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "BTC[£]"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Vanguard LifeStrategy 100% (Acc) Fund Unit Value",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1258",
+              "format": "currencyGBP",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1259",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Market Prices",
       "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 36
-      },
-      "hiddenSeries": false,
-      "id": 51,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
-      "targets": [
-        {
-          "alias": "BTC",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"BTC[£]\" FROM \"commodities\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "BTC[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Bitcoin Unit Value",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1258",
-          "format": "currencyGBP",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1259",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 36
-      },
-      "hiddenSeries": false,
-      "id": 52,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
-      "targets": [
-        {
-          "alias": "ETH",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"ETH[£]\" FROM \"commodities\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "BTC[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Ethereum Unit Value",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1258",
-          "format": "currencyGBP",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1259",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 36
-      },
-      "hiddenSeries": false,
-      "id": 53,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
-      "targets": [
-        {
-          "alias": "LTC",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"LTC[£]\" FROM \"commodities\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "BTC[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Litecoin Unit Value",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1258",
-          "format": "currencyGBP",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1259",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 44
-      },
-      "hiddenSeries": false,
-      "id": 54,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
-      "targets": [
-        {
-          "alias": "EUR",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"EUR[£]\" FROM \"commodities\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "BTC[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Euro Unit Value",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1258",
-          "format": "currencyGBP",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1259",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 44
-      },
-      "hiddenSeries": false,
-      "id": 55,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
-      "targets": [
-        {
-          "alias": "JPY",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"JPY[£]\" FROM \"commodities\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "BTC[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Japanese Yen Unit Value",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1258",
-          "format": "currencyGBP",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1259",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 44
-      },
-      "hiddenSeries": false,
-      "id": 56,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
-      "targets": [
-        {
-          "alias": "USD",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"USD[£]\" FROM \"commodities\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "BTC[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "US Dollar Unit Value",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1258",
-          "format": "currencyGBP",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1259",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 52
-      },
-      "hiddenSeries": false,
-      "id": 57,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
-      "targets": [
-        {
-          "alias": "VANEA",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"VANEA[£]\" FROM \"commodities\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "BTC[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Vanguard LifeStrategy 100% (Acc) Fund Unit Value",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1258",
-          "format": "currencyGBP",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1259",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
