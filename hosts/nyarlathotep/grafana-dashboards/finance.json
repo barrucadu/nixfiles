@@ -2231,84 +2231,6 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 1000,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 500
-              },
-              {
-                "color": "green",
-                "value": 750
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 6,
-        "y": 21
-      },
-      "id": 28,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "7.5.7",
-      "targets": [
-        {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:food[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Food",
-      "transparent": true,
-      "type": "gauge"
-    },
-    {
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
           "max": 250,
           "min": 0,
           "thresholds": {
@@ -2335,7 +2257,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 21
       },
       "id": 29,
@@ -2387,7 +2309,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 50,
+          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2398,11 +2320,11 @@
               },
               {
                 "color": "yellow",
-                "value": 25
+                "value": 50
               },
               {
                 "color": "green",
-                "value": 37.5
+                "value": 75
               }
             ]
           },
@@ -2413,7 +2335,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 21
       },
       "id": 30,
@@ -2491,7 +2413,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 21
       },
       "id": 31,
@@ -2543,7 +2465,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 300,
+          "max": 500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2554,11 +2476,11 @@
               },
               {
                 "color": "yellow",
-                "value": 150
+                "value": 250
               },
               {
                 "color": "green",
-                "value": 225
+                "value": 375
               }
             ]
           },
@@ -2569,7 +2491,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 15,
         "y": 21
       },
       "id": 32,
@@ -2648,7 +2570,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
+        "x": 18,
         "y": 21
       },
       "id": 42,
@@ -2700,7 +2622,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 20,
+          "max": 50,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2711,11 +2633,11 @@
               },
               {
                 "color": "yellow",
-                "value": 10
+                "value": 25
               },
               {
                 "color": "green",
-                "value": 15
+                "value": 37.5
               }
             ]
           },
@@ -2726,8 +2648,8 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 0,
-        "y": 27
+        "x": 21,
+        "y": 21
       },
       "id": 37,
       "options": {
@@ -2804,7 +2726,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
+        "x": 0,
         "y": 27
       },
       "id": 33,
@@ -2882,7 +2804,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 27
       },
       "id": 38,
@@ -2935,7 +2857,7 @@
         "defaults": {
           "decimals": 1,
           "mappings": [],
-          "max": 4000,
+          "max": 5600,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2946,11 +2868,11 @@
               },
               {
                 "color": "yellow",
-                "value": 2000
+                "value": 2800
               },
               {
                 "color": "green",
-                "value": 3000
+                "value": 4200
               }
             ]
           },
@@ -2961,7 +2883,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 27
       },
       "id": 34,
@@ -3013,7 +2935,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 20,
+          "max": 50,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -3024,11 +2946,11 @@
               },
               {
                 "color": "yellow",
-                "value": 10
+                "value": 25
               },
               {
                 "color": "green",
-                "value": 15
+                "value": 37.5
               }
             ]
           },
@@ -3039,7 +2961,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 27
       },
       "id": 39,
@@ -3117,7 +3039,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 27
       },
       "id": 35,
@@ -3195,7 +3117,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 15,
         "y": 27
       },
       "id": 36,
@@ -3273,7 +3195,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
+        "x": 18,
         "y": 27
       },
       "id": 40,
