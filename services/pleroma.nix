@@ -32,6 +32,11 @@ let
 
 in
 {
+  # TODO: consider switching to the standard gitea module
+  disabledModules = [
+    "services/networking/pleroma.nix"
+  ];
+
   options.services.pleroma = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };

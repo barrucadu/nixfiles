@@ -50,7 +50,7 @@ in
 
   # Sane font defaults
   fonts = {
-    enableFontDir = true;
+    fontDir.enable = true;
     enableGhostscriptFonts = true;
     fontconfig.cache32Bit = true;
 
