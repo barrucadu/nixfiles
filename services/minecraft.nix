@@ -31,7 +31,7 @@ in
       after = [ "network.target" ];
 
       serviceConfig = {
-        ExecStart = "${pkgs.jre}/bin/java ${cfg.jvmOpts} -jar ${cfg.jar}";
+        ExecStart = "${pkgs.jre8_headless}/bin/java ${cfg.jvmOpts} -jar ${cfg.jar}";
         Restart = "always";
         User = "minecraft";
         WorkingDirectory = cfg.dataDir;
