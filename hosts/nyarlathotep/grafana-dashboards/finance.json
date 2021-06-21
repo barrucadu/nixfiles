@@ -2387,7 +2387,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 500,
+          "max": 250,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2398,11 +2398,11 @@
               },
               {
                 "color": "yellow",
-                "value": 250
+                "value": 125
               },
               {
                 "color": "green",
-                "value": 375
+                "value": 187.5
               }
             ]
           },
