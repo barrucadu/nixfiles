@@ -63,7 +63,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [
@@ -159,7 +159,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [
@@ -255,7 +255,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [
@@ -351,7 +351,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [
@@ -447,7 +447,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [
@@ -539,7 +539,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [
@@ -1499,7 +1499,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1688,7 +1688,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1878,7 +1878,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2118,7 +2118,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2196,7 +2196,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2274,7 +2274,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2352,7 +2352,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2430,7 +2430,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2508,7 +2508,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2587,7 +2587,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2665,7 +2665,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2743,7 +2743,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2821,7 +2821,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2900,7 +2900,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -2978,7 +2978,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -3013,7 +3013,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 750,
+          "max": 300,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -3024,11 +3024,11 @@
               },
               {
                 "color": "yellow",
-                "value": 375
+                "value": 150
               },
               {
                 "color": "green",
-                "value": 562.5
+                "value": 225
               }
             ]
           },
@@ -3056,7 +3056,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -3134,7 +3134,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
@@ -3212,7 +3212,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
           "groupBy": [],
