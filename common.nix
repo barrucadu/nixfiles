@@ -16,6 +16,7 @@ with lib;
 
     # Collect nix store garbage and optimise daily.
     nix.gc.automatic = true;
+    nix.gc.options = "--delete-older-than 30d";
     nix.optimise.automatic = true;
 
     # Clear out /tmp after a fortnight and give all normal users a ~/tmp
