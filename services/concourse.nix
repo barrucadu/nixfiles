@@ -26,6 +26,9 @@ in
   };
 
   config = mkIf cfg.enable {
+    # https://github.com/concourse/concourse/discussions/6529
+    boot.kernelParams = [ "systemd.unified_cgroup_hierarchy=0" ];
+
     systemd.services.concourse = import ./snippets/docker-compose-service.nix {
       inherit lib pkgs yaml;
       composeProjectName = "concourse";
