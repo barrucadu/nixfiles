@@ -1,7 +1,7 @@
 { dockerVolumeDir
 , githubClientId
 , githubClientSecret
-, concourseTag ? "7.1"
+, concourseTag ? "7.4"
 , enableSSM ? false
 , githubUser ? "barrucadu"
 , httpPort ? 3001
@@ -53,6 +53,8 @@
       restart: always
       environment:
         CONCOURSE_TSA_HOST: web:2222
+        CONCOURSE_CONTAINERD_DNS_PROXY_ENABLE: "false"
+        CONCOURSE_GARDEN_DNS_SERVER: "1.1.1.1,8.8.8.8"
         ${if workerScratchDir == null then "" else "CONCOURSE_WORK_DIR: \"/workdir\""}
       volumes:
         - ${toString dockerVolumeDir}/keys/worker:/concourse-keys
