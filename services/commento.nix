@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 let
   cfg = config.services.commento;
+  backend = config.virtualisation.oci-containers.backend;
 
-  yaml = import ./docker-compose-files/commento.docker-compose.nix cfg;
+  # https://github.com/NixOS/nixpkgs/issues/104750
+  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 in
 {
   options.services.commento = {
@@ -25,10 +27,44 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.commento = import ./snippets/docker-compose-service.nix {
-      inherit lib pkgs yaml;
-      composeProjectName = "commento";
-      execStartPre = cfg.execStartPre;
+    virtualisation.oci-containers.containers.commento = {
+      autoStart = true;
+      image = "registry.gitlab.com/commento/commento:${cfg.commentoTag}";
+      environment = {
+        "COMMENTO_ORIGIN" = cfg.externalUrl;
+        "COMMENTO_PORT" = "8080";
+        "COMMENTO_POSTGRES" = "postgres://commento:commento@commento-db/commento?sslmode=disable";
+        "COMMENTO_FORBID_NEW_OWNERS" = if cfg.forbidNewOwners then "true" else "false";
+        "COMMENTO_GITHUB_KEY" = mkIf (cfg.githubKey != null) cfg.githubKey;
+        "COMMENTO_GITHUB_SECRET" = mkIf (cfg.githubSecret != null) cfg.githubSecret;
+        "COMMENTO_GOOGLE_KEY" = mkIf (cfg.googleKey != null) cfg.googleKey;
+        "COMMENTO_GOOGLE_SECRET" = mkIf (cfg.googleSecret != null) cfg.googleSecret;
+        "COMMENTO_TWITTER_KEY" = mkIf (cfg.twitterKey != null) cfg.twitterKey;
+        "COMMENTO_TWITTER_SECRET" = mkIf (cfg.twitterSecret != null) cfg.twitterSecret;
+      };
+      extraOptions = [ "--network=commento_network" ];
+      dependsOn = [ "commento-db" ];
+      ports = [ "127.0.0.1:${toString cfg.httpPort}:8080" ];
+    };
+    systemd.services."${backend}-commento" = {
+      preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
+      serviceConfig = serviceConfigForContainerLogging;
+    };
+
+    virtualisation.oci-containers.containers.commento-db = {
+      autoStart = true;
+      image = "postgres:${cfg.postgresTag}";
+      environment = {
+        "POSTGRES_DB" = "commento";
+        "POSTGRES_USER" = "commento";
+        "POSTGRES_PASSWORD" = "commento";
+      };
+      extraOptions = [ "--network=commento_network" ];
+      volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
+    };
+    systemd.services."${backend}-commento-db" = {
+      preStart = "${backend} network create -d bridge commento_network || true";
+      serviceConfig = serviceConfigForContainerLogging;
     };
   };
 }
