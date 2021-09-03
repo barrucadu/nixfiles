@@ -3,10 +3,12 @@
 with lib;
 let
   cfg = config.services.pleroma;
+  backend = config.virtualisation.oci-containers.backend;
 
-  faviconPath = if cfg.faviconPath == null then null else pkgs.copyPathToStore cfg.faviconPath;
+  # https://github.com/NixOS/nixpkgs/issues/104750
+  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 
-  secretsFile = pkgs.writeText "pleroma-secrets.exc" ''
+  secretsFile = ''
     import Config
 
     config :pleroma, Pleroma.Web.Endpoint,
@@ -17,22 +19,9 @@ let
       public_key: "${cfg.webPushPublicKey}",
       private_key: "${cfg.webPushPrivateKey}"
   '';
-
-  yaml = import ./docker-compose-files/pleroma.docker-compose.nix {
-    inherit faviconPath secretsFile;
-    dockerVolumeDir = cfg.dockerVolumeDir;
-    domain = cfg.domain;
-    image = cfg.image;
-    adminEmail = cfg.adminEmail;
-    httpPort = cfg.httpPort;
-    instanceName = cfg.instanceName;
-    notifyEmail = cfg.notifyEmail;
-    pgTag = cfg.pgTag;
-  };
-
 in
 {
-  # TODO: consider switching to the standard gitea module
+  # TODO: consider switching to the standard pleroma module
   disabledModules = [
     "services/networking/pleroma.nix"
   ];
@@ -56,10 +45,47 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.pleroma = import ./snippets/docker-compose-service.nix {
-      inherit lib pkgs yaml;
-      composeProjectName = "pleroma";
-      execStartPre = cfg.execStartPre;
+    virtualisation.oci-containers.containers.pleroma = {
+      autoStart = true;
+      image = cfg.image;
+      environment = {
+        "DOMAIN" = cfg.domain;
+        "INSTANCE_NAME" = cfg.instanceName;
+        "ADMIN_EMAIL" = cfg.adminEmail;
+        "NOTIFY_EMAIL" = cfg.notifyEmail;
+        "DB_USER" = "pleroma";
+        "DB_PASS" = "pleroma";
+        "DB_NAME" = "pleroma";
+        "DB_HOST" = "pleroma-db";
+      };
+      extraOptions = [ "--network=pleroma_network" ];
+      dependsOn = [ "pleroma-db" ];
+      ports = [ "127.0.0.1:${toString cfg.httpPort}:4000" ];
+      volumes = [
+        "${toString cfg.dockerVolumeDir}/uploads:/var/lib/pleroma/uploads"
+        "${toString cfg.dockerVolumeDir}/emojis:/var/lib/pleroma/static/emoji/custom"
+        "${pkgs.writeText "pleroma-secrets.exc" secretsFile}:/var/lib/pleroma/secret.exs"
+      ] ++ (if cfg.faviconPath == null then [ ] else [ "${pkgs.copyPathToStore cfg.faviconPath}:/var/lib/pleroma/static/favicon.png" ]);
+    };
+    systemd.services."${backend}-pleroma" = {
+      preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
+      serviceConfig = serviceConfigForContainerLogging;
+    };
+
+    virtualisation.oci-containers.containers.pleroma-db = {
+      autoStart = true;
+      image = "postgres:${cfg.pgTag}";
+      environment = {
+        "POSTGRES_DB" = "pleroma";
+        "POSTGRES_USER" = "pleroma";
+        "POSTGRES_PASSWORD" = "pleroma";
+      };
+      extraOptions = [ "--network=pleroma_network" ];
+      volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
+    };
+    systemd.services."${backend}-pleroma-db" = {
+      preStart = "${backend} network create -d bridge pleroma_network || true";
+      serviceConfig = serviceConfigForContainerLogging;
     };
   };
 }
