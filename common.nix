@@ -2,6 +2,11 @@
 
 with lib;
 
+let
+  ociBackend = config.virtualisation.oci-containers.backend;
+  # https://github.com/NixOS/nixpkgs/issues/104750
+  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
+in
 {
   config = {
     #############################################################################
@@ -127,21 +132,15 @@ with lib;
 
     services.prometheus.exporters.node.enable = config.services.prometheus.enable;
 
-    systemd.services.prometheus-docker-exporter = {
-      enable = config.services.prometheus.enable;
-      description = "Docker exporter for Prometheus";
-      after = [ "docker.service" ];
-      bindsTo = [ "docker.service" ];
+    virtualisation.oci-containers.containers.prometheus-docker-exporter = {
+      autoStart = true;
+      image = "prometheusnet/docker_exporter";
+      ports = [ "127.0.0.1:9417:9417" ];
+      volumes = [ "/var/run/docker.sock:/var/run/docker.sock" ];
+    };
+    systemd.services."${ociBackend}-prometheus-docker-exporter" = {
       wantedBy = [ "prometheus.service" ];
-      serviceConfig = {
-        Restart = "always";
-        ExecStartPre = [
-          "-${pkgs.docker}/bin/docker stop prometheus_docker_exporter"
-          "-${pkgs.docker}/bin/docker rm prometheus_docker_exporter"
-          "${pkgs.docker}/bin/docker pull prometheusnet/docker_exporter"
-        ];
-        ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_docker_exporter --volume \"/var/run/docker.sock\":\"/var/run/docker.sock\" --publish 9417:9417 prometheusnet/docker_exporter";
-      };
+      serviceConfig = serviceConfigForContainerLogging;
     };
 
     #############################################################################
