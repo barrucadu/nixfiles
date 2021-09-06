@@ -369,20 +369,18 @@ in
     serviceConfig = serviceConfigForContainerLogging;
   };
 
-  systemd.services.prometheus-awair-exporter = {
-    enable = true;
-    description = "Awair exporter for Prometheus";
-    after = [ "docker.service" ];
-    requires = [ "docker.service" ];
-    wantedBy = [ "prometheus.service" ];
-    serviceConfig.Restart = "always";
-    serviceConfig.ExecStartPre = [
-      "-${pkgs.docker}/bin/docker stop prometheus_awair_exporter"
-      "-${pkgs.docker}/bin/docker rm prometheus_awair_exporter"
-    ];
-    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_awair_exporter -e SENSORS=living-room=10.0.20.117 --publish 9517:8888 localhost:5000/prometheus-awair-exporter";
+  virtualisation.oci-containers.containers.prometheus-awair-exporter = {
+    autoStart = true;
+    image = "localhost:5000/prometheus-awair-exporter";
+    environment = {
+      "SENSORS" = "living-room=10.0.20.117";
+    };
+    ports = [ "127.0.0.1:9517:8888" ];
   };
-
+  systemd.services."${ociBackend}-prometheus-awair-exporter" = {
+    wantedBy = [ "prometheus.service" ];
+    serviceConfig = serviceConfigForContainerLogging;
+  };
 
 
   ###############################################################################
