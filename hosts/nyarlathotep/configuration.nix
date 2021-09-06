@@ -4,6 +4,10 @@
 with lib;
 let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
+
+  ociBackend = config.virtualisation.oci-containers.backend;
+  # https://github.com/NixOS/nixpkgs/issues/104750
+  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 in
 {
   ###############################################################################
@@ -339,18 +343,14 @@ in
     }
   ];
 
-  systemd.services.prometheus-speedtest-exporter = {
-    enable = true;
-    description = "Speedtest.net exporter for Prometheus";
-    after = [ "docker.service" ];
-    requires = [ "docker.service" ];
+  virtualisation.oci-containers.containers.prometheus-speedtest-exporter = {
+    autoStart = true;
+    image = "localhost:5000/prometheus-speedtest-exporter";
+    ports = [ "127.0.0.1:9516:8888" ];
+  };
+  systemd.services."${ociBackend}-prometheus-speedtest-exporter" = {
     wantedBy = [ "prometheus.service" ];
-    serviceConfig.Restart = "always";
-    serviceConfig.ExecStartPre = [
-      "-${pkgs.docker}/bin/docker stop prometheus_speedtest_exporter"
-      "-${pkgs.docker}/bin/docker rm prometheus_speedtest_exporter"
-    ];
-    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_speedtest_exporter --publish 9516:8888 localhost:5000/prometheus-speedtest-exporter";
+    serviceConfig = serviceConfigForContainerLogging;
   };
 
   systemd.services.prometheus-unifipoller-exporter = {
