@@ -353,18 +353,20 @@ in
     serviceConfig = serviceConfigForContainerLogging;
   };
 
-  systemd.services.prometheus-unifipoller-exporter = {
-    enable = true;
-    description = "UniFi Poller exporter for Prometheus";
-    after = [ "docker.service" ];
-    requires = [ "docker.service" ];
+  virtualisation.oci-containers.containers.prometheus-unifipoller-exporter = {
+    autoStart = true;
+    image = "golift/unifi-poller";
+    environment = {
+      "UP_UNIFI_DEFAULT_URL" = "https://router.lan";
+      "UP_UNIFI_DEFAULT_PASS" = fileContents /etc/nixos/secrets/unifipoller-password.txt;
+      "UP_UNIFI_DEFAULT_SAVE_DPI" = "true";
+      "UP_INFLUXDB_DISABLE" = "true";
+    };
+    ports = [ "127.0.0.1:9130:9130" ];
+  };
+  systemd.services."${ociBackend}-prometheus-unifipoller-exporter" = {
     wantedBy = [ "prometheus.service" ];
-    serviceConfig.Restart = "always";
-    serviceConfig.ExecStartPre = [
-      "-${pkgs.docker}/bin/docker stop prometheus_unifipoller_exporter"
-      "-${pkgs.docker}/bin/docker rm prometheus_unifipoller_exporter"
-    ];
-    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_unifipoller_exporter -e UP_UNIFI_DEFAULT_URL=https://router.lan -e UP_UNIFI_DEFAULT_PASS=${fileContents /etc/nixos/secrets/unifipoller-password.txt} -e UP_UNIFI_DEFAULT_SAVE_DPI=true -e UP_INFLUXDB_DISABLE=true --publish 9130:9130 golift/unifi-poller";
+    serviceConfig = serviceConfigForContainerLogging;
   };
 
   systemd.services.prometheus-awair-exporter = {
