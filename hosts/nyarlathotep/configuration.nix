@@ -4,6 +4,10 @@
 with lib;
 let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
+
+  ociBackend = config.virtualisation.oci-containers.backend;
+  # https://github.com/NixOS/nixpkgs/issues/104750
+  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 in
 {
   ###############################################################################
@@ -339,48 +343,44 @@ in
     }
   ];
 
-  systemd.services.prometheus-speedtest-exporter = {
-    enable = true;
-    description = "Speedtest.net exporter for Prometheus";
-    after = [ "docker.service" ];
-    requires = [ "docker.service" ];
+  virtualisation.oci-containers.containers.prometheus-speedtest-exporter = {
+    autoStart = true;
+    image = "localhost:5000/prometheus-speedtest-exporter";
+    ports = [ "127.0.0.1:9516:8888" ];
+  };
+  systemd.services."${ociBackend}-prometheus-speedtest-exporter" = {
     wantedBy = [ "prometheus.service" ];
-    serviceConfig.Restart = "always";
-    serviceConfig.ExecStartPre = [
-      "-${pkgs.docker}/bin/docker stop prometheus_speedtest_exporter"
-      "-${pkgs.docker}/bin/docker rm prometheus_speedtest_exporter"
-    ];
-    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_speedtest_exporter --publish 9516:8888 localhost:5000/prometheus-speedtest-exporter";
+    serviceConfig = serviceConfigForContainerLogging;
   };
 
-  systemd.services.prometheus-unifipoller-exporter = {
-    enable = true;
-    description = "UniFi Poller exporter for Prometheus";
-    after = [ "docker.service" ];
-    requires = [ "docker.service" ];
+  virtualisation.oci-containers.containers.prometheus-unifipoller-exporter = {
+    autoStart = true;
+    image = "golift/unifi-poller";
+    environment = {
+      "UP_UNIFI_DEFAULT_URL" = "https://router.lan";
+      "UP_UNIFI_DEFAULT_PASS" = fileContents /etc/nixos/secrets/unifipoller-password.txt;
+      "UP_UNIFI_DEFAULT_SAVE_DPI" = "true";
+      "UP_INFLUXDB_DISABLE" = "true";
+    };
+    ports = [ "127.0.0.1:9130:9130" ];
+  };
+  systemd.services."${ociBackend}-prometheus-unifipoller-exporter" = {
     wantedBy = [ "prometheus.service" ];
-    serviceConfig.Restart = "always";
-    serviceConfig.ExecStartPre = [
-      "-${pkgs.docker}/bin/docker stop prometheus_unifipoller_exporter"
-      "-${pkgs.docker}/bin/docker rm prometheus_unifipoller_exporter"
-    ];
-    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_unifipoller_exporter -e UP_UNIFI_DEFAULT_URL=https://router.lan -e UP_UNIFI_DEFAULT_PASS=${fileContents /etc/nixos/secrets/unifipoller-password.txt} -e UP_UNIFI_DEFAULT_SAVE_DPI=true -e UP_INFLUXDB_DISABLE=true --publish 9130:9130 golift/unifi-poller";
+    serviceConfig = serviceConfigForContainerLogging;
   };
 
-  systemd.services.prometheus-awair-exporter = {
-    enable = true;
-    description = "Awair exporter for Prometheus";
-    after = [ "docker.service" ];
-    requires = [ "docker.service" ];
-    wantedBy = [ "prometheus.service" ];
-    serviceConfig.Restart = "always";
-    serviceConfig.ExecStartPre = [
-      "-${pkgs.docker}/bin/docker stop prometheus_awair_exporter"
-      "-${pkgs.docker}/bin/docker rm prometheus_awair_exporter"
-    ];
-    serviceConfig.ExecStart = "${pkgs.docker}/bin/docker run --rm --name prometheus_awair_exporter -e SENSORS=living-room=10.0.20.117 --publish 9517:8888 localhost:5000/prometheus-awair-exporter";
+  virtualisation.oci-containers.containers.prometheus-awair-exporter = {
+    autoStart = true;
+    image = "localhost:5000/prometheus-awair-exporter";
+    environment = {
+      "SENSORS" = "living-room=10.0.20.117";
+    };
+    ports = [ "127.0.0.1:9517:8888" ];
   };
-
+  systemd.services."${ociBackend}-prometheus-awair-exporter" = {
+    wantedBy = [ "prometheus.service" ];
+    serviceConfig = serviceConfigForContainerLogging;
+  };
 
 
   ###############################################################################

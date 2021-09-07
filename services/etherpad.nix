@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 let
   cfg = config.services.etherpad;
+  backend = config.virtualisation.oci-containers.backend;
 
-  yaml = import ./docker-compose-files/etherpad.docker-compose.nix cfg;
+  # https://github.com/NixOS/nixpkgs/issues/104750
+  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 in
 {
   options.services.etherpad = {
@@ -17,10 +19,41 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.etherpad = import ./snippets/docker-compose-service.nix {
-      inherit lib pkgs yaml;
-      composeProjectName = "etherpad";
-      execStartPre = cfg.execStartPre;
+    virtualisation.oci-containers.containers.etherpad = {
+      autoStart = true;
+      image = cfg.image;
+      environment = {
+        "DB_TYPE" = "postgres";
+        "DB_HOST" = "etherpad-db";
+        "DB_PORT" = "5432";
+        "DB_NAME" = "etherpad";
+        "DB_USER" = "etherpad";
+        "DB_PASS" = "etherpad";
+        "TRUST_PROXY" = "true";
+      };
+      extraOptions = [ "--network=etherpad_network" ];
+      dependsOn = [ "etherpad-db" ];
+      ports = [ "127.0.0.1:${toString cfg.httpPort}:9001" ];
+    };
+    systemd.services."${backend}-etherpad" = {
+      preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
+      serviceConfig = serviceConfigForContainerLogging;
+    };
+
+    virtualisation.oci-containers.containers.etherpad-db = {
+      autoStart = true;
+      image = "postgres:${cfg.pgTag}";
+      environment = {
+        "POSTGRES_DB" = "etherpad";
+        "POSTGRES_USER" = "etherpad";
+        "POSTGRES_PASSWORD" = "etherpad";
+      };
+      extraOptions = [ "--network=etherpad_network" ];
+      volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
+    };
+    systemd.services."${backend}-etherpad-db" = {
+      preStart = "${backend} network create -d bridge etherpad_network || true";
+      serviceConfig = serviceConfigForContainerLogging;
     };
   };
 }
