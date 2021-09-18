@@ -693,50 +693,65 @@
       "valueName": "current"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
+      "aliasColors": {
+        "Cash": "green",
+        "Funds": "yellow",
+        "Premium Bonds": "blue",
+        "Receivable": "orange"
       },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "finance",
-      "decimals": null,
       "fieldConfig": {
         "defaults": {},
         "overrides": []
       },
-      "fontSize": "80%",
-      "format": "currencyGBP",
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
-        "w": 6,
-        "x": 6,
+        "w": 13,
+        "x": 8,
         "y": 5
       },
-      "id": 4,
-      "interval": null,
+      "hiddenSeries": false,
+      "id": 68,
       "legend": {
-        "header": "",
-        "percentage": true,
-        "percentageDecimals": 2,
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
         "show": true,
+        "total": false,
         "values": true
       },
-      "legendType": "Right side",
-      "links": [],
-      "nullPointMode": "connected",
-      "pieType": "donut",
-      "strokeWidth": "1",
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.10",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": true,
       "targets": [
         {
           "alias": "Cash",
           "groupBy": [],
-          "hide": false,
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT \"assets:cash[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -753,233 +768,14 @@
           "tags": []
         },
         {
-          "alias": "Investments",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:investments[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Receivable",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:receivable[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:receivable[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Asset Allocation",
-      "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
-    },
-    {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
-      },
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "fontSize": "80%",
-      "format": "currencyGBP",
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 5
-      },
-      "id": 2,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "percentageDecimals": 2,
-        "show": true,
-        "values": true
-      },
-      "legendType": "Right side",
-      "links": [],
-      "nullPointMode": "connected",
-      "pieType": "donut",
-      "strokeWidth": "1",
-      "targets": [
-        {
-          "alias": "Nationwide",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash:nationwide[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Starling",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:starling[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash:starling[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Petty Cash",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:petty[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash:petty[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Cash",
-      "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
-    },
-    {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
-      },
-      "datasource": "finance",
-      "decimals": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "fontSize": "80%",
-      "format": "currencyGBP",
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 18,
-        "y": 5
-      },
-      "id": 3,
-      "interval": null,
-      "legend": {
-        "header": "",
-        "percentage": true,
-        "percentageDecimals": 2,
-        "show": true,
-        "values": true
-      },
-      "legendType": "Right side",
-      "links": [],
-      "nullPointMode": "connected",
-      "pieType": "donut",
-      "strokeWidth": "1",
-      "targets": [
-        {
-          "alias": "S&S ISA",
+          "alias": "Funds",
           "groupBy": [],
           "hide": false,
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"assets:investments:cavendish[£]\" + \"assets:investments:fidelity[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:investments:cavendish[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "S&S LISA",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:ajbell[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"assets:investments:ajbell[£]\" + \"assets:investments:cavendish[£]\" + \"assets:investments:fidelity[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -987,7 +783,7 @@
             [
               {
                 "params": [
-                  "assets:investments:fundingcircle[£]"
+                  "assets:cash[£]"
                 ],
                 "type": "field"
               }
@@ -998,10 +794,36 @@
         {
           "alias": "Premium Bonds",
           "groupBy": [],
+          "hide": false,
           "measurement": "market",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"assets:investments:nsi:premium_bonds[£]\" FROM \"market\" WHERE $timeFilter",
+          "query": "SELECT \"assets:investments:nsi[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Receivable",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:receivable[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1009,7 +831,186 @@
             [
               {
                 "params": [
-                  "assets:investments:nsi:premium_bonds[£]"
+                  "assets:cash[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Assets (Stacked)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:105",
+          "format": "currencyGBP",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:106",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Cash": "#73BF69",
+        "Funds": "#FADE2A",
+        "Premium Bonds": "#5794F2",
+        "Receivable": "#FF9830"
+      },
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "finance",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "80%",
+      "format": "currencyGBP",
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 21,
+        "y": 5
+      },
+      "id": 69,
+      "interval": null,
+      "legend": {
+        "show": false,
+        "values": true
+      },
+      "legendType": "Under graph",
+      "links": [],
+      "nullPointMode": "connected",
+      "pieType": "donut",
+      "pluginVersion": "7.5.10",
+      "strokeWidth": "2",
+      "targets": [
+        {
+          "alias": "Cash",
+          "groupBy": [],
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Funds",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:ajbell[£]\" + \"assets:investments:cavendish[£]\" + \"assets:investments:fidelity[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Premium Bonds",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:nsi[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash[£]"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Receivable",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "market",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:receivable[£]\" FROM \"market\" WHERE $timeFilter",
+          "queryType": "randomWalk",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "assets:cash[£]"
                 ],
                 "type": "field"
               }
@@ -1020,7 +1021,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Investments",
+      "title": "Current Allocation",
       "transparent": true,
       "type": "grafana-piechart-panel",
       "valueName": "current"
