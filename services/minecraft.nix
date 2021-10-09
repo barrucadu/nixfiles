@@ -25,6 +25,13 @@ in
       uid = config.ids.uids.minecraft;
     };
 
+    systemd.sockets.minecraft-stdin = {
+      description = "stdin for Minecraft Server";
+      socketConfig = {
+        ListenFIFO = "%t/minecraft.stdin";
+        Service = "minecraft.service";
+      };
+    };
     systemd.services.minecraft = {
       description = "Minecraft Server Service";
       wantedBy = [ "multi-user.target" ];
@@ -35,6 +42,10 @@ in
         Restart = "always";
         User = "minecraft";
         WorkingDirectory = cfg.dataDir;
+        Sockets = "minecraft-stdin.socket";
+        StandardInput = "socket";
+        StandardOutput = "journal";
+        StandardError = "journal";
       };
     };
 
