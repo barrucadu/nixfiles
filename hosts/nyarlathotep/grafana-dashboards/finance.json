@@ -16,6 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
+  "iteration": 1638276429368,
   "links": [],
   "panels": [
     {
@@ -63,7 +64,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [
@@ -159,7 +160,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [
@@ -255,7 +256,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [
@@ -351,7 +352,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [
@@ -447,7 +448,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [
@@ -539,7 +540,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [
@@ -697,7 +698,10 @@
         "Cash": "green",
         "Funds": "yellow",
         "Premium Bonds": "blue",
-        "Receivable": "orange"
+        "Receivable": "orange",
+        "Target: AAW": "rgb(117, 12, 24)",
+        "Target: FIRE": "light-red",
+        "Target: PAW": "dark-red"
       },
       "bars": false,
       "dashLength": 10,
@@ -735,11 +739,22 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [],
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:389",
+          "alias": "/Target.*/",
+          "dashes": true,
+          "fill": 0,
+          "hideTooltip": true,
+          "nullPointMode": "connected",
+          "stack": false,
+          "transform": "constant"
+        }
+      ],
       "spaceLength": 10,
       "stack": true,
       "steppedLine": true,
@@ -838,6 +853,123 @@
             ]
           ],
           "tags": []
+        },
+        {
+          "alias": "Target: AAW",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT ($average_daily_income * 365 * $age / 10) / 2- last(\"income:gift[£]\")  - last(\"liabilities[£]\") + last(\"liabilities:loan:slc[£]\")  FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Target: PAW",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT ($average_daily_income * 365 * $age / 10) * 2 - last(\"income:gift[£]\")  - last(\"liabilities[£]\") + last(\"liabilities:loan:slc[£]\")  FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "H",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Target: FIRE",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT $average_daily_expense * 365 * $fire_annual_factor FROM \"market\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
         }
       ],
       "thresholds": [],
@@ -862,11 +994,12 @@
       "yaxes": [
         {
           "$$hashKey": "object:105",
+          "decimals": null,
           "format": "currencyGBP",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "50000",
+          "min": "0",
           "show": true
         },
         {
@@ -876,7 +1009,7 @@
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -1100,7 +1233,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "alias": "Target",
@@ -1472,7 +1605,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "alias": "Target",
@@ -1635,7 +1768,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "alias": "Target",
@@ -2013,7 +2146,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "alias": "Target",
@@ -2143,7 +2276,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2332,7 +2465,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2522,7 +2655,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2762,7 +2895,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -2840,7 +2973,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -2918,7 +3051,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -2996,7 +3129,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3074,7 +3207,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3152,7 +3285,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3231,7 +3364,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3309,7 +3442,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3387,7 +3520,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3465,7 +3598,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3544,7 +3677,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3622,7 +3755,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3700,7 +3833,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3778,7 +3911,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -3856,7 +3989,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.10",
+      "pluginVersion": "7.5.11",
       "targets": [
         {
           "groupBy": [],
@@ -4763,6 +4896,16 @@
         "error": null,
         "hide": 2,
         "label": null,
+        "name": "average_daily_income",
+        "query": "(-(last(\"income[£]\") - first(\"income[£]\")  + last(\"income:gift[£]\") - first(\"income:gift[£]\")) / count(\"income[£]\"))",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "label": null,
         "name": "fire_annual_factor",
         "query": "25",
         "skipUrlSync": false,
@@ -4775,6 +4918,16 @@
         "label": null,
         "name": "fire_invested",
         "query": "(last(\"assets:investments:ajbell[£]\") + last(\"assets:investments:cavendish[£]\") + last(\"assets:investments:fidelity[£]\"))",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "label": "",
+        "name": "age",
+        "query": "30",
         "skipUrlSync": false,
         "type": "constant"
       }
