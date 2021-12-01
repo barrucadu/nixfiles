@@ -6,9 +6,9 @@ let
   # Configuration for the radio user.
   user = "radio";
   group = "audio";
-  homeDir = "/srv/radio";
-  dataDirFor = channel: "${homeDir}/data/${channel}";
-  musicDirFor = channel: "${homeDir}/music/${channel}";
+  home = "/srv/radio";
+  dataDirFor = channel: "${home}/data/${channel}";
+  musicDirFor = channel: "${home}/music/${channel}";
 
   # Configuration for the Icecast server.
   icecastAdminPassword = fileContents /etc/nixos/secrets/icecast-admin-password.txt;
@@ -92,10 +92,9 @@ in
   username = user;
 
   userSettings = {
+    inherit home group;
     isSystemUser = true;
-    extraGroups = [ group ];
     description = "Music Player Daemon user";
-    home = homeDir;
     shell = "${pkgs.bash}/bin/bash";
   };
 

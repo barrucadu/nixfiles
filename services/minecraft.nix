@@ -22,7 +22,8 @@ in
       description = "Minecraft server service user";
       home = cfg.dataDir;
       createHome = true;
-      uid = config.ids.uids.minecraft;
+      isSystemUser = true;
+      group = "nogroup";
     };
 
     systemd.sockets.minecraft-stdin = {

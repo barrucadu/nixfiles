@@ -397,6 +397,7 @@ in
     openssh.authorizedKeys.keys =
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFilTWek5xNpl82V48oQ99briJhn9BqwCACeRq1dQnZn concourse-worker@cd.barrucadu.dev" ];
     shell = pkgs.bashInteractive;
+    group = "nogroup";
   };
   security.sudo.extraRules = [
     {

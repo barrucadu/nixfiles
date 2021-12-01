@@ -239,6 +239,7 @@ in
     openssh.authorizedKeys.keys =
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuk+GIuV7G26dr3EEVlEX6YGKonb3Huiha24gF8DuFP concourse-worker@cd.barrucadu.dev" ];
     shell = pkgs.bashInteractive;
+    group = "nogroup";
   };
 
   # Extra users
