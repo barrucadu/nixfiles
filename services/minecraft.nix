@@ -23,6 +23,7 @@ in
       home = cfg.dataDir;
       createHome = true;
       isSystemUser = true;
+      group = "nogroup";
     };
 
     systemd.sockets.minecraft-stdin = {
