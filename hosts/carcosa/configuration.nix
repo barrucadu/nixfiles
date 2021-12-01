@@ -363,6 +363,10 @@ in
 
   # minecraft
   services.minecraft.enable = true;
+  services.minecraft.servers.tea = {
+    port = 25565;
+    jar = "fabric-server-launch.jar";
+  };
 
 
   ###############################################################################

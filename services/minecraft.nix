@@ -3,6 +3,8 @@
 with lib;
 let
   cfg = config.services.minecraft;
+
+  serverPorts = mapAttrsToList (_: server: server.port) cfg.servers;
 in
 {
   # yes I know there's a NixOS minecraft module but it uses the
@@ -10,10 +12,21 @@ in
   # packaging one is a pain.
   options.services.minecraft = {
     enable = mkOption { type = types.bool; default = false; };
-    port = mkOption { type = types.int; default = 25565; };
     dataDir = mkOption { type = types.path; default = "/srv/minecraft"; };
-    jar = mkOption { type = types.str; default = "fabric-server-launch.jar"; };
-    jvmOpts = mkOption { type = types.separatedString " "; default = "-Xmx4G -Xms4G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M"; };
+    servers = mkOption {
+      type = types.attrsOf (types.submodule
+        {
+          options = {
+            autoStart = mkOption { type = types.bool; default = true; };
+            port = mkOption { type = types.int; };
+            jar = mkOption { type = types.str; default = "minecraft-server.jar"; };
+            jre = mkOption { type = types.package; default = pkgs.jdk17_headless; };
+            jvmOpts = mkOption { type = types.separatedString " "; default = "-Xmx4G -Xms4G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M"; };
+          };
+        }
+      );
+      default = { };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -26,31 +39,38 @@ in
       group = "nogroup";
     };
 
-    systemd.sockets.minecraft-stdin = {
-      description = "stdin for Minecraft Server";
-      socketConfig = {
-        ListenFIFO = "%t/minecraft.stdin";
-        Service = "minecraft.service";
-      };
-    };
-    systemd.services.minecraft = {
-      description = "Minecraft Server Service";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ];
+    systemd.sockets =
+      let make = name: _: nameValuePair "minecraft-${name}-stdin"
+        {
+          description = "stdin for minecraft-${name}";
+          socketConfig = {
+            ListenFIFO = "%t/minecraft-${name}.stdin";
+            Service = "minecraft-${name}.service";
+          };
+        };
+      in mapAttrs' make cfg.servers;
 
-      serviceConfig = {
-        ExecStart = "${pkgs.jre8_headless}/bin/java ${cfg.jvmOpts} -jar ${cfg.jar}";
-        Restart = "always";
-        User = "minecraft";
-        WorkingDirectory = cfg.dataDir;
-        Sockets = "minecraft-stdin.socket";
-        StandardInput = "socket";
-        StandardOutput = "journal";
-        StandardError = "journal";
-      };
-    };
+    systemd.services =
+      let make = name: server: nameValuePair "minecraft-${name}"
+        {
+          description = "Minecraft Server Service (${name})";
+          wantedBy = if server.autoStart then [ "multi-user.target" ] else [ ];
+          after = [ "network.target" ];
 
-    networking.firewall.allowedUDPPorts = [ cfg.port ];
-    networking.firewall.allowedTCPPorts = [ cfg.port ];
+          serviceConfig = {
+            ExecStart = "${server.jre}/bin/java ${server.jvmOpts} -jar ${server.jar}";
+            Restart = "always";
+            User = "minecraft";
+            WorkingDirectory = "${cfg.dataDir}/${name}";
+            Sockets = "minecraft-${name}-stdin.socket";
+            StandardInput = "socket";
+            StandardOutput = "journal";
+            StandardError = "journal";
+          };
+        };
+      in mapAttrs' make cfg.servers;
+
+    networking.firewall.allowedUDPPorts = serverPorts;
+    networking.firewall.allowedTCPPorts = serverPorts;
   };
 }
