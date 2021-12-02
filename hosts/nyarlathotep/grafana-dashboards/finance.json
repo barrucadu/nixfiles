@@ -2802,9 +2802,8 @@
       "datasource": "finance",
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
           "mappings": [],
-          "max": 5000,
+          "max": 500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2815,11 +2814,11 @@
               },
               {
                 "color": "yellow",
-                "value": 2500
+                "value": 250
               },
               {
                 "color": "green",
-                "value": 3750
+                "value": 375
               }
             ]
           },
@@ -2831,84 +2830,6 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 21
-      },
-      "id": 41,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "8.2.5",
-      "targets": [
-        {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:nsi:premium_bonds:emergency[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Emergency",
-      "transparent": true,
-      "type": "gauge"
-    },
-    {
-      "datasource": "finance",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "max": 1000,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 500
-              },
-              {
-                "color": "green",
-                "value": 750
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 3,
         "y": 21
       },
       "id": 43,
@@ -2986,7 +2907,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 21
       },
       "id": 29,
@@ -3064,7 +2985,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 21
       },
       "id": 30,
@@ -3142,7 +3063,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 21
       },
       "id": 31,
@@ -3220,7 +3141,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 21
       },
       "id": 32,
@@ -3273,7 +3194,7 @@
         "defaults": {
           "decimals": 1,
           "mappings": [],
-          "max": 2500,
+          "max": 996,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -3284,11 +3205,11 @@
               },
               {
                 "color": "yellow",
-                "value": 1250
+                "value": 500
               },
               {
                 "color": "green",
-                "value": 1875
+                "value": 750
               }
             ]
           },
@@ -3299,7 +3220,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 15,
         "y": 21
       },
       "id": 42,
@@ -3377,7 +3298,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
+        "x": 18,
         "y": 21
       },
       "id": 37,
@@ -3455,8 +3376,8 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 0,
-        "y": 27
+        "x": 21,
+        "y": 21
       },
       "id": 33,
       "options": {
@@ -3533,7 +3454,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
+        "x": 0,
         "y": 27
       },
       "id": 38,
@@ -3612,7 +3533,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 27
       },
       "id": 34,
@@ -3690,7 +3611,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 27
       },
       "id": 39,
@@ -3768,7 +3689,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 27
       },
       "id": 35,
@@ -3846,7 +3767,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 27
       },
       "id": 36,
@@ -3924,7 +3845,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 15,
         "y": 27
       },
       "id": 40,
