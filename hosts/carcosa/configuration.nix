@@ -10,7 +10,6 @@ let
   commentoPort = 3005;
   umamiPort = 3006;
   pleromaPort = 3007;
-  etherpadPort = 3008;
   concourseMetricsPort = 3009;
   grafanaPort = 3010;
 
@@ -152,16 +151,6 @@ in
       root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc
       file_server @subdirectory browse
       file_server
-    }
-
-    pad.barrucadu.co.uk {
-      import common_config
-
-      basicauth {
-        ${fileContents /etc/nixos/secrets/etherpad-basic-auth-credentials.txt}
-      }
-
-      reverse_proxy http://127.0.0.1:${toString config.services.etherpad.httpPort}
     }
 
     grafana.carcosa.barrucadu.co.uk {
@@ -326,11 +315,6 @@ in
   services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
   services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
-
-  # etherpad
-  services.etherpad.enable = true;
-  services.etherpad.image = "etherpad/etherpad:stable";
-  services.etherpad.httpPort = etherpadPort;
 
   # concourse
   services.concourse.enable = true;
