@@ -273,6 +273,7 @@ in
   '';
 
   services.phpfpm.pools.caddy = {
+    phpPackage = pkgs.php74;
     user = "caddy";
     group = "caddy";
     settings = {
