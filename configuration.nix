@@ -11,7 +11,6 @@
     ./services/bookmarks.nix
     ./services/commento.nix
     ./services/concourse.nix
-    ./services/etherpad.nix
     ./services/finder.nix
     ./services/gitea.nix
     ./services/minecraft.nix
