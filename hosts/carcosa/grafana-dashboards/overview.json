@@ -8,14 +8,22 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 0,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "datasource": "prometheus",
@@ -60,7 +68,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -117,7 +125,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -175,7 +183,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -248,7 +256,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -321,7 +329,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -394,7 +402,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -416,10 +424,6 @@
       "dashes": false,
       "datasource": "prometheus",
       "decimals": 2,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -448,7 +452,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -574,20 +578,15 @@
                 "id": "mappings",
                 "value": [
                   {
-                    "from": "",
-                    "id": 1,
-                    "text": "Stopped",
-                    "to": "",
-                    "type": 1,
-                    "value": "0"
-                  },
-                  {
-                    "from": "",
-                    "id": 2,
-                    "text": "Running",
-                    "to": "",
-                    "type": 1,
-                    "value": "1"
+                    "options": {
+                      "0": {
+                        "text": "Stopped"
+                      },
+                      "1": {
+                        "text": "Running"
+                      }
+                    },
+                    "type": "value"
                   }
                 ]
               },
@@ -632,7 +631,7 @@
           }
         ]
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -743,6 +742,7 @@
               "name": 0
             },
             "renameByName": {
+              "Value #A": "State",
               "Value #A 1": "State",
               "Value #B 1": "Uptime",
               "Value #C": "Restarts",
@@ -799,6 +799,7 @@
       },
       "id": 9,
       "options": {
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -810,7 +811,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -866,7 +867,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -973,6 +974,7 @@
       },
       "id": 10,
       "options": {
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -984,7 +986,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -1040,7 +1042,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1185,7 +1187,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -1222,10 +1224,6 @@
       "dashboardFilter": "",
       "dashboardTags": [],
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "folderId": null,
       "gridPos": {
         "h": 10,
@@ -1237,7 +1235,25 @@
       "limit": 10,
       "nameFilter": "",
       "onlyAlertsOnDashboard": true,
-      "pluginVersion": "7.5.2",
+      "options": {
+        "alertName": "",
+        "dashboardAlerts": true,
+        "dashboardTitle": "",
+        "folderId": null,
+        "maxItems": 10,
+        "showOptions": "current",
+        "sortOrder": 1,
+        "stateFilter": {
+          "alerting": true,
+          "execution_error": false,
+          "no_data": false,
+          "ok": false,
+          "paused": false,
+          "pending": true
+        },
+        "tags": []
+      },
+      "pluginVersion": "8.2.5",
       "show": "current",
       "sortOrder": 1,
       "stateFilter": [
@@ -1261,10 +1277,6 @@
       "dashes": false,
       "datasource": "prometheus",
       "decimals": 2,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1293,7 +1305,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1359,6 +1371,10 @@
     {
       "collapsed": true,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2935,7 +2951,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 27,
+  "schemaVersion": 32,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -2949,5 +2965,5 @@
   "timezone": "",
   "title": "Overview",
   "uid": "EXN53buGk",
-  "version": 10
+  "version": 1
 }
