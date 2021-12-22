@@ -21,14 +21,16 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1638445234834,
+  "iteration": 1640215555414,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -72,7 +74,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [
@@ -113,14 +115,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Net Worth",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -170,7 +173,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [
@@ -211,14 +214,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Savings Rate",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -266,7 +270,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [
@@ -307,14 +311,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Short Runway",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -362,7 +367,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [
@@ -403,14 +408,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Long Runway",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -458,7 +464,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [
@@ -499,14 +505,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "House Deposit",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -550,7 +557,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [
@@ -591,15 +598,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Student Loan",
       "transparent": true,
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -644,7 +651,6 @@
         "y": 5
       },
       "id": 21,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -662,7 +668,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "",
@@ -687,8 +693,6 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total Transactions",
       "transparent": true,
       "type": "stat"
@@ -706,7 +710,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -735,7 +742,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -969,9 +976,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Assets (Stacked)",
       "tooltip": {
         "shared": true,
@@ -981,18 +986,14 @@
       "transparent": true,
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:105",
-          "decimals": null,
           "format": "currencyGBP",
-          "label": null,
           "logBase": 1,
           "max": "50000",
           "min": "0",
@@ -1001,16 +1002,12 @@
         {
           "$$hashKey": "object:106",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1021,12 +1018,14 @@
         "Receivable": "#FF9830"
       },
       "breakPoint": "50%",
-      "cacheTimeout": null,
       "combine": {
         "label": "Others",
         "threshold": 0
       },
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fontSize": "80%",
       "format": "currencyGBP",
       "gridPos": {
@@ -1036,7 +1035,6 @@
         "y": 5
       },
       "id": 69,
-      "interval": null,
       "legend": {
         "show": false,
         "values": true
@@ -1144,15 +1142,16 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Current Allocation",
       "transparent": true,
       "type": "grafana-piechart-panel",
       "valueName": "current"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1225,7 +1224,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "Target",
@@ -1305,15 +1304,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "FIRE Number",
       "transparent": true,
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1358,7 +1357,6 @@
         "y": 7
       },
       "id": 17,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -1376,7 +1374,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "",
@@ -1401,15 +1399,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Cleared",
       "transparent": true,
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1454,7 +1452,6 @@
         "y": 7
       },
       "id": 18,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -1472,7 +1469,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "",
@@ -1497,14 +1494,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Uncleared",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1577,7 +1575,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "Target",
@@ -1657,14 +1655,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "FIRE Number (w/ pension)",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1740,7 +1739,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "Target",
@@ -1820,15 +1819,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "FIRE Number (w/o rent)",
       "transparent": true,
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1873,7 +1872,6 @@
         "y": 10
       },
       "id": 19,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -1891,7 +1889,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "",
@@ -1916,15 +1914,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Bookkeeping",
       "transparent": true,
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1969,7 +1967,6 @@
         "y": 10
       },
       "id": 20,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -1987,7 +1984,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "",
@@ -2018,14 +2015,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Bookkeeping",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2098,7 +2096,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "alias": "Target",
@@ -2178,8 +2176,6 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "FIRE Number (w/ pension, w/o rent)",
       "transparent": true,
       "type": "stat"
@@ -2193,7 +2189,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -2228,7 +2227,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2330,9 +2329,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Net Worth",
       "tooltip": {
         "shared": true,
@@ -2342,9 +2339,7 @@
       "transparent": true,
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2352,25 +2347,18 @@
         {
           "$$hashKey": "object:1784",
           "format": "currencyGBP",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:1785",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -2382,7 +2370,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -2417,7 +2408,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2519,9 +2510,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Credit Card",
       "tooltip": {
         "shared": true,
@@ -2531,33 +2520,24 @@
       "transparent": true,
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "format": "currencyGBP",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -2572,7 +2552,10 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -2607,7 +2590,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2754,9 +2737,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Cash Flow",
       "tooltip": {
         "shared": true,
@@ -2766,9 +2747,7 @@
       "transparent": true,
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2776,17 +2755,12 @@
         {
           "$$hashKey": "object:144",
           "format": "currencyGBP",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:145",
-          "decimals": null,
           "format": "percentunit",
-          "label": null,
           "logBase": 1,
           "max": "1",
           "min": "-1",
@@ -2794,12 +2768,14 @@
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -2846,7 +2822,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2870,14 +2846,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Float",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -2924,7 +2901,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -2948,14 +2925,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Gift",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3002,7 +2980,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3026,14 +3004,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Graze",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3080,7 +3059,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3104,14 +3083,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Health",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3158,7 +3138,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3182,14 +3162,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Household",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -3237,7 +3218,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3261,14 +3242,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Move",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3315,7 +3297,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3339,14 +3321,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Patreon",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3393,7 +3376,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3417,14 +3400,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Phone",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3471,7 +3455,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3495,14 +3479,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Protonmail",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -3550,7 +3535,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3574,14 +3559,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Rent",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3628,7 +3614,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3652,14 +3638,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Roll20",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3706,7 +3693,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3730,14 +3717,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Travel",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3784,7 +3772,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3808,14 +3796,15 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Utilities",
       "transparent": true,
       "type": "gauge"
     },
     {
-      "datasource": "finance",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -3862,7 +3851,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "groupBy": [],
@@ -3886,19 +3875,12 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Web",
       "transparent": true,
       "type": "gauge"
     },
     {
       "collapsed": true,
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3910,10 +3892,12 @@
         {
           "aliasColors": {},
           "bars": false,
-          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "finance",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -3984,9 +3968,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Bitcoin Unit Value",
           "tooltip": {
             "shared": true,
@@ -3996,9 +3978,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
@@ -4006,34 +3986,29 @@
             {
               "$$hashKey": "object:1258",
               "format": "currencyGBP",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "$$hashKey": "object:1259",
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
           "aliasColors": {},
           "bars": false,
-          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "finance",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -4104,9 +4079,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Ethereum Unit Value",
           "tooltip": {
             "shared": true,
@@ -4116,9 +4089,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
@@ -4126,34 +4097,29 @@
             {
               "$$hashKey": "object:1258",
               "format": "currencyGBP",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "$$hashKey": "object:1259",
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
           "aliasColors": {},
           "bars": false,
-          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "finance",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -4224,9 +4190,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Litecoin Unit Value",
           "tooltip": {
             "shared": true,
@@ -4236,9 +4200,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
@@ -4246,34 +4208,29 @@
             {
               "$$hashKey": "object:1258",
               "format": "currencyGBP",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "$$hashKey": "object:1259",
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
           "aliasColors": {},
           "bars": false,
-          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "finance",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -4344,9 +4301,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Euro Unit Value",
           "tooltip": {
             "shared": true,
@@ -4356,9 +4311,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
@@ -4366,34 +4319,29 @@
             {
               "$$hashKey": "object:1258",
               "format": "currencyGBP",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "$$hashKey": "object:1259",
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
           "aliasColors": {},
           "bars": false,
-          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "finance",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -4464,9 +4412,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Japanese Yen Unit Value",
           "tooltip": {
             "shared": true,
@@ -4476,9 +4422,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
@@ -4486,34 +4430,29 @@
             {
               "$$hashKey": "object:1258",
               "format": "currencyGBP",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "$$hashKey": "object:1259",
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
           "aliasColors": {},
           "bars": false,
-          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "finance",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -4584,9 +4523,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "US Dollar Unit Value",
           "tooltip": {
             "shared": true,
@@ -4596,9 +4533,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
@@ -4606,34 +4541,29 @@
             {
               "$$hashKey": "object:1258",
               "format": "currencyGBP",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "$$hashKey": "object:1259",
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
           "aliasColors": {},
           "bars": false,
-          "cacheTimeout": null,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "finance",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -4704,9 +4634,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Vanguard LifeStrategy 100% (Acc) Fund Unit Value",
           "tooltip": {
             "shared": true,
@@ -4716,9 +4644,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
@@ -4726,25 +4652,18 @@
             {
               "$$hashKey": "object:1258",
               "format": "currencyGBP",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "$$hashKey": "object:1259",
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         }
       ],
@@ -4753,54 +4672,40 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 32,
+  "schemaVersion": 33,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "description": null,
-        "error": null,
         "hide": 2,
-        "label": null,
         "name": "average_daily_expense",
         "query": "((last(\"expenses[£]\") - first(\"expenses[£]\") - last(\"expenses:gross[£]\") + first(\"expenses:gross[£]\")) / count(\"expenses[£]\"))",
         "skipUrlSync": false,
         "type": "constant"
       },
       {
-        "description": null,
-        "error": null,
         "hide": 2,
-        "label": null,
         "name": "average_daily_income",
         "query": "(-(last(\"income[£]\") - first(\"income[£]\")  + last(\"income:gift[£]\") - first(\"income:gift[£]\")) / count(\"income[£]\"))",
         "skipUrlSync": false,
         "type": "constant"
       },
       {
-        "description": null,
-        "error": null,
         "hide": 2,
-        "label": null,
         "name": "fire_annual_factor",
         "query": "25",
         "skipUrlSync": false,
         "type": "constant"
       },
       {
-        "description": null,
-        "error": null,
         "hide": 2,
-        "label": null,
         "name": "fire_invested",
         "query": "(last(\"assets:investments:ajbell[£]\") + last(\"assets:investments:cavendish[£]\") + last(\"assets:investments:fidelity[£]\"))",
         "skipUrlSync": false,
         "type": "constant"
       },
       {
-        "description": null,
-        "error": null,
         "hide": 2,
         "label": "",
         "name": "age",
@@ -4831,5 +4736,6 @@
   "timezone": "",
   "title": "Personal Finances",
   "uid": "H-xV7PFMz",
-  "version": 1
+  "version": 1,
+  "weekStart": ""
 }
