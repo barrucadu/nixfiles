@@ -40,9 +40,7 @@ in
   modules.zfsAutomation.enable = true;
 
   # Networking
-  networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 80 222 443 ];
-  networking.firewall.trustedInterfaces = [ "lo" "docker0" ];
 
   networking.interfaces.enp1s0 = {
     ipv6.addresses = [{ address = "2a01:4f8:c0c:bfc1::"; prefixLength = 64; }];
