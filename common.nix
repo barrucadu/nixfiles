@@ -61,9 +61,6 @@ in
     ## Services
     #############################################################################
 
-    # Ping is enabled
-    networking.firewall.allowPing = true;
-
     # Every machine gets an sshd
     services.openssh = {
       enable = true;

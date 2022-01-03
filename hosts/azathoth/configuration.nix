@@ -26,8 +26,7 @@ in
   hardware.pulseaudio.support32Bit = true;
 
   # Firewall
-  networking.firewall.enable = true;
-  networking.firewall.trustedInterfaces = [ "lo" "enp6s0" ];
+  networking.firewall.trustedInterfaces = [ "enp6s0" ];
 
   # Nyarlathotep
   fileSystems."/home/barrucadu/nfs/anime" = nfsShare "anime";

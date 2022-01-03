@@ -71,8 +71,6 @@ in
 
   # Firewall
   networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
-  networking.firewall.allowedTCPPortRanges = [{ from = 62001; to = 63000; }];
-  networking.firewall.allowedUDPPortRanges = [{ from = 62001; to = 63000; }];
 
   # Web server
   services.caddy.enable = true;
