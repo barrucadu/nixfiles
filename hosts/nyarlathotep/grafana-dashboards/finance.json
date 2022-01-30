@@ -22,7 +22,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1640215782625,
+  "iteration": 1643557226751,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -74,7 +74,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [
@@ -173,7 +173,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [
@@ -270,7 +270,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [
@@ -367,7 +367,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [
@@ -464,7 +464,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [
@@ -557,7 +557,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [
@@ -668,7 +668,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "",
@@ -742,7 +742,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1252,7 +1252,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "Target",
@@ -1402,7 +1402,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "",
@@ -1497,7 +1497,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "",
@@ -1603,7 +1603,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "Target",
@@ -1767,7 +1767,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "Target",
@@ -1917,7 +1917,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "",
@@ -2012,7 +2012,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "",
@@ -2124,7 +2124,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "alias": "Target",
@@ -2255,7 +2255,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2436,7 +2436,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2618,7 +2618,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2850,7 +2850,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -2875,6 +2875,89 @@
         }
       ],
       "title": "Float",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 30,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 15
+              },
+              {
+                "color": "green",
+                "value": 22.5
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 3,
+        "y": 21
+      },
+      "id": 29,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
+          "groupBy": [],
+          "measurement": "normal",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:charity[£]\" FROM \"normal\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Charity",
       "transparent": true,
       "type": "gauge"
     },
@@ -2912,10 +2995,10 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
+        "x": 6,
         "y": 21
       },
-      "id": 29,
+      "id": 78,
       "options": {
         "orientation": "auto",
         "reduceOptions": {
@@ -2929,7 +3012,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -2991,7 +3074,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 9,
         "y": 21
       },
       "id": 30,
@@ -3008,7 +3091,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3070,7 +3153,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 12,
         "y": 21
       },
       "id": 31,
@@ -3087,7 +3170,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3149,7 +3232,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 15,
         "y": 21
       },
       "id": 32,
@@ -3166,7 +3249,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3229,7 +3312,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 18,
         "y": 21
       },
       "id": 42,
@@ -3246,7 +3329,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3308,7 +3391,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 21,
         "y": 21
       },
       "id": 37,
@@ -3325,7 +3408,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3387,8 +3470,8 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
-        "y": 21
+        "x": 0,
+        "y": 27
       },
       "id": 33,
       "options": {
@@ -3404,7 +3487,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3466,7 +3549,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 0,
+        "x": 3,
         "y": 27
       },
       "id": 38,
@@ -3483,7 +3566,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3546,7 +3629,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
+        "x": 6,
         "y": 27
       },
       "id": 34,
@@ -3563,7 +3646,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3625,7 +3708,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 9,
         "y": 27
       },
       "id": 39,
@@ -3642,7 +3725,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3704,7 +3787,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 12,
         "y": 27
       },
       "id": 35,
@@ -3721,7 +3804,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3783,7 +3866,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 15,
         "y": 27
       },
       "id": 36,
@@ -3800,7 +3883,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3862,7 +3945,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 18,
         "y": 27
       },
       "id": 40,
@@ -3879,7 +3962,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "groupBy": [],
@@ -3908,12 +3991,180 @@
       "type": "gauge"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 25,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 12.5
+              },
+              {
+                "color": "green",
+                "value": 18.75
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 0,
+        "y": 33
+      },
+      "id": 77,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
+          "groupBy": [],
+          "measurement": "normal",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:ajbell:dealing[£]\" FROM \"normal\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "AJ Bell Dealing Account",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PEAB762A03FD979A0"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 25,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 12.5
+              },
+              {
+                "color": "green",
+                "value": 18.75
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 3,
+        "y": 33
+      },
+      "id": 76,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PEAB762A03FD979A0"
+          },
+          "groupBy": [],
+          "measurement": "normal",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"assets:investments:fidelity:management[£]\" FROM \"normal\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Fidelity Cash Management Account",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 39
       },
       "id": 49,
       "panels": [
@@ -4700,7 +4951,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 33,
+  "schemaVersion": 34,
   "style": "dark",
   "tags": [],
   "templating": {
