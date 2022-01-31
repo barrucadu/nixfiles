@@ -410,6 +410,8 @@ in
   ###############################################################################
 
   services.influxdb.enable = true;
+  # override collectd config to not pull in the collectd-data package
+  services.influxdb.extraConfig = { collectd = [{ enabled = false; }]; };
 
   systemd.timers.hledger-scripts = {
     wantedBy = [ "timers.target" ];
