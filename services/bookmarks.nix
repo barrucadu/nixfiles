@@ -13,7 +13,7 @@ in
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
-    esTag = mkOption { type = types.str; default = "7.17.0"; };
+    esTag = mkOption { type = types.str; default = "8.0.0"; };
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
@@ -46,6 +46,7 @@ in
       environment = {
         "http.host" = "0.0.0.0";
         "discovery.type" = "single-node";
+        "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
       extraOptions = [ "--network=bookmarks_network" ];
