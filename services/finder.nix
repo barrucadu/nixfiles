@@ -13,7 +13,7 @@ in
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
-    esTag = mkOption { type = types.str; default = "7.11.2"; };
+    esTag = mkOption { type = types.str; default = "7.17.0"; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
     mangaDir = mkOption { type = types.path; };
