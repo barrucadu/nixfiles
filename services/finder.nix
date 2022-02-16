@@ -13,7 +13,7 @@ in
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
-    esTag = mkOption { type = types.str; default = "7.17.0"; };
+    esTag = mkOption { type = types.str; default = "8.0.0"; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
     mangaDir = mkOption { type = types.path; };
@@ -43,6 +43,7 @@ in
       environment = {
         "http.host" = "0.0.0.0";
         "discovery.type" = "single-node";
+        "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
       extraOptions = [ "--network=finder_network" ];
