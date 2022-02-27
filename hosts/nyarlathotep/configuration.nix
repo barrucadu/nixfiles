@@ -8,6 +8,13 @@ let
   ociBackend = config.virtualisation.oci-containers.backend;
   # https://github.com/NixOS/nixpkgs/issues/104750
   serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
+
+  bookdbPort = 3000;
+  floodPort = 3001;
+  finderPort = 3002;
+  bookmarksPort = 3003;
+  grafanaPort = 3004;
+  piholePort = 3005;
 in
 {
   ###############################################################################
@@ -38,6 +45,17 @@ in
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
   modules.eraseYourDarlings.barrucaduHashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
+
+
+  ###############################################################################
+  ## DNS
+  ###############################################################################
+
+  services.pihole.enable = true;
+  services.pihole.dockerTag = "2022.02.1";
+  services.pihole.serverIP = "10.0.0.3";
+  services.pihole.password = fileContents /etc/nixos/secrets/pihole-password.txt;
+  services.pihole.httpPort = piholePort;
 
 
   ###############################################################################
@@ -112,7 +130,7 @@ in
     http://flood.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:3001
+      reverse_proxy http://localhost:${toString floodPort}
     }
 
     http://finder.nyarlathotep.lan:80 {
@@ -167,6 +185,12 @@ in
       }
     }
 
+    http://pi.hole:80 {
+      import restrict_vlan
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.pihole.httpPort}
+    }
+
     http://*:80 {
       respond * 421
     }
@@ -180,6 +204,7 @@ in
   services.bookdb.enable = true;
   services.bookdb.image = "localhost:5000/bookdb:latest";
   services.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
+  services.bookdb.httpPort = bookdbPort;
 
   systemd.timers.bookdb-sync = {
     wantedBy = [ "timers.target" ];
@@ -202,7 +227,7 @@ in
   services.bookmarks.enable = true;
   services.bookmarks.image = "localhost:5000/bookmarks:latest";
   services.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
-  services.bookmarks.httpPort = 3003;
+  services.bookmarks.httpPort = bookmarksPort;
   services.bookmarks.youtubeApiKey = fileContents /etc/nixos/secrets/bookmarks-youtube-api-key.txt;
 
   systemd.timers.bookmarks-sync = {
@@ -225,7 +250,7 @@ in
 
   services.finder.enable = true;
   services.finder.image = "localhost:5000/finder:latest";
-  services.finder.httpPort = 3002;
+  services.finder.httpPort = finderPort;
   services.finder.mangaDir = "/mnt/nas/manga";
 
 
@@ -268,7 +293,7 @@ in
   # Monitoring & Dashboards
   ###############################################################################
 
-  services.grafana.port = 3004;
+  services.grafana.port = grafanaPort;
   services.grafana.rootUrl = "http://grafana.nyarlathotep.lan";
   services.grafana.provision.datasources = [
     {
@@ -296,14 +321,6 @@ in
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
   services.prometheus.scrapeConfigs = [
-    {
-      job_name = "pihole-node";
-      static_configs = [{ targets = [ "pi.hole:9100" ]; }];
-    }
-    {
-      job_name = "pihole-pihole";
-      static_configs = [{ targets = [ "pi.hole:9617" ]; }];
-    }
     {
       job_name = "speedtest";
       scrape_interval = "5m";
