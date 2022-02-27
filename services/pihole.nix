@@ -17,7 +17,6 @@ in
     serverIP = mkOption { type = types.str; };
     password = mkOption { type = types.nullOr types.str; default = null; };
     upstreamDNS = mkOption { type = types.listOf types.str; default = [ "1.1.1.1" "8.8.8.8" ]; };
-    onlyLocalDNS = mkOption { type = types.bool; default = false; };
     httpPort = mkOption { type = types.int; default = 3000; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
@@ -34,8 +33,8 @@ in
       };
       ports = [
         "127.0.0.1:${toString cfg.httpPort}:80"
-        "${if cfg.onlyLocalDNS then "127.0.0.1:" else ""}53:53/tcp"
-        "${if cfg.onlyLocalDNS then "127.0.0.1:" else ""}53:53/udp"
+        "${cfg.serverIP}:53:53/tcp"
+        "${cfg.serverIP}:53:53/udp"
       ];
       volumes = [
         "${toString cfg.dockerVolumeDir}/etc-pihole:/etc/pihole"
