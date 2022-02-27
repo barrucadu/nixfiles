@@ -46,6 +46,9 @@ in
       serviceConfig = serviceConfigForContainerLogging;
     };
 
+    networking.firewall.allowedTCPPorts = [ 53 ];
+    networking.firewall.allowedUDPPorts = [ 53 ];
+
     services.prometheus.exporters.pihole.enable = config.services.prometheus.enable;
     services.prometheus.exporters.pihole.piholeHostname = "pi.hole";
     services.prometheus.exporters.pihole.password = cfg.password;
