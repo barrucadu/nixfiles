@@ -39,7 +39,7 @@ in
   modules.zfsAutomation.enable = true;
 
   # Firewall
-  networking.firewall.allowedTCPPorts = [ 80 8888 ];
+  networking.firewall.allowedTCPPorts = [ 80 8888 111 2049 4000 4001 4002 ];
 
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
@@ -63,6 +63,9 @@ in
 
   # NFS exports
   services.nfs.server.enable = true;
+  services.nfs.server.mountdPort = 4002;
+  services.nfs.server.lockdPort = 4001;
+  services.nfs.server.statdPort = 4000;
   services.nfs.server.exports = ''
     /mnt/nas/ *(rw,fsid=root,no_subtree_check)
     ${concatMapStringsSep "\n" (n: "/mnt/nas/${n} *(rw,no_subtree_check,nohide)") shares}
@@ -70,6 +73,7 @@ in
 
   # Samba
   services.samba.enable = true;
+  services.samba.openFirewall = true;
   services.samba.shares = listToAttrs
     (map (n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; }) shares);
 
