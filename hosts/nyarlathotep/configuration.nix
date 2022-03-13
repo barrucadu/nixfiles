@@ -39,8 +39,7 @@ in
   modules.zfsAutomation.enable = true;
 
   # Firewall
-  networking.firewall.trustedInterfaces = [ "enp4s0" ];
-  networking.firewall.allowedTCPPorts = [ 8888 ]; # for testing stuff
+  networking.firewall.allowedTCPPorts = [ 80 8888 ];
 
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
