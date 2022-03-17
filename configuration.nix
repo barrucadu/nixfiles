@@ -17,6 +17,7 @@
     ./services/minecraft.nix
     ./services/pihole.nix
     ./services/pleroma.nix
+    ./services/resolved.nix
     ./services/umami.nix
   ];
 }

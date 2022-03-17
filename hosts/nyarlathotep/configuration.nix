@@ -14,7 +14,6 @@ let
   finderPort = 3002;
   bookmarksPort = 3003;
   grafanaPort = 3004;
-  piholePort = 3005;
 in
 {
   ###############################################################################
@@ -50,11 +49,9 @@ in
   ## DNS
   ###############################################################################
 
-  services.pihole.enable = true;
-  services.pihole.dockerTag = "2022.02.1";
-  services.pihole.serverIP = "10.0.0.3";
-  services.pihole.password = fileContents /etc/nixos/secrets/pihole-password.txt;
-  services.pihole.httpPort = piholePort;
+  services.resolved.enable = true;
+  services.resolved.hosts_dirs = [ "/persist/etc/dns/hosts" ];
+  services.resolved.zones_dirs = [ "/persist/etc/dns/zones" ];
 
 
   ###############################################################################
@@ -182,12 +179,6 @@ in
       file_server {
         root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan20.help.lan
       }
-    }
-
-    http://pi.hole:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.services.pihole.httpPort}
     }
 
     http://*:80 {
