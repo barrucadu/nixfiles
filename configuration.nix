@@ -15,8 +15,8 @@
     ./services/finder.nix
     ./services/gitea.nix
     ./services/minecraft.nix
-    ./services/pihole.nix
     ./services/pleroma.nix
+    ./services/resolved.nix
     ./services/umami.nix
   ];
 }
