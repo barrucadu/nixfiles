@@ -73,7 +73,6 @@ in
     services.finder.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/finder";
     services.gitea.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/gitea";
     services.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
-    services.pihole.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/pihole";
     services.pleroma.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/pleroma";
     services.umami.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/umami";
   };
