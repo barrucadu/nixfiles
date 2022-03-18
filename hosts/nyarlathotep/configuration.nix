@@ -50,6 +50,7 @@ in
   ###############################################################################
 
   services.resolved.enable = true;
+  services.resolved.cache_size = 1000000;
   services.resolved.hosts_dirs = [ "/persist/etc/dns/hosts" ];
   services.resolved.zones_dirs = [ "/persist/etc/dns/zones" ];
 
