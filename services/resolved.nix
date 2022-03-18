@@ -9,16 +9,16 @@ let
 
   package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
     pname = "resolved";
-    version = "a63651bb869f641a8fd490a341706719ffbced3c";
+    version = "4003be29de5fbf33cbd62f4c668b4d35b3a73569";
 
     src = fetchFromGitHub {
       owner = "barrucadu";
       repo = pname;
       rev = version;
-      sha256 = "1hdqc5fxxb9kh9ps6dzf67srx9b1wj4anxk9nx2znbcrh8wh1i68";
+      sha256 = "12byha2451mv3g5k29r1gwddilfwwqsag79ynhgsv7zsadnw0i17";
     };
 
-    cargoSha256 = "1p9w2j10acw38fcjgv0gb8229p9x5dhw6hklz8vqbsx48aqylmn1";
+    cargoSha256 = "0pyi1lwc3xr5afh2c96vvvf9kqs54dm96kk5rm486iylscqd8rw1";
   };
   resolved = pkgs.callPackage package { };
 in
@@ -31,6 +31,7 @@ in
   options.services.resolved = {
     enable = mkOption { type = types.bool; default = false; };
     interface = mkOption { type = types.str; default = "0.0.0.0"; };
+    cache_size = mkOption { type = types.int; default = 512; };
     hosts_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
     zones_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
   };
@@ -40,8 +41,9 @@ in
       description = "barrucadu/resolved nameserver";
       serviceConfig = {
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
-        ExecStart = "${resolved}/bin/resolved -i ${cfg.interface} ${hosts_dirs} ${zones_dirs}";
+        ExecStart = "${resolved}/bin/resolved -i ${cfg.interface} -s ${toString cfg.cache_size} ${hosts_dirs} ${zones_dirs}";
         User = "nobody";
+        Restart = "on-failure";
       };
     };
 
