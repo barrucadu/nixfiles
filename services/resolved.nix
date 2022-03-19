@@ -9,16 +9,16 @@ let
 
   package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
     pname = "resolved";
-    version = "4003be29de5fbf33cbd62f4c668b4d35b3a73569";
+    version = "6b0e590d32a41a42cb2a4cbed7b1735d5369c965";
 
     src = fetchFromGitHub {
       owner = "barrucadu";
       repo = pname;
       rev = version;
-      sha256 = "12byha2451mv3g5k29r1gwddilfwwqsag79ynhgsv7zsadnw0i17";
+      sha256 = "0k9z8prrky0m25chv5zrfg0kb3rr9740yj6cifi90m9ghkn59bqp";
     };
 
-    cargoSha256 = "0pyi1lwc3xr5afh2c96vvvf9kqs54dm96kk5rm486iylscqd8rw1";
+    cargoSha256 = "0apkg3ha89i8d1ha89x9flb8r8pihbwqfsj31ycbvd8an8wi83gi";
   };
   resolved = pkgs.callPackage package { };
 in
@@ -31,6 +31,8 @@ in
   options.services.resolved = {
     enable = mkOption { type = types.bool; default = false; };
     interface = mkOption { type = types.str; default = "0.0.0.0"; };
+    authoritative_only = mkOption { type = types.bool; default = false; };
+    forward_address = mkOption { type = types.nullOr types.str; default = null; };
     cache_size = mkOption { type = types.int; default = 512; };
     hosts_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
     zones_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
@@ -43,7 +45,7 @@ in
       after = [ "network-online.target" ];
       serviceConfig = {
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
-        ExecStart = "${resolved}/bin/resolved -i ${cfg.interface} -s ${toString cfg.cache_size} ${hosts_dirs} ${zones_dirs}";
+        ExecStart = "${resolved}/bin/resolved -i ${cfg.interface} ${if cfg.authoritative_only then "--authoritative-only " else ""}${if cfg.forward_address != null then "--forward-address ${cfg.forward_address} " else ""}-s ${toString cfg.cache_size} ${hosts_dirs} ${zones_dirs}";
         ExecReload = "${pkgs.coreutils}/bin/kill -USR1 $MAINPID";
         User = "nobody";
         Restart = "on-failure";
