@@ -44,6 +44,7 @@ in
       serviceConfig = {
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         ExecStart = "${resolved}/bin/resolved -i ${cfg.interface} -s ${toString cfg.cache_size} ${hosts_dirs} ${zones_dirs}";
+        ExecReload = "${pkgs.coreutils}/bin/kill -USR1 $MAINPID";
         User = "nobody";
         Restart = "on-failure";
       };
