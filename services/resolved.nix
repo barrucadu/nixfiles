@@ -39,6 +39,8 @@ in
   config = mkIf cfg.enable {
     systemd.services.resolved = {
       description = "barrucadu/resolved nameserver";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
       serviceConfig = {
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         ExecStart = "${resolved}/bin/resolved -i ${cfg.interface} -s ${toString cfg.cache_size} ${hosts_dirs} ${zones_dirs}";
