@@ -111,6 +111,9 @@ in
           type = "prometheus";
         }
       ];
+      provision.dashboards = [
+        { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./common-grafana-dashboards/node-stats-detailed.json; }
+      ];
     };
 
     services.prometheus = {
