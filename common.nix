@@ -2,11 +2,6 @@
 
 with lib;
 
-let
-  ociBackend = config.virtualisation.oci-containers.backend;
-  # https://github.com/NixOS/nixpkgs/issues/104750
-  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
-in
 {
   config = {
     #############################################################################
@@ -127,8 +122,8 @@ in
           static_configs = [{ targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; }];
         }
         {
-          job_name = "${config.networking.hostName}-docker";
-          static_configs = [{ targets = [ "localhost:9417" ]; }];
+          job_name = "${config.networking.hostName}-cadvisor";
+          static_configs = [{ targets = [ "localhost:${toString config.services.cadvisor.port}" ]; }];
         }
       ];
     };
@@ -138,16 +133,11 @@ in
     # `"true"` reports incorrect filesystem metrics
     systemd.services.prometheus-node-exporter.serviceConfig.ProtectHome = mkForce "read-only";
 
-    virtualisation.oci-containers.containers.prometheus-docker-exporter = {
-      autoStart = true;
-      image = "prometheusnet/docker_exporter";
-      ports = [ "127.0.0.1:9417:9417" ];
-      volumes = [ "/var/run/docker.sock:/var/run/docker.sock" ];
+    services.cadvisor = {
+      enable = config.services.prometheus.enable;
+      port = 9418;
     };
-    systemd.services."${ociBackend}-prometheus-docker-exporter" = {
-      wantedBy = [ "prometheus.service" ];
-      serviceConfig = serviceConfigForContainerLogging;
-    };
+
 
     #############################################################################
     ## User accounts
