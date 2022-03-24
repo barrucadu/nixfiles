@@ -362,13 +362,6 @@ in
   services.grafana.port = grafanaPort;
   services.grafana.rootUrl = "https://grafana.carcosa.barrucadu.co.uk";
   services.grafana.security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
-  services.grafana.provision.dashboards = [
-    {
-      name = "overview.json";
-      folder = "My Dashboards";
-      options.path = pkgs.writeTextDir "overview.json" (fileContents ./grafana-dashboards/overview.json);
-    }
-  ];
 
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
   services.prometheus.scrapeConfigs = [
