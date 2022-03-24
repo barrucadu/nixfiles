@@ -108,6 +108,7 @@ with lib;
       ];
       provision.dashboards = [
         { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./common-grafana-dashboards/node-stats-detailed.json; }
+        { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./common-grafana-dashboards/container-stats-detailed.json; }
       ];
     };
 
