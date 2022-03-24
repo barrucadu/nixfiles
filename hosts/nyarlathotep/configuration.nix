@@ -300,12 +300,13 @@ in
   ];
   services.grafana.provision.dashboards =
     let
-      dashboard = folder: name: path: { inherit name folder; options.path = pkgs.writeTextDir name (fileContents path); };
+      dashboard = folder: name: path: { inherit name folder; options.path = path; };
     in
     [
       (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
       (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
       (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
+      (dashboard "Services" "dns-resolver.json" ./grafana-dashboards/dns-resolver.json)
       (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
       (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
       (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
