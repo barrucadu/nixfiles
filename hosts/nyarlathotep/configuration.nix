@@ -307,12 +307,6 @@ in
       (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
       (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
       (dashboard "Services" "dns-resolver.json" ./grafana-dashboards/dns-resolver.json)
-      (dashboard "UniFi" "unifi-poller-client-dpi.json" ./grafana-dashboards/unifi-poller-client-dpi.json)
-      (dashboard "UniFi" "unifi-poller-client-insights.json" ./grafana-dashboards/unifi-poller-client-insights.json)
-      (dashboard "UniFi" "unifi-poller-network-sites.json" ./grafana-dashboards/unifi-poller-network-sites.json)
-      (dashboard "UniFi" "unifi-poller-uap-insights.json" ./grafana-dashboards/unifi-poller-uap-insights.json)
-      (dashboard "UniFi" "unifi-poller-usg-insights.json" ./grafana-dashboards/unifi-poller-usg-insights.json)
-      (dashboard "UniFi" "unifi-poller-usw-insights.json" ./grafana-dashboards/unifi-poller-usw-insights.json)
     ];
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
@@ -322,10 +316,6 @@ in
       scrape_interval = "5m";
       scrape_timeout = "2m";
       static_configs = [{ targets = [ "localhost:9516" ]; }];
-    }
-    {
-      job_name = "unifipoller";
-      static_configs = [{ targets = [ "localhost:9130" ]; }];
     }
     {
       job_name = "awair";
@@ -339,22 +329,6 @@ in
     ports = [ "127.0.0.1:9516:8888" ];
   };
   systemd.services."${ociBackend}-prometheus-speedtest-exporter" = {
-    wantedBy = [ "prometheus.service" ];
-    serviceConfig = serviceConfigForContainerLogging;
-  };
-
-  virtualisation.oci-containers.containers.prometheus-unifipoller-exporter = {
-    autoStart = true;
-    image = "golift/unifi-poller";
-    environment = {
-      "UP_UNIFI_DEFAULT_URL" = "https://router.lan";
-      "UP_UNIFI_DEFAULT_PASS" = fileContents /etc/nixos/secrets/unifipoller-password.txt;
-      "UP_UNIFI_DEFAULT_SAVE_DPI" = "true";
-      "UP_INFLUXDB_DISABLE" = "true";
-    };
-    ports = [ "127.0.0.1:9130:9130" ];
-  };
-  systemd.services."${ociBackend}-prometheus-unifipoller-exporter" = {
     wantedBy = [ "prometheus.service" ];
     serviceConfig = serviceConfigForContainerLogging;
   };
