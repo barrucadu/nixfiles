@@ -364,12 +364,6 @@ in
   services.grafana.security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
 
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
-  services.prometheus.scrapeConfigs = [
-    {
-      job_name = "${config.networking.hostName}-concourse";
-      static_configs = [{ targets = [ "localhost:${toString config.services.concourse.metricsPort}" ]; }];
-    }
-  ];
 
   # Concourse access
   users.extraUsers.concourse-deploy-robot = {
