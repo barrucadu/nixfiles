@@ -131,6 +131,9 @@ in
     };
 
     services.prometheus.exporters.node.enable = config.services.prometheus.enable;
+    # if a disk is mounted at /home, then the default value of
+    # `"true"` reports incorrect filesystem metrics
+    systemd.services.prometheus-node-exporter.serviceConfig.ProtectHome = mkForce "read-only";
 
     virtualisation.oci-containers.containers.prometheus-docker-exporter = {
       autoStart = true;
