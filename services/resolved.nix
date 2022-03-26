@@ -9,16 +9,16 @@ let
 
   package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
     pname = "resolved";
-    version = "e0e4dab02eab02133d3b6e2d4460a2226bb72a54";
+    version = "59c10c0b89db9a6b1a27e58b31ac4591dee77ea5";
 
     src = fetchFromGitHub {
       owner = "barrucadu";
       repo = pname;
       rev = version;
-      sha256 = "0p9kh10f2kh7h3mdky16gx1j3amgzrd7bmzsawzq4gh3dwf64bmc";
+      sha256 = "1462i5hf47xbbsifyg5n6vczh7s3fz9flzgxp6h9rcfp50zk5a8p";
     };
 
-    cargoSha256 = "1y1d66224x19snrzax35ms6848lszd5690q3kr0c420wln9mr54q";
+    cargoSha256 = "0g7hzj6hkqzv49pbq0kbnv1ipvn41rdpq9zq3vyhc205wqy8vdgs";
   };
   resolved = pkgs.callPackage package { };
 in
@@ -37,6 +37,8 @@ in
     cache_size = mkOption { type = types.int; default = 512; };
     hosts_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
     zones_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
+    log_level = mkOption { type = types.str; default = "dns_resolver=info,resolved=info"; };
+    log_format = mkOption { type = types.str; default = "json,no-time"; };
   };
 
   config = mkIf cfg.enable {
@@ -50,6 +52,10 @@ in
         ExecReload = "${pkgs.coreutils}/bin/kill -USR1 $MAINPID";
         User = "nobody";
         Restart = "on-failure";
+      };
+      environment = {
+        RUST_LOG = cfg.log_level;
+        RUST_LOG_FORMAT = cfg.log_format;
       };
     };
 
