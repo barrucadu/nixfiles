@@ -306,7 +306,6 @@ in
       (dashboard "My Dashboards" "overview.json" ./grafana-dashboards/overview.json)
       (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
       (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
-      (dashboard "Services" "dns-resolver.json" ./grafana-dashboards/dns-resolver.json)
     ];
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
