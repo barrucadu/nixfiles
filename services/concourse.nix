@@ -103,5 +103,16 @@ in
       preStart = "${backend} network create -d bridge concourse_network || true";
       serviceConfig = serviceConfigForContainerLogging;
     };
+
+    services.prometheus.scrapeConfigs = [
+      {
+        job_name = "${config.networking.hostName}-concourse";
+        static_configs = [{ targets = [ "localhost:${toString config.services.concourse.metricsPort}" ]; }];
+      }
+    ];
+    services.grafana.provision.dashboards =
+      [
+        { name = "Concourse"; folder = "Services"; options.path = ./grafana-dashboards/concourse.json; }
+      ];
   };
 }

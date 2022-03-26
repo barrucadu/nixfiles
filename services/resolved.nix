@@ -68,5 +68,9 @@ in
         static_configs = [{ targets = [ "localhost:${toString cfg.metrics_port}" ]; }];
       }
     ];
+    services.grafana.provision.dashboards =
+      [
+        { name = "DNS Resolver"; folder = "Services"; options.path = ./grafana-dashboards/resolved.json; }
+      ];
   };
 }
