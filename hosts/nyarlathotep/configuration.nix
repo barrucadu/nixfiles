@@ -209,9 +209,12 @@ in
   };
   systemd.services.bookdb-sync = {
     description = "Upload bookdb data to carcosa";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookdb-sync.sh" (fileContents ./bookdb-sync.sh)}";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
+    path = with pkgs; [ docker openssh ];
+    serviceConfig = {
+      ExecStart = pkgs.writeShellScript "bookdb-sync.sh" (fileContents ./jobs/bookdb-sync.sh);
+      User = "barrucadu";
+      Group = "users";
+    };
   };
 
 
@@ -233,9 +236,12 @@ in
   };
   systemd.services.bookmarks-sync = {
     description = "Upload bookmarks data to carcosa";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./bookmarks-sync.sh)}";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
+    path = with pkgs; [ docker openssh ];
+    serviceConfig = {
+      ExecStart = pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./jobs/bookmarks-sync.sh);
+      User = "barrucadu";
+      Group = "users";
+    };
   };
 
 
@@ -365,7 +371,7 @@ in
     unitConfig.RequiresMountsFor = "/mnt/nas";
     serviceConfig = {
       WorkingDirectory = "/mnt/nas/music/Podcasts/";
-      ExecStart = pkgs.writeShellScript "tag-podcasts.sh" (fileContents ./tag-podcasts.sh);
+      ExecStart = pkgs.writeShellScript "tag-podcasts.sh" (fileContents ./jobs/tag-podcasts.sh);
       User = "barrucadu";
       Group = "users";
       Restart = "always";
@@ -383,7 +389,7 @@ in
     path = with pkgs; [ flac ];
     serviceConfig = {
       WorkingDirectory = "/mnt/nas/music/to_convert/in/";
-      ExecStart = pkgs.writeShellScript "flac-and-tag-album.sh" (fileContents ./flac-and-tag-album.sh);
+      ExecStart = pkgs.writeShellScript "flac-and-tag-album.sh" (fileContents ./jobs/flac-and-tag-album.sh);
       User = "barrucadu";
       Group = "users";
     };
