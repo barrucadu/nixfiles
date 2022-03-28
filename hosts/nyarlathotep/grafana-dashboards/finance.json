@@ -22,17 +22,20 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1643557226751,
+  "iteration": 1648591419849,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "decimals": 1,
           "mappings": [],
           "thresholds": {
@@ -53,7 +56,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 4,
         "x": 0,
         "y": 0
@@ -62,7 +65,7 @@
       "options": {
         "colorMode": "background",
         "graphMode": "none",
-        "justifyMode": "center",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -71,48 +74,21 @@
           "fields": "",
           "values": false
         },
-        "text": {},
-        "textMode": "value"
+        "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets[£]\" +\"liabilities[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Net Worth",
@@ -121,8 +97,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -152,7 +128,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 4,
         "x": 4,
         "y": 0
@@ -173,45 +149,18 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT (\"assets[£]\"-\"expenses[£]\" )/\"assets[£]\" FROM \"period\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "# saved income\r\n(\r\n    sum(hledger_monthly_decrease{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_monthly_increase{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n)\r\n\r\n/ on(target_currency)\r\n\r\n# net income\r\n(\r\n    sum(hledger_monthly_decrease{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_monthly_increase{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Savings Rate",
@@ -220,12 +169,15 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -249,7 +201,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 4,
         "x": 8,
         "y": 0
@@ -258,7 +210,7 @@
       "options": {
         "colorMode": "background",
         "graphMode": "none",
-        "justifyMode": "center",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -267,48 +219,20 @@
           "fields": "",
           "values": false
         },
-        "text": {},
-        "textMode": "value"
+        "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT (last(\"assets:cash[£]\") + last(\"assets:investments:nsi:premium_bonds:emergency[£]\")) / $average_daily_expense FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "# total available cash and emergency fund\r\n(\r\n    sum(hledger_balance{account=\"assets:cash\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    + on (target_currency)\r\n    sum(hledger_balance{account=\"assets:investments:nsi:premium_bonds:emergency\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n)\r\n\r\n/ on (target_currency)\r\n\r\n# average daily expense\r\n(\r\n    (\r\n        sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window\r\n)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Short Runway",
@@ -317,12 +241,15 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -333,11 +260,11 @@
               },
               {
                 "color": "yellow",
-                "value": 182
+                "value": 60
               },
               {
                 "color": "green",
-                "value": 365
+                "value": 90
               }
             ]
           },
@@ -346,16 +273,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 4,
         "x": 12,
         "y": 0
       },
-      "id": 64,
+      "id": 85,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
-        "justifyMode": "center",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -364,48 +291,20 @@
           "fields": "",
           "values": false
         },
-        "text": {},
-        "textMode": "value"
+        "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT last(\"assets[£]\")  / $average_daily_expense FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n/ on (target_currency)\r\n\r\n# average daily expense\r\n(\r\n    (\r\n        sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window\r\n)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Long Runway",
@@ -414,8 +313,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -443,7 +342,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 4,
         "x": 16,
         "y": 0
@@ -464,45 +363,18 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:ajbell[£]\" + \"assets:investments:nsi:premium_bonds:house[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash:nationwide:flexdirect:pending:ajbell[£]"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments:ajbell:lisa\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"assets:investments:nsi:premium_bonds:house\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "House Deposit",
@@ -511,8 +383,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -536,7 +408,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 4,
         "x": 20,
         "y": 0
@@ -557,45 +429,18 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"liabilities:loan:slc[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Student Loan",
@@ -604,8 +449,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -648,7 +493,7 @@
         "h": 2,
         "w": 4,
         "x": 0,
-        "y": 5
+        "y": 4
       },
       "id": 21,
       "links": [],
@@ -668,29 +513,18 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "",
-          "groupBy": [],
-          "measurement": "count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"cleared\" + \"pending\" + \"uncleared\" FROM \"count\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "cleared"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_transactions_total) without(status)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Total Transactions",
@@ -698,212 +532,253 @@
       "type": "stat"
     },
     {
-      "aliasColors": {
-        "Cash": "green",
-        "Funds": "yellow",
-        "Premium Bonds": "blue",
-        "Receivable": "orange",
-        "Target: AAW": "rgb(117, 12, 24)",
-        "Target: FIRE": "light-red",
-        "Target: PAW": "dark-red"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 50000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cash"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Funds"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Premium Bonds"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Receivable"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Target: AAW"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "rgb(117, 12, 24)",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Target: FIRE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Target: PAW"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Target.*/"
+            },
+            "properties": [
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "group": false,
+                  "mode": "normal"
+                }
+              },
+              {
+                "id": "custom.transform",
+                "value": "constant"
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 13,
         "x": 4,
-        "y": 5
+        "y": 4
       },
-      "hiddenSeries": false,
       "id": 68,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:389",
-          "alias": "/Target.*/",
-          "dashes": true,
-          "fill": 0,
-          "hideTooltip": true,
-          "nullPointMode": "connected",
-          "stack": false,
-          "transform": "constant"
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": true,
+      },
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "Receivable",
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "groupBy": [],
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:receivable\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "measurement": "market",
+          "interval": "",
+          "legendFormat": "Receivable",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"assets:receivable[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "assets:cash[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Premium Bonds",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:nsi[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Funds",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:ajbell[£]\" + \"assets:investments:cavendish[£]\" + \"assets:investments:fidelity[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Cash",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
-          },
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Target: AAW",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT ($average_daily_income * 365 * $age / 10) / 2- last(\"income:gift[£]\")  - last(\"liabilities[£]\") + last(\"liabilities:loan:slc[£]\")  FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "G",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
                   "value"
                 ],
                 "type": "field"
@@ -917,268 +792,254 @@
           "tags": []
         },
         {
-          "alias": "Target: PAW",
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments:nsi:premium_bonds\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT ($average_daily_income * 365 * $age / 10) * 2 - last(\"income:gift[£]\")  - last(\"liabilities[£]\") + last(\"liabilities:loan:slc[£]\")  FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "interval": "",
+          "legendFormat": "Premium Bonds",
+          "refId": "B"
         },
         {
-          "alias": "Target: FIRE",
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"assets:investments:nsi:premium_bonds\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT $average_daily_expense * 365 * $fire_annual_factor FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "interval": "",
+          "legendFormat": "Funds",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Cash",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "(\r\n    # average daily income\r\n    (\r\n        sum(hledger_balance{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * -1\r\n\r\n    # $age/10 years worth\r\n    * 365 * $age / 10\r\n) / 2\r\n\r\n# ignore gifted income\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n# add (subtract) liabilities, other than student loan\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Target: AAW",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "(\r\n    # average daily income\r\n    (\r\n        sum(hledger_balance{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * -1\r\n\r\n    # $age/10 years worth\r\n    * 365 * $age / 10\r\n) * 2\r\n\r\n# ignore gifted income\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n# add (subtract) liabilities, other than student loan\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Target: PAW",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "# average daily expense\r\n(\r\n    sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    + on(target_currency)\r\n    sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n) / $agg_window\r\n\r\n# $fire_annual_factor years worth\r\n* 365 * $fire_annual_factor",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Target: FIRE",
+          "refId": "G"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Assets (Stacked)",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:105",
-          "format": "currencyGBP",
-          "logBase": 1,
-          "max": "50000",
-          "min": "0",
-          "show": true
-        },
-        {
-          "$$hashKey": "object:106",
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "Cash": "#73BF69",
-        "Funds": "#FADE2A",
-        "Premium Bonds": "#5794F2",
-        "Receivable": "#FF9830"
-      },
-      "breakPoint": "50%",
-      "combine": {
-        "label": "Others",
-        "threshold": 0
-      },
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
-      "fontSize": "80%",
-      "format": "currencyGBP",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "unit": "currencyGBP"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cash"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Funds"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Premium Bonds"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Receivable"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 3,
         "x": 17,
-        "y": 5
+        "y": 4
       },
       "id": 69,
-      "legend": {
-        "show": false,
-        "values": true
-      },
-      "legendType": "Under graph",
       "links": [],
-      "nullPointMode": "connected",
-      "pieType": "donut",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
       "pluginVersion": "7.5.10",
-      "strokeWidth": "2",
       "targets": [
         {
-          "alias": "Cash",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "Cash",
+          "refId": "A"
         },
         {
-          "alias": "Funds",
-          "groupBy": [],
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"assets:investments:nsi:premium_bonds\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:ajbell[£]\" + \"assets:investments:cavendish[£]\" + \"assets:investments:fidelity[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "interval": "",
+          "legendFormat": "Funds",
+          "refId": "B"
         },
         {
-          "alias": "Premium Bonds",
-          "groupBy": [],
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments:nsi:premium_bonds\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:nsi[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "interval": "",
+          "legendFormat": "Premium Bonds",
+          "refId": "C"
         },
         {
-          "alias": "Receivable",
-          "groupBy": [],
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:receivable\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:receivable[£]\" FROM \"market\" WHERE $timeFilter",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets:cash[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "interval": "",
+          "legendFormat": "Receivable",
+          "refId": "D"
         }
       ],
       "title": "Current Allocation",
       "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1190,53 +1051,32 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "rgb(255, 255, 255)",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.5
+              },
+              {
+                "color": "green",
+                "value": 0.75
               }
             ]
           },
-          "unit": "currencyGBP"
+          "unit": "percentunit"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Delta"
-            },
-            "properties": [
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 0
-                    },
-                    {
-                      "color": "red",
-                      "value": 100000
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 7,
         "w": 4,
         "x": 20,
-        "y": 5
+        "y": 4
       },
       "id": 72,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -1247,99 +1087,31 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "titleSize": 24
-        },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "Target",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT $average_daily_expense * 365 * $fire_annual_factor FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Delta",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT $average_daily_expense * 365 * $fire_annual_factor - $fire_invested FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "# all assets\r\nsum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n/ on(target_currency)\r\n\r\n# FIRE number\r\n(\r\n    (\r\n        sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * 365 * $fire_annual_factor\r\n)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
-      "title": "FIRE Number",
+      "title": "FIRE Progress",
       "transparent": true,
       "type": "stat"
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1382,7 +1154,7 @@
         "h": 3,
         "w": 2,
         "x": 0,
-        "y": 7
+        "y": 6
       },
       "id": 17,
       "links": [],
@@ -1402,29 +1174,18 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "",
-          "groupBy": [],
-          "measurement": "count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT * FROM \"count\" WHERE $timeFilter",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "cleared"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "hledger_transactions_total{status=\"cleared\"}",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Cleared",
@@ -1433,8 +1194,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1477,7 +1238,7 @@
         "h": 3,
         "w": 2,
         "x": 2,
-        "y": 7
+        "y": 6
       },
       "id": 18,
       "links": [],
@@ -1497,29 +1258,18 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "",
-          "groupBy": [],
-          "measurement": "count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT * FROM \"count\" WHERE $timeFilter",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "uncleared"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "hledger_transactions_total{status=\"pending\"}",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Uncleared",
@@ -1528,333 +1278,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "rgb(255, 255, 255)",
-                "value": null
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Delta"
-            },
-            "properties": [
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 0
-                    },
-                    {
-                      "color": "red",
-                      "value": 100000
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 4,
-        "x": 20,
-        "y": 7
-      },
-      "id": 75,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "titleSize": 24
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.3.4",
-      "targets": [
-        {
-          "alias": "Target",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT ($average_daily_expense * 365 - last(\"assets:pension[£/yr]\")) * $fire_annual_factor FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Delta",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT ($average_daily_expense * 365 - last(\"assets:pension[£/yr]\")) * $fire_annual_factor - $fire_invested FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "FIRE Number (w/ pension)",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "rgb(255, 255, 255)",
-                "value": null
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Delta"
-            },
-            "properties": [
-              {
-                "id": "color"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 0
-                    },
-                    {
-                      "color": "red",
-                      "value": 100000
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 4,
-        "x": 20,
-        "y": 9
-      },
-      "id": 73,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "titleSize": 24
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.3.4",
-      "targets": [
-        {
-          "alias": "Target",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT ($average_daily_expense - (last(\"expenses:rent[£]\") - first(\"expenses:rent[£]\")) / count(\"expenses:rent[£]\")) * 365 * $fire_annual_factor FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Delta",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT ($average_daily_expense - (last(\"expenses:rent[£]\") - first(\"expenses:rent[£]\")) / count(\"expenses:rent[£]\")) * 365 * $fire_annual_factor - $fire_invested FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "FIRE Number (w/o rent)",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1897,7 +1322,7 @@
         "h": 3,
         "w": 2,
         "x": 0,
-        "y": 10
+        "y": 9
       },
       "id": 19,
       "links": [],
@@ -1917,29 +1342,18 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "",
-          "groupBy": [],
-          "measurement": "count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT * FROM \"count\" WHERE $timeFilter",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "pending"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "hledger_transactions_total{status=\"bookkeeping\"}",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Bookkeeping",
@@ -1948,8 +1362,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1992,7 +1406,7 @@
         "h": 3,
         "w": 2,
         "x": 2,
-        "y": 10
+        "y": 9
       },
       "id": 20,
       "links": [],
@@ -2012,35 +1426,18 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "",
-          "groupBy": [],
-          "measurement": "count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"pending\" / (\"pending\" + \"cleared\" + \"uncleared\") FROM \"count\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "pending"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "/cleared"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "hledger_transactions_total{status=\"bookkeeping\"}\r\n/ ignoring(status)\r\nsum(hledger_transactions_total) without(status)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Bookkeeping",
@@ -2049,21 +1446,54 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "rgb(255, 255, 255)",
+                "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -2077,23 +1507,44 @@
             },
             "properties": [
               {
-                "id": "thresholds",
+                "id": "color",
                 "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 0
-                    },
-                    {
-                      "color": "red",
-                      "value": 100000
-                    }
-                  ]
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Assets"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Liabilities"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -2101,711 +1552,427 @@
         ]
       },
       "gridPos": {
-        "h": 2,
-        "w": 4,
-        "x": 20,
-        "y": 11
-      },
-      "id": 74,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "titleSize": 24
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.3.4",
-      "targets": [
-        {
-          "alias": "Target",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT (($average_daily_expense - (last(\"expenses:rent[£]\") - first(\"expenses:rent[£]\")) / count(\"expenses:rent[£]\")) * 365 - last(\"assets:pension[£/yr]\")) * $fire_annual_factor FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Delta",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT (($average_daily_expense - (last(\"expenses:rent[£]\") - first(\"expenses:rent[£]\")) / count(\"expenses:rent[£]\")) * 365 - last(\"assets:pension[£/yr]\")) * $fire_annual_factor - $fire_invested FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "FIRE Number (w/ pension, w/o rent)",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "aliasColors": {
-        "Delta": "blue",
-        "Total Assets": "green",
-        "Total Liabilities": "red"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 13
+        "y": 12
       },
-      "hiddenSeries": false,
       "id": 23,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "Total Assets",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Total Liabilities",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"liabilities[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Delta",
-          "groupBy": [],
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets[£]\" +\"liabilities[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Net Worth",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1784",
-          "format": "currencyGBP",
-          "logBase": 1,
-          "show": true
+          "interval": "",
+          "legendFormat": "Total Assets",
+          "refId": "A"
         },
         {
-          "$$hashKey": "object:1785",
-          "format": "short",
-          "logBase": 1,
-          "show": true
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Total Liabilities",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Delta",
+          "refId": "C"
         }
       ],
-      "yaxis": {
-        "align": false
-      }
+      "title": "Net Worth",
+      "transparent": true,
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "Delta": "blue",
-        "Liability": "red",
-        "Put Aside": "green"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyGBP"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Delta"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Liability"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Put Aside"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 13
+        "y": 12
       },
-      "hiddenSeries": false,
       "id": 24,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "Put Aside",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:pending:amex[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:pending:amex\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "Put Aside",
+          "refId": "A"
         },
         {
-          "alias": "Liability",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"liabilities:creditcard:amex[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Delta",
-          "groupBy": [],
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"liabilities:creditcard:amex\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:pending:amex[£]\" +\"liabilities:creditcard:amex[£]\" FROM \"market\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Credit Card",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "currencyGBP",
-          "logBase": 1,
-          "show": true
+          "interval": "",
+          "legendFormat": "Liability",
+          "refId": "B"
         },
         {
-          "format": "short",
-          "logBase": 1,
-          "show": true
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:pending:amex\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities:creditcard:amex\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Delta",
+          "refId": "C"
         }
       ],
-      "yaxis": {
-        "align": false
-      }
+      "title": "Credit Card",
+      "transparent": true,
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "Delta": "orange",
-        "Expenses": "red",
-        "Income (net)": "green",
-        "Savings Rate": "dark-blue",
-        "Total Assets": "green",
-        "Total Liabilities": "red"
-      },
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyGBP"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Expenses"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Savings Rate"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "linear"
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": -1
+              },
+              {
+                "id": "custom.axisSoftMax",
+                "value": 1
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              }
+            ]
+          }
+        ]
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 13
+        "y": 12
       },
-      "hiddenSeries": false,
       "id": 58,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:230",
-          "alias": "/(Delta|Savings Rate)/",
-          "bars": false,
-          "lines": true,
-          "linewidth": 3,
-          "steppedLine": false
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right"
         },
-        {
-          "$$hashKey": "object:739",
-          "alias": "Savings Rate",
-          "yaxis": 2
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
+      },
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "alias": "Income (net)",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets[£]\"   FROM \"period\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Expenses",
-          "groupBy": [],
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT -\"expenses[£]\"   FROM \"period\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Delta",
-          "groupBy": [],
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_monthly_decrease{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n- on(target_currency)\r\nsum(hledger_monthly_increase{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets[£]\"-\"expenses[£]\"  FROM \"period\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "interval": "",
+          "legendFormat": "Income (net)",
+          "refId": "A"
         },
         {
-          "alias": "Savings Rate",
-          "groupBy": [],
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_monthly_increase{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n- on(target_currency)\r\nsum(hledger_monthly_increase{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "hide": false,
-          "measurement": "market",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT (\"assets[£]\"-\"expenses[£]\" )/\"assets[£]\" FROM \"period\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "assets[£]"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "liabilities[£]"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "interval": "",
+          "legendFormat": "Expenses",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "# saved income\r\n(\r\n    sum(hledger_monthly_decrease{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_monthly_increase{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n)\r\n\r\n/ on(target_currency)\r\n\r\n# net income\r\n(\r\n    sum(hledger_monthly_decrease{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_monthly_increase{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Savings Rate",
+          "refId": "D"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Cash Flow",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
+      "transformations": [],
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:144",
-          "format": "currencyGBP",
-          "logBase": 1,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:145",
-          "format": "percentunit",
-          "logBase": 1,
-          "max": "1",
-          "min": "-1",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "max": 500,
           "min": 0,
@@ -2834,7 +2001,7 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 21
+        "y": 20
       },
       "id": 43,
       "options": {
@@ -2847,31 +2014,21 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:float[£]\"  + \"assets:cash:starling:float[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:float\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"assets:cash:starling:float\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Float",
@@ -2880,8 +2037,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2913,7 +2070,7 @@
         "h": 6,
         "w": 3,
         "x": 3,
-        "y": 21
+        "y": 20
       },
       "id": 29,
       "options": {
@@ -2929,32 +2086,19 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:charity[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:charity\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Charity",
@@ -2963,8 +2107,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2996,7 +2140,7 @@
         "h": 6,
         "w": 3,
         "x": 6,
-        "y": 21
+        "y": 20
       },
       "id": 78,
       "options": {
@@ -3012,28 +2156,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:gift[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Gift",
@@ -3042,8 +2176,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3075,7 +2209,7 @@
         "h": 6,
         "w": 3,
         "x": 9,
-        "y": 21
+        "y": 20
       },
       "id": 30,
       "options": {
@@ -3091,28 +2225,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:graze[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:graze\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Graze",
@@ -3121,8 +2245,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3154,7 +2278,7 @@
         "h": 6,
         "w": 3,
         "x": 12,
-        "y": 21
+        "y": 20
       },
       "id": 31,
       "options": {
@@ -3170,28 +2294,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:health[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:health\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Health",
@@ -3200,8 +2314,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3233,7 +2347,7 @@
         "h": 6,
         "w": 3,
         "x": 15,
-        "y": 21
+        "y": 20
       },
       "id": 32,
       "options": {
@@ -3249,28 +2363,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:household[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:household\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Household",
@@ -3279,8 +2383,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3313,7 +2417,7 @@
         "h": 6,
         "w": 3,
         "x": 18,
-        "y": 21
+        "y": 20
       },
       "id": 42,
       "options": {
@@ -3329,28 +2433,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:nsi:premium_bonds:move[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments:nsi:premium_bonds:move\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Move",
@@ -3359,8 +2453,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3392,7 +2486,7 @@
         "h": 6,
         "w": 3,
         "x": 21,
-        "y": 21
+        "y": 20
       },
       "id": 37,
       "options": {
@@ -3408,28 +2502,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:starling:patreon[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:starling:patreon\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Patreon",
@@ -3438,8 +2522,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3471,7 +2555,7 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 27
+        "y": 26
       },
       "id": 33,
       "options": {
@@ -3487,28 +2571,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:phone[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:phone\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Phone",
@@ -3517,8 +2591,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3550,7 +2624,7 @@
         "h": 6,
         "w": 3,
         "x": 3,
-        "y": 27
+        "y": 26
       },
       "id": 38,
       "options": {
@@ -3566,28 +2640,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:starling:protonmail[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:starling:protonmail\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Protonmail",
@@ -3596,8 +2660,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3630,7 +2694,7 @@
         "h": 6,
         "w": 3,
         "x": 6,
-        "y": 27
+        "y": 26
       },
       "id": 34,
       "options": {
@@ -3646,28 +2710,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:rent[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:rent\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Rent",
@@ -3676,8 +2730,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3709,7 +2763,7 @@
         "h": 6,
         "w": 3,
         "x": 9,
-        "y": 27
+        "y": 26
       },
       "id": 39,
       "options": {
@@ -3725,28 +2779,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:starling:roll20[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:starling:roll20\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Roll20",
@@ -3755,8 +2799,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3788,7 +2832,7 @@
         "h": 6,
         "w": 3,
         "x": 12,
-        "y": 27
+        "y": 26
       },
       "id": 35,
       "options": {
@@ -3804,28 +2848,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:travel[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:travel\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Travel",
@@ -3834,8 +2868,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3867,7 +2901,7 @@
         "h": 6,
         "w": 3,
         "x": 15,
-        "y": 27
+        "y": 26
       },
       "id": 36,
       "options": {
@@ -3883,28 +2917,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:nationwide:flexdirect:saved:utilities[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:utilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Utilities",
@@ -3913,8 +2937,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3946,7 +2970,7 @@
         "h": 6,
         "w": 3,
         "x": 18,
-        "y": 27
+        "y": 26
       },
       "id": 40,
       "options": {
@@ -3962,28 +2986,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:cash:starling:web[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:starling:web\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Web",
@@ -3992,8 +3006,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -4026,7 +3040,7 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 33
+        "y": 32
       },
       "id": 77,
       "options": {
@@ -4042,32 +3056,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:ajbell:dealing[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments:ajbell:dealing\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "AJ Bell Dealing Account",
@@ -4076,8 +3076,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PEAB762A03FD979A0"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -4110,7 +3110,7 @@
         "h": 6,
         "w": 3,
         "x": 3,
-        "y": 33
+        "y": 32
       },
       "id": 76,
       "options": {
@@ -4126,32 +3126,18 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.4",
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "groupBy": [],
-          "measurement": "normal",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"assets:investments:fidelity:management[£]\" FROM \"normal\" WHERE $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments:fidelity:management\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Fidelity Cash Management Account",
@@ -4164,786 +3150,774 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 38
       },
       "id": 49,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
             },
             "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 34
+            "y": 39
           },
-          "hiddenSeries": false,
           "id": 51,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.5.10",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          "pluginVersion": "8.4.4",
           "targets": [
             {
-              "alias": "BTC",
-              "groupBy": [],
-              "measurement": "market",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"BTC[£]\" FROM \"commodities\" WHERE $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "BTC[£]"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": []
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"BTC\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Bitcoin Unit Value",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
           "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1258",
-              "format": "currencyGBP",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1259",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
             },
             "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 34
+            "y": 39
           },
-          "hiddenSeries": false,
-          "id": 52,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
+          "id": 79,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.5.10",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          "pluginVersion": "8.4.4",
           "targets": [
             {
-              "alias": "ETH",
-              "groupBy": [],
-              "measurement": "market",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"ETH[£]\" FROM \"commodities\" WHERE $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "BTC[£]"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": []
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"ETH\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Ethereum Unit Value",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
           "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1258",
-              "format": "currencyGBP",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1259",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
             },
             "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 34
+            "y": 39
           },
-          "hiddenSeries": false,
-          "id": 53,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
+          "id": 80,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.5.10",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          "pluginVersion": "8.4.4",
           "targets": [
             {
-              "alias": "LTC",
-              "groupBy": [],
-              "measurement": "market",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"LTC[£]\" FROM \"commodities\" WHERE $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "BTC[£]"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": []
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"LTC\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Litecoin Unit Value",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
           "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1258",
-              "format": "currencyGBP",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1259",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 42
+            "y": 47
           },
-          "hiddenSeries": false,
-          "id": 54,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
+          "id": 81,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.5.10",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          "pluginVersion": "8.4.4",
           "targets": [
             {
-              "alias": "EUR",
-              "groupBy": [],
-              "measurement": "market",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"EUR[£]\" FROM \"commodities\" WHERE $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "BTC[£]"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": []
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"EUR\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Euro Unit Value",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
           "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1258",
-              "format": "currencyGBP",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1259",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 42
+            "y": 47
           },
-          "hiddenSeries": false,
-          "id": 55,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
+          "id": 82,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.5.10",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          "pluginVersion": "8.4.4",
           "targets": [
             {
-              "alias": "JPY",
-              "groupBy": [],
-              "measurement": "market",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"JPY[£]\" FROM \"commodities\" WHERE $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "BTC[£]"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": []
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"USD\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Japanese Yen Unit Value",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
+          "title": "US Dollar Unit Value",
           "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1258",
-              "format": "currencyGBP",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1259",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 42
+            "y": 47
           },
-          "hiddenSeries": false,
-          "id": 56,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
+          "id": 83,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.5.10",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          "pluginVersion": "8.4.4",
           "targets": [
             {
-              "alias": "USD",
-              "groupBy": [],
-              "measurement": "market",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"USD[£]\" FROM \"commodities\" WHERE $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "BTC[£]"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": []
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"JPY\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "US Dollar Unit Value",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
+          "title": "Japanese Yen Unit Value",
           "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1258",
-              "format": "currencyGBP",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1259",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
-            "type": "influxdb",
-            "uid": "PEAB762A03FD979A0"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value of 1 VANEA in GBP"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "purple",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 50
+            "y": 55
           },
-          "hiddenSeries": false,
-          "id": 57,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
+          "id": 84,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "7.5.10",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          "pluginVersion": "8.4.4",
           "targets": [
             {
-              "alias": "VANEA",
-              "groupBy": [],
-              "measurement": "market",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"VANEA[£]\" FROM \"commodities\" WHERE $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "BTC[£]"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": []
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"VANEA\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Vanguard LifeStrategy 100% (Acc) Fund Unit Value",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
           "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1258",
-              "format": "currencyGBP",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1259",
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         }
       ],
       "title": "Market Prices",
@@ -4951,36 +3925,15 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 34,
+  "schemaVersion": 35,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "hide": 2,
-        "name": "average_daily_expense",
-        "query": "((last(\"expenses[£]\") - first(\"expenses[£]\") - last(\"expenses:gross[£]\") + first(\"expenses:gross[£]\")) / count(\"expenses[£]\"))",
-        "skipUrlSync": false,
-        "type": "constant"
-      },
-      {
-        "hide": 2,
-        "name": "average_daily_income",
-        "query": "(-(last(\"income[£]\") - first(\"income[£]\")  + last(\"income:gift[£]\") - first(\"income:gift[£]\")) / count(\"income[£]\"))",
-        "skipUrlSync": false,
-        "type": "constant"
-      },
-      {
-        "hide": 2,
         "name": "fire_annual_factor",
         "query": "25",
-        "skipUrlSync": false,
-        "type": "constant"
-      },
-      {
-        "hide": 2,
-        "name": "fire_invested",
-        "query": "(last(\"assets:investments:ajbell[£]\") + last(\"assets:investments:cavendish[£]\") + last(\"assets:investments:fidelity[£]\"))",
         "skipUrlSync": false,
         "type": "constant"
       },
@@ -4991,6 +3944,70 @@
         "query": "30",
         "skipUrlSync": false,
         "type": "constant"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "promscale",
+          "value": "promscale"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "GBP",
+          "value": "GBP"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(hledger_fx_rate,currency)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "currency",
+        "options": [],
+        "query": {
+          "query": "label_values(hledger_fx_rate,currency)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "365",
+          "value": "365"
+        },
+        "hide": 0,
+        "label": "aggregation window (days)",
+        "name": "agg_window",
+        "options": [
+          {
+            "selected": true,
+            "text": "365",
+            "value": "365"
+          }
+        ],
+        "query": "365",
+        "skipUrlSync": false,
+        "type": "textbox"
       }
     ]
   },

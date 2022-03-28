@@ -62,7 +62,6 @@ in
     services.caddy.dataDir = "${toString cfg.persistDir}/var/lib/caddy";
     services.dockerRegistry.storagePath = "${toString cfg.persistDir}/var/lib/docker-registry";
     services.grafana.dataDir = "${toString cfg.persistDir}/var/lib/grafana";
-    services.influxdb.dataDir = "${toString cfg.persistDir}/var/lib/influxdb";
     services.syncthing.dataDir = "${toString cfg.persistDir}/var/lib/syncthing";
 
     # my services
