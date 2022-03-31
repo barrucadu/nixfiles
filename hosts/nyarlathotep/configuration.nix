@@ -14,6 +14,7 @@ let
   finderPort = 3002;
   bookmarksPort = 3003;
   grafanaPort = 3004;
+  promscalePort = 9201;
 in
 {
   ###############################################################################
@@ -209,9 +210,12 @@ in
   };
   systemd.services.bookdb-sync = {
     description = "Upload bookdb data to carcosa";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookdb-sync.sh" (fileContents ./bookdb-sync.sh)}";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
+    path = with pkgs; [ docker openssh ];
+    serviceConfig = {
+      ExecStart = pkgs.writeShellScript "bookdb-sync.sh" (fileContents ./jobs/bookdb-sync.sh);
+      User = "barrucadu";
+      Group = "users";
+    };
   };
 
 
@@ -233,9 +237,12 @@ in
   };
   systemd.services.bookmarks-sync = {
     description = "Upload bookmarks data to carcosa";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c ${pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./bookmarks-sync.sh)}";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
+    path = with pkgs; [ docker openssh ];
+    serviceConfig = {
+      ExecStart = pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./jobs/bookmarks-sync.sh);
+      User = "barrucadu";
+      Group = "users";
+    };
   };
 
 
@@ -292,10 +299,9 @@ in
   services.grafana.rootUrl = "http://grafana.nyarlathotep.lan";
   services.grafana.provision.datasources = [
     {
-      name = "finance";
-      url = "http://localhost:8086";
-      type = "influxdb";
-      database = "finance";
+      name = "promscale";
+      url = "http://localhost:${toString promscalePort}";
+      type = "prometheus";
     }
   ];
   services.grafana.provision.dashboards =
@@ -365,7 +371,7 @@ in
     unitConfig.RequiresMountsFor = "/mnt/nas";
     serviceConfig = {
       WorkingDirectory = "/mnt/nas/music/Podcasts/";
-      ExecStart = pkgs.writeShellScript "tag-podcasts.sh" (fileContents ./tag-podcasts.sh);
+      ExecStart = pkgs.writeShellScript "tag-podcasts.sh" (fileContents ./jobs/tag-podcasts.sh);
       User = "barrucadu";
       Group = "users";
       Restart = "always";
@@ -383,7 +389,7 @@ in
     path = with pkgs; [ flac ];
     serviceConfig = {
       WorkingDirectory = "/mnt/nas/music/to_convert/in/";
-      ExecStart = pkgs.writeShellScript "flac-and-tag-album.sh" (fileContents ./flac-and-tag-album.sh);
+      ExecStart = pkgs.writeShellScript "flac-and-tag-album.sh" (fileContents ./jobs/flac-and-tag-album.sh);
       User = "barrucadu";
       Group = "users";
     };
@@ -394,21 +400,70 @@ in
   # https://github.com/barrucadu/hledger-scripts
   ###############################################################################
 
-  services.influxdb.enable = true;
-  # override collectd config to not pull in the collectd-data package
-  services.influxdb.extraConfig = { collectd = [{ enabled = false; }]; };
-
-  systemd.timers.hledger-scripts = {
+  systemd.timers.hledger-fetch-fx-rates = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "*-*-* 21:00:00";
     };
   };
-  systemd.services.hledger-scripts = {
-    description = "Run hledger scripts";
-    serviceConfig.WorkingDirectory = "/home/barrucadu/projects/hledger-scripts";
-    serviceConfig.ExecStart = "${pkgs.zsh}/bin/zsh --login -c 'env LEDGER_FILE=/home/barrucadu/s/ledger/combined.journal ./sync.sh'";
-    serviceConfig.User = "barrucadu";
-    serviceConfig.Group = "users";
+  systemd.services.hledger-fetch-fx-rates = {
+    description = "Download GBP exchange rates for commodities";
+    path = with pkgs; [ hledger ];
+    serviceConfig = {
+      ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "hledger-fetch-fx-rates.py" (fileContents ./jobs/hledger-fetch-fx-rates.py)}";
+      User = "barrucadu";
+      Group = "users";
+    };
+    environment = {
+      PYTHONPATH =
+        let penv = pkgs.python3.buildEnv.override { extraLibs = with pkgs.python3Packages; [ requests ]; };
+        in "${penv}/${pkgs.python3.sitePackages}/";
+      PRICE_FILE = "/home/barrucadu/s/ledger/prices";
+    };
+  };
+
+  systemd.timers.hledger-export-to-promscale = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+    };
+  };
+  systemd.services.hledger-export-to-promscale = {
+    description = "Export personal finance data to promscale";
+    path = with pkgs; [ hledger ];
+    serviceConfig = {
+      ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "hledger-export-to-promscale.py" (fileContents ./jobs/hledger-export-to-promscale.py)}";
+      User = "barrucadu";
+      Group = "users";
+    };
+    environment = {
+      PYTHONPATH =
+        let penv = pkgs.python3.buildEnv.override { extraLibs = with pkgs.python3Packages; [ requests ]; };
+        in "${penv}/${pkgs.python3.sitePackages}/";
+      LEDGER_FILE = "/home/barrucadu/s/ledger/combined.journal";
+      PROMSCALE_URI = "http://localhost:${toString promscalePort}";
+    };
+  };
+
+  virtualisation.oci-containers.containers.promscale = {
+    autoStart = true;
+    image = "timescale/promscale:latest";
+    cmd = [ "-db.host=promscale-db" "-db.name=postgres" "-db.password=promscale" "-db.ssl-mode=allow" "-web.enable-admin-api=true" "-metrics.promql.lookback-delta=168h" ];
+    extraOptions = [ "--network=promscale_network" ];
+    dependsOn = [ "promscale-db" ];
+    ports = [ "127.0.0.1:${toString promscalePort}:9201" ];
+  };
+  virtualisation.oci-containers.containers.promscale-db = {
+    autoStart = true;
+    image = "timescaledev/promscale-extension:latest-ts2-pg14";
+    environment = {
+      POSTGRES_PASSWORD = "promscale";
+    };
+    extraOptions = [ "--network=promscale_network" ];
+    volumes = [ "/persist/docker-volumes/promscale/pgdata:/var/lib/postgresql/data" ];
+  };
+  systemd.services."${ociBackend}-promscale-db" = {
+    preStart = "${ociBackend} network create -d bridge promscale_network || true";
+    serviceConfig = serviceConfigForContainerLogging;
   };
 }
