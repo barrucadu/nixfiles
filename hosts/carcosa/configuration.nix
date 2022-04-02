@@ -54,6 +54,7 @@ in
 
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
+  modules.eraseYourDarlings.machineId = "64b1b10f3bef4616a7faf5edf1ef3ca5";
   modules.eraseYourDarlings.barrucaduHashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
 
 
