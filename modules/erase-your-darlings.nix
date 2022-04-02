@@ -13,6 +13,7 @@ in
         barrucaduHashedPassword = mkOption { type = types.str; };
         rootSnapshot = mkOption { type = types.str; default = "local/volatile/root@blank"; };
         persistDir = mkOption { type = types.path; default = "/persist"; };
+        machineId = mkOption { type = types.str; };
       };
     };
   };
@@ -22,6 +23,13 @@ in
     boot.initrd.postDeviceCommands = mkAfter ''
       zfs rollback -r ${cfg.rootSnapshot}
     '';
+
+    # Set /etc/machine-id, so that journalctl can access logs from
+    # previous boots.
+    environment.etc.machine-id = {
+      text = "${cfg.machineId}\n";
+      mode = "0444";
+    };
 
     # Switch back to immutable users
     users.mutableUsers = mkForce false;
