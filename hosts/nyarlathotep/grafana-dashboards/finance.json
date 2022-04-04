@@ -22,7 +22,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1648752964783,
+  "iteration": 1649092423307,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -3854,16 +3854,115 @@
                   {
                     "id": "color",
                     "value": {
-                      "fixedColor": "blue",
+                      "fixedColor": "purple",
                       "mode": "fixed"
                     }
                   }
                 ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 55
+          },
+          "id": 84,
+          "links": [],
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.4.4",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
               },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"LGIMDP\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Legal & General Ethical Global Equity (DP) Fund Unit Value",
+          "transparent": true,
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
+            },
+            "overrides": [
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Value of 1 VANEA in GBP"
+                  "options": "Value"
                 },
                 "properties": [
                   {
@@ -3880,10 +3979,10 @@
           "gridPos": {
             "h": 8,
             "w": 8,
-            "x": 0,
+            "x": 8,
             "y": 55
           },
-          "id": 84,
+          "id": 86,
           "links": [],
           "options": {
             "legend": {
@@ -3965,7 +4064,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "GBP",
           "value": "GBP"
         },
