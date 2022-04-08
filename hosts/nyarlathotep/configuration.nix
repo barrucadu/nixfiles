@@ -15,6 +15,8 @@ let
   bookmarksPort = 3003;
   grafanaPort = 3004;
   promscalePort = 9201;
+  prometheusSpeedtestExporterPort = 9516;
+  prometheusAwairExporterPort = 9517;
 in
 {
   ###############################################################################
@@ -320,36 +322,51 @@ in
       job_name = "speedtest";
       scrape_interval = "5m";
       scrape_timeout = "2m";
-      static_configs = [{ targets = [ "localhost:9516" ]; }];
+      static_configs = [{ targets = [ "localhost:${toString prometheusSpeedtestExporterPort}" ]; }];
     }
     {
       job_name = "awair";
-      static_configs = [{ targets = [ "localhost:9517" ]; }];
+      static_configs = [{ targets = [ "localhost:${toString prometheusAwairExporterPort}" ]; }];
     }
   ];
 
   virtualisation.oci-containers.containers.prometheus-speedtest-exporter = {
     autoStart = true;
     image = "localhost:5000/prometheus-speedtest-exporter";
-    ports = [ "127.0.0.1:9516:8888" ];
+    ports = [ "127.0.0.1:${toString prometheusSpeedtestExporterPort}:8888" ];
   };
   systemd.services."${ociBackend}-prometheus-speedtest-exporter" = {
     wantedBy = [ "prometheus.service" ];
     serviceConfig = serviceConfigForContainerLogging;
   };
 
-  virtualisation.oci-containers.containers.prometheus-awair-exporter = {
-    autoStart = true;
-    image = "localhost:5000/prometheus-awair-exporter";
-    environment = {
-      "SENSORS" = "living-room=10.0.20.117";
+  systemd.services.prometheus-awair-exporter =
+    let
+      package = { buildGoModule, fetchFromGitHub, ... }: buildGoModule rec {
+        pname = "prometheus-awair-exporter";
+        version = "f154bbdc401886a1311d80d19d4461a0915ed310";
+
+        src = fetchFromGitHub {
+          owner = "barrucadu";
+          repo = pname;
+          rev = version;
+          sha256 = "180ys8ghm82l2l53wz3bhhjqjvrj4a2iv0xq66w9dbvsyw2mc863";
+        };
+
+        vendorSha256 = "1px1zzfihhdazaj31id1nxl6b09vy2yxj6wz5gv5f7mzdqdlmxxl";
+      };
+      prometheus_awair_exporter = pkgs.callPackage package { };
+    in
+    {
+      description = "barrucadu/prometheus-awair-exporter metrics exporter";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
+      serviceConfig = {
+        ExecStart = "${prometheus_awair_exporter}/bin/prometheus-awair-exporter --address 127.0.0.1:${toString prometheusAwairExporterPort} --sensor living-room:10.0.20.117";
+        DynamicUser = "true";
+        Restart = "on-failure";
+      };
     };
-    ports = [ "127.0.0.1:9517:8888" ];
-  };
-  systemd.services."${ociBackend}-prometheus-awair-exporter" = {
-    wantedBy = [ "prometheus.service" ];
-    serviceConfig = serviceConfigForContainerLogging;
-  };
 
 
   ###############################################################################
