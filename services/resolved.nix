@@ -50,7 +50,7 @@ in
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         ExecStart = "${resolved}/bin/resolved -i ${cfg.interface} --metrics-port ${toString cfg.metrics_port} ${if cfg.authoritative_only then "--authoritative-only " else ""}${if cfg.forward_address != null then "--forward-address ${cfg.forward_address} " else ""}-s ${toString cfg.cache_size} ${hosts_dirs} ${zones_dirs}";
         ExecReload = "${pkgs.coreutils}/bin/kill -USR1 $MAINPID";
-        User = "nobody";
+        DynamicUser = "true";
         Restart = "on-failure";
       };
       environment = {
