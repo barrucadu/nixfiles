@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -58,14 +58,7 @@ in
       "L+ /etc/nixos - - - - ${toString cfg.persistDir}/etc/nixos"
     ];
 
-    systemd.services.prometheus-statedir = {
-      enable = config.services.prometheus.enable;
-      description = "Bind-mount prometheus StateDirectory";
-      after = [ "local-fs.target" ];
-      wantedBy = [ "prometheus.service" ];
-      serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/${config.services.prometheus.stateDir}";
-      serviceConfig.ExecStart = "${pkgs.utillinux}/bin/mount -o bind ${toString cfg.persistDir}/var/lib/${config.services.prometheus.stateDir} /var/lib/${config.services.prometheus.stateDir}";
-    };
+    systemd.services.prometheus.serviceConfig.BindPaths = "${toString cfg.persistDir}/var/lib/${config.services.prometheus.stateDir}:/var/lib/${config.services.prometheus.stateDir}";
 
     services.caddy.dataDir = "${toString cfg.persistDir}/var/lib/caddy";
     services.dockerRegistry.storagePath = "${toString cfg.persistDir}/var/lib/docker-registry";
