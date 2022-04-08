@@ -14,6 +14,7 @@ let
   finderPort = 3002;
   bookmarksPort = 3003;
   grafanaPort = 3004;
+  wikijsPort = 3005;
   promscalePort = 9201;
   prometheusSpeedtestExporterPort = 9516;
   prometheusAwairExporterPort = 9517;
@@ -156,6 +157,12 @@ in
       reverse_proxy http://localhost:${toString config.services.prometheus.port}
     }
 
+    http://wiki.nyarlathotep.lan:80 {
+      import restrict_vlan
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.wikijs.httpPort}
+    }
+
     http://help.lan:80 {
       import vlan_matchers
       redir @vlan1 http://vlan1.help.lan 302
@@ -257,6 +264,14 @@ in
   services.finder.image = "localhost:5000/finder:latest";
   services.finder.httpPort = finderPort;
   services.finder.mangaDir = "/mnt/nas/manga";
+
+
+  ###############################################################################
+  ## wiki.js
+  ###############################################################################
+
+  services.wikijs.enable = true;
+  services.wikijs.httpPort = wikijsPort;
 
 
   ###############################################################################
