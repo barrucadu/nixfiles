@@ -75,5 +75,6 @@ in
     services.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
     services.pleroma.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/pleroma";
     services.umami.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/umami";
+    services.wikijs.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/wikijs";
   };
 }

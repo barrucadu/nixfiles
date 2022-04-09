@@ -18,5 +18,6 @@
     ./services/pleroma.nix
     ./services/resolved.nix
     ./services/umami.nix
+    ./services/wikijs.nix
   ];
 }
