@@ -1,2 +1,14 @@
 # Moved to RPG blog
 redir /call-of-cthulhu-dice-rolls.html https://www.lookwhattheshoggothdraggedin.com/post/dice-rolls-in-call-of-cthulhu.html permanent
+
+# Moved to personal wiki
+respond /taxon/self-recipes.html 410
+respond /taxon/self-recipes.xml 410
+respond /recipe-pasta-bake.html 410
+respond /recipe-chilli-slow-cooker.html 410
+respond /recipe-flapjacks.html 410
+respond /kitchen-staples.html 410
+respond /recipe-bread.html 410
+respond /recipe-chilli.html 410
+respond /recipe-bolognese.html 410
+respond /recipe-cottage-pie.html 410
