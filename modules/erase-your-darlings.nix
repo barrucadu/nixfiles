@@ -71,7 +71,6 @@ in
     services.commento.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/commento";
     services.concourse.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/concourse";
     services.finder.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/finder";
-    services.gitea.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/gitea";
     services.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
     services.pleroma.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/pleroma";
     services.umami.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/umami";

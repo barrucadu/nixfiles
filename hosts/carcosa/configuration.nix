@@ -6,7 +6,6 @@ let
   bookdbPort = 3001;
   bookmarksPort = 3002;
   concoursePort = 3003;
-  giteaPort = 3004;
   commentoPort = 3005;
   umamiPort = 3006;
   pleromaPort = 3007;
@@ -181,11 +180,6 @@ in
       }
     }
 
-    git.barrucadu.dev {
-      import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.gitea.httpPort}
-    }
-
     registry.barrucadu.dev {
       import common_config
       basicauth /v2/* {
@@ -327,10 +321,6 @@ in
   services.concourse.ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
   services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
   services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
-
-  # gitea
-  services.gitea.enable = true;
-  services.gitea.httpPort = giteaPort;
 
   # Look what the Shoggoth Dragged In
   services.commento.enable = true;
