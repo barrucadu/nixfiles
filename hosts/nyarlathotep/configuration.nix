@@ -293,18 +293,14 @@ in
       };
     };
 
-  # todo: either dockerise this or properly package it
   systemd.services.flood = {
     enable = true;
     wantedBy = [ "default.target" ];
     after = [ "network.target" ];
-    path = [ pkgs.bash pkgs.nodejs-12_x ];
     serviceConfig = {
-      ExecStart = "${pkgs.nodejs-12_x}/bin/npm start";
+      ExecStart = "${pkgs.flood}/bin/flood --noauth --port=${toString floodPort} --rundir=/persist/rtorrent/flood --rtsocket=/tmp/rtorrent-rpc.socket";
       User = "barrucadu";
-      KillMode = "none";
       Restart = "on-failure";
-      WorkingDirectory = "${toString config.modules.eraseYourDarlings.persistDir}/flood";
     };
   };
 
