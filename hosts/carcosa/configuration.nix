@@ -281,7 +281,7 @@ in
   # Docker registry
   services.dockerRegistry.enable = true;
   services.dockerRegistry.enableDelete = true;
-  services.dockerRegistry.garbageCollectDates = "daily";
+  services.dockerRegistry.enableGarbageCollect = true;
   services.dockerRegistry.port = dockerRegistryPort;
 
   # bookdb

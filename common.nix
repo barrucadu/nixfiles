@@ -84,11 +84,8 @@ with lib;
 
     # Use docker for all the OCI container based services
     virtualisation.docker.enable = true;
-    virtualisation.oci-containers.backend = "docker";
-
-    # Run the docker daemon & registry, just in case it's handy.
     virtualisation.docker.autoPrune.enable = true;
-    services.dockerRegistry.enableGarbageCollect = config.services.dockerRegistry.enable;
+    virtualisation.oci-containers.backend = "docker";
 
 
     #############################################################################
