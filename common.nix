@@ -9,7 +9,7 @@ with lib;
     #############################################################################
 
     # The NixOS release to be compatible with for stateful data such as databases.
-    system.stateVersion = "17.03";
+    system.stateVersion = "21.11";
 
     # Only keep the last 500MiB of systemd journal.
     services.journald.extraConfig = "SystemMaxUse=500M";
