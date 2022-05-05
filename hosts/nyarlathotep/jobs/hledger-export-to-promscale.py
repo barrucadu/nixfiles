@@ -8,6 +8,8 @@ import os
 import subprocess
 import sys
 
+from decimal import Decimal
+
 
 DRY_RUN = "--dry-run" in sys.argv
 
@@ -64,6 +66,15 @@ def pivot(samples_by_timestamp):
     return pivoted
 
 
+def convert_samples(samples):
+    """Turn `[timestamp, float or int or decimal]` to `[timestamp, float or int]`"""
+
+    return [
+        [timestamp, value if isinstance(value, int) else float(value)]
+        for timestamp, value in samples
+    ]
+
+
 def metric_hledger_fx_rate(gbp_fx_rates):
     """`hledger_fx_rate{currency="xxx", target_currency="xxx"}`
 
@@ -86,7 +97,7 @@ def metric_hledger_fx_rate(gbp_fx_rates):
     for price in gbp_fx_rates:
         _, date, from_currency, gbp_exchange_rate = price.split()
         timestamp = date_to_timestamp(date)
-        gbp_exchange_rate = float(gbp_exchange_rate[1:])
+        gbp_exchange_rate = Decimal(gbp_exchange_rate[1:])
 
         new_rates = gbp_fx_rates_by_timestamp.get(timestamp, {})
         new_rates[from_currency] = gbp_exchange_rate
@@ -125,8 +136,8 @@ def metric_hledger_balance(postings):
     for posting in postings:
         timestamp = date_to_timestamp(posting["date"])
         currency = posting["commodity"]
-        decrease = float(posting["credit"] or "0")
-        increase = float(posting["debit"] or "0")
+        decrease = Decimal(posting["credit"] or "0")
+        increase = Decimal(posting["debit"] or "0")
 
         if currency == "£":
             currency = "GBP"
@@ -168,7 +179,7 @@ def metric_hledger_monthly_credits_debits(postings, field):
         timestamp = calendar.timegm(parsed.replace(day=1).timetuple()) * 1000
 
         currency = posting["commodity"]
-        delta = float(posting[field] or "0")
+        delta = Decimal(posting[field] or "0")
 
         if currency == "£":
             currency = "GBP"
@@ -245,7 +256,7 @@ for name, values in metrics.items():
 
         labels = dict(labels_tuples)
         labels["__name__"] = name
-        json = {"labels": labels, "samples": samples}
+        json = {"labels": labels, "samples": convert_samples(samples)}
 
         if DRY_RUN:
             print(json)
