@@ -75,6 +75,43 @@ def convert_samples(samples):
     ]
 
 
+def preprocess_group_credits_debits(postings):
+    """Group postings by date and work out the total debit / credit for
+    each account.  This is then used to simplify other metrics.
+
+    Postings are applied to an account and all of its superaccounts.
+    """
+
+    key = lambda account, currency: (("account", account), ("currency", currency))
+
+    # credits_debits_by_date :: date => key => {credit, debit}
+    credits_debits_by_date = {}
+    for posting in postings:
+        currency = posting["commodity"]
+        credit = Decimal(posting["credit"] or "0")
+        debit = Decimal(posting["debit"] or "0")
+
+        if currency == "£":
+            currency = "GBP"
+
+        credits_debits = credits_debits_by_date.get(posting["date"], {})
+        account = None
+        for segment in posting["account"].split(":"):
+            if account is None:
+                account = segment
+            else:
+                account = f"{account}:{segment}"
+
+            old = credits_debits.get(key(account, currency), {"credit": 0, "debit": 0})
+            credits_debits[key(account, currency)] = {
+                "credit": old["credit"] + credit,
+                "debit": old["debit"] + debit,
+            }
+        credits_debits_by_date[posting["date"]] = credits_debits
+
+    return credits_debits_by_date
+
+
 def metric_hledger_fx_rate(gbp_fx_rates):
     """`hledger_fx_rate{currency="xxx", target_currency="xxx"}`
 
@@ -119,7 +156,7 @@ def metric_hledger_fx_rate(gbp_fx_rates):
     return pivot(fx_rates_by_timestamp)
 
 
-def metric_hledger_balance(postings):
+def metric_hledger_balance(credits_debits):
     """`hledger_balance{account="xxx", currency="xxx"}`
 
     Accounts are propagated forward in time: if an account is seen at
@@ -129,36 +166,18 @@ def metric_hledger_balance(postings):
     Postings are applied to an account and all of its superaccounts.
     """
 
-    key = lambda account, currency: (("account", account), ("currency", currency))
-
     # deltas_by_timestamp :: timestamp => key => delta
     deltas_by_timestamp = {}
-    for posting in postings:
-        timestamp = date_to_timestamp(posting["date"])
-        currency = posting["commodity"]
-        decrease = Decimal(posting["credit"] or "0")
-        increase = Decimal(posting["debit"] or "0")
-
-        if currency == "£":
-            currency = "GBP"
-
-        deltas = deltas_by_timestamp.get(timestamp, {})
-        account = None
-        for segment in posting["account"].split(":"):
-            if account is None:
-                account = segment
-            else:
-                account = f"{account}:{segment}"
-
-            deltas[key(account, currency)] = (
-                deltas.get(key(account, currency), 0) + increase - decrease
-            )
-        deltas_by_timestamp[timestamp] = deltas
+    for date, kcds in credits_debits.items():
+        timestamp = date_to_timestamp(date)
+        deltas_by_timestamp[timestamp] = {
+            key: cd["debit"] - cd["credit"] for key, cd in kcds.items()
+        }
 
     return pivot(running_totals(deltas_by_timestamp))
 
 
-def metric_hledger_monthly_credits_debits(postings, field):
+def metric_hledger_monthly_credits_debits(credits_debits, field):
     """`hledger_monthly_xxx{account="xxx", currency="xxx"}`
 
     Like `hledger_balance` but only sums the credits or debits (these
@@ -170,31 +189,15 @@ def metric_hledger_monthly_credits_debits(postings, field):
     present.
     """
 
-    key = lambda account, currency: (("account", account), ("currency", currency))
-
     # deltas_by_timestamp :: timestamp => key => delta
     deltas_by_timestamp = {}
-    for posting in postings:
-        parsed = datetime.datetime.strptime(posting["date"], "%Y-%m-%d")
+    for date, kcds in credits_debits.items():
+        parsed = datetime.datetime.strptime(date, "%Y-%m-%d")
         timestamp = calendar.timegm(parsed.replace(day=1).timetuple()) * 1000
 
-        currency = posting["commodity"]
-        delta = Decimal(posting[field] or "0")
-
-        if currency == "£":
-            currency = "GBP"
-
         deltas = deltas_by_timestamp.get(timestamp, {})
-        account = None
-        for segment in posting["account"].split(":"):
-            if account is None:
-                account = segment
-            else:
-                account = f"{account}:{segment}"
-
-            deltas[key(account, currency)] = (
-                deltas.get(key(account, currency), 0) + delta
-            )
+        for key, cd in kcds.items():
+            deltas[key] = deltas.get(key, 0) + cd[field]
         deltas_by_timestamp[timestamp] = deltas
 
     del deltas_by_timestamp[max(deltas_by_timestamp.keys())]
@@ -234,15 +237,16 @@ raw_prices = hledger_command(["prices"]).splitlines()
 raw_postings = list(
     csv.DictReader(io.StringIO(hledger_command(["print", "-O", "csv"])))
 )
+credits_debits = preprocess_group_credits_debits(raw_postings)
 
 metrics = {
     "hledger_fx_rate": metric_hledger_fx_rate(raw_prices),
-    "hledger_balance": metric_hledger_balance(raw_postings),
+    "hledger_balance": metric_hledger_balance(credits_debits),
     "hledger_monthly_increase": metric_hledger_monthly_credits_debits(
-        raw_postings, "debit"
+        credits_debits, "debit"
     ),
     "hledger_monthly_decrease": metric_hledger_monthly_credits_debits(
-        raw_postings, "credit"
+        credits_debits, "credit"
     ),
     "hledger_transactions_total": metric_hledger_transactions_total(raw_postings),
 }
