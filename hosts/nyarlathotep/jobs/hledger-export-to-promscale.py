@@ -205,6 +205,57 @@ def metric_hledger_monthly_credits_debits(credits_debits, field):
     return pivot(deltas_by_timestamp)
 
 
+def metric_hledger_age_of_money(credits_debits):
+    """`hledger_age_of_money{account="xxx", currency="xxx"}`
+
+    Gives the age (in days) of the oldest unit of money in that
+    account.  Age is calculated by taking the net change of every day,
+    if it's positive putting it in a new bucket, and if it's negative
+    taking it from the oldest bucket.  The age is then the age of the
+    oldest nonempty bucket.
+    """
+
+    # deltas_by_timestamp :: timestamp => key => delta
+    deltas_by_timestamp = {}
+    for date, kcds in credits_debits.items():
+        timestamp = date_to_timestamp(date)
+        deltas_by_timestamp[timestamp] = {
+            key: cd["debit"] - cd["credit"] for key, cd in kcds.items()
+        }
+
+    # ages_by_timestamp :: timestamp => key => days
+    ages_by_timestamp = {}
+    buckets_by_key = {}
+    ages = {}
+    for timestamp in sorted(deltas_by_timestamp.keys()):
+        for key, delta in deltas_by_timestamp[timestamp].items():
+            ages[key] = ages.get(key, 0)
+            buckets = buckets_by_key.get(key, [])
+            if delta > 0:
+                if len(buckets) == 0:
+                    buckets = [(timestamp, delta)]
+                else:
+                    _, latest_value = buckets[-1]
+                    buckets.append((timestamp, latest_value + delta))
+            elif delta < 0:
+                buckets = [
+                    (timestamp, value + delta)
+                    for timestamp, value in buckets
+                    if value > -delta
+                ]
+            buckets_by_key[key] = buckets
+        for key in list(ages.keys()):
+            buckets = buckets_by_key[key]
+            if len(buckets) == 0:
+                ages[key] = 0
+            else:
+                first_timestamp, _ = buckets[0]
+                ages[key] = int((timestamp - first_timestamp) / 86400000)
+        ages_by_timestamp[timestamp] = {k: v for k, v in ages.items()}
+
+    return pivot(ages_by_timestamp)
+
+
 def metric_hledger_transactions_total(postings):
     """`hledger_transactions_total{status="(pending|bookkeeping|cleared)"}`"""
 
@@ -248,6 +299,7 @@ metrics = {
     "hledger_monthly_decrease": metric_hledger_monthly_credits_debits(
         credits_debits, "credit"
     ),
+    "hledger_age_of_money": metric_hledger_age_of_money(credits_debits),
     "hledger_transactions_total": metric_hledger_transactions_total(raw_postings),
 }
 
