@@ -11,15 +11,6 @@ import time
 DRY_RUN = "--dry-run" in sys.argv
 
 
-def get_coinbase(symbol):
-    r = requests.get(
-        f"https://api.coinbase.com/v2/prices/{symbol}-GBP/spot/",
-        headers={"CB-VERSION": "2018-05-25"},
-    )
-    r.raise_for_status()
-    return r.json()["data"]["amount"]
-
-
 def get_financial_times(url):
     class PriceFinder(HTMLParser):
         def __init__(self):
@@ -92,9 +83,6 @@ def get_lgim_fund(path):
 DATE = time.strftime("%Y-%m-%d")
 
 COMMODITIES = [
-    ("BTC", get_coinbase),
-    ("ETH", get_coinbase),
-    ("LTC", get_coinbase),
     ("EUR", get_financial_times_currency),
     ("JPY", get_financial_times_currency),
     ("USD", get_financial_times_currency),

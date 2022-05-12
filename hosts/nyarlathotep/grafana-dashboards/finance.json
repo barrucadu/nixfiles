@@ -22,7 +22,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1649092423307,
+  "iteration": 1652375351449,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -76,7 +76,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -149,7 +149,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -221,7 +221,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -293,7 +293,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -363,7 +363,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -429,7 +429,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -513,7 +513,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -1090,7 +1090,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -1174,7 +1174,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -1258,7 +1258,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -1342,7 +1342,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -1426,7 +1426,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2016,7 +2016,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2086,7 +2086,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2156,7 +2156,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2225,7 +2225,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2294,7 +2294,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2363,7 +2363,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2433,7 +2433,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2502,7 +2502,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2571,7 +2571,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2640,7 +2640,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2710,7 +2710,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2779,7 +2779,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2848,7 +2848,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2917,7 +2917,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -2986,7 +2986,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -3056,7 +3056,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -3126,7 +3126,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.4.7",
       "targets": [
         {
           "datasource": {
@@ -3208,300 +3208,6 @@
               },
               "unit": "currencyGBP"
             },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 0,
-            "y": 39
-          },
-          "id": 51,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean",
-                "lastNotNull",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "bottom"
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.4.4",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "exemplar": true,
-              "expr": "hledger_fx_rate{currency=\"BTC\",target_currency=\"$currency\"}",
-              "interval": "",
-              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Bitcoin Unit Value",
-          "transparent": true,
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 15,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "stepAfter",
-                "lineStyle": {
-                  "fill": "solid"
-                },
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "links": [],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "currencyGBP"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 8,
-            "y": 39
-          },
-          "id": 79,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean",
-                "lastNotNull",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "bottom"
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.4.4",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "exemplar": true,
-              "expr": "hledger_fx_rate{currency=\"ETH\",target_currency=\"$currency\"}",
-              "interval": "",
-              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Ethereum Unit Value",
-          "transparent": true,
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 15,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "stepAfter",
-                "lineStyle": {
-                  "fill": "solid"
-                },
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "links": [],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "currencyGBP"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 16,
-            "y": 39
-          },
-          "id": 80,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean",
-                "lastNotNull",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "bottom"
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.4.4",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "exemplar": true,
-              "expr": "hledger_fx_rate{currency=\"LTC\",target_currency=\"$currency\"}",
-              "interval": "",
-              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Litecoin Unit Value",
-          "transparent": true,
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 15,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "stepAfter",
-                "lineStyle": {
-                  "fill": "solid"
-                },
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "links": [],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "currencyGBP"
-            },
             "overrides": [
               {
                 "matcher": {
@@ -3524,7 +3230,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 47
+            "y": 39
           },
           "id": 81,
           "links": [],
@@ -3609,8 +3315,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -3638,7 +3343,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 47
+            "y": 39
           },
           "id": 82,
           "links": [],
@@ -3723,8 +3428,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -3752,7 +3456,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 47
+            "y": 39
           },
           "id": 83,
           "links": [],
@@ -3837,8 +3541,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -3866,7 +3569,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 55
+            "y": 47
           },
           "id": 84,
           "links": [],
@@ -3951,8 +3654,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -3980,7 +3682,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 55
+            "y": 47
           },
           "id": 86,
           "links": [],
@@ -4064,7 +3766,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "GBP",
           "value": "GBP"
         },
