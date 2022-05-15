@@ -11,6 +11,7 @@ let
   pleromaPort = 3007;
   concourseMetricsPort = 3009;
   grafanaPort = 3010;
+  foundryPort = 3011;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -127,6 +128,11 @@ in
     bookmarks.barrucadu.co.uk {
       import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.httpPort}
+    }
+
+    foundry.barrucadu.co.uk {
+      import common_config
+      reverse_proxy http://localhost:${toString foundryPort}
     }
 
     memo.barrucadu.co.uk {
@@ -344,6 +350,27 @@ in
     jar = "fabric-server-launch.jar";
   };
 
+  # Foundry VTT
+  systemd.services.foundryvtt = {
+    enable = true;
+    description = "Foundry Virtual Tabletop";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.nodejs-17_x}/bin/node resources/app/main.js --dataPath=/persist/srv/foundry/data --port=${toString foundryPort}";
+      Restart = "always";
+      User = "foundryvtt";
+      WorkingDirectory = "/persist/srv/foundry/bin";
+    };
+  };
+  users.users.foundryvtt = {
+    description = "Foundry VTT service user";
+    home = "/persist/srv/foundry";
+    createHome = true;
+    isSystemUser = true;
+    group = "nogroup";
+  };
+
 
   ###############################################################################
   ## Miscellaneous
@@ -373,6 +400,16 @@ in
         { command = "${pkgs.systemd}/bin/systemctl restart docker-bookdb"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart docker-bookmarks"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart docker-pleroma"; options = [ "NOPASSWD" ]; }
+      ];
+    }
+    # for backup scripts
+    {
+      users = [ "barrucadu" ];
+      commands = [
+        { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.gnutar}/bin/tar cfz foundryvtt.tar.gz /persist/srv/foundry"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.coreutils}/bin/chown barrucadu.users foundryvtt.tar.gz"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
