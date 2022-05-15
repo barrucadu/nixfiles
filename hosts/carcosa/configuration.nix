@@ -11,6 +11,7 @@ let
   pleromaPort = 3007;
   concourseMetricsPort = 3009;
   grafanaPort = 3010;
+  foundryPort = 3011;
 
   pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
     set -e
@@ -127,6 +128,11 @@ in
     bookmarks.barrucadu.co.uk {
       import common_config
       reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.httpPort}
+    }
+
+    foundry.barrucadu.co.uk {
+      import common_config
+      reverse_proxy http://localhost:${toString foundryPort}
     }
 
     memo.barrucadu.co.uk {
@@ -342,6 +348,27 @@ in
   services.minecraft.servers.tea = {
     port = 25565;
     jar = "fabric-server-launch.jar";
+  };
+
+  # Foundry VTT
+  systemd.services.foundryvtt = {
+    enable = true;
+    description = "Foundry Virtual Tabletop";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.nodejs-17_x}/bin/node resources/app/main.js --dataPath=/persist/srv/foundry/data --port=${toString foundryPort}";
+      Restart = "always";
+      User = "foundryvtt";
+      WorkingDirectory = "/persist/srv/foundry/bin";
+    };
+  };
+  users.users.foundryvtt = {
+    description = "Foundry VTT service user";
+    home = "/persist/srv/foundry";
+    createHome = true;
+    isSystemUser = true;
+    group = "nogroup";
   };
 
 
