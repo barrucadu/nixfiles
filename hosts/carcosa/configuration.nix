@@ -402,6 +402,16 @@ in
         { command = "${pkgs.systemd}/bin/systemctl restart docker-pleroma"; options = [ "NOPASSWD" ]; }
       ];
     }
+    # for backup scripts
+    {
+      users = [ "barrucadu" ];
+      commands = [
+        { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.gnutar}/bin/tar cfz foundryvtt.tar.gz /persist/srv/foundry"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.coreutils}/bin/chown barrucadu.users foundryvtt.tar.gz"; options = [ "NOPASSWD" ]; }
+      ];
+    }
   ];
 
   # Extra packages
