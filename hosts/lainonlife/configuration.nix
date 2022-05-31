@@ -74,7 +74,7 @@ in
 
   # Web server
   services.caddy.enable = true;
-  services.caddy.config = ''
+  services.caddy.extraConfig = ''
     (common_config) {
       encode gzip
 
@@ -120,17 +120,14 @@ in
   '';
 
   services.logrotate.enable = true;
-  services.logrotate.config = ''
-    /var/log/icecast/access.log /var/log/icecast/error.log {
-        daily
-        copytruncate
-        rotate 1
-        compress
-        postrotate
-            systemctl kill icecast.service --signal=HUP
-        endscript
-    }
-  '';
+  services.logrotate.settings.icecast = {
+    files = [ "/var/log/icecast/access.log" "/var/log/icecast/error.log" ];
+    frequency = "daily";
+    copytruncate = true;
+    rotate = 1;
+    compress = true;
+    postrotate = "systemctl kill icecast.service --signal=HUP";
+  };
 
   # Radio
   users.extraUsers."${radio.username}" = radio.userSettings;

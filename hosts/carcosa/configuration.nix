@@ -64,7 +64,7 @@ in
 
   # WWW
   services.caddy.enable = true;
-  services.caddy.config = ''
+  services.caddy.extraConfig = ''
     (common_config) {
       encode gzip
 
@@ -357,7 +357,7 @@ in
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     serviceConfig = {
-      ExecStart = "${pkgs.nodejs-17_x}/bin/node resources/app/main.js --dataPath=/persist/srv/foundry/data --port=${toString foundryPort}";
+      ExecStart = "${pkgs.nodejs-18_x}/bin/node resources/app/main.js --dataPath=/persist/srv/foundry/data --port=${toString foundryPort}";
       Restart = "always";
       User = "foundryvtt";
       WorkingDirectory = "/persist/srv/foundry/bin";

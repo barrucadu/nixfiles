@@ -9,7 +9,7 @@ with lib;
     #############################################################################
 
     # The NixOS release to be compatible with for stateful data such as databases.
-    system.stateVersion = "21.11";
+    system.stateVersion = "22.05";
 
     # Only keep the last 500MiB of systemd journal.
     services.journald.extraConfig = "SystemMaxUse=500M";
@@ -62,7 +62,7 @@ with lib;
 
       # Only pubkey auth
       passwordAuthentication = false;
-      challengeResponseAuthentication = false;
+      kbdInteractiveAuthentication = false;
     };
 
     # Start ssh-agent as a systemd user service
@@ -179,7 +179,7 @@ with lib;
       aspell
       aspellDicts.en
       bind
-      docker_compose
+      docker-compose
       file
       fortune
       fzf
