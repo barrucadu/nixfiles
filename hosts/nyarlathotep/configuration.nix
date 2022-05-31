@@ -96,7 +96,7 @@ in
   ###############################################################################
 
   services.caddy.enable = true;
-  services.caddy.config = ''
+  services.caddy.extraConfig = ''
     (vlan_matchers) {
       @vlan1 remote_ip 10.0.0.0/24
       @not_vlan1 not remote_ip 10.0.0.0/24
