@@ -4,7 +4,10 @@
       {
         "$$hashKey": "object:321",
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -22,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1652375351449,
+  "iteration": 1655321615456,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -76,7 +79,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -149,7 +152,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -221,7 +224,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -293,7 +296,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -363,7 +366,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -429,7 +432,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -513,7 +516,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -1090,7 +1093,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -1174,7 +1177,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -1258,7 +1261,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -1342,7 +1345,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -1426,7 +1429,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2016,7 +2019,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2086,7 +2089,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2156,7 +2159,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2225,7 +2228,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2294,7 +2297,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2363,7 +2366,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2433,7 +2436,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2502,7 +2505,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2571,7 +2574,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2640,7 +2643,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2710,7 +2713,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2779,7 +2782,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2848,7 +2851,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2917,7 +2920,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -2986,7 +2989,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -3019,8 +3022,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -3089,8 +3091,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -3146,6 +3147,10 @@
     },
     {
       "collapsed": true,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3201,8 +3206,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -3726,7 +3730,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 35,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
