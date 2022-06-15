@@ -4,7 +4,10 @@
       {
         "$$hashKey": "object:321",
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -22,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1652375351449,
+  "iteration": 1655324874412,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -76,7 +79,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -149,7 +152,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -221,7 +224,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -293,7 +296,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -363,7 +366,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -429,7 +432,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -513,7 +516,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -570,7 +573,7 @@
             }
           },
           "mappings": [],
-          "max": 50000,
+          "max": 100000,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -1090,7 +1093,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -1174,7 +1177,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -1258,7 +1261,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -1342,7 +1345,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -1426,7 +1429,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2016,7 +2019,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2032,76 +2035,6 @@
         }
       ],
       "title": "Float",
-      "transparent": true,
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "max": 30,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 15
-              },
-              {
-                "color": "green",
-                "value": 22.5
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 3,
-        "y": 20
-      },
-      "id": 29,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "8.4.7",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "exemplar": true,
-          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:saved:charity\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "instant": false,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Charity",
       "transparent": true,
       "type": "gauge"
     },
@@ -2139,7 +2072,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 20
       },
       "id": 78,
@@ -2156,7 +2089,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2208,7 +2141,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 20
       },
       "id": 30,
@@ -2225,7 +2158,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2277,7 +2210,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 20
       },
       "id": 31,
@@ -2294,7 +2227,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2346,7 +2279,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 20
       },
       "id": 32,
@@ -2363,7 +2296,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2416,7 +2349,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 15,
         "y": 20
       },
       "id": 42,
@@ -2433,7 +2366,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2485,7 +2418,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
+        "x": 18,
         "y": 20
       },
       "id": 37,
@@ -2502,7 +2435,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2554,8 +2487,8 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 0,
-        "y": 26
+        "x": 21,
+        "y": 20
       },
       "id": 33,
       "options": {
@@ -2571,7 +2504,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2623,7 +2556,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
+        "x": 0,
         "y": 26
       },
       "id": 38,
@@ -2640,7 +2573,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2693,7 +2626,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 26
       },
       "id": 34,
@@ -2710,7 +2643,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2725,75 +2658,6 @@
         }
       ],
       "title": "Rent",
-      "transparent": true,
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "max": 50,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 25
-              },
-              {
-                "color": "green",
-                "value": 37.5
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 9,
-        "y": 26
-      },
-      "id": 39,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "8.4.7",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "exemplar": true,
-          "expr": "sum(hledger_balance{account=\"assets:cash:starling:roll20\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Roll20",
       "transparent": true,
       "type": "gauge"
     },
@@ -2831,7 +2695,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 6,
         "y": 26
       },
       "id": 35,
@@ -2848,7 +2712,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2900,7 +2764,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 9,
         "y": 26
       },
       "id": 36,
@@ -2917,7 +2781,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -2969,7 +2833,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 12,
         "y": 26
       },
       "id": 40,
@@ -2986,7 +2850,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -3019,8 +2883,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -3056,7 +2919,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -3089,8 +2952,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -3126,7 +2988,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.4.7",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -3146,6 +3008,10 @@
     },
     {
       "collapsed": true,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3201,8 +3067,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -3726,7 +3591,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 35,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
