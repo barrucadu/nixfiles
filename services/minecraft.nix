@@ -40,35 +40,39 @@ in
     };
 
     systemd.sockets =
-      let make = name: _: nameValuePair "minecraft-${name}-stdin"
-        {
-          description = "stdin for minecraft-${name}";
-          socketConfig = {
-            ListenFIFO = "%t/minecraft-${name}.stdin";
-            Service = "minecraft-${name}.service";
+      let
+        make = name: _: nameValuePair "minecraft-${name}-stdin"
+          {
+            description = "stdin for minecraft-${name}";
+            socketConfig = {
+              ListenFIFO = "%t/minecraft-${name}.stdin";
+              Service = "minecraft-${name}.service";
+            };
           };
-        };
-      in mapAttrs' make cfg.servers;
+      in
+      mapAttrs' make cfg.servers;
 
     systemd.services =
-      let make = name: server: nameValuePair "minecraft-${name}"
-        {
-          description = "Minecraft Server Service (${name})";
-          wantedBy = if server.autoStart then [ "multi-user.target" ] else [ ];
-          after = [ "network.target" ];
+      let
+        make = name: server: nameValuePair "minecraft-${name}"
+          {
+            description = "Minecraft Server Service (${name})";
+            wantedBy = if server.autoStart then [ "multi-user.target" ] else [ ];
+            after = [ "network.target" ];
 
-          serviceConfig = {
-            ExecStart = "${server.jre}/bin/java ${server.jvmOpts} -jar ${server.jar}";
-            Restart = "always";
-            User = "minecraft";
-            WorkingDirectory = "${cfg.dataDir}/${name}";
-            Sockets = "minecraft-${name}-stdin.socket";
-            StandardInput = "socket";
-            StandardOutput = "journal";
-            StandardError = "journal";
+            serviceConfig = {
+              ExecStart = "${server.jre}/bin/java ${server.jvmOpts} -jar ${server.jar}";
+              Restart = "always";
+              User = "minecraft";
+              WorkingDirectory = "${cfg.dataDir}/${name}";
+              Sockets = "minecraft-${name}-stdin.socket";
+              StandardInput = "socket";
+              StandardOutput = "journal";
+              StandardError = "journal";
+            };
           };
-        };
-      in mapAttrs' make cfg.servers;
+      in
+      mapAttrs' make cfg.servers;
 
     networking.firewall.allowedUDPPorts = serverPorts;
     networking.firewall.allowedTCPPorts = serverPorts;

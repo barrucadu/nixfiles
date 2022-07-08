@@ -18,22 +18,23 @@ let
 
   # Configuration for an MPD instance.
   mpdConfigFor = { channel, description, port, mpdPassword, ... }:
-    let shoutConfig = encoder: ext: ''
-      audio_output {
-        name        "[mpd] ${channel} (${ext})"
-        description "${description}"
-        type        "shout"
-        encoder     "${encoder}"
-        host        "localhost"
-        port        "8000"
-        mount       "/mpd-${channel}.${ext}"
-        user        "source"
-        password    "${mpdPassword}"
-        quality     "3"
-        format      "44100:16:2"
-        always_on   "yes"
-      }
-    '';
+    let
+      shoutConfig = encoder: ext: ''
+        audio_output {
+          name        "[mpd] ${channel} (${ext})"
+          description "${description}"
+          type        "shout"
+          encoder     "${encoder}"
+          host        "localhost"
+          port        "8000"
+          mount       "/mpd-${channel}.${ext}"
+          user        "source"
+          password    "${mpdPassword}"
+          quality     "3"
+          format      "44100:16:2"
+          always_on   "yes"
+        }
+      '';
     in
     pkgs.writeText "mpd-${channel}.conf" ''
       music_directory     "${musicDirFor channel}"
@@ -108,18 +109,20 @@ in
     extraConf =
       let
         channelMount = { channel, description, mpdPassword, livePassword, ... }:
-          let mount = ismpd: ext: ''
-            <mount>
-              <mount-name>/${if ismpd then "mpd-${channel}" else channel}.${ext}</mount-name>
-              <password>${if ismpd then mpdPassword else livePassword}</password>
-              <fallback-mount>/${if ismpd then "fallback" else "mpd-${channel}"}.${ext}</fallback-mount>
-              <fallback-override>1</fallback-override>
-              <stream-name>${if ismpd then "[mpd] " else ""}${channel} (${ext})</stream-name>
-              <stream-description>${description}</stream-description>
-              <public>${if ismpd then "0" else "1"}</public>
-            </mount>
-          '';
-          in mount false "mp3" + mount true "mp3" + mount false "ogg" + mount true "ogg";
+          let
+            mount = ismpd: ext: ''
+              <mount>
+                <mount-name>/${if ismpd then "mpd-${channel}" else channel}.${ext}</mount-name>
+                <password>${if ismpd then mpdPassword else livePassword}</password>
+                <fallback-mount>/${if ismpd then "fallback" else "mpd-${channel}"}.${ext}</fallback-mount>
+                <fallback-override>1</fallback-override>
+                <stream-name>${if ismpd then "[mpd] " else ""}${channel} (${ext})</stream-name>
+                <stream-description>${description}</stream-description>
+                <public>${if ismpd then "0" else "1"}</public>
+              </mount>
+            '';
+          in
+          mount false "mp3" + mount true "mp3" + mount false "ogg" + mount true "ogg";
 
         fallbackMount = ext: ''
           <mount>
@@ -171,9 +174,10 @@ in
   #
   # > systemd.services."programme-random" = radio.programmingServiceFor channel_spec;
   programmingServiceFor = { channel, port, ... }:
-    let penv = pkgs.python3.buildEnv.override {
-      extraLibs = with pkgs.python3Packages; [ docopt mpd2 ];
-    };
+    let
+      penv = pkgs.python3.buildEnv.override {
+        extraLibs = with pkgs.python3Packages; [ docopt mpd2 ];
+      };
     in
     service {
       description = "Radio Programming (channel ${channel})";
