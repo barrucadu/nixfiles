@@ -112,7 +112,7 @@ def preprocess_group_credits_debits(postings):
     return credits_debits_by_date
 
 
-def metric_hledger_fx_rate(gbp_fx_rates):
+def metric_hledger_fx_rate(gbp_fx_rates, credits_debits):
     """`hledger_fx_rate{currency="xxx", target_currency="xxx"}`
 
     - Every currency has an exchange rate of 1 with itself.
@@ -122,6 +122,9 @@ def metric_hledger_fx_rate(gbp_fx_rates):
 
     - Every pair of currencies have exchange rates converting both
     ways (via GBP).
+
+    Exchange rates are projected forwards if there are credits /
+    debits in a gap.
     """
 
     key = lambda currency, target_currency: (
@@ -129,11 +132,14 @@ def metric_hledger_fx_rate(gbp_fx_rates):
         ("target_currency", target_currency),
     )
 
+    all_timestamps = {date_to_timestamp(date): True for date in credits_debits.keys()}
+
     # gbp_fx_rates_by_timestamp :: timestamp => currency => gbp_exchange_rate
     gbp_fx_rates_by_timestamp = {}
     for price in gbp_fx_rates:
         _, date, from_currency, gbp_exchange_rate = price.split()
         timestamp = date_to_timestamp(date)
+        all_timestamps[timestamp] = True
         gbp_exchange_rate = Decimal(gbp_exchange_rate[1:])
 
         new_rates = gbp_fx_rates_by_timestamp.get(timestamp, {})
@@ -142,7 +148,9 @@ def metric_hledger_fx_rate(gbp_fx_rates):
 
     # fx_rates_by_timestamp :: timestamp => key => exchange_rate
     fx_rates_by_timestamp = {}
-    for timestamp, gbp_fx_rates in gbp_fx_rates_by_timestamp.items():
+    gbp_fx_rates = {}
+    for timestamp in sorted(all_timestamps.keys()):
+        gbp_fx_rates = gbp_fx_rates_by_timestamp.get(timestamp, gbp_fx_rates)
         fx_rates = {key("GBP", "GBP"): 1}
         for currency, fx in gbp_fx_rates.items():
             fx_rates[key(currency, currency)] = 1
@@ -291,7 +299,7 @@ raw_postings = list(
 credits_debits = preprocess_group_credits_debits(raw_postings)
 
 metrics = {
-    "hledger_fx_rate": metric_hledger_fx_rate(raw_prices),
+    "hledger_fx_rate": metric_hledger_fx_rate(raw_prices, credits_debits),
     "hledger_balance": metric_hledger_balance(credits_debits),
     "hledger_monthly_increase": metric_hledger_monthly_credits_debits(
         credits_debits, "debit"
