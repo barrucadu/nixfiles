@@ -133,12 +133,13 @@ in
   users.extraUsers."${radio.username}" = radio.userSettings;
   services.icecast = radio.icecastSettingsFor radioChannels;
   systemd.services =
-    let service = { user, description, execstart, environment ? { }, ... }: {
-      inherit environment description;
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = { User = user; ExecStart = execstart; Restart = "on-failure"; };
-    };
+    let
+      service = { user, description, execstart, environment ? { }, ... }: {
+        inherit environment description;
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = { User = user; ExecStart = execstart; Restart = "on-failure"; };
+      };
     in
     mkMerge
       [
