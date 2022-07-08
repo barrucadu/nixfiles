@@ -417,7 +417,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 4,
         "w": 4,
         "x": 20,
         "y": 0
@@ -425,7 +425,7 @@
       "id": 72,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -1044,6 +1044,114 @@
       "title": "Current Allocation",
       "transparent": true,
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 4
+      },
+      "id": 87,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency) * 0.04",
+          "interval": "",
+          "legendFormat": "4.0%",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency) * 0.035",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "3.5%",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency) * 0.03",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "3.0%",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency) * 0.025",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "2.5%",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "title": "Safe Withdrawal Rate",
+      "transparent": true,
+      "type": "stat"
     },
     {
       "datasource": {
@@ -2817,7 +2925,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -2853,7 +2962,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2886,7 +2995,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -2922,7 +3032,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
