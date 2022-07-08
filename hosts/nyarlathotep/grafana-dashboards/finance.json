@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1655324874412,
+  "iteration": 1657309062849,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -79,7 +79,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -118,11 +118,11 @@
               },
               {
                 "color": "yellow",
-                "value": 0
+                "value": 0.33
               },
               {
                 "color": "green",
-                "value": 0.33
+                "value": 0.5
               }
             ]
           },
@@ -152,7 +152,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -224,7 +224,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -296,7 +296,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -366,7 +366,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -391,22 +391,28 @@
       },
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "red",
                 "value": null
               },
               {
+                "color": "#EAB839",
+                "value": 0.5
+              },
+              {
                 "color": "green",
-                "value": 0
+                "value": 0.75
               }
             ]
           },
-          "unit": "currencyGBP"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -416,11 +422,11 @@
         "x": 20,
         "y": 0
       },
-      "id": 65,
+      "id": 72,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
-        "justifyMode": "center",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -430,9 +436,9 @@
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -440,13 +446,13 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "expr": "# all assets\r\nsum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n/ on(target_currency)\r\n\r\n# FIRE number\r\n(\r\n    (\r\n        sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * 365 * $fire_annual_factor\r\n)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Student Loan",
+      "title": "FIRE Progress",
       "transparent": true,
       "type": "stat"
     },
@@ -516,7 +522,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -1056,33 +1062,25 @@
               {
                 "color": "red",
                 "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0.5
-              },
-              {
-                "color": "green",
-                "value": 0.75
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "currencyGBP"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 4,
         "x": 20,
         "y": 4
       },
-      "id": 72,
+      "id": 87,
       "options": {
-        "colorMode": "background",
-        "graphMode": "area",
+        "colorMode": "none",
+        "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1093,21 +1091,65 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "# all assets\r\nsum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n/ on(target_currency)\r\n\r\n# FIRE number\r\n(\r\n    (\r\n        sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * 365 * $fire_annual_factor\r\n)",
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency) * 0.04",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "4.0%",
+          "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency) * 0.035",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "3.5%",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency) * 0.03",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "3.0%",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency) * 0.025",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "2.5%",
+          "range": true,
+          "refId": "D"
         }
       ],
-      "title": "FIRE Progress",
+      "title": "Safe Withdrawal Rate",
       "transparent": true,
       "type": "stat"
     },
@@ -1177,7 +1219,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -1261,7 +1303,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -1345,7 +1387,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -1429,7 +1471,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2019,7 +2061,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2089,7 +2131,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2158,7 +2200,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2227,7 +2269,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2296,7 +2338,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2366,7 +2408,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2435,7 +2477,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2504,7 +2546,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2573,7 +2615,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2643,7 +2685,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2712,7 +2754,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2781,7 +2823,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2850,7 +2892,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2883,7 +2925,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -2919,7 +2962,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -2952,7 +2995,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -2988,7 +3032,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
