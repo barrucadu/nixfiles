@@ -118,11 +118,11 @@
               },
               {
                 "color": "yellow",
-                "value": 0
+                "value": 0.33
               },
               {
                 "color": "green",
-                "value": 0.33
+                "value": 0.5
               }
             ]
           },
