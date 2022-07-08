@@ -391,36 +391,42 @@
       },
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "red",
                 "value": null
               },
               {
+                "color": "#EAB839",
+                "value": 0.5
+              },
+              {
                 "color": "green",
-                "value": 0
+                "value": 0.75
               }
             ]
           },
-          "unit": "currencyGBP"
+          "unit": "percentunit"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 7,
         "w": 4,
         "x": 20,
         "y": 0
       },
-      "id": 65,
+      "id": 72,
       "options": {
         "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -430,7 +436,7 @@
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "auto"
       },
       "pluginVersion": "8.5.6",
       "targets": [
@@ -440,13 +446,13 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "expr": "# all assets\r\nsum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n/ on(target_currency)\r\n\r\n# FIRE number\r\n(\r\n    (\r\n        sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * 365 * $fire_annual_factor\r\n)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Student Loan",
+      "title": "FIRE Progress",
       "transparent": true,
       "type": "stat"
     },
@@ -1038,78 +1044,6 @@
       "title": "Current Allocation",
       "transparent": true,
       "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0.5
-              },
-              {
-                "color": "green",
-                "value": 0.75
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 4,
-        "x": 20,
-        "y": 4
-      },
-      "id": 72,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "exemplar": true,
-          "expr": "# all assets\r\nsum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n/ on(target_currency)\r\n\r\n# FIRE number\r\n(\r\n    (\r\n        sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * 365 * $fire_annual_factor\r\n)",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "FIRE Progress",
-      "transparent": true,
-      "type": "stat"
     },
     {
       "datasource": {
