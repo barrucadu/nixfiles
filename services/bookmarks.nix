@@ -18,6 +18,7 @@ in
     readOnly = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     youtubeApiKey = mkOption { type = types.nullOr types.str; default = null; };
+    environmentFile = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
   };
 
@@ -31,6 +32,7 @@ in
         "ES_HOST" = "http://bookmarks-db:9200";
         "YOUTUBE_API_KEY" = mkIf (cfg.youtubeApiKey != null) cfg.youtubeApiKey;
       };
+      environmentFiles = mkIf (cfg.environmentFile != null) [ cfg.environmentFile ];
       extraOptions = [ "--network=bookmarks_network" ];
       dependsOn = [ "bookmarks-db" ];
       ports = [ "127.0.0.1:${toString cfg.httpPort}:8888" ];
