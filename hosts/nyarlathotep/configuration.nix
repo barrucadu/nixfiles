@@ -20,6 +20,10 @@ let
   prometheusAwairExporterPort = 9517;
 in
 {
+  # Test secret to ensure keys are set up properly.
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.test = { };
+
   ###############################################################################
   ## General
   ###############################################################################

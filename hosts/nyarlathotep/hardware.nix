@@ -39,6 +39,7 @@
     {
       device = "local/persistent/persist";
       fsType = "zfs";
+      neededForBoot = true;
     };
 
   fileSystems."/var/log" =

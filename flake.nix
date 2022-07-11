@@ -1,7 +1,8 @@
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+  inputs.sops-nix.url = "github:Mic92/sops-nix";
 
-  outputs = { nixpkgs, ... }: {
+  outputs = { nixpkgs, sops-nix, ... }: {
     nixosConfigurations.azathoth = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -19,6 +20,7 @@
         ./hosts/carcosa/configuration.nix
         ./hosts/carcosa/hardware.nix
         "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix"
+        sops-nix.nixosModules.sops
       ];
     };
 
@@ -29,6 +31,7 @@
         ./hosts/lainonlife/configuration.nix
         ./hosts/lainonlife/hardware.nix
         "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
+        sops-nix.nixosModules.sops
       ];
     };
 
@@ -39,6 +42,7 @@
         ./hosts/nyarlathotep/configuration.nix
         ./hosts/nyarlathotep/hardware.nix
         "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
+        sops-nix.nixosModules.sops
       ];
     };
   };
