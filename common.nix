@@ -3,6 +3,24 @@
 with lib;
 
 {
+  imports = [
+    ./modules/backup-scripts.nix
+    ./modules/erase-your-darlings.nix
+    ./modules/firewall.nix
+    ./modules/monitoring-scripts.nix
+    ./modules/zfs-automation.nix
+    ./services/bookdb.nix
+    ./services/bookmarks.nix
+    ./services/commento.nix
+    ./services/concourse.nix
+    ./services/finder.nix
+    ./services/minecraft.nix
+    ./services/pleroma.nix
+    ./services/resolved.nix
+    ./services/umami.nix
+    ./services/wikijs.nix
+  ];
+
   config = {
     #############################################################################
     ## General
@@ -15,6 +33,7 @@ with lib;
     services.journald.extraConfig = "SystemMaxUse=500M";
 
     # Collect nix store garbage and optimise daily.
+    nix.extraOptions = "experimental-features = nix-command flakes";
     nix.gc.automatic = true;
     nix.gc.options = "--delete-older-than 30d";
     nix.optimise.automatic = true;
@@ -33,7 +52,7 @@ with lib;
     # Upgrade packages and reboot if needed
     system.autoUpgrade.enable = true;
     system.autoUpgrade.allowReboot = true;
-    system.autoUpgrade.channel = https://nixos.org/channels/nixos-22.05;
+    system.autoUpgrade.flags = [ "--update-input" "nixpkgs" "--impure" ];
     system.autoUpgrade.dates = "06:45";
 
     #############################################################################
