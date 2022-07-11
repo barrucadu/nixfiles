@@ -13,8 +13,8 @@ in
     enable = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
-    githubClientId = mkOption { type = types.str; };
-    githubClientSecret = mkOption { type = types.str; };
+    githubClientId = mkOption { type = types.nullOr types.str; default = null; };
+    githubClientSecret = mkOption { type = types.nullOr types.str; default = null; };
     concourseTag = mkOption { type = types.str; default = "7.1"; };
     enableSSM = mkOption { type = types.bool; default = false; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
@@ -25,6 +25,7 @@ in
     ssmRegion = mkOption { type = types.str; default = "eu-west-1"; };
     ssmSecretKey = mkOption { type = types.nullOr types.str; default = null; };
     workerScratchDir = mkOption { type = types.nullOr types.path; default = null; };
+    environmentFile = mkOption { type = types.nullOr types.str; default = null; };
   };
 
   config = mkIf cfg.enable {
@@ -42,8 +43,8 @@ in
         "CONCOURSE_POSTGRES_DATABASE" = "concourse";
         "CONCOURSE_EXTERNAL_URL" = "https://cd.barrucadu.dev";
         "CONCOURSE_MAIN_TEAM_GITHUB_USER" = cfg.githubUser;
-        "CONCOURSE_GITHUB_CLIENT_ID" = cfg.githubClientId;
-        "CONCOURSE_GITHUB_CLIENT_SECRET" = cfg.githubClientSecret;
+        "CONCOURSE_GITHUB_CLIENT_ID" = mkIf (cfg.githubClientId != null) cfg.githubClientId;
+        "CONCOURSE_GITHUB_CLIENT_SECRET" = mkIf (cfg.githubClientSecret != null) cfg.githubClientSecret;
         "CONCOURSE_LOG_LEVEL" = "error";
         "CONCOURSE_GARDEN_LOG_LEVEL" = "error";
         "CONCOURSE_PROMETHEUS_BIND_IP" = "0.0.0.0";
@@ -52,6 +53,7 @@ in
         "CONCOURSE_AWS_SSM_ACCESS_KEY" = mkIf cfg.enableSSM (cfg.ssmAccessKey);
         "CONCOURSE_AWS_SSM_SECRET_KEY" = mkIf cfg.enableSSM (cfg.ssmSecretKey);
       };
+      environmentFiles = mkIf (cfg.environmentFile != null) [ cfg.environmentFile ];
       extraOptions = [ "--network=concourse_network" ];
       dependsOn = [ "concourse-db" ];
       ports = [
