@@ -24,6 +24,7 @@ in
     postgresTag = mkOption { type = types.str; default = "13"; };
     twitterKey = mkOption { type = types.nullOr types.str; default = null; };
     twitterSecret = mkOption { type = types.nullOr types.str; default = null; };
+    environmentFile = mkOption { type = types.nullOr types.str; default = null; };
   };
 
   config = mkIf cfg.enable {
@@ -42,6 +43,7 @@ in
         "COMMENTO_TWITTER_KEY" = mkIf (cfg.twitterKey != null) cfg.twitterKey;
         "COMMENTO_TWITTER_SECRET" = mkIf (cfg.twitterSecret != null) cfg.twitterSecret;
       };
+      environmentFiles = mkIf (cfg.environmentFile != null) [ cfg.environmentFile ];
       extraOptions = [ "--network=commento_network" ];
       dependsOn = [ "commento-db" ];
       ports = [ "127.0.0.1:${toString cfg.httpPort}:8080" ];
