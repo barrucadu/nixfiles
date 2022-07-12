@@ -180,13 +180,14 @@ in
   services.pleroma.enable = true;
   services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
   services.pleroma.domain = "social.lainon.life";
-  services.pleroma.secretKeyBase = fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
-  services.pleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
-  services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
-  services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
   services.pleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
   services.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
+  services.pleroma.secretsFile = config.sops.secrets."services/pleroma/exc".path;
+  # TODO: figure out how to lock this down so only the pleroma process
+  # can read it (remap the container UID / GID to something known,
+  # perhaps?)
+  sops.secrets."services/pleroma/exc".mode = "0444";
 
   # Fancy graphs
   services.grafana = {
