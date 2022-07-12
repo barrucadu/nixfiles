@@ -16,45 +16,6 @@ let
   fallbackMP3Mount = "fallback.mp3";
   fallbackOggMount = "fallback.ogg";
 
-  # Configuration for an MPD instance.
-  mpdConfigFor = { channel, description, port, mpdPassword, ... }:
-    let
-      shoutConfig = encoder: ext: ''
-        audio_output {
-          name        "[mpd] ${channel} (${ext})"
-          description "${description}"
-          type        "shout"
-          encoder     "${encoder}"
-          host        "localhost"
-          port        "8000"
-          mount       "/mpd-${channel}.${ext}"
-          user        "source"
-          password    "${mpdPassword}"
-          quality     "3"
-          format      "44100:16:2"
-          always_on   "yes"
-        }
-      '';
-    in
-    pkgs.writeText "mpd-${channel}.conf" ''
-      music_directory     "${musicDirFor channel}"
-      playlist_directory  "${dataDirFor channel}/playlists"
-      db_file             "${dataDirFor channel}/db"
-      state_file          "${dataDirFor channel}/state"
-      sticker_file        "${dataDirFor channel}/sticker.sql"
-      log_file            "syslog"
-      bind_to_address     "127.0.0.1"
-      port                "${toString port}"
-
-      ${shoutConfig "vorbis" "ogg"}
-      ${shoutConfig "lame" "mp3"}
-
-      audio_output {
-        type "null"
-        name "null"
-      }
-    '';
-
   # Configuration for an Ezstream fallback instance.
   fallbackConfigFor = file: format: mount:
     pkgs.writeText "ezstream-${format}.conf" ''
@@ -147,11 +108,11 @@ in
   # MPD service settings.
   #
   # > systemd.services."mpd-random" = radio.mpdServiceFor channel_spec;
-  mpdServiceFor = args@{ channel, ... }: service {
+  mpdServiceFor = args@{ channel, mpdConfigFile, ... }: service {
     description = "Music Player Daemon (channel ${channel})";
     preStart = "mkdir -p ${dataDirFor channel} && chown -R ${user}:${group} ${dataDirFor channel}";
     PermissionsStartOnly = true;
-    ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${mpdConfigFor args}";
+    ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${mpdConfigFile}";
   };
 
   # MP3 fallback service settings.

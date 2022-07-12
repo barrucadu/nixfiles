@@ -10,6 +10,7 @@ let
       description = "all the music, all the time";
       mpdPassword = fileContents /etc/nixos/secrets/everything-password-mpd.txt;
       livePassword = fileContents /etc/nixos/secrets/everything-password-live.txt;
+      mpdConfigFile = config.sops.secrets."radio/channels/everything/mpd".path;
     }
     {
       channel = "cyberia";
@@ -17,6 +18,7 @@ let
       description = "classic lainchan radio: electronic, chiptune, weeb";
       mpdPassword = fileContents /etc/nixos/secrets/cyberia-password-mpd.txt;
       livePassword = fileContents /etc/nixos/secrets/cyberia-password-live.txt;
+      mpdConfigFile = config.sops.secrets."radio/channels/cyberia/mpd".path;
     }
     {
       channel = "swing";
@@ -24,6 +26,7 @@ let
       description = "swing, electroswing, and jazz";
       mpdPassword = fileContents /etc/nixos/secrets/swing-password-mpd.txt;
       livePassword = fileContents /etc/nixos/secrets/swing-password-live.txt;
+      mpdConfigFile = config.sops.secrets."radio/channels/swing/mpd".path;
     }
     {
       channel = "cafe";
@@ -31,6 +34,7 @@ let
       description = "music to drink tea to";
       mpdPassword = fileContents /etc/nixos/secrets/cafe-password-mpd.txt;
       livePassword = fileContents /etc/nixos/secrets/cafe-password-live.txt;
+      mpdConfigFile = config.sops.secrets."radio/channels/cafe/mpd".path;
     }
   ];
 
@@ -49,6 +53,10 @@ in
 
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets."registry_barrucadu_dev" = { };
+  sops.secrets."radio/channels/everything/mpd".owner = radio.username;
+  sops.secrets."radio/channels/cyberia/mpd".owner = radio.username;
+  sops.secrets."radio/channels/swing/mpd".owner = radio.username;
+  sops.secrets."radio/channels/cafe/mpd".owner = radio.username;
 
   # Bootloader
   boot.loader.grub.enable = true;
