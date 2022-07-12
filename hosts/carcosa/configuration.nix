@@ -23,10 +23,6 @@ let
 
 in
 {
-  # Test secret to ensure keys are set up properly.
-  sops.defaultSopsFile = ./secrets.yaml;
-  sops.secrets.test = { };
-
   ###############################################################################
   ## General
   ###############################################################################
@@ -34,6 +30,8 @@ in
   networking.hostName = "carcosa";
   networking.hostId = "f62895cc";
   boot.supportedFilesystems = [ "zfs" ];
+
+  sops.defaultSopsFile = ./secrets.yaml;
 
   # Bootloader
   boot.loader.grub.enable = true;
@@ -59,7 +57,8 @@ in
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
   modules.eraseYourDarlings.machineId = "64b1b10f3bef4616a7faf5edf1ef3ca5";
-  modules.eraseYourDarlings.barrucaduHashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
+  modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+  sops.secrets."users/barrucadu".neededForUsers = true;
 
 
   ###############################################################################
