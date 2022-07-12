@@ -52,7 +52,7 @@ with lib;
     # Upgrade packages and reboot if needed
     system.autoUpgrade.enable = true;
     system.autoUpgrade.allowReboot = true;
-    system.autoUpgrade.flags = [ "--update-input" "nixpkgs" "--impure" ];
+    system.autoUpgrade.flags = [ "--update-input" "nixpkgs" ];
     system.autoUpgrade.dates = "06:45";
 
     #############################################################################
