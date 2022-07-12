@@ -13,19 +13,13 @@ in
     enable = mkOption { type = types.bool; default = false; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
-    githubClientId = mkOption { type = types.nullOr types.str; default = null; };
-    githubClientSecret = mkOption { type = types.nullOr types.str; default = null; };
     concourseTag = mkOption { type = types.str; default = "7.1"; };
-    enableSSM = mkOption { type = types.bool; default = false; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
     httpPort = mkOption { type = types.int; default = 3001; };
     metricsPort = mkOption { type = types.int; default = 9001; };
     postgresTag = mkOption { type = types.str; default = "13"; };
-    ssmAccessKey = mkOption { type = types.nullOr types.str; default = null; };
-    ssmRegion = mkOption { type = types.str; default = "eu-west-1"; };
-    ssmSecretKey = mkOption { type = types.nullOr types.str; default = null; };
     workerScratchDir = mkOption { type = types.nullOr types.path; default = null; };
-    environmentFile = mkOption { type = types.nullOr types.str; default = null; };
+    environmentFile = mkOption { type = types.str; };
   };
 
   config = mkIf cfg.enable {
@@ -43,17 +37,12 @@ in
         "CONCOURSE_POSTGRES_DATABASE" = "concourse";
         "CONCOURSE_EXTERNAL_URL" = "https://cd.barrucadu.dev";
         "CONCOURSE_MAIN_TEAM_GITHUB_USER" = cfg.githubUser;
-        "CONCOURSE_GITHUB_CLIENT_ID" = mkIf (cfg.githubClientId != null) cfg.githubClientId;
-        "CONCOURSE_GITHUB_CLIENT_SECRET" = mkIf (cfg.githubClientSecret != null) cfg.githubClientSecret;
         "CONCOURSE_LOG_LEVEL" = "error";
         "CONCOURSE_GARDEN_LOG_LEVEL" = "error";
         "CONCOURSE_PROMETHEUS_BIND_IP" = "0.0.0.0";
         "CONCOURSE_PROMETHEUS_BIND_PORT" = "8088";
-        "CONCOURSE_AWS_SSM_REGION" = mkIf cfg.enableSSM (cfg.ssmRegion);
-        "CONCOURSE_AWS_SSM_ACCESS_KEY" = mkIf cfg.enableSSM (cfg.ssmAccessKey);
-        "CONCOURSE_AWS_SSM_SECRET_KEY" = mkIf cfg.enableSSM (cfg.ssmSecretKey);
       };
-      environmentFiles = mkIf (cfg.environmentFile != null) [ cfg.environmentFile ];
+      environmentFiles = [ cfg.environmentFile ];
       extraOptions = [ "--network=concourse_network" ];
       dependsOn = [ "concourse-db" ];
       ports = [

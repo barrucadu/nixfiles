@@ -13,11 +13,10 @@ in
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
     execStartPre = mkOption { type = types.nullOr types.str; default = null; };
-    hashSalt = mkOption { type = types.nullOr types.str; default = null; };
     httpPort = mkOption { type = types.int; default = 3000; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     umamiTag = mkOption { type = types.str; default = "postgresql-latest"; };
-    environmentFile = mkOption { type = types.nullOr types.str; default = null; };
+    environmentFile = mkOption { type = types.str; };
   };
 
   config = mkIf cfg.enable {
@@ -26,9 +25,8 @@ in
       image = "ghcr.io/mikecao/umami:${cfg.umamiTag}";
       environment = {
         "DATABASE_URL" = "postgres://umami:umami@umami-db/umami";
-        "HASH_SALT" = mkIf (cfg.hashSalt != null) cfg.hashSalt;
       };
-      environmentFiles = mkIf (cfg.environmentFile != null) [ cfg.environmentFile ];
+      environmentFiles = [ cfg.environmentFile ];
       extraOptions = [ "--network=umami_network" ];
       dependsOn = [ "umami-db" ];
       ports = [ "127.0.0.1:${toString cfg.httpPort}:3000" ];

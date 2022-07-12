@@ -10,8 +10,7 @@ in
     modules = {
       eraseYourDarlings = {
         enable = mkOption { type = types.bool; default = false; };
-        barrucaduHashedPassword = mkOption { type = types.nullOr types.str; default = null; };
-        barrucaduPasswordFile = mkOption { type = types.nullOr types.str; default = null; };
+        barrucaduPasswordFile = mkOption { type = types.str; };
         rootSnapshot = mkOption { type = types.str; default = "local/volatile/root@blank"; };
         persistDir = mkOption { type = types.path; default = "/persist"; };
         machineId = mkOption { type = types.str; };
@@ -35,7 +34,6 @@ in
     # Switch back to immutable users
     users.mutableUsers = mkForce false;
     users.extraUsers.barrucadu.initialPassword = mkForce null;
-    users.extraUsers.barrucadu.hashedPassword = cfg.barrucaduHashedPassword;
     users.extraUsers.barrucadu.passwordFile = cfg.barrucaduPasswordFile;
 
     # Persist state in `cfg.persistDir`
