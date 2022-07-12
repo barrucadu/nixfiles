@@ -333,12 +333,8 @@ in
   services.commento.enable = true;
   services.commento.httpPort = commentoPort;
   services.commento.externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
-  services.commento.githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
-  services.commento.githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
-  services.commento.googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
-  services.commento.googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
-  services.commento.twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
-  services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
+  services.commento.environmentFile = config.sops.secrets."services/commento/env".path;
+  sops.secrets."services/commento/env" = { };
 
   services.umami.enable = true;
   services.umami.httpPort = umamiPort;
