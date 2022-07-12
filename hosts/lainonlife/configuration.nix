@@ -57,6 +57,8 @@ in
   sops.secrets."radio/channels/cyberia/mpd".owner = radio.username;
   sops.secrets."radio/channels/swing/mpd".owner = radio.username;
   sops.secrets."radio/channels/cafe/mpd".owner = radio.username;
+  sops.secrets."radio/fallback/mp3".owner = radio.username;
+  sops.secrets."radio/fallback/ogg".owner = radio.username;
 
   # Bootloader
   boot.loader.grub.enable = true;
@@ -157,8 +159,8 @@ in
         (listToAttrs (map (c@{ channel, ... }: nameValuePair "mpd-${channel}" (radio.mpdServiceFor c)) radioChannels))
         (listToAttrs (map (c@{ channel, ... }: nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
 
-        { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3"; }
-        { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg"; }
+        { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3" config.sops.secrets."radio/fallback/mp3".path; }
+        { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg" config.sops.secrets."radio/fallback/ogg".path; }
 
         {
           "http-backend" = service {

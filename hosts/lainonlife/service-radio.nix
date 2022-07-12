@@ -13,19 +13,6 @@ let
   # Configuration for the Icecast server.
   icecastAdminPassword = fileContents /etc/nixos/secrets/icecast-admin-password.txt;
   icecastFallbackPassword = fileContents /etc/nixos/secrets/icecast-fallback-password.txt;
-  fallbackMP3Mount = "fallback.mp3";
-  fallbackOggMount = "fallback.ogg";
-
-  # Configuration for an Ezstream fallback instance.
-  fallbackConfigFor = file: format: mount:
-    pkgs.writeText "ezstream-${format}.conf" ''
-      <ezstream>
-        <url>http://127.0.0.1:8000/${mount}</url>
-        <sourcepassword>${icecastFallbackPassword}</sourcepassword>
-        <format>${format}</format>
-        <filename>${file}</filename>
-      </ezstream>
-    '';
 
   # A systemd service
   service = { environment ? { }, description, preStart ? null, startAt ? null, PermissionsStartOnly ? false, ExecStart, Type ? "simple", Restart ? "on-failure" }:
@@ -117,10 +104,10 @@ in
 
   # MP3 fallback service settings.
   #
-  # > systemd.services."fallback-mp3" = radio.fallbackServiceForMP3 "/path/to/file.mp3";
-  fallbackServiceForMP3 = path: service {
+  # > systemd.services."fallback-mp3" = radio.fallbackServiceForMP3 "/path/to/file.mp3" config.sops.secrets.foo.path;
+  fallbackServiceForMP3 = path: fallbackConfigFile: service {
     description = "Fallback Stream (mp3)";
-    ExecStart = "${pkgs.ezstream}/bin/ezstream -c ${fallbackConfigFor path "MP3" fallbackMP3Mount}";
+    ExecStart = "${pkgs.ezstream}/bin/ezstream -c ${fallbackConfigFile}";
   };
 
   # Ogg fallback service settings.
@@ -128,7 +115,7 @@ in
   # > systemd.services."fallback-ogg" = radio.fallbackServiceForOgg "/path/to/file.ogg";
   fallbackServiceForOgg = path: service {
     description = "Fallback Stream (ogg)";
-    ExecStart = "${pkgs.ezstream}/bin/ezstream -c ${fallbackConfigFor path "Vorbis" fallbackOggMount}";
+    ExecStart = "${pkgs.ezstream}/bin/ezstream -c ${fallbackConfigFile}";
   };
 
   # Programming service settings.
