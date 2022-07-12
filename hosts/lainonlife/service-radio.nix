@@ -10,10 +10,6 @@ let
   dataDirFor = channel: "${home}/data/${channel}";
   musicDirFor = channel: "${home}/music/${channel}";
 
-  # Configuration for the Icecast server.
-  icecastAdminPassword = fileContents /etc/nixos/secrets/icecast-admin-password.txt;
-  icecastFallbackPassword = fileContents /etc/nixos/secrets/icecast-fallback-password.txt;
-
   # A systemd service
   service = { environment ? { }, description, preStart ? null, startAt ? null, PermissionsStartOnly ? false, ExecStart, Type ? "simple", Restart ? "on-failure" }:
     mkMerge [
@@ -45,51 +41,6 @@ in
     isSystemUser = true;
     description = "Music Player Daemon user";
     shell = "${pkgs.bash}/bin/bash";
-  };
-
-  # Icecast service settings.
-  #
-  # > services.icecast = radio.icecastSettings [ channel_spec ];
-  icecastSettingsFor = channels: {
-    enable = true;
-    hostname = "lainon.life";
-    admin.password = icecastAdminPassword;
-    extraConf =
-      let
-        channelMount = { channel, description, mpdPassword, livePassword, ... }:
-          let
-            mount = ismpd: ext: ''
-              <mount>
-                <mount-name>/${if ismpd then "mpd-${channel}" else channel}.${ext}</mount-name>
-                <password>${if ismpd then mpdPassword else livePassword}</password>
-                <fallback-mount>/${if ismpd then "fallback" else "mpd-${channel}"}.${ext}</fallback-mount>
-                <fallback-override>1</fallback-override>
-                <stream-name>${if ismpd then "[mpd] " else ""}${channel} (${ext})</stream-name>
-                <stream-description>${description}</stream-description>
-                <public>${if ismpd then "0" else "1"}</public>
-              </mount>
-            '';
-          in
-          mount false "mp3" + mount true "mp3" + mount false "ogg" + mount true "ogg";
-
-        fallbackMount = ext: ''
-          <mount>
-            <mount-name>/fallback.${ext}</mount-name>
-            <password>${icecastFallbackPassword}</password>
-            <stream-name>Fallback Stream (${ext})</stream-name>
-            <stream-description>you should never hear this</stream-description>
-            <public>0</public>
-          </mount>
-        '';
-
-        headers = ''
-          <http-headers>
-            <header name="Access-Control-Allow-Origin" value="*" />
-            <header name="Referrer-Policy" value="no-referrer" />
-          </http-headers>
-        '';
-      in
-      concatMapStringsSep "\n" channelMount channels + fallbackMount "mp3" + fallbackMount "ogg" + headers;
   };
 
   # MPD service settings.

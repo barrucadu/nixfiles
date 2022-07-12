@@ -59,6 +59,7 @@ in
   sops.secrets."radio/channels/cafe/mpd".owner = radio.username;
   sops.secrets."radio/fallback/mp3".owner = radio.username;
   sops.secrets."radio/fallback/ogg".owner = radio.username;
+  sops.secrets."radio/icecast".owner = radio.username;
 
   # Bootloader
   boot.loader.grub.enable = true;
@@ -110,7 +111,7 @@ in
 
       route /radio/* {
         uri strip_prefix /radio
-        reverse_proxy http://localhost:${toString config.services.icecast.listen.port}
+        reverse_proxy http://localhost:8000
       }
 
       route /graphs/* {
@@ -144,7 +145,7 @@ in
 
   # Radio
   users.extraUsers."${radio.username}" = radio.userSettings;
-  services.icecast = radio.icecastSettingsFor radioChannels;
+
   systemd.services =
     let
       service = { user, description, execstart, environment ? { }, ... }: {
@@ -159,18 +160,33 @@ in
         (listToAttrs (map (c@{ channel, ... }: nameValuePair "mpd-${channel}" (radio.mpdServiceFor c)) radioChannels))
         (listToAttrs (map (c@{ channel, ... }: nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
 
+        { icecast = {
+            user = radio.username;
+            after = [ "network.target" ];
+            wantedBy = [ "multi-user.target" ];
+            description = "Icecast Network Audio Streaming Server";
+            preStart = "mkdir -p /var/log/icecast && chown nobody:nogroup /var/log/icecast";
+            serviceConfig = {
+              Type = "simple";
+              PermissionsStartOnly = true;
+              ExecStart = "${pkgs.icecast}/bin/icecast -c ${config.sops.secrets."radio/icecast".path}";
+              ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
+              BindPaths = "${pkgs.icecast}/share/icecast:/icecast";
+            };
+          }
+
         { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3" config.sops.secrets."radio/fallback/mp3".path; }
         { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg" config.sops.secrets."radio/fallback/ogg".path; }
 
         {
           "http-backend" = service {
-            user = "${radio.username}";
+            user = radio.username;
             description = "HTTP backend service";
             execstart = "${pkgs.bash}/bin/bash -l -c /srv/radio/backend/run.sh";
             environment = {
               CONFIG = "/srv/radio/config.json";
               PORT = toString backendPort;
-              ICECAST = "http://localhost:${toString config.services.icecast.listen.port}";
+              ICECAST = "http://localhost:8000";
               PROMETHEUS = "http://localhost:${toString config.services.prometheus.port}";
             };
           };
