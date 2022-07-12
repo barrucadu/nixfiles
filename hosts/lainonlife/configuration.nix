@@ -195,8 +195,9 @@ in
     port = 8001;
     domain = "lainon.life";
     rootUrl = "https://lainon.life/graphs/";
-    security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
-    security.secretKey = fileContents /etc/nixos/secrets/grafana-key.txt;
+    security.adminPasswordFile = config.sops.secrets."services/grafana/admin_password".path;
+    security.secretKeyFile = config.sops.secrets."services/grafana/secret_key".path;
+
     auth.anonymous.enable = true;
     auth.anonymous.org_name = "lainon.life";
     provision = {
@@ -216,6 +217,8 @@ in
       ];
     };
   };
+  sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
+  sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
   services.prometheus.scrapeConfigs = [
     {
       job_name = "radio";
