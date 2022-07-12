@@ -1,38 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  radio = import ./service-radio.nix { inherit lib pkgs; };
-
-  radioChannels = [
-    {
-      channel = "everything";
-      port = 6600;
-      description = "all the music, all the time";
-      mpdPassword = fileContents /etc/nixos/secrets/everything-password-mpd.txt;
-      livePassword = fileContents /etc/nixos/secrets/everything-password-live.txt;
-    }
-    {
-      channel = "cyberia";
-      port = 6601;
-      description = "classic lainchan radio: electronic, chiptune, weeb";
-      mpdPassword = fileContents /etc/nixos/secrets/cyberia-password-mpd.txt;
-      livePassword = fileContents /etc/nixos/secrets/cyberia-password-live.txt;
-    }
-    {
-      channel = "swing";
-      port = 6602;
-      description = "swing, electroswing, and jazz";
-      mpdPassword = fileContents /etc/nixos/secrets/swing-password-mpd.txt;
-      livePassword = fileContents /etc/nixos/secrets/swing-password-live.txt;
-    }
-    {
-      channel = "cafe";
-      port = 6603;
-      description = "music to drink tea to";
-      mpdPassword = fileContents /etc/nixos/secrets/cafe-password-mpd.txt;
-      livePassword = fileContents /etc/nixos/secrets/cafe-password-live.txt;
-    }
-  ];
+  radioUser = config.users.extraUsers.radio;
 
   backendPort = 8002;
 
@@ -40,12 +9,69 @@ let
     set -e
     set -o pipefail
 
-    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.coreutils}/bin/cat ${config.sops.secrets."registry_barrucadu_dev".path} | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
     ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
   '';
+
+  mpdService = channel: {
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    description = "Music Player Daemon (channel ${channel})";
+    preStart =
+      let dir = "${radioUser.home}/data/${channel}";
+      in "mkdir -p ${dir} && chown -R ${radioUser.name}:${radioUser.group} ${dir}";
+    serviceConfig = {
+      Type = "simple";
+      User = radioUser.name;
+      Group = radioUser.group;
+      PermissionsStartOnly = true;
+      ExecStart =
+        let cfg = config.sops.secrets."services/mpd/${channel}".path;
+        in "${pkgs.mpd}/bin/mpd --no-daemon ${cfg}";
+      Restart = "on-failure";
+    };
+  };
+
+  fallbackService = fmt: {
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    description = "Fallback Stream (${fmt})";
+    serviceConfig = {
+      Type = "simple";
+      User = radioUser.name;
+      Group = radioUser.group;
+      ExecStart =
+        let cfg = config.sops.secrets."services/fallback/${fmt}".path;
+        in "${pkgs.ezstream}/bin/ezstream -c ${cfg}";
+      Restart = "on-failure";
+    };
+  };
+
+  programmeEnv = pkgs.python3.buildEnv.override {
+    extraLibs = with pkgs.python3Packages; [ docopt mpd2 ];
+  };
+  programmeService = channel: port: {
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    description = "Radio Programming (channel ${channel})";
+    startAt = "0/3:00:00";
+    serviceConfig = {
+      Type = "oneshot";
+      User = radioUser.name;
+      Group = radioUser.group;
+      ExecStart = "${pkgs.python3}/bin/python3 ${radioUser.home}/scripts/schedule.py ${toString port}";
+      Restart = "no";
+    };
+    environment = {
+      PYTHONPATH = "${programmeEnv}/${pkgs.python3.sitePackages}/";
+    };
+  };
 in
 {
   networking.hostName = "lainonlife";
+
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets."registry_barrucadu_dev" = { };
 
   # Bootloader
   boot.loader.grub.enable = true;
@@ -97,7 +123,7 @@ in
 
       route /radio/* {
         uri strip_prefix /radio
-        reverse_proxy http://localhost:${toString config.services.icecast.listen.port}
+        reverse_proxy http://localhost:8000
       }
 
       route /graphs/* {
@@ -119,6 +145,24 @@ in
     }
   '';
 
+  systemd.services.http-backend = {
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    description = "HTTP backend service";
+    serviceConfig = {
+      Type = "simple";
+      User = radioUser.name;
+      Group = radioUser.group;
+      ExecStart = "${pkgs.bash}/bin/bash -l -c ${radioUser.home}/backend/run.sh";
+    };
+    environment = {
+      CONFIG = "${radioUser.home}/config.json";
+      PORT = toString backendPort;
+      ICECAST = "http://localhost:8000";
+      PROMETHEUS = "http://localhost:${toString config.services.prometheus.port}";
+    };
+  };
+
   services.logrotate.enable = true;
   services.logrotate.settings.icecast = {
     files = [ "/var/log/icecast/access.log" "/var/log/icecast/error.log" ];
@@ -130,41 +174,48 @@ in
   };
 
   # Radio
-  users.extraUsers."${radio.username}" = radio.userSettings;
-  services.icecast = radio.icecastSettingsFor radioChannels;
-  systemd.services =
-    let
-      service = { user, description, execstart, environment ? { }, ... }: {
-        inherit environment description;
-        after = [ "network.target" ];
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = { User = user; ExecStart = execstart; Restart = "on-failure"; };
-      };
-    in
-    mkMerge
-      [
-        (listToAttrs (map (c@{ channel, ... }: nameValuePair "mpd-${channel}" (radio.mpdServiceFor c)) radioChannels))
-        (listToAttrs (map (c@{ channel, ... }: nameValuePair "programme-${channel}" (radio.programmingServiceFor c)) radioChannels))
+  users.extraUsers.radio = {
+    home = "/srv/radio";
+    group = "audio";
+    isSystemUser = true;
+    description = "Music Player Daemon user";
+    shell = "${pkgs.bash}/bin/bash";
+  };
 
-        { fallback-mp3 = radio.fallbackServiceForMP3 "/srv/radio/music/fallback.mp3"; }
-        { fallback-ogg = radio.fallbackServiceForOgg "/srv/radio/music/fallback.ogg"; }
+  ## Icecast
+  systemd.services.icecast = {
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    description = "Icecast Network Audio Streaming Server";
+    preStart = "mkdir -p /var/log/icecast && chown nobody:nogroup /var/log/icecast";
+    serviceConfig = {
+      Type = "simple";
+      User = radioUser.name;
+      Group = radioUser.group;
+      PermissionsStartOnly = true;
+      ExecStart = "${pkgs.icecast}/bin/icecast -c ${config.sops.secrets."services/icecast".path}";
+      ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
+      BindPaths = "${pkgs.icecast}/share/icecast:/icecast";
+    };
+  };
 
-        {
-          "http-backend" = service {
-            user = "${radio.username}";
-            description = "HTTP backend service";
-            execstart = "${pkgs.bash}/bin/bash -l -c /srv/radio/backend/run.sh";
-            environment = {
-              CONFIG = "/srv/radio/config.json";
-              PORT = toString backendPort;
-              ICECAST = "http://localhost:${toString config.services.icecast.listen.port}";
-              PROMETHEUS = "http://localhost:${toString config.services.prometheus.port}";
-            };
-          };
-        }
-      ];
+  sops.secrets."services/icecast".owner = radioUser.name;
 
-  environment.systemPackages = with pkgs; [ flac id3v2 ncmpcpp openssl python3Packages.virtualenv ];
+  ## MPD
+  systemd.services.mpd-everything = mpdService "everything";
+  systemd.services.mpd-cyberia = mpdService "cyberia";
+  systemd.services.mpd-swing = mpdService "swing";
+  systemd.services.mpd-cafe = mpdService "cafe";
+
+  systemd.services.programme-everything = programmeService "everything" 6600;
+  systemd.services.programme-cyberia = programmeService "cyberia" 6601;
+  systemd.services.programme-swing = programmeService "swing" 6602;
+  systemd.services.programme-cafe = programmeService "cafe" 6603;
+
+  sops.secrets."services/mpd/everything".owner = radioUser.name;
+  sops.secrets."services/mpd/cyberia".owner = radioUser.name;
+  sops.secrets."services/mpd/swing".owner = radioUser.name;
+  sops.secrets."services/mpd/cafe".owner = radioUser.name;
 
   nixpkgs.config.packageOverrides = pkgs: {
     # Build MPD with libmp3lame support, so shoutcast output can do mp3.
@@ -173,17 +224,25 @@ in
     });
   };
 
+  ## Fallback
+  systemd.services.fallback-mp3 = fallbackService "mp3";
+  systemd.services.fallback-ogg = fallbackService "ogg";
+
+  sops.secrets."services/fallback/mp3".owner = radioUser.name;
+  sops.secrets."services/fallback/ogg".owner = radioUser.name;
+
   # Pleroma
   services.pleroma.enable = true;
   services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
   services.pleroma.domain = "social.lainon.life";
-  services.pleroma.secretKeyBase = fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
-  services.pleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
-  services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
-  services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
-  services.pleroma.faviconPath = /etc/nixos/files/pleroma-favicon.png;
+  services.pleroma.faviconPath = ./pleroma-favicon.png;
   services.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
+  services.pleroma.secretsFile = config.sops.secrets."services/pleroma/exc".path;
+  # TODO: figure out how to lock this down so only the pleroma process
+  # can read it (remap the container UID / GID to something known,
+  # perhaps?)
+  sops.secrets."services/pleroma/exc".mode = "0444";
 
   # Fancy graphs
   services.grafana = {
@@ -191,8 +250,9 @@ in
     port = 8001;
     domain = "lainon.life";
     rootUrl = "https://lainon.life/graphs/";
-    security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
-    security.secretKey = fileContents /etc/nixos/secrets/grafana-key.txt;
+    security.adminPasswordFile = config.sops.secrets."services/grafana/admin_password".path;
+    security.secretKeyFile = config.sops.secrets."services/grafana/secret_key".path;
+
     auth.anonymous.enable = true;
     auth.anonymous.org_name = "lainon.life";
     provision = {
@@ -212,6 +272,8 @@ in
       ];
     };
   };
+  sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
+  sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
   services.prometheus.scrapeConfigs = [
     {
       job_name = "radio";
@@ -252,4 +314,7 @@ in
     group = "users";
     extraGroups = [ "audio" ];
   };
+
+  # Misc
+  environment.systemPackages = with pkgs; [ flac id3v2 ncmpcpp openssl python3Packages.virtualenv ];
 }

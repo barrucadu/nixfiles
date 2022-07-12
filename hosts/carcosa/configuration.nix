@@ -17,7 +17,7 @@ let
     set -e
     set -o pipefail
 
-    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.coreutils}/bin/cat ${config.sops.secrets."services/docker_registry/login".path} | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
     ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
   '';
 
@@ -30,6 +30,8 @@ in
   networking.hostName = "carcosa";
   networking.hostId = "f62895cc";
   boot.supportedFilesystems = [ "zfs" ];
+
+  sops.defaultSopsFile = ./secrets.yaml;
 
   # Bootloader
   boot.loader.grub.enable = true;
@@ -47,7 +49,8 @@ in
   };
   networking.defaultGateway6 = { address = "fe80::1"; interface = "enp1s0"; };
 
-  modules.firewall.ipBlocklist = import /etc/nixos/secrets/ip-blocklist.nix;
+  modules.firewall.ipBlocklistFile = config.sops.secrets."modules/firewall/ip_blocklist".path;
+  sops.secrets."modules/firewall/ip_blocklist" = { };
 
   # No automatic reboots (for irssi)
   system.autoUpgrade.allowReboot = mkForce false;
@@ -55,7 +58,8 @@ in
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
   modules.eraseYourDarlings.machineId = "64b1b10f3bef4616a7faf5edf1ef3ca5";
-  modules.eraseYourDarlings.barrucaduHashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
+  modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+  sops.secrets."users/barrucadu".neededForUsers = true;
 
 
   ###############################################################################
@@ -189,7 +193,7 @@ in
     registry.barrucadu.dev {
       import common_config
       basicauth /v2/* {
-        registry ${fileContents /etc/nixos/secrets/registry-password-hashed.txt}
+        import ${config.sops.secrets."services/docker_registry/caddyfile".path}
       }
       header /v2/* Docker-Distribution-Api-Version "registry/2.0"
       reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
@@ -290,6 +294,9 @@ in
   services.dockerRegistry.enableGarbageCollect = true;
   services.dockerRegistry.port = dockerRegistryPort;
 
+  sops.secrets."services/docker_registry/caddyfile".owner = config.users.users.caddy.name;
+  sops.secrets."services/docker_registry/login" = { };
+
   # bookdb
   services.bookdb.enable = true;
   services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
@@ -311,37 +318,32 @@ in
   services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
   services.pleroma.httpPort = pleromaPort;
   services.pleroma.domain = "ap.barrucadu.co.uk";
-  services.pleroma.secretKeyBase = fileContents /etc/nixos/secrets/pleroma/secret-key-base.txt;
-  services.pleroma.signingSalt = fileContents /etc/nixos/secrets/pleroma/signing-salt.txt;
-  services.pleroma.webPushPublicKey = fileContents /etc/nixos/secrets/pleroma/web-push-public-key.txt;
-  services.pleroma.webPushPrivateKey = fileContents /etc/nixos/secrets/pleroma/web-push-private-key.txt;
+  services.pleroma.secretsFile = config.sops.secrets."services/pleroma/exc".path;
   services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
+  # TODO: figure out how to lock this down so only the pleroma process
+  # can read it (remap the container UID / GID to something known,
+  # perhaps?)
+  sops.secrets."services/pleroma/exc".mode = "0444";
 
   # concourse
   services.concourse.enable = true;
   services.concourse.httpPort = concoursePort;
   services.concourse.metricsPort = concourseMetricsPort;
-  services.concourse.githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
-  services.concourse.githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
-  services.concourse.enableSSM = true;
-  services.concourse.ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
-  services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
+  services.concourse.environmentFile = config.sops.secrets."services/concourse/env".path;
   services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
+  sops.secrets."services/concourse/env" = { };
 
   # Look what the Shoggoth Dragged In
   services.commento.enable = true;
   services.commento.httpPort = commentoPort;
   services.commento.externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
-  services.commento.githubKey = fileContents /etc/nixos/secrets/shoggoth-commento/github-key.txt;
-  services.commento.githubSecret = fileContents /etc/nixos/secrets/shoggoth-commento/github-secret.txt;
-  services.commento.googleKey = fileContents /etc/nixos/secrets/shoggoth-commento/google-key.txt;
-  services.commento.googleSecret = fileContents /etc/nixos/secrets/shoggoth-commento/google-secret.txt;
-  services.commento.twitterKey = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-key.txt;
-  services.commento.twitterSecret = fileContents /etc/nixos/secrets/shoggoth-commento/twitter-secret.txt;
+  services.commento.environmentFile = config.sops.secrets."services/commento/env".path;
+  sops.secrets."services/commento/env" = { };
 
   services.umami.enable = true;
   services.umami.httpPort = umamiPort;
-  services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
+  services.umami.environmentFile = config.sops.secrets."services/umami/env".path;
+  sops.secrets."services/umami/env" = { };
 
   # minecraft
   services.minecraft.enable = true;
@@ -379,7 +381,10 @@ in
   # Metrics
   services.grafana.port = grafanaPort;
   services.grafana.rootUrl = "https://grafana.carcosa.barrucadu.co.uk";
-  services.grafana.security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
+  services.grafana.security.adminPasswordFile = config.sops.secrets."services/grafana/admin_password".path;
+  services.grafana.security.secretKeyFile = config.sops.secrets."services/grafana/secret_key".path;
+  sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
+  sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
 
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
 

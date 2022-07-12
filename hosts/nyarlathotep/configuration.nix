@@ -28,6 +28,8 @@ in
   networking.hostId = "4a592971"; # ZFS needs one of these
   boot.supportedFilesystems = [ "zfs" ];
 
+  sops.defaultSopsFile = ./secrets.yaml;
+
   # Only run monitoring scripts every 12 hours: I can't replace a
   # broken HDD if I'm away from home.
   modules.monitoringScripts.onCalendar = "0/12:00:00";
@@ -47,7 +49,8 @@ in
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
   modules.eraseYourDarlings.machineId = "0f7ae3bda2a9428ab77a0adddc4c8cff";
-  modules.eraseYourDarlings.barrucaduHashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
+  modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+  sops.secrets."users/barrucadu".neededForUsers = true;
 
 
   ###############################################################################
@@ -86,9 +89,10 @@ in
     description = "Guest user";
     isNormalUser = true;
     group = "users";
-    hashedPassword = fileContents /etc/nixos/secrets/passwd-notbarrucadu.txt;
+    passwordFile = config.sops.secrets."users/notbarrucadu".path;
     shell = "/run/current-system/sw/bin/nologin";
   };
+  sops.secrets."users/notbarrucadu".neededForUsers = true;
 
 
   ###############################################################################
@@ -237,7 +241,8 @@ in
   services.bookmarks.image = "localhost:5000/bookmarks:latest";
   services.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
   services.bookmarks.httpPort = bookmarksPort;
-  services.bookmarks.youtubeApiKey = fileContents /etc/nixos/secrets/bookmarks-youtube-api-key.txt;
+  services.bookmarks.environmentFile = config.sops.secrets."services/bookmarks/env".path;
+  sops.secrets."services/bookmarks/env" = { };
 
   systemd.timers.bookmarks-sync = {
     wantedBy = [ "timers.target" ];

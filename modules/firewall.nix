@@ -4,13 +4,19 @@ with lib;
 
 let
   cfg = config.modules.firewall;
+
+  readBlocklistFromFile = ''
+    cat ${cfg.ipBlocklistFile} | sed 's/\s//g' | sed 's/#.*$//' | grep . | while read ip; do
+      iptables -A barrucadu-ip-blocklist -s "$ip" -j DROP
+    done
+  '';
 in
 {
   options = {
     modules = {
       firewall = {
         enable = mkOption { type = types.bool; default = true; };
-        ipBlocklist = mkOption { type = types.listOf types.str; default = [ ]; };
+        ipBlocklistFile = mkOption { type = types.nullOr types.str; default = null; };
       };
     };
   };
@@ -24,7 +30,7 @@ in
 
     networking.firewall.extraCommands = ''
       iptables -N barrucadu-ip-blocklist
-      ${concatMapStringsSep "\n" (ip: "iptables -A barrucadu-ip-blocklist -s ${ip} -j DROP") cfg.ipBlocklist}
+      ${if cfg.ipBlocklistFile == null then "" else readBlocklistFromFile}
       iptables -A barrucadu-ip-blocklist -j RETURN
       iptables -A INPUT -j barrucadu-ip-blocklist
     '';

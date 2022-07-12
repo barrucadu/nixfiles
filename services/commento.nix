@@ -16,14 +16,9 @@ in
     externalUrl = mkOption { type = types.str; };
     commentoTag = mkOption { type = types.str; default = "latest"; };
     forbidNewOwners = mkOption { type = types.bool; default = true; };
-    githubKey = mkOption { type = types.nullOr types.str; default = null; };
-    githubSecret = mkOption { type = types.nullOr types.str; default = null; };
-    googleKey = mkOption { type = types.nullOr types.str; default = null; };
-    googleSecret = mkOption { type = types.nullOr types.str; default = null; };
     httpPort = mkOption { type = types.int; default = 3000; };
     postgresTag = mkOption { type = types.str; default = "13"; };
-    twitterKey = mkOption { type = types.nullOr types.str; default = null; };
-    twitterSecret = mkOption { type = types.nullOr types.str; default = null; };
+    environmentFile = mkOption { type = types.str; };
   };
 
   config = mkIf cfg.enable {
@@ -35,13 +30,8 @@ in
         "COMMENTO_PORT" = "8080";
         "COMMENTO_POSTGRES" = "postgres://commento:commento@commento-db/commento?sslmode=disable";
         "COMMENTO_FORBID_NEW_OWNERS" = if cfg.forbidNewOwners then "true" else "false";
-        "COMMENTO_GITHUB_KEY" = mkIf (cfg.githubKey != null) cfg.githubKey;
-        "COMMENTO_GITHUB_SECRET" = mkIf (cfg.githubSecret != null) cfg.githubSecret;
-        "COMMENTO_GOOGLE_KEY" = mkIf (cfg.googleKey != null) cfg.googleKey;
-        "COMMENTO_GOOGLE_SECRET" = mkIf (cfg.googleSecret != null) cfg.googleSecret;
-        "COMMENTO_TWITTER_KEY" = mkIf (cfg.twitterKey != null) cfg.twitterKey;
-        "COMMENTO_TWITTER_SECRET" = mkIf (cfg.twitterSecret != null) cfg.twitterSecret;
       };
+      environmentFiles = [ cfg.environmentFile ];
       extraOptions = [ "--network=commento_network" ];
       dependsOn = [ "commento-db" ];
       ports = [ "127.0.0.1:${toString cfg.httpPort}:8080" ];

@@ -7,18 +7,6 @@ let
 
   # https://github.com/NixOS/nixpkgs/issues/104750
   serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
-
-  secretsFile = ''
-    import Config
-
-    config :pleroma, Pleroma.Web.Endpoint,
-      secret_key_base: "${cfg.secretKeyBase}",
-      signing_salt: "${cfg.signingSalt}"
-
-    config :web_push_encryption, :vapid_details,
-      public_key: "${cfg.webPushPublicKey}",
-      private_key: "${cfg.webPushPrivateKey}"
-  '';
 in
 {
   # TODO: consider switching to the standard pleroma module
@@ -37,10 +25,7 @@ in
     instanceName = mkOption { type = types.str; default = cfg.domain; };
     adminEmail = mkOption { type = types.str; default = "mike@barrucadu.co.uk"; };
     notifyEmail = mkOption { type = types.str; default = cfg.adminEmail; };
-    secretKeyBase = mkOption { type = types.str; };
-    signingSalt = mkOption { type = types.str; };
-    webPushPublicKey = mkOption { type = types.str; };
-    webPushPrivateKey = mkOption { type = types.str; };
+    secretsFile = mkOption { type = types.str; };
     dockerVolumeDir = mkOption { type = types.path; };
   };
 
@@ -64,7 +49,7 @@ in
       volumes = [
         "${toString cfg.dockerVolumeDir}/uploads:/var/lib/pleroma/uploads"
         "${toString cfg.dockerVolumeDir}/emojis:/var/lib/pleroma/static/emoji/custom"
-        "${pkgs.writeText "pleroma-secrets.exc" secretsFile}:/var/lib/pleroma/secret.exs"
+        "${cfg.secretsFile}:/var/lib/pleroma/secret.exs"
       ] ++ (if cfg.faviconPath == null then [ ] else [ "${pkgs.copyPathToStore cfg.faviconPath}:/var/lib/pleroma/static/favicon.png" ]);
     };
     systemd.services."${backend}-pleroma" = {

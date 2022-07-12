@@ -1,0 +1,21 @@
+keys:
+  - &barrucadu 'age1sdnp5uxhdtujc78penv2gntnenzcfju7est4hslz6eqgfk26u9nskkk634'
+
+creation_rules:
+  - path_regex: hosts/carcosa/secrets(/[^/]+)?\.yaml$
+    key_groups:
+      - age:
+          - *barrucadu
+          - 'age1ty4vs59695vuavnvgdftguyq2aau29nv75y4tqrr6ag8z26vfc5sc5rc4n'
+
+  - path_regex: hosts/lainonlife/secrets(/[^/]+)?\.yaml$
+    key_groups:
+      - age:
+          - *barrucadu
+          - 'age1ejn7n9was0dppxy6r43pew9c3jsxp303mh787nkv2m70e06qs36smuq6nu'
+
+  - path_regex: hosts/nyarlathotep/secrets(/[^/]+)?\.yaml$
+    key_groups:
+      - age:
+          - *barrucadu
+          - 'age1egtf3qg9rntdymhxwancf4der05te5lkerspg7mx06jegey4kajslajdy4'
