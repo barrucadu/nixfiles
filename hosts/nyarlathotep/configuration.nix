@@ -20,10 +20,6 @@ let
   prometheusAwairExporterPort = 9517;
 in
 {
-  # Test secret to ensure keys are set up properly.
-  sops.defaultSopsFile = ./secrets.yaml;
-  sops.secrets.test = { };
-
   ###############################################################################
   ## General
   ###############################################################################
@@ -31,6 +27,8 @@ in
   networking.hostName = "nyarlathotep";
   networking.hostId = "4a592971"; # ZFS needs one of these
   boot.supportedFilesystems = [ "zfs" ];
+
+  sops.defaultSopsFile = ./secrets.yaml;
 
   # Only run monitoring scripts every 12 hours: I can't replace a
   # broken HDD if I'm away from home.
@@ -51,7 +49,8 @@ in
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
   modules.eraseYourDarlings.machineId = "0f7ae3bda2a9428ab77a0adddc4c8cff";
-  modules.eraseYourDarlings.barrucaduHashedPassword = fileContents /etc/nixos/secrets/passwd-barrucadu.txt;
+  modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+  sops.secrets."users/barrucadu".neededForUsers = true;
 
 
   ###############################################################################
@@ -90,9 +89,10 @@ in
     description = "Guest user";
     isNormalUser = true;
     group = "users";
-    hashedPassword = fileContents /etc/nixos/secrets/passwd-notbarrucadu.txt;
+    passwordFile = config.sops.secrets."users/notbarrucadu".path;
     shell = "/run/current-system/sw/bin/nologin";
   };
+  sops.secrets."users/notbarrucadu".neededForUsers = true;
 
 
   ###############################################################################
