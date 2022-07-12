@@ -49,7 +49,8 @@ in
   };
   networking.defaultGateway6 = { address = "fe80::1"; interface = "enp1s0"; };
 
-  modules.firewall.ipBlocklist = import /etc/nixos/secrets/ip-blocklist.nix;
+  modules.firewall.ipBlocklistFile = config.sops.secrets."modules/firewall/ip_blocklist".path;
+  sops.secrets."modules/firewall/ip_blocklist" = { };
 
   # No automatic reboots (for irssi)
   system.autoUpgrade.allowReboot = mkForce false;
