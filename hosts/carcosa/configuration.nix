@@ -377,7 +377,10 @@ in
   # Metrics
   services.grafana.port = grafanaPort;
   services.grafana.rootUrl = "https://grafana.carcosa.barrucadu.co.uk";
-  services.grafana.security.adminPassword = fileContents /etc/nixos/secrets/grafana-admin-password.txt;
+  services.grafana.security.adminPasswordFile = config.sops.secrets."services/grafana/admin_password".path;
+  services.grafana.security.secretKeyFile = config.sops.secrets."services/grafana/secret_key".path;
+  sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
+  sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
 
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
 
