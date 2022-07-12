@@ -338,7 +338,8 @@ in
 
   services.umami.enable = true;
   services.umami.httpPort = umamiPort;
-  services.umami.hashSalt = fileContents /etc/nixos/secrets/shoggoth-umami/hash-salt.txt;
+  services.umami.environmentFile = config.sops.secrets."services/umami/env".path;
+  sops.secrets."services/umami/env" = { };
 
   # minecraft
   services.minecraft.enable = true;
