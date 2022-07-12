@@ -325,12 +325,9 @@ in
   services.concourse.enable = true;
   services.concourse.httpPort = concoursePort;
   services.concourse.metricsPort = concourseMetricsPort;
-  services.concourse.githubClientId = fileContents /etc/nixos/secrets/concourse-clientid.txt;
-  services.concourse.githubClientSecret = fileContents /etc/nixos/secrets/concourse-clientsecret.txt;
-  services.concourse.enableSSM = true;
-  services.concourse.ssmAccessKey = fileContents /etc/nixos/secrets/concourse-ssm-access-key.txt;
-  services.concourse.ssmSecretKey = fileContents /etc/nixos/secrets/concourse-ssm-secret-key.txt;
+  services.concourse.environmentFile = config.sops.secrets."services/concourse/env".path;
   services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
+  sops.secrets."services/concourse/env" = { };
 
   # Look what the Shoggoth Dragged In
   services.commento.enable = true;
