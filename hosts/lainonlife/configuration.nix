@@ -40,16 +40,15 @@ let
     set -e
     set -o pipefail
 
-    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.coreutils}/bin/cat ${config.sops.secrets."registry_barrucadu_dev".path} | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
     ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
   '';
 in
 {
-  # Test secret to ensure keys are set up properly.
-  sops.defaultSopsFile = ./secrets.yaml;
-  sops.secrets.test = { };
-
   networking.hostName = "lainonlife";
+
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets."registry_barrucadu_dev" = { };
 
   # Bootloader
   boot.loader.grub.enable = true;
