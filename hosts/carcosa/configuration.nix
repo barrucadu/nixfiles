@@ -17,7 +17,7 @@ let
     set -e
     set -o pipefail
 
-    ${pkgs.coreutils}/bin/cat /etc/nixos/secrets/registry-password.txt | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
+    ${pkgs.coreutils}/bin/cat ${config.sops.secrets."services/docker_registry/login".path} | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
     ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
   '';
 
@@ -192,7 +192,7 @@ in
     registry.barrucadu.dev {
       import common_config
       basicauth /v2/* {
-        registry ${fileContents /etc/nixos/secrets/registry-password-hashed.txt}
+        import ${config.sops.secrets."services/docker_registry/caddyfile".path}
       }
       header /v2/* Docker-Distribution-Api-Version "registry/2.0"
       reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
@@ -292,6 +292,9 @@ in
   services.dockerRegistry.enableDelete = true;
   services.dockerRegistry.enableGarbageCollect = true;
   services.dockerRegistry.port = dockerRegistryPort;
+
+  sops.secrets."services/docker_registry/caddyfile".owner = config.users.users.caddy.name;
+  sops.secrets."services/docker_registry/login" = { };
 
   # bookdb
   services.bookdb.enable = true;
