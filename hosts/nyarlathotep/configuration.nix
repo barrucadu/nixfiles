@@ -6,8 +6,6 @@ let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
 
   ociBackend = config.virtualisation.oci-containers.backend;
-  # https://github.com/NixOS/nixpkgs/issues/104750
-  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 
   bookdbPort = 3000;
   floodPort = 3001;
@@ -351,10 +349,7 @@ in
     image = "localhost:5000/prometheus-speedtest-exporter";
     ports = [ "127.0.0.1:${toString prometheusSpeedtestExporterPort}:8888" ];
   };
-  systemd.services."${ociBackend}-prometheus-speedtest-exporter" = {
-    wantedBy = [ "prometheus.service" ];
-    serviceConfig = serviceConfigForContainerLogging;
-  };
+  systemd.services."${ociBackend}-prometheus-speedtest-exporter".wantedBy = [ "prometheus.service" ];
 
   systemd.services.prometheus-awair-exporter =
     let
@@ -497,8 +492,5 @@ in
     extraOptions = [ "--network=promscale_network" ];
     volumes = [ "/persist/docker-volumes/promscale/pgdata:/var/lib/postgresql/data" ];
   };
-  systemd.services."${ociBackend}-promscale-db" = {
-    preStart = "${ociBackend} network create -d bridge promscale_network || true";
-    serviceConfig = serviceConfigForContainerLogging;
-  };
+  systemd.services."${ociBackend}-promscale-db".preStart = "${ociBackend} network create -d bridge promscale_network || true";
 }

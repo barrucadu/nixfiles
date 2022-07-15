@@ -4,9 +4,6 @@ with lib;
 let
   cfg = config.services.bookmarks;
   backend = config.virtualisation.oci-containers.backend;
-
-  # https://github.com/NixOS/nixpkgs/issues/104750
-  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 in
 {
   options.services.bookmarks = {
@@ -35,10 +32,7 @@ in
       dependsOn = [ "bookmarks-db" ];
       ports = [ "127.0.0.1:${toString cfg.httpPort}:8888" ];
     };
-    systemd.services."${backend}-bookmarks" = {
-      preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
-      serviceConfig = serviceConfigForContainerLogging;
-    };
+    systemd.services."${backend}-bookmarks".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
 
     virtualisation.oci-containers.containers.bookmarks-db = {
       autoStart = true;
@@ -52,9 +46,6 @@ in
       extraOptions = [ "--network=bookmarks_network" ];
       volumes = [ "${toString cfg.dockerVolumeDir}/esdata:/usr/share/elasticsearch/data" ];
     };
-    systemd.services."${backend}-bookmarks-db" = {
-      preStart = "${backend} network create -d bridge bookmarks_network || true";
-      serviceConfig = serviceConfigForContainerLogging;
-    };
+    systemd.services."${backend}-bookmarks-db".preStart = "${backend} network create -d bridge bookmarks_network || true";
   };
 }
