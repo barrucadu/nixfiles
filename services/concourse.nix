@@ -4,9 +4,6 @@ with lib;
 let
   cfg = config.services.concourse;
   backend = config.virtualisation.oci-containers.backend;
-
-  # https://github.com/NixOS/nixpkgs/issues/104750
-  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 in
 {
   options.services.concourse = {
@@ -53,10 +50,7 @@ in
         "${toString cfg.dockerVolumeDir}/keys/web:/concourse-keys"
       ];
     };
-    systemd.services."${backend}-concourse-web" = {
-      preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
-      serviceConfig = serviceConfigForContainerLogging;
-    };
+    systemd.services."${backend}-concourse-web".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
 
     virtualisation.oci-containers.containers.concourse-worker = {
       autoStart = true;
@@ -74,10 +68,7 @@ in
         "${toString cfg.dockerVolumeDir}/keys/worker:/concourse-keys"
       ] ++ (if cfg.workerScratchDir == null then [ ] else [ "${cfg.workerScratchDir}:/workdir" ]);
     };
-    systemd.services."${backend}-concourse-worker" = {
-      preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
-      serviceConfig = serviceConfigForContainerLogging;
-    };
+    systemd.services."${backend}-concourse-worker".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
 
     virtualisation.oci-containers.containers.concourse-db = {
       autoStart = true;
@@ -90,10 +81,7 @@ in
       extraOptions = [ "--network=concourse_network" ];
       volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
     };
-    systemd.services."${backend}-concourse-db" = {
-      preStart = "${backend} network create -d bridge concourse_network || true";
-      serviceConfig = serviceConfigForContainerLogging;
-    };
+    systemd.services."${backend}-concourse-db".preStart = "${backend} network create -d bridge concourse_network || true";
 
     services.prometheus.scrapeConfigs = [
       {

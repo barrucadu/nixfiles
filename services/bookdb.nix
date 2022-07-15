@@ -4,9 +4,6 @@ with lib;
 let
   cfg = config.services.bookdb;
   backend = config.virtualisation.oci-containers.backend;
-
-  # https://github.com/NixOS/nixpkgs/issues/104750
-  serviceConfigForContainerLogging = { StandardOutput = mkForce "journal"; StandardError = mkForce "journal"; };
 in
 {
   options.services.bookdb = {
@@ -35,10 +32,7 @@ in
       ports = [ "127.0.0.1:${toString cfg.httpPort}:8888" ];
       volumes = [ "${toString cfg.dockerVolumeDir}/covers:/bookdb-covers" ];
     };
-    systemd.services."${backend}-bookdb" = {
-      preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
-      serviceConfig = serviceConfigForContainerLogging;
-    };
+    systemd.services."${backend}-bookdb".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
 
     virtualisation.oci-containers.containers.bookdb-db = {
       autoStart = true;
@@ -52,9 +46,6 @@ in
       extraOptions = [ "--network=bookdb_network" ];
       volumes = [ "${toString cfg.dockerVolumeDir}/esdata:/usr/share/elasticsearch/data" ];
     };
-    systemd.services."${backend}-bookdb-db" = {
-      preStart = "${backend} network create -d bridge bookdb_network || true";
-      serviceConfig = serviceConfigForContainerLogging;
-    };
+    systemd.services."${backend}-bookdb-db".preStart = "${backend} network create -d bridge bookdb_network || true";
   };
 }
