@@ -6,7 +6,6 @@ let
   bookdbPort = 3001;
   bookmarksPort = 3002;
   concoursePort = 3003;
-  commentoPort = 3005;
   umamiPort = 3006;
   pleromaPort = 3007;
   concourseMetricsPort = 3009;
@@ -207,7 +206,7 @@ in
     www.lookwhattheshoggothdraggedin.com {
       import common_config
 
-      header Content-Security-Policy "default-src 'self' commento.lookwhattheshoggothdraggedin.com umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com; img-src 'self' 'unsafe-inline' commento.lookwhattheshoggothdraggedin.com data:"
+      header Content-Security-Policy "default-src 'self' umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data:"
 
       header /files/*         Cache-Control "public, immutable, max-age=604800"
       header /fonts/*         Cache-Control "public, immutable, max-age=31536000"
@@ -225,11 +224,6 @@ in
         rewrite @404 /404.html
         file_server
       }
-    }
-
-    commento.lookwhattheshoggothdraggedin.com {
-      import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.commento.httpPort}
     }
 
     umami.lookwhattheshoggothdraggedin.com {
@@ -334,12 +328,6 @@ in
   sops.secrets."services/concourse/env" = { };
 
   # Look what the Shoggoth Dragged In
-  services.commento.enable = true;
-  services.commento.httpPort = commentoPort;
-  services.commento.externalUrl = "https://commento.lookwhattheshoggothdraggedin.com";
-  services.commento.environmentFile = config.sops.secrets."services/commento/env".path;
-  sops.secrets."services/commento/env" = { };
-
   services.umami.enable = true;
   services.umami.httpPort = umamiPort;
   services.umami.environmentFile = config.sops.secrets."services/umami/env".path;

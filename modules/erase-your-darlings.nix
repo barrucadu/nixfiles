@@ -67,7 +67,6 @@ in
     # my services
     services.bookdb.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookdb";
     services.bookmarks.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookmarks";
-    services.commento.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/commento";
     services.concourse.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/concourse";
     services.finder.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/finder";
     services.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
