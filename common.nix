@@ -11,7 +11,6 @@ with lib;
     ./modules/zfs-automation.nix
     ./services/bookdb.nix
     ./services/bookmarks.nix
-    ./services/commento.nix
     ./services/concourse.nix
     ./services/finder.nix
     ./services/minecraft.nix
