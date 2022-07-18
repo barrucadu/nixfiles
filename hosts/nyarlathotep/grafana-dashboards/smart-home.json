@@ -76,8 +76,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 8,
+        "h": 12,
+        "w": 24,
         "x": 0,
         "y": 1
       },
@@ -152,6 +152,112 @@
             "mode": "absolute",
             "steps": [
               {
+                "color": "transparent",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 27
+              },
+              {
+                "color": "red",
+                "value": 41
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 13
+      },
+      "id": 50,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Heat_index"
+        }
+      ],
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "expr": "-8.78469475556\r\n+ 1.61139411 * awair_temp\r\n+ 2.33854883889 * awair_humid\r\n+ -0.14611605 * awair_temp * awair_humid\r\n+ -0.012308094 * awair_temp * awair_temp\r\n+ -0.0164248277778 * awair_humid * awair_humid\r\n+ 0.002211732 * awair_temp * awair_temp * awair_humid\r\n+ 0.00072546 * awair_temp * awair_humid * awair_humid\r\n+ -0.000003582 * awair_temp * awair_temp * awair_humid * awair_humid",
+          "interval": "",
+          "legendFormat": "{{sensor}}",
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Heat Index",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
                 "color": "red",
                 "value": null
               },
@@ -181,7 +287,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 1
+        "y": 13
       },
       "id": 44,
       "options": {
@@ -284,7 +390,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 1
+        "y": 13
       },
       "id": 46,
       "options": {
@@ -379,7 +485,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 10
+        "y": 22
       },
       "id": 45,
       "options": {
@@ -474,7 +580,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 10
+        "y": 22
       },
       "id": 47,
       "options": {
@@ -569,7 +675,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 10
+        "y": 22
       },
       "id": 48,
       "options": {
@@ -609,7 +715,7 @@
     "list": []
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
