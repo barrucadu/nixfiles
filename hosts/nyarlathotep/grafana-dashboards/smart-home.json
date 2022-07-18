@@ -96,7 +96,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "expr": "awair_score{sensor=\"living-room\"}",
@@ -138,7 +138,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -148,8 +148,6 @@
             }
           },
           "mappings": [],
-          "max": 34,
-          "min": 9,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -243,7 +241,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -253,8 +251,6 @@
             }
           },
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -348,7 +344,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -358,8 +354,6 @@
             }
           },
           "mappings": [],
-          "max": 2500,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -445,7 +439,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -455,8 +449,6 @@
             }
           },
           "mappings": [],
-          "max": 1000,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -542,7 +534,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -552,8 +544,6 @@
             }
           },
           "mappings": [],
-          "max": 75,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -619,7 +609,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
