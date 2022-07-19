@@ -14,7 +14,6 @@ let
   grafanaPort = 3004;
   wikijsPort = 3005;
   promscalePort = 9201;
-  prometheusSpeedtestExporterPort = 9516;
   prometheusAwairExporterPort = 9517;
 in
 {
@@ -333,23 +332,10 @@ in
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
   services.prometheus.scrapeConfigs = [
     {
-      job_name = "speedtest";
-      scrape_interval = "5m";
-      scrape_timeout = "2m";
-      static_configs = [{ targets = [ "localhost:${toString prometheusSpeedtestExporterPort}" ]; }];
-    }
-    {
       job_name = "awair";
       static_configs = [{ targets = [ "localhost:${toString prometheusAwairExporterPort}" ]; }];
     }
   ];
-
-  virtualisation.oci-containers.containers.prometheus-speedtest-exporter = {
-    autoStart = true;
-    image = "localhost:5000/prometheus-speedtest-exporter";
-    ports = [ "127.0.0.1:${toString prometheusSpeedtestExporterPort}:8888" ];
-  };
-  systemd.services."${ociBackend}-prometheus-speedtest-exporter".wantedBy = [ "prometheus.service" ];
 
   systemd.services.prometheus-awair-exporter =
     let
