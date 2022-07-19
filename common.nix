@@ -168,7 +168,7 @@ with lib;
       extraGroups = [ "docker" "wheel" ];
       group = "users";
       initialPassword = "breadbread";
-      shell = "/run/current-system/sw/bin/zsh";
+      shell = pkgs.zsh;
 
       # Such pubkey!
       openssh.authorizedKeys.keys = [
