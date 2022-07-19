@@ -122,9 +122,8 @@ with lib;
         }
       ];
       provision.dashboards = [
-        { name = "Overview"; folder = "Common"; options.path = ./common-grafana-dashboards/overview.json; }
-        { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./common-grafana-dashboards/node-stats-detailed.json; }
-        { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./common-grafana-dashboards/container-stats-detailed.json; }
+        { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./grafana-dashboards/node-stats-detailed.json; }
+        { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./grafana-dashboards/container-stats-detailed.json; }
       ];
     };
 
@@ -169,7 +168,7 @@ with lib;
       extraGroups = [ "docker" "wheel" ];
       group = "users";
       initialPassword = "breadbread";
-      shell = "/run/current-system/sw/bin/zsh";
+      shell = pkgs.zsh;
 
       # Such pubkey!
       openssh.authorizedKeys.keys = [
@@ -213,20 +212,15 @@ with lib;
       lynx
       man-pages
       ncdu
-      nmap
-      proselint
       psmisc
       python3
-      ripgrep
       rsync
       rxvt_unicode.terminfo
       smartmontools
       stow
       tmux
       unzip
-      vale
       vim
-      vnstat
       wget
       which
       whois
