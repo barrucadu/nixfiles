@@ -413,7 +413,7 @@ in
 
 
   ###############################################################################
-  # https://github.com/barrucadu/hledger-scripts
+  # Finance dashboard & FX rate fetching
   ###############################################################################
 
   systemd.timers.hledger-fetch-fx-rates = {
