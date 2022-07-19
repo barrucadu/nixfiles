@@ -122,9 +122,9 @@ with lib;
         }
       ];
       provision.dashboards = [
-        { name = "Overview"; folder = "Common"; options.path = ./common-grafana-dashboards/overview.json; }
-        { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./common-grafana-dashboards/node-stats-detailed.json; }
-        { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./common-grafana-dashboards/container-stats-detailed.json; }
+        { name = "Overview"; folder = "Common"; options.path = ./grafana-dashboards/overview.json; }
+        { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./grafana-dashboards/node-stats-detailed.json; }
+        { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./grafana-dashboards/container-stats-detailed.json; }
       ];
     };
 
