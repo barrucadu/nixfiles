@@ -212,20 +212,15 @@ with lib;
       lynx
       man-pages
       ncdu
-      nmap
-      proselint
       psmisc
       python3
-      ripgrep
       rsync
       rxvt_unicode.terminfo
       smartmontools
       stow
       tmux
       unzip
-      vale
       vim
-      vnstat
       wget
       which
       whois
