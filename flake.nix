@@ -2,8 +2,9 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
   inputs.sops-nix.url = "github:Mic92/sops-nix";
 
-  outputs = { nixpkgs, sops-nix, ... }: {
+  outputs = { nixpkgs, sops-nix, ... }@flakeInputs: {
     nixosConfigurations.azathoth = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit flakeInputs; };
       system = "x86_64-linux";
       modules = [
         ./common.nix
@@ -14,6 +15,7 @@
     };
 
     nixosConfigurations.carcosa = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit flakeInputs; };
       system = "x86_64-linux";
       modules = [
         ./common.nix
@@ -25,6 +27,7 @@
     };
 
     nixosConfigurations.lainonlife = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit flakeInputs; };
       system = "x86_64-linux";
       modules = [
         ./common.nix
@@ -36,6 +39,7 @@
     };
 
     nixosConfigurations.nyarlathotep = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit flakeInputs; };
       system = "x86_64-linux";
       modules = [
         ./common.nix

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, flakeInputs, ... }:
 
 with lib;
 
@@ -32,10 +32,14 @@ with lib;
     services.journald.extraConfig = "SystemMaxUse=500M";
 
     # Collect nix store garbage and optimise daily.
-    nix.extraOptions = "experimental-features = nix-command flakes";
     nix.gc.automatic = true;
     nix.gc.options = "--delete-older-than 30d";
     nix.optimise.automatic = true;
+
+    # Enable flakes & pin nixpkgs to the same version that built the
+    # system
+    nix.extraOptions = "experimental-features = nix-command flakes";
+    nix.registry.nixpkgs.flake = flakeInputs.nixpkgs;
 
     # Clear out /tmp after a fortnight and give all normal users a ~/tmp
     # cleaned out weekly.
