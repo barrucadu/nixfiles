@@ -9,16 +9,16 @@ let
 
   package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
     pname = "resolved";
-    version = "59c10c0b89db9a6b1a27e58b31ac4591dee77ea5";
+    version = "6e3c17f8deb44cec0314448288f153b5ca711095";
 
     src = fetchFromGitHub {
       owner = "barrucadu";
       repo = pname;
       rev = version;
-      sha256 = "1462i5hf47xbbsifyg5n6vczh7s3fz9flzgxp6h9rcfp50zk5a8p";
+      sha256 = "sha256-+0cFa8RuC4ofaDZSq189pTQ5/pV9F6OqlzeVDlZ/vKs=";
     };
 
-    cargoSha256 = "0g7hzj6hkqzv49pbq0kbnv1ipvn41rdpq9zq3vyhc205wqy8vdgs";
+    cargoSha256 = "sha256-+VFuQBmJAbZQ3xxVoiwXHpCi544x7JlaElyJGPT6Vuc=";
   };
   resolved = pkgs.callPackage package { };
 in
