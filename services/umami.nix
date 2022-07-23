@@ -9,7 +9,6 @@ in
   options.services.umami = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
-    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     httpPort = mkOption { type = types.int; default = 3000; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     umamiTag = mkOption { type = types.str; default = "postgresql-latest"; };
@@ -28,7 +27,6 @@ in
       dependsOn = [ "umami-db" ];
       ports = [ "127.0.0.1:${toString cfg.httpPort}:3000" ];
     };
-    systemd.services."${backend}-umami".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
 
     virtualisation.oci-containers.containers.umami-db = {
       autoStart = true;
