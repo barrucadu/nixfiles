@@ -8,7 +8,6 @@ in
 {
   options.services.concourse = {
     enable = mkOption { type = types.bool; default = false; };
-    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
     concourseTag = mkOption { type = types.str; default = "7.1"; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
@@ -50,7 +49,6 @@ in
         "${toString cfg.dockerVolumeDir}/keys/web:/concourse-keys"
       ];
     };
-    systemd.services."${backend}-concourse-web".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
 
     virtualisation.oci-containers.containers.concourse-worker = {
       autoStart = true;
@@ -68,7 +66,6 @@ in
         "${toString cfg.dockerVolumeDir}/keys/worker:/concourse-keys"
       ] ++ (if cfg.workerScratchDir == null then [ ] else [ "${cfg.workerScratchDir}:/workdir" ]);
     };
-    systemd.services."${backend}-concourse-worker".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
 
     virtualisation.oci-containers.containers.concourse-db = {
       autoStart = true;

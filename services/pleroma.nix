@@ -16,13 +16,18 @@ in
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 4000; };
     pgTag = mkOption { type = types.str; default = "13"; };
-    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     domain = mkOption { type = types.str; };
     faviconPath = mkOption { type = types.nullOr types.path; default = null; };
     instanceName = mkOption { type = types.str; default = cfg.domain; };
     adminEmail = mkOption { type = types.str; default = "mike@barrucadu.co.uk"; };
     notifyEmail = mkOption { type = types.str; default = cfg.adminEmail; };
     secretsFile = mkOption { type = types.str; };
+    registry = {
+      username = mkOption { type = types.nullOr types.str; default = null; };
+      passwordFile = mkOption { type = types.nullOr types.str; default = null; };
+      url = mkOption { type = types.nullOr types.str; default = null; };
+    };
+    pullOnStart = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
   };
 
@@ -30,6 +35,7 @@ in
     virtualisation.oci-containers.containers.pleroma = {
       autoStart = true;
       image = cfg.image;
+      login = with cfg.registry; { inherit username passwordFile; registry = url; };
       environment = {
         "DOMAIN" = cfg.domain;
         "INSTANCE_NAME" = cfg.instanceName;
@@ -49,7 +55,7 @@ in
         "${cfg.secretsFile}:/var/lib/pleroma/secret.exs"
       ] ++ (if cfg.faviconPath == null then [ ] else [ "${pkgs.copyPathToStore cfg.faviconPath}:/var/lib/pleroma/static/favicon.png" ]);
     };
-    systemd.services."${backend}-pleroma".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
+    systemd.services."${backend}-pleroma".preStart = mkIf cfg.pullOnStart "${backend} pull ${cfg.image}";
 
     virtualisation.oci-containers.containers.pleroma-db = {
       autoStart = true;

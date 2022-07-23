@@ -12,13 +12,11 @@ let
   grafanaPort = 3010;
   foundryPort = 3011;
 
-  pullDevDockerImage = pkgs.writeShellScript "pull-dev-docker-image.sh" ''
-    set -e
-    set -o pipefail
-
-    ${pkgs.coreutils}/bin/cat ${config.sops.secrets."services/docker_registry/login".path} | ${pkgs.docker}/bin/docker login --username registry --password-stdin https://registry.barrucadu.dev
-    ${pkgs.docker}/bin/docker pull registry.barrucadu.dev/$1
-  '';
+  registryBarrucaduDev = {
+    username = "registry";
+    passwordFile = config.sops.secrets."services/docker_registry/login".path;
+    url = "https://registry.barrucadu.dev";
+  };
 
 in
 {
@@ -294,26 +292,29 @@ in
   # bookdb
   services.bookdb.enable = true;
   services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
+  services.bookdb.pullOnStart = true;
+  services.bookdb.registry = registryBarrucaduDev;
   services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   services.bookdb.readOnly = true;
-  services.bookdb.execStartPre = "${pullDevDockerImage} bookdb:latest";
   services.bookdb.httpPort = bookdbPort;
 
   # bookmarks
   services.bookmarks.enable = true;
   services.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
+  services.bookmarks.pullOnStart = true;
+  services.bookmarks.registry = registryBarrucaduDev;
   services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
   services.bookmarks.readOnly = true;
-  services.bookmarks.execStartPre = "${pullDevDockerImage} bookmarks:latest";
   services.bookmarks.httpPort = bookmarksPort;
 
   # pleroma
   services.pleroma.enable = true;
   services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
+  services.pleroma.pullOnStart = true;
+  services.pleroma.registry = registryBarrucaduDev;
   services.pleroma.httpPort = pleromaPort;
   services.pleroma.domain = "ap.barrucadu.co.uk";
   services.pleroma.secretsFile = config.sops.secrets."services/pleroma/exc".path;
-  services.pleroma.execStartPre = "${pullDevDockerImage} pleroma:latest";
   # TODO: figure out how to lock this down so only the pleroma process
   # can read it (remap the container UID / GID to something known,
   # perhaps?)

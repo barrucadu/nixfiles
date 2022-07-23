@@ -11,7 +11,6 @@ in
     image = mkOption { type = types.str; };
     httpPort = mkOption { type = types.int; default = 3000; };
     esTag = mkOption { type = types.str; default = "8.0.0"; };
-    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
     dockerVolumeDir = mkOption { type = types.path; };
     mangaDir = mkOption { type = types.path; };
   };
@@ -29,7 +28,6 @@ in
       ports = [ "127.0.0.1:${toString cfg.httpPort}:8888" ];
       volumes = [ "${toString cfg.mangaDir}:/data" ];
     };
-    systemd.services."${backend}-finder".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
 
     virtualisation.oci-containers.containers.finder-db = {
       autoStart = true;

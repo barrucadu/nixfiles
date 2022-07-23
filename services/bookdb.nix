@@ -13,7 +13,12 @@ in
     esTag = mkOption { type = types.str; default = "8.0.0"; };
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
-    execStartPre = mkOption { type = types.nullOr types.str; default = null; };
+    registry = {
+      username = mkOption { type = types.nullOr types.str; default = null; };
+      passwordFile = mkOption { type = types.nullOr types.str; default = null; };
+      url = mkOption { type = types.nullOr types.str; default = null; };
+    };
+    pullOnStart = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
   };
 
@@ -21,6 +26,7 @@ in
     virtualisation.oci-containers.containers.bookdb = {
       autoStart = true;
       image = cfg.image;
+      login = with cfg.registry; { inherit username passwordFile; registry = url; };
       environment = {
         "ALLOW_WRITES" = if cfg.readOnly then "0" else "1";
         "BASE_URI" = cfg.baseURI;
@@ -32,7 +38,7 @@ in
       ports = [ "127.0.0.1:${toString cfg.httpPort}:8888" ];
       volumes = [ "${toString cfg.dockerVolumeDir}/covers:/bookdb-covers" ];
     };
-    systemd.services."${backend}-bookdb".preStart = mkIf (cfg.execStartPre != null) cfg.execStartPre;
+    systemd.services."${backend}-bookdb".preStart = mkIf cfg.pullOnStart "${backend} pull ${cfg.image}";
 
     virtualisation.oci-containers.containers.bookdb-db = {
       autoStart = true;
