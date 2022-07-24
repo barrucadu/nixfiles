@@ -60,6 +60,24 @@ in
 
 
   ###############################################################################
+  ## Backups
+  ###############################################################################
+
+  modules.backupScripts.enable = true;
+  modules.backupScripts.environmentFile = config.sops.secrets."modules/backup_scripts/env".path;
+  modules.backupScripts.scripts.syncthing = "cp -a /home/barrucadu/s .";
+  # TODO: this will break when I have >100 github repos
+  modules.backupScripts.scripts.git = ''
+    curl -u "barrucadu:''${GITHUB_TOKEN}" 'https://api.github.com/user/repos?type=owner&per_page=100' 2>/dev/null | \
+      jq -r '.[].ssh_url' | \
+      while read url; do
+        git clone --bare "$url"
+      done
+  '';
+  sops.secrets."modules/backup_scripts/env" = { };
+
+
+  ###############################################################################
   ## Services
   ###############################################################################
 
@@ -361,6 +379,14 @@ in
     isSystemUser = true;
     group = "nogroup";
   };
+  # TODO: figure out how to get `sudo` in the unit's path (adding the
+  # package doesn't help - need the wrapper)
+  modules.backupScripts.scripts.foundryvtt = ''
+    /run/wrappers/bin/sudo systemctl stop foundryvtt
+    /run/wrappers/bin/sudo tar cfz dump.tar.gz /persist/srv/foundry
+    /run/wrappers/bin/sudo chown barrucadu.users dump.tar.gz
+    /run/wrappers/bin/sudo systemctl start foundryvtt
+  '';
 
 
   ###############################################################################
@@ -402,8 +428,8 @@ in
       commands = [
         { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.gnutar}/bin/tar cfz foundryvtt.tar.gz /persist/srv/foundry"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.coreutils}/bin/chown barrucadu.users foundryvtt.tar.gz"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz /persist/srv/foundry"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.coreutils}/bin/chown barrucadu.users dump.tar.gz"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];

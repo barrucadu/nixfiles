@@ -80,8 +80,12 @@ in
 
   networking.nameservers = [ "213.186.33.99" "2001:41d0:3:1c7::1" ];
 
-  # Run incremental backups daily, to reduce potential pleroma data loss
+  # Backups
+  modules.backupScripts.enable = true;
+  ## Run incremental backups daily, to reduce potential pleroma data loss
   modules.backupScripts.onCalendarIncr = "*-*-* 4:00:00";
+  modules.backupScripts.environmentFile = config.sops.secrets."modules/backup_scripts/env".path;
+  sops.secrets."modules/backup_scripts/env" = { };
 
   # No syncthing
   services.syncthing.enable = mkForce false;

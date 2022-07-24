@@ -51,6 +51,16 @@ in
 
 
   ###############################################################################
+  ## Backups
+  ###############################################################################
+
+  modules.backupScripts.enable = true;
+  modules.backupScripts.environmentFile = config.sops.secrets."modules/backup_scripts/env".path;
+  modules.backupScripts.pythonScripts.share = fileContents ./jobs/backup-share.py;
+  sops.secrets."modules/backup_scripts/env" = { };
+
+
+  ###############################################################################
   ## DNS
   ###############################################################################
 
@@ -58,6 +68,10 @@ in
   services.resolved.cache_size = 1000000;
   services.resolved.hosts_dirs = [ "/persist/etc/dns/hosts" ];
   services.resolved.zones_dirs = [ "/persist/etc/dns/zones" ];
+  modules.backupScripts.scripts.resolved = ''
+    cp -a /persist/etc/dns/hosts .
+    cp -a /persist/etc/dns/zones .
+  '';
 
 
   ###############################################################################
