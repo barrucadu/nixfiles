@@ -27,6 +27,10 @@ in
 
     # Auto-snapshot is enabled per dataset:
     # run `sudo zfs set com.sun:auto-snapshot=true <dataset>`
+    #
+    # The default of 12 monthly snapshots takes up too much disk space
+    # in practice.
     services.zfs.autoSnapshot.enable = true;
+    services.zfs.autoSnapshot.monthly = 3;
   };
 }
