@@ -53,5 +53,9 @@ in
       volumes = [ "${toString cfg.dockerVolumeDir}/esdata:/usr/share/elasticsearch/data" ];
     };
     systemd.services."${backend}-bookmarks-db".preStart = "${backend} network create -d bridge bookmarks_network || true";
+
+    modules.backupScripts.scripts.bookmarks = ''
+      ${backend} exec -i bookmarks env ES_HOST=http://bookmarks-db:9200 /app/dump-index.py | gzip -9 > dump.json.gz
+    '';
   };
 }

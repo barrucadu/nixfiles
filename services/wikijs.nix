@@ -43,5 +43,9 @@ in
       volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
     };
     systemd.services."${backend}-wikijs-db".preStart = "${backend} network create -d bridge wikijs_network || true";
+
+    modules.backupScripts.scripts.wikijs = ''
+      ${backend} exec -i wikijs-db pg_dump -U wikijs --no-owner wikijs | gzip -9 > dump.sql.gz
+    '';
   };
 }

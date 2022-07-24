@@ -40,5 +40,9 @@ in
       volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
     };
     systemd.services."${backend}-umami-db".preStart = "${backend} network create -d bridge umami_network || true";
+
+    modules.backupScripts.scripts.umami = ''
+      ${backend} exec -i umami-db pg_dump -U umami --no-owner umami | gzip -9 > dump.sql.gz
+    '';
   };
 }

@@ -90,5 +90,9 @@ in
       [
         { name = "Concourse"; folder = "Services"; options.path = ./grafana-dashboards/concourse.json; }
       ];
+
+    modules.backupScripts.scripts.concourse = ''
+      ${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse | gzip -9 > dump.sql.gz
+    '';
   };
 }
