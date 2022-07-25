@@ -15,13 +15,12 @@ in
   options = {
     modules = {
       firewall = {
-        enable = mkOption { type = types.bool; default = true; };
         ipBlocklistFile = mkOption { type = types.nullOr types.str; default = null; };
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     networking.firewall.enable = true;
     networking.firewall.allowPing = true;
     networking.firewall.trustedInterfaces = if config.virtualisation.docker.enable then [ "docker0" ] else [ ];
