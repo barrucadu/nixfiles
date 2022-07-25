@@ -13,6 +13,7 @@ with lib;
     ./services/bookmarks.nix
     ./services/concourse.nix
     ./services/finder.nix
+    ./services/foundryvtt.nix
     ./services/minecraft.nix
     ./services/pleroma.nix
     ./services/resolved.nix

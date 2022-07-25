@@ -151,7 +151,7 @@ in
 
     foundry.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://localhost:${toString foundryPort}
+      reverse_proxy http://localhost:${toString config.services.foundryvtt.port}
     }
 
     memo.barrucadu.co.uk {
@@ -361,33 +361,8 @@ in
   };
 
   # Foundry VTT
-  systemd.services.foundryvtt = {
-    enable = true;
-    description = "Foundry Virtual Tabletop";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.nodejs-18_x}/bin/node resources/app/main.js --dataPath=/persist/srv/foundry/data --port=${toString foundryPort}";
-      Restart = "always";
-      User = "foundryvtt";
-      WorkingDirectory = "/persist/srv/foundry/bin";
-    };
-  };
-  users.users.foundryvtt = {
-    description = "Foundry VTT service user";
-    home = "/persist/srv/foundry";
-    createHome = true;
-    isSystemUser = true;
-    group = "nogroup";
-  };
-  # TODO: figure out how to get `sudo` in the unit's path (adding the
-  # package doesn't help - need the wrapper)
-  modules.backupScripts.scripts.foundryvtt = ''
-    /run/wrappers/bin/sudo systemctl stop foundryvtt
-    /run/wrappers/bin/sudo tar cfz dump.tar.gz /persist/srv/foundry
-    /run/wrappers/bin/sudo chown barrucadu.users dump.tar.gz
-    /run/wrappers/bin/sudo systemctl start foundryvtt
-  '';
+  services.foundryvtt.enable = true;
+  services.foundryvtt.port = foundryPort;
 
 
   ###############################################################################
@@ -421,16 +396,6 @@ in
         { command = "${pkgs.systemd}/bin/systemctl restart docker-bookdb"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart docker-bookmarks"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart docker-pleroma"; options = [ "NOPASSWD" ]; }
-      ];
-    }
-    # for backup scripts
-    {
-      users = [ "barrucadu" ];
-      commands = [
-        { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz /persist/srv/foundry"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.coreutils}/bin/chown barrucadu.users dump.tar.gz"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
