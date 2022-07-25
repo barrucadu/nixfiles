@@ -9,7 +9,7 @@ in
   options.services.concourse = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
-    concourseTag = mkOption { type = types.str; default = "7.1"; };
+    concourseTag = mkOption { type = types.str; default = "7.8.2"; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
     httpPort = mkOption { type = types.int; default = 3001; };
     metricsPort = mkOption { type = types.int; default = 9001; };
