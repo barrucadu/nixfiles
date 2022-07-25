@@ -9,7 +9,7 @@ in
   options.services.umami = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
-    httpPort = mkOption { type = types.int; default = 3000; };
+    port = mkOption { type = types.int; default = 3000; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     umamiTag = mkOption { type = types.str; default = "postgresql-latest"; };
     environmentFile = mkOption { type = types.str; };
@@ -25,7 +25,7 @@ in
       environmentFiles = [ cfg.environmentFile ];
       extraOptions = [ "--network=umami_network" ];
       dependsOn = [ "umami-db" ];
-      ports = [ "127.0.0.1:${toString cfg.httpPort}:3000" ];
+      ports = [ "127.0.0.1:${toString cfg.port}:3000" ];
     };
 
     virtualisation.oci-containers.containers.umami-db = {

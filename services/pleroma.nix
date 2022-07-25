@@ -14,7 +14,7 @@ in
   options.services.pleroma = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
-    httpPort = mkOption { type = types.int; default = 4000; };
+    port = mkOption { type = types.int; default = 4000; };
     pgTag = mkOption { type = types.str; default = "13"; };
     domain = mkOption { type = types.str; };
     faviconPath = mkOption { type = types.nullOr types.path; default = null; };
@@ -48,7 +48,7 @@ in
       };
       extraOptions = [ "--network=pleroma_network" ];
       dependsOn = [ "pleroma-db" ];
-      ports = [ "127.0.0.1:${toString cfg.httpPort}:4000" ];
+      ports = [ "127.0.0.1:${toString cfg.port}:4000" ];
       volumes = [
         "${toString cfg.dockerVolumeDir}/uploads:/var/lib/pleroma/uploads"
         "${toString cfg.dockerVolumeDir}/emojis:/var/lib/pleroma/static/emoji/custom"
