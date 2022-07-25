@@ -63,18 +63,18 @@ in
   ## Backups
   ###############################################################################
 
-  modules.backupScripts.enable = true;
-  modules.backupScripts.environmentFile = config.sops.secrets."modules/backup_scripts/env".path;
-  modules.backupScripts.scripts.syncthing = "cp -a /home/barrucadu/s .";
+  services.backups.enable = true;
+  services.backups.environmentFile = config.sops.secrets."services/backups/env".path;
+  services.backups.scripts.syncthing = "cp -a /home/barrucadu/s .";
   # TODO: this will break when I have >100 github repos
-  modules.backupScripts.scripts.git = ''
+  services.backups.scripts.git = ''
     curl -u "barrucadu:''${GITHUB_TOKEN}" 'https://api.github.com/user/repos?type=owner&per_page=100' 2>/dev/null | \
       jq -r '.[].ssh_url' | \
       while read url; do
         git clone --bare "$url"
       done
   '';
-  sops.secrets."modules/backup_scripts/env" = { };
+  sops.secrets."services/backups/env" = { };
 
 
   ###############################################################################

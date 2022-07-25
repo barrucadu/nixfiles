@@ -4,11 +4,11 @@ with lib;
 
 {
   imports = [
-    ./modules/backup-scripts.nix
     ./modules/erase-your-darlings.nix
     ./modules/firewall.nix
     ./modules/monitoring-scripts.nix
     ./modules/zfs-automation.nix
+    ./services/backups.nix
     ./services/bookdb.nix
     ./services/bookmarks.nix
     ./services/concourse.nix

@@ -11,7 +11,7 @@ if [[ ! -f "hosts/${TARGET}/secrets.yaml" ]]; then
   exit 1
 fi
 
-export $(sops -d --extract '["modules"]["backup_scripts"]["env"]' "hosts/${TARGET}/secrets.yaml")
+export $(sops -d --extract '["services"]["backups"]["env"]' "hosts/${TARGET}/secrets.yaml")
 export AWS_ACCESS_KEY_ID=$DUPLICITY_AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY=$DUPLICITY_AWS_SECRET_ACCESS_KEY
 
