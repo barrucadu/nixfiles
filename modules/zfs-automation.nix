@@ -3,18 +3,10 @@
 with lib;
 
 let
-  cfg = config.modules.zfsAutomation;
+  thereAreZfsFilesystems = any id (mapAttrsToList (_: attrs: attrs.fsType == "zfs") config.fileSystems);
 in
 {
-  options = {
-    modules = {
-      zfsAutomation = {
-        enable = mkOption { type = types.bool; default = false; };
-      };
-    };
-  };
-
-  config = mkIf cfg.enable {
+  config = mkIf thereAreZfsFilesystems {
     # Auto-trim is enabled per-pool:
     # run `sudo zpool set autotrim=on <pool>`
     services.zfs.trim.enable = true;

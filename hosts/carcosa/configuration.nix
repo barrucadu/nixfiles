@@ -35,9 +35,6 @@ in
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/sda";
 
-  # ZFS auto trim, scrub, & snapshot
-  modules.zfsAutomation.enable = true;
-
   # Networking
   networking.firewall.allowedTCPPorts = [ 80 222 443 ];
 
