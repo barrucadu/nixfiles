@@ -70,7 +70,7 @@ in
     };
     systemd.services."${backend}-pleroma-db".preStart = "${backend} network create -d bridge pleroma_network || true";
 
-    modules.backupScripts.scripts.pleroma = ''
+    services.backups.scripts.pleroma = ''
       ${backend} cp "pleroma:/var/lib/pleroma/uploads" uploads
       ${backend} cp "pleroma:/var/lib/pleroma/static/emoji/custom" emojis
       ${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner pleroma | gzip -9 > dump.sql.gz

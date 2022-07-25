@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.modules.backupScripts;
+  cfg = config.services.backups;
   hostname = config.networking.hostName;
 
   runScript = cmd: name: source: ''
@@ -81,8 +81,8 @@ let
 in
 {
   options = {
-    modules = {
-      backupScripts = {
+    services = {
+      backups = {
         enable = mkOption { type = types.bool; default = false; };
         scripts = mkOption { type = types.attrsOf types.str; default = { }; };
         pythonScripts = mkOption { type = types.attrsOf types.str; default = { }; };
