@@ -59,9 +59,9 @@ in
   sops.secrets."users/barrucadu".neededForUsers = true;
 
   # Monitoring
-  modules.monitoringScripts.enable = true;
-  modules.monitoringScripts.environmentFile = config.sops.secrets."modules/monitoring_scripts/env".path;
-  sops.secrets."modules/monitoring_scripts/env" = { };
+  services.monitoring.enable = true;
+  services.monitoring.environmentFile = config.sops.secrets."services/monitoring/env".path;
+  sops.secrets."services/monitoring/env" = { };
 
 
   ###############################################################################

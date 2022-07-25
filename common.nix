@@ -6,7 +6,6 @@ with lib;
   imports = [
     ./modules/erase-your-darlings.nix
     ./modules/firewall.nix
-    ./modules/monitoring-scripts.nix
     ./modules/zfs-automation.nix
     ./services/backups.nix
     ./services/bookdb.nix
@@ -15,6 +14,7 @@ with lib;
     ./services/finder.nix
     ./services/foundryvtt.nix
     ./services/minecraft.nix
+    ./services/monitoring.nix
     ./services/pleroma.nix
     ./services/resolved.nix
     ./services/umami.nix

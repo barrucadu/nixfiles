@@ -33,7 +33,7 @@ in
     services.zfs.autoSnapshot.enable = true;
     services.zfs.autoSnapshot.monthly = 3;
 
-    modules.monitoringScripts.scripts.zfs = ''
+    services.monitoring.scripts.zfs = ''
       if [[ "$(zpool status -x)" != "all pools are healthy" ]]; then
         zpool status
         exit 1

@@ -46,10 +46,10 @@ in
   sops.secrets."users/barrucadu".neededForUsers = true;
 
   # Monitoring
-  modules.monitoringScripts.enable = true;
-  modules.monitoringScripts.onCalendar = "0/12:00:00";
-  modules.monitoringScripts.environmentFile = config.sops.secrets."modules/monitoring_scripts/env".path;
-  sops.secrets."modules/monitoring_scripts/env" = { };
+  services.monitoring.enable = true;
+  services.monitoring.onCalendar = "0/12:00:00";
+  services.monitoring.environmentFile = config.sops.secrets."services/monitoring/env".path;
+  sops.secrets."services/monitoring/env" = { };
 
 
   ###############################################################################

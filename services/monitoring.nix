@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.modules.monitoringScripts;
+  cfg = config.services.monitoring;
 
   runScript = cmd: name: source: ''
     echo "${name}"
@@ -16,8 +16,8 @@ let
 in
 {
   options = {
-    modules = {
-      monitoringScripts = {
+    services = {
+      monitoring = {
         enable = mkOption { type = types.bool; default = false; };
         scripts = mkOption { type = types.attrsOf types.str; default = { }; };
         environmentFile = mkOption { type = types.str; };
