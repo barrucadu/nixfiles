@@ -139,13 +139,13 @@ in
     http://bookdb.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.bookdb.httpPort}
+      reverse_proxy http://localhost:${toString config.services.bookdb.port}
     }
 
     http://bookmarks.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.bookmarks.httpPort}
+      reverse_proxy http://localhost:${toString config.services.bookmarks.port}
     }
 
     http://flood.nyarlathotep.lan:80 {
@@ -157,7 +157,7 @@ in
     http://finder.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.finder.httpPort}
+      reverse_proxy http://localhost:${toString config.services.finder.port}
     }
 
     http://grafana.nyarlathotep.lan:80 {
@@ -175,7 +175,7 @@ in
     http://wiki.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.wikijs.httpPort}
+      reverse_proxy http://localhost:${toString config.services.wikijs.port}
     }
 
     http://help.lan:80 {
@@ -225,7 +225,7 @@ in
   services.bookdb.enable = true;
   services.bookdb.image = "localhost:5000/bookdb:latest";
   services.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
-  services.bookdb.httpPort = bookdbPort;
+  services.bookdb.port = bookdbPort;
 
   systemd.timers.bookdb-sync = {
     wantedBy = [ "timers.target" ];
@@ -251,7 +251,7 @@ in
   services.bookmarks.enable = true;
   services.bookmarks.image = "localhost:5000/bookmarks:latest";
   services.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
-  services.bookmarks.httpPort = bookmarksPort;
+  services.bookmarks.port = bookmarksPort;
   services.bookmarks.environmentFile = config.sops.secrets."services/bookmarks/env".path;
   sops.secrets."services/bookmarks/env" = { };
 
@@ -278,7 +278,7 @@ in
 
   services.finder.enable = true;
   services.finder.image = "localhost:5000/finder:latest";
-  services.finder.httpPort = finderPort;
+  services.finder.port = finderPort;
   services.finder.mangaDir = "/mnt/nas/manga";
 
 
@@ -287,7 +287,7 @@ in
   ###############################################################################
 
   services.wikijs.enable = true;
-  services.wikijs.httpPort = wikijsPort;
+  services.wikijs.port = wikijsPort;
 
 
   ###############################################################################

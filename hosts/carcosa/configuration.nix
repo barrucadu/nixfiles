@@ -136,17 +136,17 @@ in
 
     ap.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.pleroma.httpPort}
+      reverse_proxy http://127.0.0.1:${toString config.services.pleroma.port}
     }
 
     bookdb.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.bookdb.httpPort}
+      reverse_proxy http://127.0.0.1:${toString config.services.bookdb.port}
     }
 
     bookmarks.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.httpPort}
+      reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.port}
     }
 
     foundry.barrucadu.co.uk {
@@ -200,7 +200,7 @@ in
 
     cd.barrucadu.dev {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.concourse.httpPort} {
+      reverse_proxy http://127.0.0.1:${toString config.services.concourse.port} {
         flush_interval -1
       }
     }
@@ -244,7 +244,7 @@ in
 
     umami.lookwhattheshoggothdraggedin.com {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.umami.httpPort}
+      reverse_proxy http://127.0.0.1:${toString config.services.umami.port}
     }
 
     uzbl.org {
@@ -314,7 +314,7 @@ in
   services.bookdb.registry = registryBarrucaduDev;
   services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   services.bookdb.readOnly = true;
-  services.bookdb.httpPort = bookdbPort;
+  services.bookdb.port = bookdbPort;
 
   # bookmarks
   services.bookmarks.enable = true;
@@ -323,14 +323,14 @@ in
   services.bookmarks.registry = registryBarrucaduDev;
   services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
   services.bookmarks.readOnly = true;
-  services.bookmarks.httpPort = bookmarksPort;
+  services.bookmarks.port = bookmarksPort;
 
   # pleroma
   services.pleroma.enable = true;
   services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
   services.pleroma.pullOnStart = true;
   services.pleroma.registry = registryBarrucaduDev;
-  services.pleroma.httpPort = pleromaPort;
+  services.pleroma.port = pleromaPort;
   services.pleroma.domain = "ap.barrucadu.co.uk";
   services.pleroma.secretsFile = config.sops.secrets."services/pleroma/exc".path;
   # TODO: figure out how to lock this down so only the pleroma process
@@ -340,7 +340,7 @@ in
 
   # concourse
   services.concourse.enable = true;
-  services.concourse.httpPort = concoursePort;
+  services.concourse.port = concoursePort;
   services.concourse.metricsPort = concourseMetricsPort;
   services.concourse.environmentFile = config.sops.secrets."services/concourse/env".path;
   services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
@@ -348,7 +348,7 @@ in
 
   # Look what the Shoggoth Dragged In
   services.umami.enable = true;
-  services.umami.httpPort = umamiPort;
+  services.umami.port = umamiPort;
   services.umami.environmentFile = config.sops.secrets."services/umami/env".path;
   sops.secrets."services/umami/env" = { };
 

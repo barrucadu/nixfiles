@@ -9,7 +9,7 @@ in
   options.services.bookdb = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
-    httpPort = mkOption { type = types.int; default = 3000; };
+    port = mkOption { type = types.int; default = 3000; };
     esTag = mkOption { type = types.str; default = "8.0.0"; };
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
@@ -35,7 +35,7 @@ in
       };
       extraOptions = [ "--network=bookdb_network" ];
       dependsOn = [ "bookdb-db" ];
-      ports = [ "127.0.0.1:${toString cfg.httpPort}:8888" ];
+      ports = [ "127.0.0.1:${toString cfg.port}:8888" ];
       volumes = [ "${toString cfg.dockerVolumeDir}/covers:/bookdb-covers" ];
     };
     systemd.services."${backend}-bookdb".preStart = mkIf cfg.pullOnStart "${backend} pull ${cfg.image}";

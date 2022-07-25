@@ -9,7 +9,7 @@ in
   options.services.wikijs = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
-    httpPort = mkOption { type = types.int; default = 3000; };
+    port = mkOption { type = types.int; default = 3000; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     wikijsTag = mkOption { type = types.str; default = "2"; };
   };
@@ -28,7 +28,7 @@ in
       };
       extraOptions = [ "--network=wikijs_network" ];
       dependsOn = [ "wikijs-db" ];
-      ports = [ "127.0.0.1:${toString cfg.httpPort}:3000" ];
+      ports = [ "127.0.0.1:${toString cfg.port}:3000" ];
     };
 
     virtualisation.oci-containers.containers.wikijs-db = {

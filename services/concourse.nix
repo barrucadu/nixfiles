@@ -11,7 +11,7 @@ in
     dockerVolumeDir = mkOption { type = types.path; };
     concourseTag = mkOption { type = types.str; default = "7.8.2"; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
-    httpPort = mkOption { type = types.int; default = 3001; };
+    port = mkOption { type = types.int; default = 3001; };
     metricsPort = mkOption { type = types.int; default = 9001; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     workerScratchDir = mkOption { type = types.nullOr types.path; default = null; };
@@ -42,7 +42,7 @@ in
       extraOptions = [ "--network=concourse_network" ];
       dependsOn = [ "concourse-db" ];
       ports = [
-        "127.0.0.1:${toString cfg.httpPort}:8080"
+        "127.0.0.1:${toString cfg.port}:8080"
         "127.0.0.1:${toString cfg.metricsPort}:8088"
       ];
       volumes = [
