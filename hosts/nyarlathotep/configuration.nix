@@ -27,10 +27,6 @@ in
 
   sops.defaultSopsFile = ./secrets.yaml;
 
-  # Only run monitoring scripts every 12 hours: I can't replace a
-  # broken HDD if I'm away from home.
-  modules.monitoringScripts.onCalendar = "0/12:00:00";
-
   # Bootloader
   boot.loader.systemd-boot.enable = true;
 
@@ -48,6 +44,12 @@ in
   modules.eraseYourDarlings.machineId = "0f7ae3bda2a9428ab77a0adddc4c8cff";
   modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
+
+  # Monitoring
+  modules.monitoringScripts.enable = true;
+  modules.monitoringScripts.onCalendar = "0/12:00:00";
+  modules.monitoringScripts.environmentFile = config.sops.secrets."modules/monitoring_scripts/env".path;
+  sops.secrets."modules/monitoring_scripts/env" = { };
 
 
   ###############################################################################

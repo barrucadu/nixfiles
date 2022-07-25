@@ -58,6 +58,11 @@ in
   modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
+  # Monitoring
+  modules.monitoringScripts.enable = true;
+  modules.monitoringScripts.environmentFile = config.sops.secrets."modules/monitoring_scripts/env".path;
+  sops.secrets."modules/monitoring_scripts/env" = { };
+
 
   ###############################################################################
   ## Backups
