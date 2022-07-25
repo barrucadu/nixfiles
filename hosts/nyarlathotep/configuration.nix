@@ -33,9 +33,6 @@ in
   # Enable memtest
   boot.loader.systemd-boot.memtest86.enable = true;
 
-  # ZFS auto trim, scrub, & snapshot
-  modules.zfsAutomation.enable = true;
-
   # Firewall
   networking.firewall.allowedTCPPorts = [ 80 8888 111 2049 4000 4001 4002 ];
 
