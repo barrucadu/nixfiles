@@ -20,8 +20,6 @@ let
     set -e
 
     function fail(){
-      export AWS_ACCESS_KEY_ID=$ALERT_AWS_ACCESS_KEY_ID
-      export AWS_SECRET_ACCESS_KEY=$ALERT_AWS_SECRET_ACCESS_KEY
       echo "Backup failed: $1"
       aws sns publish --topic-arn "$TOPIC_ARN" --subject "Alert: ${hostname}" --message "$1"
       exit 1
@@ -45,8 +43,6 @@ let
 
     popd
 
-    export AWS_ACCESS_KEY_ID=$DUPLICITY_AWS_ACCESS_KEY_ID
-    export AWS_SECRET_ACCESS_KEY=$DUPLICITY_AWS_SECRET_ACCESS_KEY
     if ! time duplicity --s3-european-buckets --s3-use-multiprocessing --s3-use-new-style --verbosity notice "$BACKUP_TYPE" "${hostname}" "boto3+s3://barrucadu-backups/${hostname}"; then
       fail "Backup upload failed"
     fi
