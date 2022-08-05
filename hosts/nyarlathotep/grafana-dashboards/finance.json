@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1657309062849,
+  "iteration": 1659739384421,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -79,7 +79,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -152,7 +152,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -224,7 +224,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -296,7 +296,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -366,7 +366,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -438,7 +438,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -522,7 +522,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -1091,7 +1091,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -1147,6 +1147,18 @@
           "legendFormat": "2.5%",
           "range": true,
           "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(\r\n    sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    + on(target_currency)\r\n    sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n) / $agg_window * 365",
+          "hide": false,
+          "legendFormat": "Target",
+          "range": true,
+          "refId": "E"
         }
       ],
       "title": "Safe Withdrawal Rate",
@@ -1219,7 +1231,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -1303,7 +1315,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -1387,7 +1399,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -1471,7 +1483,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -1874,6 +1886,7 @@
           },
           "links": [],
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2061,7 +2074,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2131,7 +2144,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2200,7 +2213,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2269,7 +2282,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2338,7 +2351,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2408,7 +2421,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2477,7 +2490,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2546,7 +2559,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2615,7 +2628,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2685,7 +2698,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2754,7 +2767,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2823,7 +2836,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2892,7 +2905,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.9",
       "targets": [
         {
           "datasource": {
@@ -2925,8 +2938,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -2995,8 +3007,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
