@@ -1147,6 +1147,18 @@
           "legendFormat": "2.5%",
           "range": true,
           "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "(\r\n    sum(hledger_balance{account=\"expenses\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_balance{account=\"expenses\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    - on(target_currency)\r\n    sum(hledger_balance{account=\"expenses:gross\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    + on(target_currency)\r\n    sum(hledger_balance{account=\"expenses:gross\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n) / $agg_window * 365",
+          "hide": false,
+          "legendFormat": "Target",
+          "range": true,
+          "refId": "E"
         }
       ],
       "title": "Safe Withdrawal Rate",
