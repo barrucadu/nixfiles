@@ -7,6 +7,12 @@ let
 
   ociBackend = config.virtualisation.oci-containers.backend;
 
+  dnsSecret = name: {
+    mode = "0444";
+    path = "/etc/dns/${name}";
+    reloadUnits = [ "resolved.service" ];
+  };
+
   bookdbPort = 3000;
   floodPort = 3001;
   finderPort = 3002;
@@ -65,12 +71,18 @@ in
 
   services.resolved.enable = true;
   services.resolved.cache_size = 1000000;
-  services.resolved.hosts_dirs = [ "/persist/etc/dns/hosts" ];
-  services.resolved.zones_dirs = [ "/persist/etc/dns/zones" ];
-  services.backups.scripts.resolved = ''
-    cp -a /persist/etc/dns/hosts .
-    cp -a /persist/etc/dns/zones .
-  '';
+  services.resolved.hosts_dirs = [ "/etc/dns/hosts" ];
+  services.resolved.zones_dirs = [ "/etc/dns/zones" ];
+
+  environment.etc."dns/hosts/stevenblack".source = builtins.fetchurl {
+    url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
+    sha256 = "0zh5184apb1c6mv8sabfwlg49s6xxapwxq5qid7d48786xggq6wi";
+  };
+
+  # these aren't so much "secret" as "private"
+  sops.secrets."services/resolved/zones/10.in-addr.arpa" = dnsSecret "zones/10.in-addr.arpa";
+  sops.secrets."services/resolved/zones/blocked" = dnsSecret "zones/blocked";
+  sops.secrets."services/resolved/zones/lan" = dnsSecret "zones/lan";
 
 
   ###############################################################################
