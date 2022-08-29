@@ -4,9 +4,6 @@ with lib;
 let
   cfg = config.services.resolved;
 
-  hosts_dirs = if cfg.hosts_dirs == [ ] then "" else "-A ${concatStringsSep " -A " cfg.hosts_dirs}";
-  zones_dirs = if cfg.zones_dirs == [ ] then "" else "-Z ${concatStringsSep " -Z " cfg.zones_dirs}";
-
   package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
     pname = "resolved";
     version = "6e3c17f8deb44cec0314448288f153b5ca711095";
@@ -19,6 +16,11 @@ let
     };
 
     cargoSha256 = "sha256-+VFuQBmJAbZQ3xxVoiwXHpCi544x7JlaElyJGPT6Vuc=";
+
+    postInstall = ''
+      cd config
+      find . -type f -exec install -Dm 755 "{}" "$out/etc/resolved/{}" \;
+    '';
   };
   resolved = pkgs.callPackage package { };
 in
@@ -37,6 +39,7 @@ in
     cache_size = mkOption { type = types.int; default = 512; };
     hosts_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
     zones_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
+    use_default_zones = mkOption { type = types.bool; default = true; };
     log_level = mkOption { type = types.str; default = "dns_resolver=info,resolved=info"; };
     log_format = mkOption { type = types.str; default = "json,no-time"; };
   };
@@ -48,7 +51,17 @@ in
       after = [ "network-online.target" ];
       serviceConfig = {
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
-        ExecStart = "${resolved}/bin/resolved -i ${cfg.interface} --metrics-port ${toString cfg.metrics_port} ${if cfg.authoritative_only then "--authoritative-only " else ""}${if cfg.forward_address != null then "--forward-address ${cfg.forward_address} " else ""}-s ${toString cfg.cache_size} ${hosts_dirs} ${zones_dirs}";
+        ExecStart = concatStringsSep " " [
+          "${resolved}/bin/resolved"
+          "-i ${cfg.interface}"
+          "-s ${toString cfg.cache_size}"
+          "--metrics-port ${toString cfg.metrics_port}"
+          (if cfg.authoritative_only then "--authoritative-only " else "")
+          (if cfg.forward_address != null then "--forward-address ${cfg.forward_address} " else "")
+          (if cfg.hosts_dirs == [ ] then "" else "-A ${concatStringsSep " -A " cfg.hosts_dirs}")
+          (if cfg.use_default_zones then "-Z ${resolved}/etc/resolved/zones" else "")
+          (if cfg.zones_dirs == [ ] then "" else "-Z ${concatStringsSep " -Z " cfg.zones_dirs}")
+        ];
         ExecReload = "${pkgs.coreutils}/bin/kill -USR1 $MAINPID";
         DynamicUser = "true";
         Restart = "on-failure";
