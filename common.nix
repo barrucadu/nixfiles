@@ -59,6 +59,7 @@ in
     system.autoUpgrade.enable = true;
     system.autoUpgrade.allowReboot = true;
     system.autoUpgrade.flags = [ "--update-input" "nixpkgs" ];
+    system.autoUpgrade.flake = "/etc/nixos";
     system.autoUpgrade.dates = "06:45";
 
     #############################################################################

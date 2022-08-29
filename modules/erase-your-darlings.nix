@@ -60,6 +60,9 @@ in
 
     systemd.services.prometheus.serviceConfig.BindPaths = "${toString cfg.persistDir}/var/lib/${config.services.prometheus.stateDir}:/var/lib/${config.services.prometheus.stateDir}";
 
+    # Needs real path, not a symlink
+    system.autoUpgrade.flake = mkForce "${cfg.persistDir}/etc/nixos";
+
     services.caddy.dataDir = "${toString cfg.persistDir}/var/lib/caddy";
     services.dockerRegistry.storagePath = "${toString cfg.persistDir}/var/lib/docker-registry";
     services.syncthing.dataDir = "${toString cfg.persistDir}/var/lib/syncthing";
