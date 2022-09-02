@@ -21,6 +21,8 @@ let
   wikijsPort = 3005;
   promscalePort = 9201;
   prometheusAwairExporterPort = 9517;
+
+  rtorrentExternalPort = 50000;
 in
 {
   ###############################################################################
@@ -40,7 +42,7 @@ in
   boot.loader.systemd-boot.memtest86.enable = true;
 
   # Firewall
-  networking.firewall.allowedTCPPorts = [ 80 8888 111 2049 4000 4001 4002 ];
+  networking.firewall.allowedTCPPorts = [ 80 8888 111 2049 4000 4001 4002 rtorrentExternalPort ];
 
   # Wipe / on boot
   modules.eraseYourDarlings.enable = true;
@@ -307,7 +309,46 @@ in
 
   systemd.services.rtorrent =
     let
-      rtorrentrc = pkgs.writeText "rtorrent.rc" (fileContents ./rtorrent.rc);
+      downloadDir = "/mnt/nas/torrents/files/";
+      watchDir = "/mnt/nas/torrents/watch/";
+      sessionDir = "/persist/rtorrent/session/";
+      logDir = "/persist/rtorrent/logs/";
+      rpcSock = "/run/rtorrent/rpc.sock";
+
+      rtorrentrc = pkgs.writeText "rtorrent.rc" ''
+        # Paths
+        directory.default.set = ${downloadDir}
+        session.path.set      = ${sessionDir}
+
+        # Logging
+        method.insert = cfg.logfile, private|const|string, (cat,"${logDir}",(system.time),".log")
+        log.open_file = "log", (cfg.logfile)
+        log.add_output = "info", "log"
+
+        # Listening port for incoming peer traffic
+        network.port_range.set  = ${toString rtorrentExternalPort}-${toString rtorrentExternalPort}
+        network.port_random.set = no
+
+        # Optimise for private trackers (disable DHT & UDP trackers)
+        dht.mode.set         = disable
+        protocol.pex.set     = no
+        trackers.use_udp.set = no
+
+        # Force encryption
+        protocol.encryption.set = allow_incoming,try_outgoing,require,require_RC4
+
+        # Write filenames in UTF-8
+        encoding.add = UTF-8
+
+        # Check hash on completion
+        pieces.hash.on_completion.set = yes
+
+        # Monitor for new .torrent files
+        schedule2 = watch_directory,5,5,load.start=${watchDir}*.torrent
+
+        # XMLRPC
+        network.scgi.open_local = ${rpcSock}
+      '';
     in
     {
       enable = true;
@@ -317,6 +358,9 @@ in
         ExecStart = "${pkgs.rtorrent}/bin/rtorrent -n -o system.daemon.set=true -o import=${rtorrentrc}";
         User = "barrucadu";
         Restart = "on-failure";
+        RuntimeDirectory = "rtorrent";
+        # with a lot of torrents, rtorrent can take a while to shut down
+        TimeoutStopSec = 300;
       };
     };
 
@@ -325,7 +369,7 @@ in
     wantedBy = [ "default.target" ];
     after = [ "network.target" ];
     serviceConfig = {
-      ExecStart = "${pkgs.flood}/bin/flood --noauth --port=${toString floodPort} --rundir=/persist/rtorrent/flood --rtsocket=/tmp/rtorrent-rpc.socket";
+      ExecStart = "${pkgs.flood}/bin/flood --noauth --port=${toString floodPort} --rundir=/persist/rtorrent/flood --rtsocket=/run/rtorrent/rpc.sock";
       User = "barrucadu";
       Restart = "on-failure";
     };
