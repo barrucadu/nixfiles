@@ -233,6 +233,8 @@ in
       aspellDicts.en
       bind
       docker-compose
+      emacs28NativeComp
+      fd
       file
       fortune
       fzf
@@ -250,8 +252,10 @@ in
       ncdu
       psmisc
       python3
+      ripgrep
       rsync
       rxvt_unicode.terminfo
+      shellcheck
       smartmontools
       stow
       tmux
@@ -260,7 +264,6 @@ in
       wget
       which
       whois
-      (if config.services.xserver.enable then emacs else emacs-nox)
     ];
   };
 }
