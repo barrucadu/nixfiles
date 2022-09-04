@@ -1,6 +1,12 @@
 {
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
-  inputs.sops-nix.url = "github:Mic92/sops-nix";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-22_05.follows = "nixpkgs";
+    };
+  };
 
   outputs = { nixpkgs, sops-nix, ... }@flakeInputs: {
     nixosConfigurations.azathoth = nixpkgs.lib.nixosSystem {
