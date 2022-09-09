@@ -83,7 +83,6 @@ in
 
   # these aren't so much "secret" as "private"
   sops.secrets."services/resolved/zones/10.in-addr.arpa" = dnsSecret "zones/10.in-addr.arpa";
-  sops.secrets."services/resolved/zones/blocked" = dnsSecret "zones/blocked";
   sops.secrets."services/resolved/zones/lan" = dnsSecret "zones/lan";
 
 
