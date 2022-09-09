@@ -7,12 +7,6 @@ let
 
   ociBackend = config.virtualisation.oci-containers.backend;
 
-  dnsSecret = name: {
-    mode = "0444";
-    path = "/etc/dns/${name}";
-    reloadUnits = [ "resolved.service" ];
-  };
-
   bookdbPort = 3000;
   floodPort = 3001;
   finderPort = 3002;
@@ -81,9 +75,35 @@ in
     sha256 = "0zh5184apb1c6mv8sabfwlg49s6xxapwxq5qid7d48786xggq6wi";
   };
 
-  # these aren't so much "secret" as "private"
-  sops.secrets."services/resolved/zones/10.in-addr.arpa" = dnsSecret "zones/10.in-addr.arpa";
-  sops.secrets."services/resolved/zones/lan" = dnsSecret "zones/lan";
+  environment.etc."dns/zones/10.in-addr.arpa".text = ''
+    $ORIGIN 10.in-addr.arpa.
+
+    @ IN SOA . . 3 3600 3600 3600 3600
+
+    1.0.0    IN PTR router.lan.
+    3.0.0    IN PTR nyarlathotep.lan.
+    187.20.0 IN PTR bedroom.awair.lan.
+    117.20.0 IN PTR living-room.awair.lan.
+  '';
+
+  environment.etc."dns/zones/lan".text = ''
+    $ORIGIN lan.
+
+    @ 300 IN SOA @ @ 6 300 300 300 300
+
+    router            300 IN A     10.0.0.1
+
+    nyarlathotep      300 IN A     10.0.0.3
+    *.nyarlathotep    300 IN CNAME nyarlathotep
+
+    help              300 IN CNAME nyarlathotep
+    *.help            300 IN CNAME help
+
+    nas               300 IN CNAME nyarlathotep
+
+    bedroom.awair     300 IN A     10.0.20.187
+    living-room.awair 300 IN A     10.0.20.117
+  '';
 
 
   ###############################################################################
