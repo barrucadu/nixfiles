@@ -37,6 +37,7 @@ in
         "CONCOURSE_GARDEN_LOG_LEVEL" = "error";
         "CONCOURSE_PROMETHEUS_BIND_IP" = "0.0.0.0";
         "CONCOURSE_PROMETHEUS_BIND_PORT" = "8088";
+        "CONCOURSE_BAGGAGECLAIM_RESPONSE_HEADER_TIMEOUT" = "30m";
       };
       environmentFiles = [ cfg.environmentFile ];
       extraOptions = [ "--network=concourse_network" ];
