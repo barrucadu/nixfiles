@@ -9,6 +9,8 @@
   };
 
   outputs = { nixpkgs, sops-nix, ... }@flakeInputs: {
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+
     nixosConfigurations.azathoth = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit flakeInputs; };
       system = "x86_64-linux";
