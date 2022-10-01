@@ -7,7 +7,6 @@ let
   bookmarksPort = 3002;
   concoursePort = 3003;
   umamiPort = 3006;
-  pleromaPort = 3007;
   concourseMetricsPort = 3009;
   grafanaPort = 3010;
   foundryPort = 3011;
@@ -134,11 +133,6 @@ in
       }
 
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
-    }
-
-    ap.barrucadu.co.uk {
-      import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.pleroma.port}
     }
 
     bookdb.barrucadu.co.uk {
@@ -327,19 +321,6 @@ in
   services.bookmarks.readOnly = true;
   services.bookmarks.port = bookmarksPort;
 
-  # pleroma
-  services.pleroma.enable = true;
-  services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
-  services.pleroma.pullOnStart = true;
-  services.pleroma.registry = registryBarrucaduDev;
-  services.pleroma.port = pleromaPort;
-  services.pleroma.domain = "ap.barrucadu.co.uk";
-  services.pleroma.secretsFile = config.sops.secrets."services/pleroma/exc".path;
-  # TODO: figure out how to lock this down so only the pleroma process
-  # can read it (remap the container UID / GID to something known,
-  # perhaps?)
-  sops.secrets."services/pleroma/exc".mode = "0444";
-
   # concourse
   services.concourse.enable = true;
   services.concourse.port = concoursePort;
@@ -397,7 +378,6 @@ in
       commands = [
         { command = "${pkgs.systemd}/bin/systemctl restart docker-bookdb"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.systemd}/bin/systemctl restart docker-bookmarks"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.systemd}/bin/systemctl restart docker-pleroma"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
