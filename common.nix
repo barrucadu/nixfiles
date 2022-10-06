@@ -1,4 +1,4 @@
-{ config, lib, pkgs, flakeInputs, ... }:
+{ config, lib, pkgs, pkgsUnstable, flakeInputs, ... }:
 
 with lib;
 
@@ -16,7 +16,6 @@ in
     ./services/finder.nix
     ./services/foundryvtt.nix
     ./services/minecraft.nix
-    ./services/monitoring.nix
     ./services/pleroma.nix
     ./services/resolved.nix
     ./services/umami.nix
@@ -99,12 +98,15 @@ in
     services.zfs.autoSnapshot.enable = thereAreZfsFilesystems;
     services.zfs.autoSnapshot.monthly = 3;
 
-    services.monitoring.scripts.zfs = mkIf thereAreZfsFilesystems ''
-      if [[ "$(zpool status -x)" != "all pools are healthy" ]]; then
-        zpool status
-        exit 1
-      fi
-    '';
+    services.prometheus.rules = mkIf thereAreZfsFilesystems [
+      ''
+        groups:
+        - name: zfs
+          rules:
+          - alert: ZPoolStatusDegraded
+            expr: node_zfs_zpool_state{state!="online"} > 0
+      ''
+    ];
 
     #############################################################################
     ## Services
@@ -184,6 +186,43 @@ in
     # if a disk is mounted at /home, then the default value of
     # `"true"` reports incorrect filesystem metrics
     systemd.services.prometheus-node-exporter.serviceConfig.ProtectHome = mkForce "read-only";
+
+    # override this to the node-exporter 1.4.0, which fixes an issue with
+    # missing zpool metrics (this can be removed when it's in the stable
+    # channel)
+    nixpkgs.overlays = [
+      (_: _: {
+        prometheus-node-exporter = pkgsUnstable.prometheus-node-exporter;
+      })
+    ];
+
+    services.prometheus.alertmanagers = mkIf config.services.prometheus.alertmanager.enable [
+      {
+        static_configs = [{ targets = [ "localhost:${toString config.services.prometheus.alertmanager.port}" ]; }];
+      }
+    ];
+
+    services.prometheus.alertmanager = {
+      enable = config.services.prometheus.enable;
+      port = 9093;
+      configuration = {
+        route = {
+          group_by = [ "alertname" ];
+          repeat_interval = "6h";
+          receiver = "aws-sns";
+        };
+        receivers = [
+          {
+            name = "aws-sns";
+            sns_configs = [{
+              sigv4 = { region = "eu-west-1"; };
+              topic_arn = "arn:aws:sns:eu-west-1:197544591260:host-notifications";
+              subject = "Alert: ${config.networking.hostName}";
+            }];
+          }
+        ];
+      };
+    };
 
     services.cadvisor = {
       enable = config.services.prometheus.enable;
