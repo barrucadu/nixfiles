@@ -16,7 +16,6 @@ in
     ./services/finder.nix
     ./services/foundryvtt.nix
     ./services/minecraft.nix
-    ./services/monitoring.nix
     ./services/pleroma.nix
     ./services/resolved.nix
     ./services/umami.nix
@@ -98,13 +97,6 @@ in
     # in practice.
     services.zfs.autoSnapshot.enable = thereAreZfsFilesystems;
     services.zfs.autoSnapshot.monthly = 3;
-
-    services.monitoring.scripts.zfs = mkIf thereAreZfsFilesystems ''
-      if [[ "$(zpool status -x)" != "all pools are healthy" ]]; then
-        zpool status
-        exit 1
-      fi
-    '';
 
     services.prometheus.rules = mkIf thereAreZfsFilesystems [
       ''
