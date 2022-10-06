@@ -106,6 +106,16 @@ in
       fi
     '';
 
+    services.prometheus.rules = mkIf thereAreZfsFilesystems [
+      ''
+        groups:
+        - name: zfs
+          rules:
+          - alert: ZPoolStatusDegraded
+            expr: node_zfs_zpool_state{state!="online"} > 0
+      ''
+    ];
+
     #############################################################################
     ## Services
     #############################################################################
@@ -193,6 +203,34 @@ in
         prometheus-node-exporter = pkgsUnstable.prometheus-node-exporter;
       })
     ];
+
+    services.prometheus.alertmanagers = mkIf config.services.prometheus.alertmanager.enable [
+      {
+        static_configs = [{ targets = [ "localhost:${toString config.services.prometheus.alertmanager.port}" ]; }];
+      }
+    ];
+
+    services.prometheus.alertmanager = {
+      enable = config.services.prometheus.enable;
+      port = 9093;
+      configuration = {
+        route = {
+          group_by = [ "alertname" ];
+          repeat_interval = "6h";
+          receiver = "aws-sns";
+        };
+        receivers = [
+          {
+            name = "aws-sns";
+            sns_configs = [{
+              sigv4 = { region = "eu-west-1"; };
+              topic_arn = "arn:aws:sns:eu-west-1:197544591260:host-notifications";
+              subject = "Alert: ${config.networking.hostName}";
+            }];
+          }
+        ];
+      };
+    };
 
     services.cadvisor = {
       enable = config.services.prometheus.enable;
