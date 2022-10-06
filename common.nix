@@ -1,4 +1,4 @@
-{ config, lib, pkgs, flakeInputs, ... }:
+{ config, lib, pkgs, pkgsUnstable, flakeInputs, ... }:
 
 with lib;
 
@@ -184,6 +184,15 @@ in
     # if a disk is mounted at /home, then the default value of
     # `"true"` reports incorrect filesystem metrics
     systemd.services.prometheus-node-exporter.serviceConfig.ProtectHome = mkForce "read-only";
+
+    # override this to the node-exporter 1.4.0, which fixes an issue with
+    # missing zpool metrics (this can be removed when it's in the stable
+    # channel)
+    nixpkgs.overlays = [
+      (_: _: {
+        prometheus-node-exporter = pkgsUnstable.prometheus-node-exporter;
+      })
+    ];
 
     services.cadvisor = {
       enable = config.services.prometheus.enable;

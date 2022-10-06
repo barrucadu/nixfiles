@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -8,17 +9,18 @@
     };
   };
 
-  outputs = { nixpkgs, sops-nix, ... }@flakeInputs:
+  outputs = { nixpkgs, nixpkgs-unstable, sops-nix, ... }@flakeInputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      pkgsUnstable = import nixpkgs-unstable { inherit system; };
+      specialArgs = { inherit flakeInputs pkgsUnstable; };
     in
     {
       formatter.${system} = pkgs.nixpkgs-fmt;
 
       nixosConfigurations.azathoth = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit flakeInputs; };
+        inherit specialArgs system;
         modules = [
           ./common.nix
           ./hosts/azathoth/configuration.nix
@@ -28,8 +30,7 @@
       };
 
       nixosConfigurations.carcosa = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit flakeInputs; };
+        inherit specialArgs system;
         modules = [
           ./common.nix
           ./hosts/carcosa/configuration.nix
@@ -40,8 +41,7 @@
       };
 
       nixosConfigurations.lainonlife = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit flakeInputs; };
+        inherit specialArgs system;
         modules = [
           ./common.nix
           ./hosts/lainonlife/configuration.nix
@@ -52,8 +52,7 @@
       };
 
       nixosConfigurations.nyarlathotep = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit flakeInputs; };
+        inherit specialArgs system;
         modules = [
           ./common.nix
           ./hosts/nyarlathotep/configuration.nix
