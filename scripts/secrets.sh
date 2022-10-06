@@ -1,6 +1,3 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash -p sops
-
 if [[ -z "$1" ]]; then
   SECRETS_FILE="hosts/$(hostname)/secrets.yaml"
 elif [[ -z "$2" ]]; then

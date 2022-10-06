@@ -16,10 +16,10 @@ Secrets
 
 Secrets are managed with [sops-nix][].  Create / edit secrets with:
 
-```
-./sops.sh                   # secrets.yaml for current host
-./sops.sh <hostname>        # secrets.yaml for <hostname>
-./sops.sh <hostname> <name> # <name>.yaml for <hostname>
+```bash
+nix run .\#secrets                   # secrets.yaml for current host
+nix run .\#secrets <hostname>        # secrets.yaml for <hostname>
+nix run .\#secrets <hostname> <name> # <name>.yaml for <hostname>
 ```
 
 [sops-nix]: https://github.com/Mic92/sops-nix
@@ -35,17 +35,17 @@ Duplicity.
 
 Check the status of a backup collection with:
 
-```
-./backups.sh                   # for the current host
-./backups.sh status            # for the current host
-./backups.sh status <hostname> # for another host
+```bash
+nix run .\#backups                   # for the current host
+nix run .\#backups status            # for the current host
+nix run .\#backups status <hostname> # for another host
 ```
 
 Restore a backup to `~/tmp/backup-restore` with:
 
-```
-./backups.sh restore            # for the current host
-./backups.sh restore <hostname> # for another host
+```bash
+nix run .\#backups restore            # for the current host
+nix run .\#backups restore <hostname> # for another host
 ```
 
 Change the restore target by setting `$RESTORE_DIR`.
@@ -59,13 +59,13 @@ host).
 
 Enable the auto-trim for a pool with:
 
-```
+```bash
 sudo zpool set autotrim=on <pool>
 ```
 
 Enable the auto-snapshot for a dataset with:
 
-```
+```bash
 sudo zfs set com.sun:auto-snapshot=true <dataset>
 ```
 

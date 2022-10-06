@@ -1,7 +1,4 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash -p duplicity "python3.withPackages (ps: [ps.boto3])" sops
-
-set -e
+set -Ee
 
 COMMAND=${1:-status}
 TARGET=${2:-$(hostname)}
@@ -11,7 +8,10 @@ if [[ ! -f "hosts/${TARGET}/secrets.yaml" ]]; then
   exit 1
 fi
 
-export $(sops -d --extract '["services"]["backups"]["env"]' "hosts/${TARGET}/secrets.yaml")
+sops_env=$(sops -d --extract '["services"]["backups"]["env"]' "hosts/${TARGET}/secrets.yaml")
+# shellcheck disable=SC2163
+# shellcheck disable=SC2086
+export $sops_env
 
 if [[ "$COMMAND" == "status" ]]; then
   duplicity                  \
