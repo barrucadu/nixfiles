@@ -52,10 +52,9 @@ Change the restore target by setting `$RESTORE_DIR`.
 
 ### ZFS
 
-If there are any ZFS filesystems, the auto-trim, -scrub, and -snapshot
-jobs will be enabled, as well as a monitoring script to alert if a
-pool becomes unhealthy (if monitoring scripts are enabled on this
-host).
+If there are any ZFS filesystems, the auto-trim, -scrub, and -snapshot jobs will
+be enabled, as well as a Prometheus alert for if a pool becomes unhealthy (if
+Alertmanager is enabled on this host).
 
 Enable the auto-trim for a pool with:
 
@@ -69,4 +68,4 @@ Enable the auto-snapshot for a dataset with:
 sudo zfs set com.sun:auto-snapshot=true <dataset>
 ```
 
-The auto-scrub and monitoring apply to all pools.
+The auto-scrub and the alert apply to all pools.
