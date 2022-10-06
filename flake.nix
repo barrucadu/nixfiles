@@ -57,5 +57,32 @@
         sops-nix.nixosModules.sops
       ];
     };
+
+
+    packages.x86_64-linux.backups =
+      let
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        pythonEnv = pkgs.python3.buildEnv.override { extraLibs = with pkgs.python3Packages; [ boto3 ]; };
+      in
+      pkgs.writeShellScriptBin "backups.sh" ''
+        #!${pkgs.bash}
+
+        PATH=${pkgs.duplicity}/bin:${pkgs.python3}/bin:${pkgs.sops}/bin:${pkgs.nettools}/bin
+        PYTHONPATH="${pythonEnv}/${pkgs.python3.sitePackages}/"
+
+        ${pkgs.lib.fileContents ./scripts/backups.sh}
+      '';
+
+    packages.x86_64-linux.secrets =
+      let pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      in
+      pkgs.writeShellScriptBin "backups.sh" ''
+        #!${pkgs.bash}
+
+        PATH=${pkgs.sops}/bin:${pkgs.nettools}/bin
+        EDITOR=${pkgs.vim}/bin/vim
+
+        ${pkgs.lib.fileContents ./scripts/secrets.sh}
+      '';
   };
 }
