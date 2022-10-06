@@ -44,12 +44,6 @@ in
   modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
-  # Monitoring
-  services.monitoring.enable = true;
-  services.monitoring.onCalendar = "0/12:00:00";
-  services.monitoring.environmentFile = config.sops.secrets."services/monitoring/env".path;
-  sops.secrets."services/monitoring/env" = { };
-
 
   ###############################################################################
   ## Backups
@@ -166,6 +160,12 @@ in
       file_server {
         root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/nyarlathotep.lan
       }
+    }
+
+    http://alertmanager.nyarlathotep.lan:80 {
+      import restrict_vlan
+      encode gzip
+      reverse_proxy http://localhost:${toString config.services.prometheus.alertmanager.port}
     }
 
     http://bookdb.nyarlathotep.lan:80 {
@@ -398,6 +398,9 @@ in
   ###############################################################################
   # Monitoring & Dashboards
   ###############################################################################
+
+  services.prometheus.alertmanager.environmentFile = config.sops.secrets."services/alertmanager/env".path;
+  sops.secrets."services/alertmanager/env" = { };
 
   services.grafana.port = grafanaPort;
   services.grafana.rootUrl = "http://grafana.nyarlathotep.lan";
