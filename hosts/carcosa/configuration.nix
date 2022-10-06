@@ -55,9 +55,8 @@ in
   sops.secrets."users/barrucadu".neededForUsers = true;
 
   # Monitoring
-  services.monitoring.enable = true;
-  services.monitoring.environmentFile = config.sops.secrets."services/monitoring/env".path;
-  sops.secrets."services/monitoring/env" = { };
+  services.prometheus.alertmanager.environmentFile = config.sops.secrets."services/alertmanager/env".path;
+  sops.secrets."services/alertmanager/env" = { };
 
 
   ###############################################################################
