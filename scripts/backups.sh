@@ -9,6 +9,8 @@ if [[ ! -f "hosts/${TARGET}/secrets.yaml" ]]; then
 fi
 
 sops_env=$(sops -d --extract '["services"]["backups"]["env"]' "hosts/${TARGET}/secrets.yaml")
+# shellcheck disable=SC2163
+# shellcheck disable=SC2086
 export $sops_env
 
 if [[ "$COMMAND" == "status" ]]; then

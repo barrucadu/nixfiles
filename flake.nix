@@ -73,6 +73,17 @@
         ${pkgs.lib.fileContents ./scripts/backups.sh}
       '';
 
+    packages.x86_64-linux.lint =
+      let pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      in
+      pkgs.writeShellScriptBin "lint.sh" ''
+        #!${pkgs.bash}
+
+        PATH=${pkgs.nix-linter}/bin:${pkgs.shellcheck}/bin
+
+        ${pkgs.lib.fileContents ./scripts/lint.sh}
+      '';
+
     packages.x86_64-linux.secrets =
       let pkgs = nixpkgs.legacyPackages.x86_64-linux;
       in
