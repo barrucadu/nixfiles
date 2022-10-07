@@ -241,7 +241,7 @@ in
 
     umami.lookwhattheshoggothdraggedin.com {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.umami.port}
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.umami.port}
     }
 
     uzbl.org {
@@ -331,10 +331,10 @@ in
   sops.secrets."nixfiles/concourse/env" = { };
 
   # Look what the Shoggoth Dragged In
-  services.umami.enable = true;
-  services.umami.port = umamiPort;
-  services.umami.environmentFile = config.sops.secrets."services/umami/env".path;
-  sops.secrets."services/umami/env" = { };
+  nixfiles.umami.enable = true;
+  nixfiles.umami.port = umamiPort;
+  nixfiles.umami.environmentFile = config.sops.secrets."nixfiles/umami/env".path;
+  sops.secrets."nixfiles/umami/env" = { };
 
   # minecraft
   nixfiles.minecraft.enable = true;

@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.umami;
+  cfg = config.nixfiles.umami;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.umami = {
+  options.nixfiles.umami = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
     port = mkOption { type = types.int; default = 3000; };
