@@ -2,16 +2,12 @@
 
 with lib;
 let
-  cfg = config.services.pleroma;
+  cfg = config.nixfiles.pleroma;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
   # TODO: consider switching to the standard pleroma module
-  disabledModules = [
-    "services/networking/pleroma.nix"
-  ];
-
-  options.services.pleroma = {
+  options.nixfiles.pleroma = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     port = mkOption { type = types.int; default = 4000; };

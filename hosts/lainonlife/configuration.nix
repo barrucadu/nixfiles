@@ -134,9 +134,9 @@ in
       }
     }
 
-    ${config.services.pleroma.domain} {
+    ${config.nixfiles.pleroma.domain} {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.pleroma.port}
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.pleroma.port}
     }
   '';
 
@@ -227,23 +227,23 @@ in
   sops.secrets."services/fallback/ogg".owner = radioUser.name;
 
   # Pleroma
-  services.pleroma.enable = true;
-  services.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
-  services.pleroma.pullOnStart = true;
-  services.pleroma.registry = {
+  nixfiles.pleroma.enable = true;
+  nixfiles.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
+  nixfiles.pleroma.pullOnStart = true;
+  nixfiles.pleroma.registry = {
     username = "registry";
-    passwordFile = config.sops.secrets."services/pleroma/docker_registry".path;
+    passwordFile = config.sops.secrets."nixfiles/pleroma/docker_registry".path;
     url = "https://registry.barrucadu.dev";
   };
-  services.pleroma.domain = "social.lainon.life";
-  services.pleroma.faviconPath = ./pleroma-favicon.png;
-  services.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
-  services.pleroma.secretsFile = config.sops.secrets."services/pleroma/exc".path;
+  nixfiles.pleroma.domain = "social.lainon.life";
+  nixfiles.pleroma.faviconPath = ./pleroma-favicon.png;
+  nixfiles.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
+  nixfiles.pleroma.secretsFile = config.sops.secrets."nixfiles/pleroma/exc".path;
   # TODO: figure out how to lock this down so only the pleroma process
   # can read it (remap the container UID / GID to something known,
   # perhaps?)
-  sops.secrets."services/pleroma/exc".mode = "0444";
-  sops.secrets."services/pleroma/docker_registry" = { };
+  sops.secrets."nixfiles/pleroma/exc".mode = "0444";
+  sops.secrets."nixfiles/pleroma/docker_registry" = { };
 
   # Fancy graphs
   services.grafana = {
