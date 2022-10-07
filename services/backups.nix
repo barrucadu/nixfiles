@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.services.backups;
+  cfg = config.nixfiles.backups;
   hostname = config.networking.hostName;
 
   runScript = cmd: name: source: ''
@@ -76,19 +76,15 @@ let
   };
 in
 {
-  options = {
-    services = {
-      backups = {
-        enable = mkOption { type = types.bool; default = false; };
-        scripts = mkOption { type = types.attrsOf types.str; default = { }; };
-        pythonScripts = mkOption { type = types.attrsOf types.str; default = { }; };
-        environmentFile = mkOption { type = types.str; };
-        onCalendarFull = mkOption { type = types.str; default = "monthly"; };
-        onCalendarIncr = mkOption { type = types.str; default = "Mon, 04:00"; };
-        user = mkOption { type = types.str; default = "barrucadu"; };
-        group = mkOption { type = types.str; default = "users"; };
-      };
-    };
+  options.nixfiles.backups = {
+    enable = mkOption { type = types.bool; default = false; };
+    scripts = mkOption { type = types.attrsOf types.str; default = { }; };
+    pythonScripts = mkOption { type = types.attrsOf types.str; default = { }; };
+    environmentFile = mkOption { type = types.str; };
+    onCalendarFull = mkOption { type = types.str; default = "monthly"; };
+    onCalendarIncr = mkOption { type = types.str; default = "Mon, 04:00"; };
+    user = mkOption { type = types.str; default = "barrucadu"; };
+    group = mkOption { type = types.str; default = "users"; };
   };
 
   config = mkIf cfg.enable {

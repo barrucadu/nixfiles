@@ -81,11 +81,11 @@ in
   networking.nameservers = [ "213.186.33.99" "2001:41d0:3:1c7::1" ];
 
   # Backups
-  services.backups.enable = true;
+  nixfiles.backups.enable = true;
   ## Run incremental backups daily, to reduce potential pleroma data loss
-  services.backups.onCalendarIncr = "*-*-* 4:00:00";
-  services.backups.environmentFile = config.sops.secrets."services/backups/env".path;
-  sops.secrets."services/backups/env" = { };
+  nixfiles.backups.onCalendarIncr = "*-*-* 4:00:00";
+  nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
+  sops.secrets."nixfiles/backups/env" = { };
 
   # No syncthing
   services.syncthing.enable = mkForce false;

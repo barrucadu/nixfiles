@@ -38,20 +38,20 @@ in
 
     # TODO: figure out how to get `sudo` in the unit's path (adding the
     # package doesn't help - need the wrapper)
-    services.backups.scripts.foundryvtt = ''
+    nixfiles.backups.scripts.foundryvtt = ''
       /run/wrappers/bin/sudo systemctl stop foundryvtt
       /run/wrappers/bin/sudo tar cfz dump.tar.gz ${cfg.dataDir}
-      /run/wrappers/bin/sudo chown ${config.services.backups.user}.${config.services.backups.group} dump.tar.gz
+      /run/wrappers/bin/sudo chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz
       /run/wrappers/bin/sudo systemctl start foundryvtt
     '';
     security.sudo.extraRules = [
       {
-        users = [ config.services.backups.user ];
+        users = [ config.nixfiles.backups.user ];
         commands = [
           { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; options = [ "NOPASSWD" ]; }
           { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; options = [ "NOPASSWD" ]; }
           { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; options = [ "NOPASSWD" ]; }
-          { command = "${pkgs.coreutils}/bin/chown ${config.services.backups.user}.${config.services.backups.group} dump.tar.gz"; options = [ "NOPASSWD" ]; }
+          { command = "${pkgs.coreutils}/bin/chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz"; options = [ "NOPASSWD" ]; }
         ];
       }
     ];

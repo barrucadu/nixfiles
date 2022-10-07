@@ -49,10 +49,10 @@ in
   ## Backups
   ###############################################################################
 
-  services.backups.enable = true;
-  services.backups.environmentFile = config.sops.secrets."services/backups/env".path;
-  services.backups.pythonScripts.share = fileContents ./jobs/backup-share.py;
-  sops.secrets."services/backups/env" = { };
+  nixfiles.backups.enable = true;
+  nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
+  nixfiles.backups.pythonScripts.share = fileContents ./jobs/backup-share.py;
+  sops.secrets."nixfiles/backups/env" = { };
 
 
   ###############################################################################

@@ -63,18 +63,18 @@ in
   ## Backups
   ###############################################################################
 
-  services.backups.enable = true;
-  services.backups.environmentFile = config.sops.secrets."services/backups/env".path;
-  services.backups.scripts.syncthing = "cp -a /home/barrucadu/s .";
+  nixfiles.backups.enable = true;
+  nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
+  nixfiles.backups.scripts.syncthing = "cp -a /home/barrucadu/s .";
   # TODO: this will break when I have >100 github repos
-  services.backups.scripts.git = ''
+  nixfiles.backups.scripts.git = ''
     curl -u "barrucadu:''${GITHUB_TOKEN}" 'https://api.github.com/user/repos?type=owner&per_page=100' 2>/dev/null | \
       jq -r '.[].ssh_url' | \
       while read url; do
         git clone --bare "$url"
       done
   '';
-  sops.secrets."services/backups/env" = { };
+  sops.secrets."nixfiles/backups/env" = { };
 
 
   ###############################################################################
