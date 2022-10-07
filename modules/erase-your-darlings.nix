@@ -69,7 +69,7 @@ in
     nixfiles.concourse.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/concourse";
     nixfiles.finder.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/finder";
     nixfiles.foundryvtt.dataDir = "${toString cfg.persistDir}/srv/foundry";
-    services.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
+    nixfiles.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
     services.pleroma.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/pleroma";
     services.umami.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/umami";
     services.wikijs.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/wikijs";

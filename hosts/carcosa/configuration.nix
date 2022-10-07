@@ -337,8 +337,8 @@ in
   sops.secrets."services/umami/env" = { };
 
   # minecraft
-  services.minecraft.enable = true;
-  services.minecraft.servers.tea = {
+  nixfiles.minecraft.enable = true;
+  nixfiles.minecraft.servers.tea = {
     autoStart = false;
     port = 25565;
     jar = "fabric-server-launch.jar";
