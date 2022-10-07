@@ -2,7 +2,7 @@
 
 with lib;
 let
-  cfg = config.services.minecraft;
+  cfg = config.nixfiles.minecraft;
 
   serverPorts = mapAttrsToList (_: server: server.port) cfg.servers;
 in
@@ -10,7 +10,7 @@ in
   # yes I know there's a NixOS minecraft module but it uses the
   # Minecraft in nixpkgs whereas I want to run modded servers and
   # packaging one is a pain.
-  options.services.minecraft = {
+  options.nixfiles.minecraft = {
     enable = mkOption { type = types.bool; default = false; };
     dataDir = mkOption { type = types.path; default = "/srv/minecraft"; };
     servers = mkOption {

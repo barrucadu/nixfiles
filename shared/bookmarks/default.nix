@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.bookmarks;
+  cfg = config.nixfiles.bookmarks;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.bookmarks = {
+  options.nixfiles.bookmarks = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     port = mkOption { type = types.int; default = 3000; };
@@ -54,7 +54,7 @@ in
     };
     systemd.services."${backend}-bookmarks-db".preStart = "${backend} network create -d bridge bookmarks_network || true";
 
-    services.backups.scripts.bookmarks = ''
+    nixfiles.backups.scripts.bookmarks = ''
       ${backend} exec -i bookmarks env ES_HOST=http://bookmarks-db:9200 /app/dump-index.py | gzip -9 > dump.json.gz
     '';
   };

@@ -17,6 +17,8 @@ let
   prometheusAwairExporterPort = 9517;
 
   rtorrentExternalPort = 50000;
+
+  httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
 in
 {
   ###############################################################################
@@ -39,9 +41,9 @@ in
   networking.firewall.allowedTCPPorts = [ 80 8888 111 2049 4000 4001 4002 rtorrentExternalPort ];
 
   # Wipe / on boot
-  modules.eraseYourDarlings.enable = true;
-  modules.eraseYourDarlings.machineId = "0f7ae3bda2a9428ab77a0adddc4c8cff";
-  modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+  nixfiles.eraseYourDarlings.enable = true;
+  nixfiles.eraseYourDarlings.machineId = "0f7ae3bda2a9428ab77a0adddc4c8cff";
+  nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
 
@@ -49,20 +51,20 @@ in
   ## Backups
   ###############################################################################
 
-  services.backups.enable = true;
-  services.backups.environmentFile = config.sops.secrets."services/backups/env".path;
-  services.backups.pythonScripts.share = fileContents ./jobs/backup-share.py;
-  sops.secrets."services/backups/env" = { };
+  nixfiles.backups.enable = true;
+  nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
+  nixfiles.backups.pythonScripts.share = fileContents ./jobs/backup-share.py;
+  sops.secrets."nixfiles/backups/env" = { };
 
 
   ###############################################################################
   ## DNS
   ###############################################################################
 
-  services.resolved.enable = true;
-  services.resolved.cache_size = 1000000;
-  services.resolved.hosts_dirs = [ "/etc/dns/hosts" ];
-  services.resolved.zones_dirs = [ "/etc/dns/zones" ];
+  nixfiles.resolved.enable = true;
+  nixfiles.resolved.cache_size = 1000000;
+  nixfiles.resolved.hosts_dirs = [ "/etc/dns/hosts" ];
+  nixfiles.resolved.zones_dirs = [ "/etc/dns/zones" ];
 
   environment.etc."dns/hosts/stevenblack".source = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
@@ -158,7 +160,7 @@ in
       import restrict_vlan
       encode gzip
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/nyarlathotep.lan
+        root ${httpdir}/nyarlathotep.lan
       }
     }
 
@@ -171,13 +173,13 @@ in
     http://bookdb.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.bookdb.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.bookdb.port}
     }
 
     http://bookmarks.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.bookmarks.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.bookmarks.port}
     }
 
     http://flood.nyarlathotep.lan:80 {
@@ -189,7 +191,7 @@ in
     http://finder.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.finder.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.finder.port}
     }
 
     http://grafana.nyarlathotep.lan:80 {
@@ -207,7 +209,7 @@ in
     http://wiki.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.wikijs.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.wikijs.port}
     }
 
     http://help.lan:80 {
@@ -222,7 +224,7 @@ in
       encode gzip
       redir @not_vlan1 http://help.lan 302
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan1.help.lan
+        root ${httpdir}/vlan1.help.lan
       }
     }
 
@@ -231,7 +233,7 @@ in
       encode gzip
       redir @not_vlan10 http://help.lan 302
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan10.help.lan
+        root ${httpdir}/vlan10.help.lan
       }
     }
 
@@ -240,7 +242,7 @@ in
       encode gzip
       redir @not_vlan20 http://help.lan 302
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan20.help.lan
+        root ${httpdir}/vlan20.help.lan
       }
     }
 
@@ -254,10 +256,10 @@ in
   ## bookdb - https://github.com/barrucadu/bookdb
   ###############################################################################
 
-  services.bookdb.enable = true;
-  services.bookdb.image = "localhost:5000/bookdb:latest";
-  services.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
-  services.bookdb.port = bookdbPort;
+  nixfiles.bookdb.enable = true;
+  nixfiles.bookdb.image = "localhost:5000/bookdb:latest";
+  nixfiles.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
+  nixfiles.bookdb.port = bookdbPort;
 
   systemd.timers.bookdb-sync = {
     wantedBy = [ "timers.target" ];
@@ -280,12 +282,12 @@ in
   ## bookmarks - https://github.com/barrucadu/bookmarks
   ###############################################################################
 
-  services.bookmarks.enable = true;
-  services.bookmarks.image = "localhost:5000/bookmarks:latest";
-  services.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
-  services.bookmarks.port = bookmarksPort;
-  services.bookmarks.environmentFile = config.sops.secrets."services/bookmarks/env".path;
-  sops.secrets."services/bookmarks/env" = { };
+  nixfiles.bookmarks.enable = true;
+  nixfiles.bookmarks.image = "localhost:5000/bookmarks:latest";
+  nixfiles.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
+  nixfiles.bookmarks.port = bookmarksPort;
+  nixfiles.bookmarks.environmentFile = config.sops.secrets."nixfiles/bookmarks/env".path;
+  sops.secrets."nixfiles/bookmarks/env" = { };
 
   systemd.timers.bookmarks-sync = {
     wantedBy = [ "timers.target" ];
@@ -308,18 +310,18 @@ in
   ## finder
   ###############################################################################
 
-  services.finder.enable = true;
-  services.finder.image = "localhost:5000/finder:latest";
-  services.finder.port = finderPort;
-  services.finder.mangaDir = "/mnt/nas/manga";
+  nixfiles.finder.enable = true;
+  nixfiles.finder.image = "localhost:5000/finder:latest";
+  nixfiles.finder.port = finderPort;
+  nixfiles.finder.mangaDir = "/mnt/nas/manga";
 
 
   ###############################################################################
   ## wiki.js
   ###############################################################################
 
-  services.wikijs.enable = true;
-  services.wikijs.port = wikijsPort;
+  nixfiles.wikijs.enable = true;
+  nixfiles.wikijs.port = wikijsPort;
 
 
   ###############################################################################
@@ -416,8 +418,8 @@ in
       dashboard = folder: name: path: { inherit name folder; options.path = path; };
     in
     [
-      (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
-      (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
+      (dashboard "My Dashboards" "finance.json" ./dashboards/finance.json)
+      (dashboard "My Dashboards" "smart-home.json" ./dashboards/smart-home.json)
     ];
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";

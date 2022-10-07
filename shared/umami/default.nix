@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.umami;
+  cfg = config.nixfiles.umami;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.umami = {
+  options.nixfiles.umami = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
     port = mkOption { type = types.int; default = 3000; };
@@ -41,7 +41,7 @@ in
     };
     systemd.services."${backend}-umami-db".preStart = "${backend} network create -d bridge umami_network || true";
 
-    services.backups.scripts.umami = ''
+    nixfiles.backups.scripts.umami = ''
       ${backend} exec -i umami-db pg_dump -U umami --no-owner umami | gzip -9 > dump.sql.gz
     '';
   };

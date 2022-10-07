@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.concourse;
+  cfg = config.nixfiles.concourse;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.concourse = {
+  options.nixfiles.concourse = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
     concourseTag = mkOption { type = types.str; default = "7.8.2"; };
@@ -84,15 +84,15 @@ in
     services.prometheus.scrapeConfigs = [
       {
         job_name = "${config.networking.hostName}-concourse";
-        static_configs = [{ targets = [ "localhost:${toString config.services.concourse.metricsPort}" ]; }];
+        static_configs = [{ targets = [ "localhost:${toString cfg.metricsPort}" ]; }];
       }
     ];
     services.grafana.provision.dashboards =
       [
-        { name = "Concourse"; folder = "Services"; options.path = ./grafana-dashboards/concourse.json; }
+        { name = "Concourse"; folder = "Services"; options.path = ./dashboard.json; }
       ];
 
-    services.backups.scripts.concourse = ''
+    nixfiles.backups.scripts.concourse = ''
       ${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse | gzip -9 > dump.sql.gz
     '';
   };

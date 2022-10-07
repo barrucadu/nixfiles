@@ -2,7 +2,7 @@
 
 with lib;
 let
-  cfg = config.services.resolved;
+  cfg = config.nixfiles.resolved;
 
   package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
     pname = "resolved";
@@ -25,12 +25,7 @@ let
   resolved = pkgs.callPackage package { };
 in
 {
-  # is this bad? eh, probably fine...
-  disabledModules = [
-    "system/boot/resolved.nix"
-  ];
-
-  options.services.resolved = {
+  options.nixfiles.resolved = {
     enable = mkOption { type = types.bool; default = false; };
     interface = mkOption { type = types.str; default = "0.0.0.0"; };
     metrics_port = mkOption { type = types.int; default = 9420; };
@@ -83,7 +78,7 @@ in
     ];
     services.grafana.provision.dashboards =
       [
-        { name = "DNS Resolver"; folder = "Services"; options.path = ./grafana-dashboards/resolved.json; }
+        { name = "DNS Resolver"; folder = "Services"; options.path = ./dashboard.json; }
       ];
   };
 }

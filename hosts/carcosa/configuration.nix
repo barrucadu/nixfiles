@@ -11,6 +11,8 @@ let
   grafanaPort = 3010;
   foundryPort = 3011;
 
+  httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
+
   registryBarrucaduDev = {
     username = "registry";
     passwordFile = config.sops.secrets."services/docker_registry/login".path;
@@ -42,16 +44,16 @@ in
   };
   networking.defaultGateway6 = { address = "fe80::1"; interface = "enp1s0"; };
 
-  modules.firewall.ipBlocklistFile = config.sops.secrets."modules/firewall/ip_blocklist".path;
-  sops.secrets."modules/firewall/ip_blocklist" = { };
+  nixfiles.firewall.ipBlocklistFile = config.sops.secrets."nixfiles/firewall/ip_blocklist".path;
+  sops.secrets."nixfiles/firewall/ip_blocklist" = { };
 
   # No automatic reboots (for irssi)
   system.autoUpgrade.allowReboot = mkForce false;
 
   # Wipe / on boot
-  modules.eraseYourDarlings.enable = true;
-  modules.eraseYourDarlings.machineId = "64b1b10f3bef4616a7faf5edf1ef3ca5";
-  modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+  nixfiles.eraseYourDarlings.enable = true;
+  nixfiles.eraseYourDarlings.machineId = "64b1b10f3bef4616a7faf5edf1ef3ca5";
+  nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
   # Monitoring
@@ -63,18 +65,18 @@ in
   ## Backups
   ###############################################################################
 
-  services.backups.enable = true;
-  services.backups.environmentFile = config.sops.secrets."services/backups/env".path;
-  services.backups.scripts.syncthing = "cp -a /home/barrucadu/s .";
+  nixfiles.backups.enable = true;
+  nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
+  nixfiles.backups.scripts.syncthing = "cp -a /home/barrucadu/s .";
   # TODO: this will break when I have >100 github repos
-  services.backups.scripts.git = ''
+  nixfiles.backups.scripts.git = ''
     curl -u "barrucadu:''${GITHUB_TOKEN}" 'https://api.github.com/user/repos?type=owner&per_page=100' 2>/dev/null | \
       jq -r '.[].ssh_url' | \
       while read url; do
         git clone --bare "$url"
       done
   '';
-  sops.secrets."services/backups/env" = { };
+  sops.secrets."nixfiles/backups/env" = { };
 
 
   ###############################################################################
@@ -128,7 +130,7 @@ in
       header /*.css   Cache-Control "public, immutable, max-age=31536000"
 
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/www
+        root ${httpdir}/barrucadu.co.uk/www
       }
 
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
@@ -136,17 +138,17 @@ in
 
     bookdb.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.bookdb.port}
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookdb.port}
     }
 
     bookmarks.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.port}
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookmarks.port}
     }
 
     foundry.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://localhost:${toString config.services.foundryvtt.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.foundryvtt.port}
     }
 
     memo.barrucadu.co.uk {
@@ -157,7 +159,7 @@ in
       header /*.css     Cache-Control "public, immutable, max-age=31536000"
 
       file_server  {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/memo
+        root ${httpdir}/barrucadu.co.uk/memo
       }
 
       ${fileContents ./memo-barrucadu-co-uk.caddyfile}
@@ -168,7 +170,7 @@ in
 
       @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
 
-      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc
+      root * ${httpdir}/barrucadu.co.uk/misc
       file_server @subdirectory browse
       file_server
     }
@@ -195,7 +197,7 @@ in
 
     cd.barrucadu.dev {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.concourse.port} {
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.concourse.port} {
         flush_interval -1
       }
     }
@@ -225,7 +227,7 @@ in
       header /*.css           Cache-Control "public, immutable, max-age=31536000"
       header /twitter-cards/* Cache-Control "public, immutable, max-age=604800"
 
-      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/lookwhattheshoggothdraggedin.com/www
+      root * ${httpdir}/lookwhattheshoggothdraggedin.com/www
       file_server
 
       handle_errors {
@@ -239,7 +241,7 @@ in
 
     umami.lookwhattheshoggothdraggedin.com {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.umami.port}
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.umami.port}
     }
 
     uzbl.org {
@@ -265,7 +267,7 @@ in
       redir /doesitwork /doesitwork/
       redir /fosdem2020 /fosdem2020/
 
-      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/uzbl.org/www
+      root * ${httpdir}/uzbl.org/www
       php_fastcgi unix//run/phpfpm/caddy.sock
       file_server
     }
@@ -288,9 +290,9 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
-    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
-    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
+    "d ${httpdir}/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
+    "d ${httpdir}/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
+    "d ${httpdir}/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
   ];
 
   # Docker registry
@@ -303,48 +305,48 @@ in
   sops.secrets."services/docker_registry/login" = { };
 
   # bookdb
-  services.bookdb.enable = true;
-  services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
-  services.bookdb.pullOnStart = true;
-  services.bookdb.registry = registryBarrucaduDev;
-  services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
-  services.bookdb.readOnly = true;
-  services.bookdb.port = bookdbPort;
+  nixfiles.bookdb.enable = true;
+  nixfiles.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
+  nixfiles.bookdb.pullOnStart = true;
+  nixfiles.bookdb.registry = registryBarrucaduDev;
+  nixfiles.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
+  nixfiles.bookdb.readOnly = true;
+  nixfiles.bookdb.port = bookdbPort;
 
   # bookmarks
-  services.bookmarks.enable = true;
-  services.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
-  services.bookmarks.pullOnStart = true;
-  services.bookmarks.registry = registryBarrucaduDev;
-  services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
-  services.bookmarks.readOnly = true;
-  services.bookmarks.port = bookmarksPort;
+  nixfiles.bookmarks.enable = true;
+  nixfiles.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
+  nixfiles.bookmarks.pullOnStart = true;
+  nixfiles.bookmarks.registry = registryBarrucaduDev;
+  nixfiles.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
+  nixfiles.bookmarks.readOnly = true;
+  nixfiles.bookmarks.port = bookmarksPort;
 
   # concourse
-  services.concourse.enable = true;
-  services.concourse.port = concoursePort;
-  services.concourse.metricsPort = concourseMetricsPort;
-  services.concourse.environmentFile = config.sops.secrets."services/concourse/env".path;
-  services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
-  sops.secrets."services/concourse/env" = { };
+  nixfiles.concourse.enable = true;
+  nixfiles.concourse.port = concoursePort;
+  nixfiles.concourse.metricsPort = concourseMetricsPort;
+  nixfiles.concourse.environmentFile = config.sops.secrets."nixfiles/concourse/env".path;
+  nixfiles.concourse.workerScratchDir = "/var/concourse-worker-scratch";
+  sops.secrets."nixfiles/concourse/env" = { };
 
   # Look what the Shoggoth Dragged In
-  services.umami.enable = true;
-  services.umami.port = umamiPort;
-  services.umami.environmentFile = config.sops.secrets."services/umami/env".path;
-  sops.secrets."services/umami/env" = { };
+  nixfiles.umami.enable = true;
+  nixfiles.umami.port = umamiPort;
+  nixfiles.umami.environmentFile = config.sops.secrets."nixfiles/umami/env".path;
+  sops.secrets."nixfiles/umami/env" = { };
 
   # minecraft
-  services.minecraft.enable = true;
-  services.minecraft.servers.tea = {
+  nixfiles.minecraft.enable = true;
+  nixfiles.minecraft.servers.tea = {
     autoStart = false;
     port = 25565;
     jar = "fabric-server-launch.jar";
   };
 
   # Foundry VTT
-  services.foundryvtt.enable = true;
-  services.foundryvtt.port = foundryPort;
+  nixfiles.foundryvtt.enable = true;
+  nixfiles.foundryvtt.port = foundryPort;
 
 
   ###############################################################################

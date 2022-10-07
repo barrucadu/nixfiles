@@ -2,16 +2,12 @@
 
 with lib;
 let
-  cfg = config.services.pleroma;
+  cfg = config.nixfiles.pleroma;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
   # TODO: consider switching to the standard pleroma module
-  disabledModules = [
-    "services/networking/pleroma.nix"
-  ];
-
-  options.services.pleroma = {
+  options.nixfiles.pleroma = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     port = mkOption { type = types.int; default = 4000; };
@@ -70,7 +66,7 @@ in
     };
     systemd.services."${backend}-pleroma-db".preStart = "${backend} network create -d bridge pleroma_network || true";
 
-    services.backups.scripts.pleroma = ''
+    nixfiles.backups.scripts.pleroma = ''
       ${backend} cp "pleroma:/var/lib/pleroma/uploads" uploads
       ${backend} cp "pleroma:/var/lib/pleroma/static/emoji/custom" emojis
       ${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner pleroma | gzip -9 > dump.sql.gz

@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.wikijs;
+  cfg = config.nixfiles.wikijs;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.wikijs = {
+  options.nixfiles.wikijs = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
     port = mkOption { type = types.int; default = 3000; };
@@ -44,7 +44,7 @@ in
     };
     systemd.services."${backend}-wikijs-db".preStart = "${backend} network create -d bridge wikijs_network || true";
 
-    services.backups.scripts.wikijs = ''
+    nixfiles.backups.scripts.wikijs = ''
       ${backend} exec -i wikijs-db pg_dump -U wikijs --no-owner wikijs | gzip -9 > dump.sql.gz
     '';
   };

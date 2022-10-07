@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.bookdb;
+  cfg = config.nixfiles.bookdb;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.bookdb = {
+  options.nixfiles.bookdb = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     port = mkOption { type = types.int; default = 3000; };
@@ -54,7 +54,7 @@ in
     };
     systemd.services."${backend}-bookdb-db".preStart = "${backend} network create -d bridge bookdb_network || true";
 
-    services.backups.scripts.bookdb = ''
+    nixfiles.backups.scripts.bookdb = ''
       ${backend} cp "bookdb:/bookdb-covers" covers
       ${backend} exec -i bookdb env ES_HOST=http://bookdb-db:9200 /app/dump-index.py | gzip -9 > dump.json.gz
     '';
