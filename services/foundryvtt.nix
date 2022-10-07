@@ -5,10 +5,10 @@
 
 with lib;
 let
-  cfg = config.services.foundryvtt;
+  cfg = config.nixfiles.foundryvtt;
 in
 {
-  options.services.foundryvtt = {
+  options.nixfiles.foundryvtt = {
     enable = mkOption { type = types.bool; default = false; };
     port = mkOption { type = types.int; default = 3000; };
     dataDir = mkOption { type = types.str; default = "/srv/foundry"; };

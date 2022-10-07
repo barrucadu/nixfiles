@@ -148,7 +148,7 @@ in
 
     foundry.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://localhost:${toString config.services.foundryvtt.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.foundryvtt.port}
     }
 
     memo.barrucadu.co.uk {
@@ -345,8 +345,8 @@ in
   };
 
   # Foundry VTT
-  services.foundryvtt.enable = true;
-  services.foundryvtt.port = foundryPort;
+  nixfiles.foundryvtt.enable = true;
+  nixfiles.foundryvtt.port = foundryPort;
 
 
   ###############################################################################
