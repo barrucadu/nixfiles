@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.modules.firewall;
+  cfg = config.nixfiles.firewall;
 
   readBlocklistFromFile = ''
     cat ${cfg.ipBlocklistFile} | sed 's/\s//g' | sed 's/#.*$//' | grep . | while read ip; do
@@ -12,12 +12,8 @@ let
   '';
 in
 {
-  options = {
-    modules = {
-      firewall = {
-        ipBlocklistFile = mkOption { type = types.nullOr types.str; default = null; };
-      };
-    };
+  options.nixfiles.firewall = {
+    ipBlocklistFile = mkOption { type = types.nullOr types.str; default = null; };
   };
 
   config = {
