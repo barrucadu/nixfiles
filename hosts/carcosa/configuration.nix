@@ -195,7 +195,7 @@ in
 
     cd.barrucadu.dev {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.concourse.port} {
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.concourse.port} {
         flush_interval -1
       }
     }
@@ -321,12 +321,12 @@ in
   nixfiles.bookmarks.port = bookmarksPort;
 
   # concourse
-  services.concourse.enable = true;
-  services.concourse.port = concoursePort;
-  services.concourse.metricsPort = concourseMetricsPort;
-  services.concourse.environmentFile = config.sops.secrets."services/concourse/env".path;
-  services.concourse.workerScratchDir = "/var/concourse-worker-scratch";
-  sops.secrets."services/concourse/env" = { };
+  nixfiles.concourse.enable = true;
+  nixfiles.concourse.port = concoursePort;
+  nixfiles.concourse.metricsPort = concourseMetricsPort;
+  nixfiles.concourse.environmentFile = config.sops.secrets."nixfiles/concourse/env".path;
+  nixfiles.concourse.workerScratchDir = "/var/concourse-worker-scratch";
+  sops.secrets."nixfiles/concourse/env" = { };
 
   # Look what the Shoggoth Dragged In
   services.umami.enable = true;

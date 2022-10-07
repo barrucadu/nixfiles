@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.concourse;
+  cfg = config.nixfiles.concourse;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.concourse = {
+  options.nixfiles.concourse = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
     concourseTag = mkOption { type = types.str; default = "7.8.2"; };
@@ -84,7 +84,7 @@ in
     services.prometheus.scrapeConfigs = [
       {
         job_name = "${config.networking.hostName}-concourse";
-        static_configs = [{ targets = [ "localhost:${toString config.services.concourse.metricsPort}" ]; }];
+        static_configs = [{ targets = [ "localhost:${toString cfg.metricsPort}" ]; }];
       }
     ];
     services.grafana.provision.dashboards =
