@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.bookdb;
+  cfg = config.nixfiles.bookdb;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.bookdb = {
+  options.nixfiles.bookdb = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     port = mkOption { type = types.int; default = 3000; };

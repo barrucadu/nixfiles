@@ -136,7 +136,7 @@ in
 
     bookdb.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.bookdb.port}
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookdb.port}
     }
 
     bookmarks.barrucadu.co.uk {
@@ -303,13 +303,13 @@ in
   sops.secrets."services/docker_registry/login" = { };
 
   # bookdb
-  services.bookdb.enable = true;
-  services.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
-  services.bookdb.pullOnStart = true;
-  services.bookdb.registry = registryBarrucaduDev;
-  services.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
-  services.bookdb.readOnly = true;
-  services.bookdb.port = bookdbPort;
+  nixfiles.bookdb.enable = true;
+  nixfiles.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
+  nixfiles.bookdb.pullOnStart = true;
+  nixfiles.bookdb.registry = registryBarrucaduDev;
+  nixfiles.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
+  nixfiles.bookdb.readOnly = true;
+  nixfiles.bookdb.port = bookdbPort;
 
   # bookmarks
   services.bookmarks.enable = true;

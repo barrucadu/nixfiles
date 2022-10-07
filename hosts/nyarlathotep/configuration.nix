@@ -171,7 +171,7 @@ in
     http://bookdb.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.bookdb.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.bookdb.port}
     }
 
     http://bookmarks.nyarlathotep.lan:80 {
@@ -254,10 +254,10 @@ in
   ## bookdb - https://github.com/barrucadu/bookdb
   ###############################################################################
 
-  services.bookdb.enable = true;
-  services.bookdb.image = "localhost:5000/bookdb:latest";
-  services.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
-  services.bookdb.port = bookdbPort;
+  nixfiles.bookdb.enable = true;
+  nixfiles.bookdb.image = "localhost:5000/bookdb:latest";
+  nixfiles.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
+  nixfiles.bookdb.port = bookdbPort;
 
   systemd.timers.bookdb-sync = {
     wantedBy = [ "timers.target" ];

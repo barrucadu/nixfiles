@@ -68,7 +68,7 @@ in
     services.syncthing.dataDir = "${toString cfg.persistDir}/var/lib/syncthing";
 
     # my services
-    services.bookdb.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookdb";
+    nixfiles.bookdb.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookdb";
     services.bookmarks.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookmarks";
     services.concourse.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/concourse";
     services.finder.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/finder";
