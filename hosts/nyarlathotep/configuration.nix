@@ -418,8 +418,8 @@ in
       dashboard = folder: name: path: { inherit name folder; options.path = path; };
     in
     [
-      (dashboard "My Dashboards" "finance.json" ./grafana-dashboards/finance.json)
-      (dashboard "My Dashboards" "smart-home.json" ./grafana-dashboards/smart-home.json)
+      (dashboard "My Dashboards" "finance.json" ./dashboards/finance.json)
+      (dashboard "My Dashboards" "smart-home.json" ./dashboards/smart-home.json)
     ];
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";

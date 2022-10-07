@@ -160,8 +160,8 @@ in
         }
       ];
       provision.dashboards = [
-        { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./grafana-dashboards/node-stats-detailed.json; }
-        { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./grafana-dashboards/container-stats-detailed.json; }
+        { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/node-stats-detailed.json; }
+        { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/container-stats-detailed.json; }
       ];
     };
 

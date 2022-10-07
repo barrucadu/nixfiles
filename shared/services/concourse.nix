@@ -89,7 +89,7 @@ in
     ];
     services.grafana.provision.dashboards =
       [
-        { name = "Concourse"; folder = "Services"; options.path = ./grafana-dashboards/concourse.json; }
+        { name = "Concourse"; folder = "Services"; options.path = ./dashboards/concourse.json; }
       ];
 
     nixfiles.backups.scripts.concourse = ''

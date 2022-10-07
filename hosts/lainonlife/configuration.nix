@@ -268,7 +268,7 @@ in
       dashboards = [
         {
           name = "lainon.life";
-          options.path = pkgs.writeTextDir "lainon.life" (fileContents ./grafana-dashboards/main.json);
+          options.path = pkgs.writeTextDir "lainon.life" (fileContents ./dashboards/main.json);
         }
       ];
     };
