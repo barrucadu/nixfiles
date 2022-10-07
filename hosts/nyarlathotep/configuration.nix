@@ -61,10 +61,10 @@ in
   ## DNS
   ###############################################################################
 
-  services.resolved.enable = true;
-  services.resolved.cache_size = 1000000;
-  services.resolved.hosts_dirs = [ "/etc/dns/hosts" ];
-  services.resolved.zones_dirs = [ "/etc/dns/zones" ];
+  nixfiles.resolved.enable = true;
+  nixfiles.resolved.cache_size = 1000000;
+  nixfiles.resolved.hosts_dirs = [ "/etc/dns/hosts" ];
+  nixfiles.resolved.zones_dirs = [ "/etc/dns/zones" ];
 
   environment.etc."dns/hosts/stevenblack".source = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
