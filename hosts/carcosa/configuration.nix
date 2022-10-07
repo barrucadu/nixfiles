@@ -11,6 +11,8 @@ let
   grafanaPort = 3010;
   foundryPort = 3011;
 
+  httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
+
   registryBarrucaduDev = {
     username = "registry";
     passwordFile = config.sops.secrets."services/docker_registry/login".path;
@@ -49,9 +51,9 @@ in
   system.autoUpgrade.allowReboot = mkForce false;
 
   # Wipe / on boot
-  modules.eraseYourDarlings.enable = true;
-  modules.eraseYourDarlings.machineId = "64b1b10f3bef4616a7faf5edf1ef3ca5";
-  modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+  nixfiles.eraseYourDarlings.enable = true;
+  nixfiles.eraseYourDarlings.machineId = "64b1b10f3bef4616a7faf5edf1ef3ca5";
+  nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
   # Monitoring
@@ -128,7 +130,7 @@ in
       header /*.css   Cache-Control "public, immutable, max-age=31536000"
 
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/www
+        root ${httpdir}/barrucadu.co.uk/www
       }
 
       ${fileContents ./www-barrucadu-co-uk.caddyfile}
@@ -157,7 +159,7 @@ in
       header /*.css     Cache-Control "public, immutable, max-age=31536000"
 
       file_server  {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/memo
+        root ${httpdir}/barrucadu.co.uk/memo
       }
 
       ${fileContents ./memo-barrucadu-co-uk.caddyfile}
@@ -168,7 +170,7 @@ in
 
       @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
 
-      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc
+      root * ${httpdir}/barrucadu.co.uk/misc
       file_server @subdirectory browse
       file_server
     }
@@ -225,7 +227,7 @@ in
       header /*.css           Cache-Control "public, immutable, max-age=31536000"
       header /twitter-cards/* Cache-Control "public, immutable, max-age=604800"
 
-      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/lookwhattheshoggothdraggedin.com/www
+      root * ${httpdir}/lookwhattheshoggothdraggedin.com/www
       file_server
 
       handle_errors {
@@ -265,7 +267,7 @@ in
       redir /doesitwork /doesitwork/
       redir /fosdem2020 /fosdem2020/
 
-      root * ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/uzbl.org/www
+      root * ${httpdir}/uzbl.org/www
       php_fastcgi unix//run/phpfpm/caddy.sock
       file_server
     }
@@ -288,9 +290,9 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
-    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
-    "d ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
+    "d ${httpdir}/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
+    "d ${httpdir}/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
+    "d ${httpdir}/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
   ];
 
   # Docker registry

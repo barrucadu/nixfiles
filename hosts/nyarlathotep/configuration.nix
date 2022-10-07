@@ -17,6 +17,8 @@ let
   prometheusAwairExporterPort = 9517;
 
   rtorrentExternalPort = 50000;
+
+  httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
 in
 {
   ###############################################################################
@@ -39,9 +41,9 @@ in
   networking.firewall.allowedTCPPorts = [ 80 8888 111 2049 4000 4001 4002 rtorrentExternalPort ];
 
   # Wipe / on boot
-  modules.eraseYourDarlings.enable = true;
-  modules.eraseYourDarlings.machineId = "0f7ae3bda2a9428ab77a0adddc4c8cff";
-  modules.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+  nixfiles.eraseYourDarlings.enable = true;
+  nixfiles.eraseYourDarlings.machineId = "0f7ae3bda2a9428ab77a0adddc4c8cff";
+  nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
 
@@ -158,7 +160,7 @@ in
       import restrict_vlan
       encode gzip
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/nyarlathotep.lan
+        root ${httpdir}/nyarlathotep.lan
       }
     }
 
@@ -222,7 +224,7 @@ in
       encode gzip
       redir @not_vlan1 http://help.lan 302
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan1.help.lan
+        root ${httpdir}/vlan1.help.lan
       }
     }
 
@@ -231,7 +233,7 @@ in
       encode gzip
       redir @not_vlan10 http://help.lan 302
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan10.help.lan
+        root ${httpdir}/vlan10.help.lan
       }
     }
 
@@ -240,7 +242,7 @@ in
       encode gzip
       redir @not_vlan20 http://help.lan 302
       file_server {
-        root ${toString config.modules.eraseYourDarlings.persistDir}/srv/http/vlan20.help.lan
+        root ${httpdir}/vlan20.help.lan
       }
     }
 
