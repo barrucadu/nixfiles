@@ -22,7 +22,7 @@
       nixosConfigurations.azathoth = nixpkgs.lib.nixosSystem {
         inherit specialArgs system;
         modules = [
-          ./shared/common.nix
+          ./shared
           ./hosts/azathoth/configuration.nix
           ./hosts/azathoth/hardware.nix
           "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
@@ -32,7 +32,7 @@
       nixosConfigurations.carcosa = nixpkgs.lib.nixosSystem {
         inherit specialArgs system;
         modules = [
-          ./shared/common.nix
+          ./shared
           ./hosts/carcosa/configuration.nix
           ./hosts/carcosa/hardware.nix
           "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix"
@@ -43,7 +43,7 @@
       nixosConfigurations.lainonlife = nixpkgs.lib.nixosSystem {
         inherit specialArgs system;
         modules = [
-          ./shared/common.nix
+          ./shared
           ./hosts/lainonlife/configuration.nix
           ./hosts/lainonlife/hardware.nix
           "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
@@ -54,7 +54,7 @@
       nixosConfigurations.nyarlathotep = nixpkgs.lib.nixosSystem {
         inherit specialArgs system;
         modules = [
-          ./shared/common.nix
+          ./shared
           ./hosts/nyarlathotep/configuration.nix
           ./hosts/nyarlathotep/hardware.nix
           "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix"

@@ -7,19 +7,19 @@ let
 in
 {
   imports = [
-    ./modules/erase-your-darlings.nix
-    ./modules/firewall.nix
-    ./services/backups.nix
-    ./services/bookdb.nix
-    ./services/bookmarks.nix
-    ./services/concourse.nix
-    ./services/finder.nix
-    ./services/foundryvtt.nix
-    ./services/minecraft.nix
-    ./services/pleroma.nix
-    ./services/resolved.nix
-    ./services/umami.nix
-    ./services/wikijs.nix
+    ./backups
+    ./bookdb
+    ./bookmarks
+    ./concourse
+    ./erase-your-darlings
+    ./finder
+    ./firewall
+    ./foundryvtt
+    ./minecraft
+    ./pleroma
+    ./resolved
+    ./umami
+    ./wikijs
   ];
 
   config = {

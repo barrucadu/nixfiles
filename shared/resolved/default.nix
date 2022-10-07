@@ -78,7 +78,7 @@ in
     ];
     services.grafana.provision.dashboards =
       [
-        { name = "DNS Resolver"; folder = "Services"; options.path = ./dashboards/resolved.json; }
+        { name = "DNS Resolver"; folder = "Services"; options.path = ./dashboard.json; }
       ];
   };
 }
