@@ -191,7 +191,7 @@ in
     http://finder.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.finder.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.finder.port}
     }
 
     http://grafana.nyarlathotep.lan:80 {
@@ -310,10 +310,10 @@ in
   ## finder
   ###############################################################################
 
-  services.finder.enable = true;
-  services.finder.image = "localhost:5000/finder:latest";
-  services.finder.port = finderPort;
-  services.finder.mangaDir = "/mnt/nas/manga";
+  nixfiles.finder.enable = true;
+  nixfiles.finder.image = "localhost:5000/finder:latest";
+  nixfiles.finder.port = finderPort;
+  nixfiles.finder.mangaDir = "/mnt/nas/manga";
 
 
   ###############################################################################

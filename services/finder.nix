@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.finder;
+  cfg = config.nixfiles.finder;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.finder = {
+  options.nixfiles.finder = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     port = mkOption { type = types.int; default = 3000; };
