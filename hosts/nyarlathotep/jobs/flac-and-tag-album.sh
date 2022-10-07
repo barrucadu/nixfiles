@@ -15,8 +15,8 @@ for artist in *; do
         if [[ ! -e "cover.jpg" ]] && [[ ! -e "cover.png" ]] && [[ ! -e "cover.gif" ]]; then
           echo "(missing cover file)" >&2
         fi
-        flac *.wav
-        rm *.wav
+        flac -- *.wav
+        rm -- *.wav
         for flacfile in *.flac; do
           n="$(echo "$flacfile" | sed 's:\..*::')"
           track="$(echo "$flacfile" | sed 's:^[0-9]*\. \(.*\)\.flac:\1:')"
