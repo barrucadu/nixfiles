@@ -3,6 +3,10 @@
 with lib;
 
 let
+  promcfg = config.services.prometheus;
+  nodeExporter = promcfg.enable && config.services.prometheus.exporters.node.enable;
+  cAdvisor = promcfg.enable && config.services.cadvisor.enable;
+
   thereAreZfsFilesystems = any id (mapAttrsToList (_: attrs: attrs.fsType == "zfs") config.fileSystems);
 in
 {
@@ -143,26 +147,28 @@ in
     virtualisation.docker.autoPrune.enable = true;
     virtualisation.oci-containers.backend = "docker";
 
-
     #############################################################################
-    ## Monitoring
+    ## Dashboards & Alerting
     #############################################################################
 
     services.grafana = {
-      enable = config.services.prometheus.enable;
+      enable = promcfg.enable;
       auth.anonymous.enable = true;
       provision.enable = true;
-      provision.datasources = [
+      provision.datasources = mkIf promcfg.enable [
         {
           name = "prometheus";
-          url = "http://localhost:${toString config.services.prometheus.port}";
+          url = "http://localhost:${toString promcfg.port}";
           type = "prometheus";
         }
       ];
-      provision.dashboards = [
-        { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/node-stats-detailed.json; }
-        { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/container-stats-detailed.json; }
-      ];
+      provision.dashboards =
+        let
+          nodeExporterDashboard = { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/node-stats-detailed.json; };
+          cAdvisorDashboard = { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/container-stats-detailed.json; };
+        in
+        (if nodeExporter then [ nodeExporterDashboard ] else [ ]) ++
+        (if cAdvisor then [ cAdvisorDashboard ] else [ ]);
     };
 
     services.prometheus = {
@@ -170,40 +176,28 @@ in
       listenAddress = "127.0.0.1";
       port = 9090;
       globalConfig.scrape_interval = "15s";
-      scrapeConfigs = [
+      scrapeConfigs =
+        let
+          nodeExporterScraper = {
+            job_name = "${config.networking.hostName}-node";
+            static_configs = [{ targets = [ "localhost:${toString promcfg.exporters.node.port}" ]; }];
+          };
+          cAdvisorScraper = {
+            job_name = "${config.networking.hostName}-cadvisor";
+            static_configs = [{ targets = [ "localhost:${toString config.services.cadvisor.port}" ]; }];
+          };
+        in
+        (if nodeExporter then [ nodeExporterScraper ] else [ ]) ++
+        (if cAdvisor then [ cAdvisorScraper ] else [ ]);
+      alertmanagers = mkIf promcfg.alertmanager.enable [
         {
-          job_name = "${config.networking.hostName}-node";
-          static_configs = [{ targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ]; }];
-        }
-        {
-          job_name = "${config.networking.hostName}-cadvisor";
-          static_configs = [{ targets = [ "localhost:${toString config.services.cadvisor.port}" ]; }];
+          static_configs = [{ targets = [ "localhost:${toString promcfg.alertmanager.port}" ]; }];
         }
       ];
     };
 
-    services.prometheus.exporters.node.enable = config.services.prometheus.enable;
-    # if a disk is mounted at /home, then the default value of
-    # `"true"` reports incorrect filesystem metrics
-    systemd.services.prometheus-node-exporter.serviceConfig.ProtectHome = mkForce "read-only";
-
-    # override this to the node-exporter 1.4.0, which fixes an issue with
-    # missing zpool metrics (this can be removed when it's in the stable
-    # channel)
-    nixpkgs.overlays = [
-      (_: _: {
-        prometheus-node-exporter = pkgsUnstable.prometheus-node-exporter;
-      })
-    ];
-
-    services.prometheus.alertmanagers = mkIf config.services.prometheus.alertmanager.enable [
-      {
-        static_configs = [{ targets = [ "localhost:${toString config.services.prometheus.alertmanager.port}" ]; }];
-      }
-    ];
-
     services.prometheus.alertmanager = {
-      enable = config.services.prometheus.enable;
+      enable = promcfg.enable;
       port = 9093;
       configuration = {
         route = {
@@ -224,11 +218,27 @@ in
       };
     };
 
+    # Host metrics
+    services.prometheus.exporters.node.enable = promcfg.enable;
+
+    # if a disk is mounted at /home, then the default value of
+    # `"true"` reports incorrect filesystem metrics
+    systemd.services.prometheus-node-exporter.serviceConfig.ProtectHome = mkForce "read-only";
+
+    # override this to the node-exporter 1.4.0, which fixes an issue with
+    # missing zpool metrics (this can be removed when it's in the stable
+    # channel)
+    nixpkgs.overlays = [
+      (_: _: {
+        prometheus-node-exporter = pkgsUnstable.prometheus-node-exporter;
+      })
+    ];
+
+    # Container metrics
     services.cadvisor = {
-      enable = config.services.prometheus.enable;
+      enable = promcfg.enable;
       port = 9418;
     };
-
 
     #############################################################################
     ## User accounts
