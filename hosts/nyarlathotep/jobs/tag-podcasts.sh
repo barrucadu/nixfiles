@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
+set -e
+
 sleep 60
 
 for mp3file in */in/*.mp3; do
+  if [[ ! -f "$mp3file" ]]; then
+    break
+  fi
+
   dir="$(echo "$mp3file" | sed 's:/in/.*::')"
   f="$(basename "$mp3file")"
 
@@ -15,13 +21,14 @@ for mp3file in */in/*.mp3; do
 
   n="$(echo "$f" | sed 's:\..*::')"
   track="$(echo "$f" | sed 's:^[0-9]*\. \(.*\)\.mp3:\1:')"
+  destination="$(echo "$mp3file" | sed 's:/in/:/:')"
 
   echo "===== $mp3file" >&2
-  echo $artist >&2
-  echo $album >&2
-  echo $n >&2
-  echo $track >&2
-  echo "$(echo "$mp3file" | sed 's:/in/:/:')" >&2
+  echo "$artist" >&2
+  echo "$album" >&2
+  echo "$n" >&2
+  echo "$track" >&2
+  echo "$destination" >&2
   echo >&2
 
   id3v2 -D "$mp3file"
@@ -29,11 +36,11 @@ for mp3file in */in/*.mp3; do
   id3v2 -2 --track  "$n"      "$mp3file"
   id3v2 -2 --artist "$artist" "$mp3file"
   id3v2 -2 --album  "$album"  "$mp3file"
-  mv "$mp3file" "$(echo "$mp3file" | sed 's:/in/:/:')"
+  mv "$mp3file" "$destination"
 done
 
 # this can't be done as a systemd path unit because it doesn't seem to
 # support multiple *s in a pattern
-inotifywait --recursive --timeout 3600 --include '/mnt/nas/music/Podcasts/.*/in/.*\.mp3' $(pwd) >&2
+inotifywait --recursive --timeout 3600 --include '/mnt/nas/music/Podcasts/.*/in/.*\.mp3' "$(pwd)" &>/dev/null
 
 # this script is run in a loop by systemd.
