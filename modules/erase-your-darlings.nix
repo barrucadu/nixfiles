@@ -69,7 +69,7 @@ in
 
     # my services
     nixfiles.bookdb.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookdb";
-    services.bookmarks.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookmarks";
+    nixfiles.bookmarks.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookmarks";
     services.concourse.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/concourse";
     services.finder.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/finder";
     services.foundryvtt.dataDir = "${toString cfg.persistDir}/srv/foundry";

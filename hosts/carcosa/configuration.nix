@@ -141,7 +141,7 @@ in
 
     bookmarks.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://127.0.0.1:${toString config.services.bookmarks.port}
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookmarks.port}
     }
 
     foundry.barrucadu.co.uk {
@@ -312,13 +312,13 @@ in
   nixfiles.bookdb.port = bookdbPort;
 
   # bookmarks
-  services.bookmarks.enable = true;
-  services.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
-  services.bookmarks.pullOnStart = true;
-  services.bookmarks.registry = registryBarrucaduDev;
-  services.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
-  services.bookmarks.readOnly = true;
-  services.bookmarks.port = bookmarksPort;
+  nixfiles.bookmarks.enable = true;
+  nixfiles.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
+  nixfiles.bookmarks.pullOnStart = true;
+  nixfiles.bookmarks.registry = registryBarrucaduDev;
+  nixfiles.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
+  nixfiles.bookmarks.readOnly = true;
+  nixfiles.bookmarks.port = bookmarksPort;
 
   # concourse
   services.concourse.enable = true;

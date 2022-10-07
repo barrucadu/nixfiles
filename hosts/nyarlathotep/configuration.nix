@@ -177,7 +177,7 @@ in
     http://bookmarks.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.bookmarks.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.bookmarks.port}
     }
 
     http://flood.nyarlathotep.lan:80 {
@@ -280,12 +280,12 @@ in
   ## bookmarks - https://github.com/barrucadu/bookmarks
   ###############################################################################
 
-  services.bookmarks.enable = true;
-  services.bookmarks.image = "localhost:5000/bookmarks:latest";
-  services.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
-  services.bookmarks.port = bookmarksPort;
-  services.bookmarks.environmentFile = config.sops.secrets."services/bookmarks/env".path;
-  sops.secrets."services/bookmarks/env" = { };
+  nixfiles.bookmarks.enable = true;
+  nixfiles.bookmarks.image = "localhost:5000/bookmarks:latest";
+  nixfiles.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
+  nixfiles.bookmarks.port = bookmarksPort;
+  nixfiles.bookmarks.environmentFile = config.sops.secrets."nixfiles/bookmarks/env".path;
+  sops.secrets."nixfiles/bookmarks/env" = { };
 
   systemd.timers.bookmarks-sync = {
     wantedBy = [ "timers.target" ];

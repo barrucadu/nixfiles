@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.bookmarks;
+  cfg = config.nixfiles.bookmarks;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.bookmarks = {
+  options.nixfiles.bookmarks = {
     enable = mkOption { type = types.bool; default = false; };
     image = mkOption { type = types.str; };
     port = mkOption { type = types.int; default = 3000; };
