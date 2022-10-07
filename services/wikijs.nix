@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.services.wikijs;
+  cfg = config.nixfiles.wikijs;
   backend = config.virtualisation.oci-containers.backend;
 in
 {
-  options.services.wikijs = {
+  options.nixfiles.wikijs = {
     enable = mkOption { type = types.bool; default = false; };
     dockerVolumeDir = mkOption { type = types.path; };
     port = mkOption { type = types.int; default = 3000; };

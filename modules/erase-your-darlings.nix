@@ -72,6 +72,6 @@ in
     nixfiles.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
     nixfiles.pleroma.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/pleroma";
     nixfiles.umami.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/umami";
-    services.wikijs.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/wikijs";
+    nixfiles.wikijs.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/wikijs";
   };
 }

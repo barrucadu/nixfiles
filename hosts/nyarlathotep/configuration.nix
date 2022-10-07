@@ -209,7 +209,7 @@ in
     http://wiki.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.wikijs.port}
+      reverse_proxy http://localhost:${toString config.nixfiles.wikijs.port}
     }
 
     http://help.lan:80 {
@@ -320,8 +320,8 @@ in
   ## wiki.js
   ###############################################################################
 
-  services.wikijs.enable = true;
-  services.wikijs.port = wikijsPort;
+  nixfiles.wikijs.enable = true;
+  nixfiles.wikijs.port = wikijsPort;
 
 
   ###############################################################################
