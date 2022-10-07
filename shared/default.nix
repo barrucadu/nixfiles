@@ -8,6 +8,13 @@ let
   cAdvisor = promcfg.enable && config.services.cadvisor.enable;
 
   thereAreZfsFilesystems = any id (mapAttrsToList (_: attrs: attrs.fsType == "zfs") config.fileSystems);
+
+  firewallcfg = config.nixfiles.firewall;
+  readBlocklistFromFile = ''
+    cat ${firewallcfg.ipBlocklistFile} | sed 's/\s//g' | sed 's/#.*$//' | grep . | while read ip; do
+      iptables -A barrucadu-ip-blocklist -s "$ip" -j DROP
+    done
+  '';
 in
 {
   imports = [
@@ -17,7 +24,6 @@ in
     ./concourse
     ./erase-your-darlings
     ./finder
-    ./firewall
     ./foundryvtt
     ./minecraft
     ./pleroma
@@ -25,6 +31,10 @@ in
     ./umami
     ./wikijs
   ];
+
+  options.nixfiles.firewall = {
+    ipBlocklistFile = mkOption { type = types.nullOr types.str; default = null; };
+  };
 
   config = {
     #############################################################################
@@ -79,6 +89,31 @@ in
     # Keyboard
     console.keyMap = "uk";
     services.xserver.layout = "gb";
+
+    #############################################################################
+    ## Firewall
+    #############################################################################
+
+    networking.firewall.enable = true;
+    networking.firewall.allowPing = true;
+    networking.firewall.trustedInterfaces = if config.virtualisation.docker.enable then [ "docker0" ] else [ ];
+
+    services.fail2ban.enable = true;
+
+    networking.firewall.extraCommands = ''
+      iptables -N barrucadu-ip-blocklist
+      ${if firewallcfg.ipBlocklistFile == null then "" else readBlocklistFromFile}
+      iptables -A barrucadu-ip-blocklist -j RETURN
+      iptables -A INPUT -j barrucadu-ip-blocklist
+    '';
+
+    networking.firewall.extraStopCommands = ''
+      if iptables -n --list barrucadu-ip-blocklist &>/dev/null; then
+        iptables -D INPUT -j barrucadu-ip-blocklist
+        iptables -F barrucadu-ip-blocklist
+        iptables -X barrucadu-ip-blocklist
+      fi
+    '';
 
     #############################################################################
     ## ZFS
