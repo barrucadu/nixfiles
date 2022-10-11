@@ -61,7 +61,10 @@ in
         "POSTGRES_USER" = "pleroma";
         "POSTGRES_PASSWORD" = "pleroma";
       };
-      extraOptions = [ "--network=pleroma_network" ];
+      extraOptions = [
+        "--network=pleroma_network"
+        "--shm-size=1g"
+      ];
       volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
     };
     systemd.services."${backend}-pleroma-db".preStart = "${backend} network create -d bridge pleroma_network || true";
