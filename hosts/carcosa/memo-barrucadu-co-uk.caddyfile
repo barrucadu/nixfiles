@@ -1,5 +1,9 @@
-# Moved to RPG blog
+# Moved elsewhere
 redir /call-of-cthulhu-dice-rolls.html https://www.lookwhattheshoggothdraggedin.com/post/dice-rolls-in-call-of-cthulhu.html permanent
+redir /backups.html https://github.com/barrucadu/nixfiles permanent
+redir /monitoring.html https://github.com/barrucadu/nixfiles permanent
+redir /machines.html https://github.com/barrucadu/nixfiles permanent
+redir /how-to-set-up-a-new-machine.html https://github.com/barrucadu/nixfiles permanent
 
 # Moved to personal wiki
 respond /taxon/self-recipes.html 410
@@ -12,3 +16,7 @@ respond /recipe-bread.html 410
 respond /recipe-chilli.html 410
 respond /recipe-bolognese.html 410
 respond /recipe-cottage-pie.html 410
+
+# Superseded and point to removed memos
+redir /sms-email-alerting.html https://github.com/barrucadu/nixfiles permanent
+respond /sms-email-alerting.png 410
