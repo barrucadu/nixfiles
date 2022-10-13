@@ -34,3 +34,11 @@ respond /the-way.html 410
 # Superseded and point to removed memos
 redir /sms-email-alerting.html https://github.com/barrucadu/nixfiles permanent
 respond /sms-email-alerting.png 410
+
+# Renamed taxa
+redir /taxon/general-games.html /taxon/games.html permanent
+redir /taxon/general-games.xml /taxon/games.xml permanent
+
+# Merged taxa
+redir /taxon/self-koans.html /taxon/general.html
+respond /taxon/self-koans.xml 410
