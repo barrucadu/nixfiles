@@ -185,6 +185,17 @@ in
       reverse_proxy http://localhost:${toString config.services.prometheus.port}
     }
 
+    weeknotes.barrucadu.co.uk {
+      import common_config
+
+      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
+      header /*.css     Cache-Control "public, immutable, max-age=31536000"
+
+      file_server  {
+        root ${httpdir}/barrucadu.co.uk/weeknotes
+      }
+    }
+
     barrucadu.dev {
       import common_config
       redir https://www.barrucadu.co.uk
