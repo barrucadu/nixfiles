@@ -17,6 +17,20 @@ respond /recipe-chilli.html 410
 respond /recipe-bolognese.html 410
 respond /recipe-cottage-pie.html 410
 
+# Just removed
+respond /blub-crisis.html 410
+respond /contraptions-components-cables.html 410
+respond /game-systems.html 410
+respond /games-i-would-like-to-run.html 410
+respond /granfalloons.html 410
+respond /how-to-update-pihole.html 410
+respond /memo-organisation.html 410
+respond /memos-vs-blog-posts.html 410
+respond /one-shot-ideas.html 410
+respond /read-me-first.html 410
+respond /slog17.html 410
+respond /the-way.html 410
+
 # Superseded and point to removed memos
 redir /sms-email-alerting.html https://github.com/barrucadu/nixfiles permanent
 respond /sms-email-alerting.png 410
