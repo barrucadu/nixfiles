@@ -167,6 +167,9 @@ in
 
     misc.barrucadu.co.uk {
       import common_config
+      basicauth /_site/* {
+        import ${config.sops.secrets."services/caddy/fragments/misc_site".path}
+      }
 
       @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
 
@@ -216,7 +219,7 @@ in
     registry.barrucadu.dev {
       import common_config
       basicauth /v2/* {
-        import ${config.sops.secrets."services/docker_registry/caddyfile".path}
+        import ${config.sops.secrets."services/caddy/fragments/registry".path}
       }
       header /v2/* Docker-Distribution-Api-Version "registry/2.0"
       reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
@@ -283,6 +286,8 @@ in
       file_server
     }
   '';
+  sops.secrets."services/caddy/fragments/misc_site".owner = config.users.users.caddy.name;
+  sops.secrets."services/caddy/fragments/registry".owner = config.users.users.caddy.name;
 
   services.phpfpm.pools.caddy = {
     phpPackage = pkgs.php74;
@@ -301,6 +306,7 @@ in
   };
 
   systemd.tmpfiles.rules = [
+    "d ${httpdir}/barrucadu.co.uk/misc/_site 0755 barrucadu users  1d"
     "d ${httpdir}/barrucadu.co.uk/misc/7day  0755 barrucadu users  7d"
     "d ${httpdir}/barrucadu.co.uk/misc/14day 0755 barrucadu users 14d"
     "d ${httpdir}/barrucadu.co.uk/misc/28day 0755 barrucadu users 28d"
@@ -312,7 +318,6 @@ in
   services.dockerRegistry.enableGarbageCollect = true;
   services.dockerRegistry.port = dockerRegistryPort;
 
-  sops.secrets."services/docker_registry/caddyfile".owner = config.users.users.caddy.name;
   sops.secrets."services/docker_registry/login" = { };
 
   # bookdb
