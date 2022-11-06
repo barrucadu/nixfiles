@@ -80,7 +80,7 @@
           pkgs.writeShellScriptBin "lint.sh" ''
             #!${pkgs.bash}
 
-            PATH=${pkgs.findutils}/bin:${pkgs.nix-linter}/bin:${pkgs.shellcheck}/bin
+            PATH=${pkgs.findutils}/bin:${pkgs.nix-linter}/bin:${pkgs.shellcheck}/bin:${pkgs.git}/bin:${pkgs.gnugrep}/bin
 
             ${pkgs.lib.fileContents ./scripts/lint.sh}
           '';

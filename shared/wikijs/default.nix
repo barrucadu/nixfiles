@@ -3,20 +3,18 @@
 with lib;
 let
   cfg = config.nixfiles.wikijs;
-  backend = config.virtualisation.oci-containers.backend;
+  backend = config.nixfiles.oci-containers.backend;
 in
 {
   options.nixfiles.wikijs = {
     enable = mkOption { type = types.bool; default = false; };
-    dockerVolumeDir = mkOption { type = types.path; };
     port = mkOption { type = types.int; default = 3000; };
     postgresTag = mkOption { type = types.str; default = "13"; };
     wikijsTag = mkOption { type = types.str; default = "2"; };
   };
 
   config = mkIf cfg.enable {
-    virtualisation.oci-containers.containers.wikijs = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.wikijs = {
       image = "ghcr.io/requarks/wiki:${cfg.wikijsTag}";
       environment = {
         DB_TYPE = "postgres";
@@ -26,23 +24,22 @@ in
         DB_PASS = "wikijs";
         DB_NAME = "wikijs";
       };
-      extraOptions = [ "--network=wikijs_network" ];
       dependsOn = [ "wikijs-db" ];
-      ports = [ "127.0.0.1:${toString cfg.port}:3000" ];
+      network = "wikijs_network";
+      ports = [{ host = cfg.port; inner = 3000; }];
     };
 
-    virtualisation.oci-containers.containers.wikijs-db = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.wikijs-db = {
       image = "postgres:${cfg.postgresTag}";
       environment = {
         POSTGRES_DB = "wikijs";
         POSTGRES_USER = "wikijs";
         POSTGRES_PASSWORD = "wikijs";
       };
-      extraOptions = [ "--network=wikijs_network" ];
-      volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
+      network = "wikijs_network";
+      volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
+      volumeSubDir = "wikijs";
     };
-    systemd.services."${backend}-wikijs-db".preStart = "${backend} network create -d bridge wikijs_network || true";
 
     nixfiles.backups.scripts.wikijs = ''
       ${backend} exec -i wikijs-db pg_dump -U wikijs --no-owner wikijs | gzip -9 > dump.sql.gz

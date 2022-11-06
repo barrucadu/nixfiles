@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.nixfiles.bookdb;
-  backend = config.virtualisation.oci-containers.backend;
+  backend = config.nixfiles.oci-containers.backend;
 in
 {
   options.nixfiles.bookdb = {
@@ -18,13 +18,10 @@ in
       passwordFile = mkOption { type = types.nullOr types.str; default = null; };
       url = mkOption { type = types.nullOr types.str; default = null; };
     };
-    pullOnStart = mkOption { type = types.bool; default = false; };
-    dockerVolumeDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
-    virtualisation.oci-containers.containers.bookdb = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.bookdb = {
       image = cfg.image;
       login = with cfg.registry; { inherit username passwordFile; registry = url; };
       environment = {
@@ -33,15 +30,13 @@ in
         "COVER_DIR" = "/bookdb-covers";
         "ES_HOST" = "http://bookdb-db:9200";
       };
-      extraOptions = [ "--network=bookdb_network" ];
       dependsOn = [ "bookdb-db" ];
-      ports = [ "127.0.0.1:${toString cfg.port}:8888" ];
-      volumes = [ "${toString cfg.dockerVolumeDir}/covers:/bookdb-covers" ];
+      network = "bookdb_network";
+      ports = [{ host = cfg.port; inner = 8888; }];
+      volumes = [{ name = "covers"; inner = "/bookdb-covers"; }];
     };
-    systemd.services."${backend}-bookdb".preStart = mkIf cfg.pullOnStart "${backend} pull ${cfg.image}";
 
-    virtualisation.oci-containers.containers.bookdb-db = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.bookdb-db = {
       image = "elasticsearch:${cfg.esTag}";
       environment = {
         "http.host" = "0.0.0.0";
@@ -49,10 +44,10 @@ in
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      extraOptions = [ "--network=bookdb_network" ];
-      volumes = [ "${toString cfg.dockerVolumeDir}/esdata:/usr/share/elasticsearch/data" ];
+      network = "bookdb_network";
+      volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
+      volumeSubDir = "bookdb";
     };
-    systemd.services."${backend}-bookdb-db".preStart = "${backend} network create -d bridge bookdb_network || true";
 
     nixfiles.backups.scripts.bookdb = ''
       ${backend} cp "bookdb:/bookdb-covers" covers

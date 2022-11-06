@@ -229,7 +229,6 @@ in
   # Pleroma
   nixfiles.pleroma.enable = true;
   nixfiles.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
-  nixfiles.pleroma.pullOnStart = true;
   nixfiles.pleroma.registry = {
     username = "registry";
     passwordFile = config.sops.secrets."nixfiles/pleroma/docker_registry".path;
@@ -237,8 +236,8 @@ in
   };
   nixfiles.pleroma.domain = "social.lainon.life";
   nixfiles.pleroma.faviconPath = ./pleroma-favicon.png;
-  nixfiles.pleroma.dockerVolumeDir = "/persist/docker-volumes/pleroma";
   nixfiles.pleroma.secretsFile = config.sops.secrets."nixfiles/pleroma/exc".path;
+  nixfiles.oci-containers.volumeBaseDir = "/persist/docker-volumes";
   # TODO: figure out how to lock this down so only the pleroma process
   # can read it (remap the container UID / GID to something known,
   # perhaps?)

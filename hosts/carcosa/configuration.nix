@@ -323,7 +323,6 @@ in
   # bookdb
   nixfiles.bookdb.enable = true;
   nixfiles.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
-  nixfiles.bookdb.pullOnStart = true;
   nixfiles.bookdb.registry = registryBarrucaduDev;
   nixfiles.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   nixfiles.bookdb.readOnly = true;
@@ -332,7 +331,6 @@ in
   # bookmarks
   nixfiles.bookmarks.enable = true;
   nixfiles.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
-  nixfiles.bookmarks.pullOnStart = true;
   nixfiles.bookmarks.registry = registryBarrucaduDev;
   nixfiles.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
   nixfiles.bookmarks.readOnly = true;
