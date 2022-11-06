@@ -3,12 +3,11 @@
 with lib;
 let
   cfg = config.nixfiles.concourse;
-  backend = config.virtualisation.oci-containers.backend;
+  backend = config.nixfiles.oci-containers.backend;
 in
 {
   options.nixfiles.concourse = {
     enable = mkOption { type = types.bool; default = false; };
-    dockerVolumeDir = mkOption { type = types.path; };
     concourseTag = mkOption { type = types.str; default = "7.8.2"; };
     githubUser = mkOption { type = types.str; default = "barrucadu"; };
     port = mkOption { type = types.int; default = 3001; };
@@ -22,8 +21,7 @@ in
     # https://github.com/concourse/concourse/discussions/6529
     boot.kernelParams = [ "systemd.unified_cgroup_hierarchy=0" ];
 
-    virtualisation.oci-containers.containers.concourse-web = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.concourse-web = {
       image = "concourse/concourse:${cfg.concourseTag}";
       cmd = [ "web" ];
       environment = {
@@ -40,19 +38,17 @@ in
         "CONCOURSE_BAGGAGECLAIM_RESPONSE_HEADER_TIMEOUT" = "30m";
       };
       environmentFiles = [ cfg.environmentFile ];
-      extraOptions = [ "--network=concourse_network" ];
       dependsOn = [ "concourse-db" ];
+      network = "concourse_network";
       ports = [
-        "127.0.0.1:${toString cfg.port}:8080"
-        "127.0.0.1:${toString cfg.metricsPort}:8088"
+        { host = cfg.port; inner = 8080; }
+        { host = cfg.metricsPort; inner = 8088; }
       ];
-      volumes = [
-        "${toString cfg.dockerVolumeDir}/keys/web:/concourse-keys"
-      ];
+      volumes = [{ name = "keys/web"; inner = "/concourse-keys"; }];
+      volumeSubDir = "concourse";
     };
 
-    virtualisation.oci-containers.containers.concourse-worker = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.concourse-worker = {
       image = "concourse/concourse:${cfg.concourseTag}";
       cmd = [ "worker" "--ephemeral" ];
       environment = {
@@ -61,25 +57,26 @@ in
         "CONCOURSE_GARDEN_DNS_SERVER" = "1.1.1.1,8.8.8.8";
         "CONCOURSE_WORK_DIR" = mkIf (cfg.workerScratchDir != null) "/workdir";
       };
-      extraOptions = [ "--network=concourse_network" "--privileged" ];
+      extraOptions = [ "--privileged" ];
       dependsOn = [ "concourse-web" ];
-      volumes = [
-        "${toString cfg.dockerVolumeDir}/keys/worker:/concourse-keys"
-      ] ++ (if cfg.workerScratchDir == null then [ ] else [ "${cfg.workerScratchDir}:/workdir" ]);
+      network = "concourse_network";
+      volumes =
+        [{ name = "keys/worker"; inner = "/concourse-keys"; }] ++
+        (if cfg.workerScratchDir == null then [ ] else [{ host = cfg.workerScratchDir; inner = "/workdir"; }]);
+      volumeSubDir = "concourse";
     };
 
-    virtualisation.oci-containers.containers.concourse-db = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.concourse-db = {
       image = "postgres:${cfg.postgresTag}";
       environment = {
         "POSTGRES_DB" = "concourse";
         "POSTGRES_USER" = "concourse";
         "POSTGRES_PASSWORD" = "concourse";
       };
-      extraOptions = [ "--network=concourse_network" ];
-      volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
+      network = "concourse_network";
+      volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
+      volumeSubDir = "concourse";
     };
-    systemd.services."${backend}-concourse-db".preStart = "${backend} network create -d bridge concourse_network || true";
 
     services.prometheus.scrapeConfigs = [
       {

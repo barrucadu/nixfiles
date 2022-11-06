@@ -26,6 +26,7 @@ in
     ./finder
     ./foundryvtt
     ./minecraft
+    ./oci-containers
     ./pleroma
     ./resolved
     ./umami
@@ -180,7 +181,6 @@ in
     # Use docker for all the OCI container based services
     virtualisation.docker.enable = true;
     virtualisation.docker.autoPrune.enable = true;
-    virtualisation.oci-containers.backend = "docker";
 
     #############################################################################
     ## Dashboards & Alerting

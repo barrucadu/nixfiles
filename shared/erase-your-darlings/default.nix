@@ -64,14 +64,8 @@ in
     services.syncthing.dataDir = "${toString cfg.persistDir}/var/lib/syncthing";
 
     # my services
-    nixfiles.bookdb.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookdb";
-    nixfiles.bookmarks.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/bookmarks";
-    nixfiles.concourse.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/concourse";
-    nixfiles.finder.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/finder";
     nixfiles.foundryvtt.dataDir = "${toString cfg.persistDir}/srv/foundry";
     nixfiles.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
-    nixfiles.pleroma.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/pleroma";
-    nixfiles.umami.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/umami";
-    nixfiles.wikijs.dockerVolumeDir = "${toString cfg.persistDir}/docker-volumes/wikijs";
+    nixfiles.oci-containers.volumeBaseDir = "${toString cfg.persistDir}/docker-volumes";
   };
 }

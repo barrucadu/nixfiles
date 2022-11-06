@@ -5,8 +5,6 @@ with lib;
 let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
 
-  ociBackend = config.virtualisation.oci-containers.backend;
-
   bookdbPort = 3000;
   floodPort = 3001;
   finderPort = 3002;
@@ -554,22 +552,20 @@ in
     };
   };
 
-  virtualisation.oci-containers.containers.promscale = {
-    autoStart = true;
+  nixfiles.oci-containers.containers.promscale = {
     image = "timescale/promscale:latest";
     cmd = [ "-db.host=promscale-db" "-db.name=postgres" "-db.password=promscale" "-db.ssl-mode=allow" "-web.enable-admin-api=true" "-metrics.promql.lookback-delta=168h" ];
-    extraOptions = [ "--network=promscale_network" ];
     dependsOn = [ "promscale-db" ];
-    ports = [ "127.0.0.1:${toString promscalePort}:9201" ];
+    network = "promscale_network";
+    ports = [{ host = promscalePort; inner = 9201; }];
   };
-  virtualisation.oci-containers.containers.promscale-db = {
-    autoStart = true;
+  nixfiles.oci-containers.containers.promscale-db = {
     image = "timescaledev/promscale-extension:latest-ts2-pg14";
     environment = {
       POSTGRES_PASSWORD = "promscale";
     };
-    extraOptions = [ "--network=promscale_network" ];
-    volumes = [ "/persist/docker-volumes/promscale/pgdata:/var/lib/postgresql/data" ];
+    network = "promscale_network";
+    volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
+    volumeSubDir = "promscale";
   };
-  systemd.services."${ociBackend}-promscale-db".preStart = "${ociBackend} network create -d bridge promscale_network || true";
 }

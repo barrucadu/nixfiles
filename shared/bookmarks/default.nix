@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.nixfiles.bookmarks;
-  backend = config.virtualisation.oci-containers.backend;
+  backend = config.nixfiles.oci-containers.backend;
 in
 {
   options.nixfiles.bookmarks = {
@@ -19,13 +19,10 @@ in
       passwordFile = mkOption { type = types.nullOr types.str; default = null; };
       url = mkOption { type = types.nullOr types.str; default = null; };
     };
-    pullOnStart = mkOption { type = types.bool; default = false; };
-    dockerVolumeDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
-    virtualisation.oci-containers.containers.bookmarks = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.bookmarks = {
       image = cfg.image;
       login = with cfg.registry; { inherit username passwordFile; registry = url; };
       environment = {
@@ -34,14 +31,12 @@ in
         "ES_HOST" = "http://bookmarks-db:9200";
       };
       environmentFiles = mkIf (cfg.environmentFile != null) [ cfg.environmentFile ];
-      extraOptions = [ "--network=bookmarks_network" ];
       dependsOn = [ "bookmarks-db" ];
-      ports = [ "127.0.0.1:${toString cfg.port}:8888" ];
+      network = "bookmarks_network";
+      ports = [{ host = cfg.port; inner = 8888; }];
     };
-    systemd.services."${backend}-bookmarks".preStart = mkIf cfg.pullOnStart "${backend} pull ${cfg.image}";
 
-    virtualisation.oci-containers.containers.bookmarks-db = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.bookmarks-db = {
       image = "elasticsearch:${cfg.esTag}";
       environment = {
         "http.host" = "0.0.0.0";
@@ -49,10 +44,10 @@ in
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      extraOptions = [ "--network=bookmarks_network" ];
-      volumes = [ "${toString cfg.dockerVolumeDir}/esdata:/usr/share/elasticsearch/data" ];
+      network = "bookmarks_network";
+      volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
+      volumeSubDir = "bookmarks";
     };
-    systemd.services."${backend}-bookmarks-db".preStart = "${backend} network create -d bridge bookmarks_network || true";
 
     nixfiles.backups.scripts.bookmarks = ''
       ${backend} exec -i bookmarks env ES_HOST=http://bookmarks-db:9200 /app/dump-index.py | gzip -9 > dump.json.gz

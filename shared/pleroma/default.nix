@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.nixfiles.pleroma;
-  backend = config.virtualisation.oci-containers.backend;
+  backend = config.nixfiles.oci-containers.backend;
 in
 {
   # TODO: consider switching to the standard pleroma module
@@ -23,13 +23,10 @@ in
       passwordFile = mkOption { type = types.nullOr types.str; default = null; };
       url = mkOption { type = types.nullOr types.str; default = null; };
     };
-    pullOnStart = mkOption { type = types.bool; default = false; };
-    dockerVolumeDir = mkOption { type = types.path; };
   };
 
   config = mkIf cfg.enable {
-    virtualisation.oci-containers.containers.pleroma = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.pleroma = {
       image = cfg.image;
       login = with cfg.registry; { inherit username passwordFile; registry = url; };
       environment = {
@@ -42,32 +39,28 @@ in
         "DB_NAME" = "pleroma";
         "DB_HOST" = "pleroma-db";
       };
-      extraOptions = [ "--network=pleroma_network" ];
       dependsOn = [ "pleroma-db" ];
-      ports = [ "127.0.0.1:${toString cfg.port}:4000" ];
+      network = "pleroma_network";
+      ports = [{ host = cfg.port; inner = 4000; }];
       volumes = [
-        "${toString cfg.dockerVolumeDir}/uploads:/var/lib/pleroma/uploads"
-        "${toString cfg.dockerVolumeDir}/emojis:/var/lib/pleroma/static/emoji/custom"
-        "${cfg.secretsFile}:/var/lib/pleroma/secret.exs"
-      ] ++ (if cfg.faviconPath == null then [ ] else [ "${pkgs.copyPathToStore cfg.faviconPath}:/var/lib/pleroma/static/favicon.png" ]);
+        { name = "uploads"; inner = "/var/lib/pleroma/uploads"; }
+        { name = "emojis"; inner = "/var/lib/pleroma/static/emoji/custom"; }
+        { host = cfg.secretsFile; inner = "/var/lib/pleroma/secret.exs"; }
+      ] ++ (if cfg.faviconPath == null then [ ] else [{ host = pkgs.copyPathToStore cfg.faviconPath; inner = "/var/lib/pleroma/static/favicon.png"; }]);
     };
-    systemd.services."${backend}-pleroma".preStart = mkIf cfg.pullOnStart "${backend} pull ${cfg.image}";
 
-    virtualisation.oci-containers.containers.pleroma-db = {
-      autoStart = true;
+    nixfiles.oci-containers.containers.pleroma-db = {
       image = "postgres:${cfg.pgTag}";
       environment = {
         "POSTGRES_DB" = "pleroma";
         "POSTGRES_USER" = "pleroma";
         "POSTGRES_PASSWORD" = "pleroma";
       };
-      extraOptions = [
-        "--network=pleroma_network"
-        "--shm-size=1g"
-      ];
-      volumes = [ "${toString cfg.dockerVolumeDir}/pgdata:/var/lib/postgresql/data" ];
+      extraOptions = [ "--shm-size=1g" ];
+      network = "pleroma_network";
+      volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
+      volumeSubDir = "pleroma";
     };
-    systemd.services."${backend}-pleroma-db".preStart = "${backend} network create -d bridge pleroma_network || true";
 
     nixfiles.backups.scripts.pleroma = ''
       ${backend} cp "pleroma:/var/lib/pleroma/uploads" uploads
