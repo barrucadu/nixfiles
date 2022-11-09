@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgsUnstable, ... }:
 
 with lib;
 let
@@ -6,23 +6,23 @@ let
 
   package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
     pname = "resolved";
-    version = "6e3c17f8deb44cec0314448288f153b5ca711095";
+    version = "5f7ca9ef5756198f0ee7c1eb5a8826cbf0007f88";
 
     src = fetchFromGitHub {
       owner = "barrucadu";
       repo = pname;
       rev = version;
-      sha256 = "sha256-+0cFa8RuC4ofaDZSq189pTQ5/pV9F6OqlzeVDlZ/vKs=";
+      sha256 = "sha256-NBOx+0YAg6h9+5mor4eaJbRKZ4IaHl35azs6EVcIetc=";
     };
 
-    cargoSha256 = "sha256-+VFuQBmJAbZQ3xxVoiwXHpCi544x7JlaElyJGPT6Vuc=";
+    cargoSha256 = "sha256-2nJcvonKgqN7qSUJTJdwUg1e7eKEU6yhAg0/rrfPOHs=";
 
     postInstall = ''
       cd config
       find . -type f -exec install -Dm 755 "{}" "$out/etc/resolved/{}" \;
     '';
   };
-  resolved = pkgs.callPackage package { };
+  resolved = pkgsUnstable.callPackage package { };
 in
 {
   options.nixfiles.resolved = {
