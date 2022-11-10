@@ -65,28 +65,22 @@
       packages.${system} = {
         backups =
           pkgs.writeShellScriptBin "backups.sh" ''
-            #!${pkgs.bash}
-
-            PATH=${pkgs.duplicity}/bin:${pkgs.sops}/bin:${pkgs.nettools}/bin
+            PATH=${with pkgs; lib.makeBinPath [ duplicity sops nettools ]}
 
             ${pkgs.lib.fileContents ./scripts/backups.sh}
           '';
 
         lint =
           pkgs.writeShellScriptBin "lint.sh" ''
-            #!${pkgs.bash}
-
-            PATH=${pkgs.findutils}/bin:${pkgs.nix-linter}/bin:${pkgs.shellcheck}/bin:${pkgs.git}/bin:${pkgs.gnugrep}/bin
+            PATH=${with pkgs; lib.makeBinPath [ findutils nix-linter shellcheck git gnugrep ]}
 
             ${pkgs.lib.fileContents ./scripts/lint.sh}
           '';
 
         secrets =
           pkgs.writeShellScriptBin "backups.sh" ''
-            #!${pkgs.bash}
-
-            PATH=${pkgs.sops}/bin:${pkgs.nettools}/bin
-            EDITOR=${pkgs.vim}/bin/vim
+            PATH=${with pkgs; lib.makeBinPath [ sops nettools vim ]}
+            export EDITOR=vim
 
             ${pkgs.lib.fileContents ./scripts/secrets.sh}
           '';
