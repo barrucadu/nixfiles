@@ -64,10 +64,6 @@ let
     systemd
   ];
 
-  servicePythonPath =
-    let penv = pkgs.python3.buildEnv.override { extraLibs = with pkgs.python3Packages; [ boto3 ]; };
-    in "${penv}/${pkgs.python3.sitePackages}/";
-
   serviceConfig = type: {
     ExecStart = "${script} ${type}";
     EnvironmentFile = cfg.environmentFile;
@@ -101,14 +97,12 @@ in
     systemd.services.backup-scripts-full = {
       description = "Take a full backup";
       path = servicePath;
-      environment.PYTHONPATH = servicePythonPath;
       serviceConfig = serviceConfig "full";
     };
 
     systemd.services.backup-scripts-incr = {
       description = "Take an incremental backup";
       path = servicePath;
-      environment.PYTHONPATH = servicePythonPath;
       serviceConfig = serviceConfig "incr";
     };
   };
