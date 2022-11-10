@@ -39,9 +39,6 @@ let
     };
   };
 
-  programmeEnv = pkgs.python3.buildEnv.override {
-    extraLibs = with pkgs.python3Packages; [ docopt mpd2 ];
-  };
   programmeService = channel: port: {
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
@@ -51,11 +48,10 @@ let
       Type = "oneshot";
       User = radioUser.name;
       Group = radioUser.group;
-      ExecStart = "${pkgs.python3}/bin/python3 ${radioUser.home}/scripts/schedule.py ${toString port}";
+      ExecStart =
+        let python = pkgs.python3.withPackages (ps: [ ps.docopt ps.mpd2 ]);
+        in "${python}/bin/python3 ${radioUser.home}/scripts/schedule.py ${toString port}";
       Restart = "no";
-    };
-    environment = {
-      PYTHONPATH = "${programmeEnv}/${pkgs.python3.sitePackages}/";
     };
   };
 in
