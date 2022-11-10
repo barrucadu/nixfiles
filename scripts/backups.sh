@@ -8,7 +8,7 @@ if [[ ! -f "hosts/${TARGET}/secrets.yaml" ]]; then
   exit 1
 fi
 
-sops_env=$(sops -d --extract '["services"]["backups"]["env"]' "hosts/${TARGET}/secrets.yaml")
+sops_env=$(sops -d --extract '["nixfiles"]["backups"]["env"]' "hosts/${TARGET}/secrets.yaml")
 # shellcheck disable=SC2163
 # shellcheck disable=SC2086
 export $sops_env
