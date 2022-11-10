@@ -64,14 +64,10 @@
 
       packages.${system} = {
         backups =
-          let
-            pythonEnv = pkgs.python3.buildEnv.override { extraLibs = with pkgs.python3Packages; [ boto3 ]; };
-          in
           pkgs.writeShellScriptBin "backups.sh" ''
             #!${pkgs.bash}
 
-            PATH=${pkgs.duplicity}/bin:${pkgs.python3}/bin:${pkgs.sops}/bin:${pkgs.nettools}/bin
-            PYTHONPATH="${pythonEnv}/${pkgs.python3.sitePackages}/"
+            PATH=${pkgs.duplicity}/bin:${pkgs.sops}/bin:${pkgs.nettools}/bin
 
             ${pkgs.lib.fileContents ./scripts/backups.sh}
           '';
