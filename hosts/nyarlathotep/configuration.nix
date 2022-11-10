@@ -517,14 +517,13 @@ in
     description = "Download GBP exchange rates for commodities";
     path = with pkgs; [ hledger ];
     serviceConfig = {
-      ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "hledger-fetch-fx-rates.py" (fileContents ./jobs/hledger-fetch-fx-rates.py)}";
+      ExecStart =
+        let python = pkgs.python3.withPackages (ps: [ ps.requests ]);
+        in "${python}/bin/python3 ${pkgs.writeText "hledger-fetch-fx-rates.py" (fileContents ./jobs/hledger-fetch-fx-rates.py)}";
       User = "barrucadu";
       Group = "users";
     };
     environment = {
-      PYTHONPATH =
-        let penv = pkgs.python3.buildEnv.override { extraLibs = with pkgs.python3Packages; [ requests ]; };
-        in "${penv}/${pkgs.python3.sitePackages}/";
       PRICE_FILE = "/home/barrucadu/s/ledger/prices";
     };
   };
@@ -539,14 +538,13 @@ in
     description = "Export personal finance data to promscale";
     path = with pkgs; [ hledger ];
     serviceConfig = {
-      ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "hledger-export-to-promscale.py" (fileContents ./jobs/hledger-export-to-promscale.py)}";
+      ExecStart =
+        let python = pkgs.python3.withPackages (ps: [ ps.requests ]);
+        in "${python}/bin/python3 ${pkgs.writeText "hledger-export-to-promscale.py" (fileContents ./jobs/hledger-export-to-promscale.py)}";
       User = "barrucadu";
       Group = "users";
     };
     environment = {
-      PYTHONPATH =
-        let penv = pkgs.python3.buildEnv.override { extraLibs = with pkgs.python3Packages; [ requests ]; };
-        in "${penv}/${pkgs.python3.sitePackages}/";
       LEDGER_FILE = "/home/barrucadu/s/ledger/combined.journal";
       PROMSCALE_URI = "http://localhost:${toString promscalePort}";
     };
