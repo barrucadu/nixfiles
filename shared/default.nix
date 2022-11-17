@@ -315,6 +315,7 @@ in
     environment.systemPackages = with pkgs; [
       aspell
       aspellDicts.en
+      atuin
       bind
       docker-compose
       emacs28NativeComp
