@@ -6,16 +6,16 @@ let
 
   package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
     pname = "resolved";
-    version = "5f7ca9ef5756198f0ee7c1eb5a8826cbf0007f88";
+    version = "b77f8f6b117211bb2a32ab14dd56490cbb20cb53";
 
     src = fetchFromGitHub {
       owner = "barrucadu";
       repo = pname;
       rev = version;
-      sha256 = "sha256-NBOx+0YAg6h9+5mor4eaJbRKZ4IaHl35azs6EVcIetc=";
+      sha256 = "sha256-ysg7kQbZ0sO+7AE5UNZ9X0vwzel/3I+2n3CLYNMC9ZE=";
     };
 
-    cargoSha256 = "sha256-2nJcvonKgqN7qSUJTJdwUg1e7eKEU6yhAg0/rrfPOHs=";
+    cargoSha256 = "sha256-ccrZcMBZqSfrwgdAG2l7rRpbjlSSE6L5xCWzfCpjYCw=";
 
     postInstall = ''
       cd config
