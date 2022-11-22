@@ -318,6 +318,7 @@ in
       atuin
       bind
       docker-compose
+      chezmoi
       emacs28NativeComp
       fd
       file
