@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 
 {
   boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "sd_mod" ];
@@ -14,6 +14,5 @@
   swapDevices =
     [{ device = "/dev/disk/by-uuid/54907586-5213-4156-aebf-6b891a94abb6"; }];
 
-  nix.maxJobs = lib.mkDefault 4;
   powerManagement.cpuFreqGovernor = "powersave";
 }

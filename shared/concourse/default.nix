@@ -84,7 +84,7 @@ in
         static_configs = [{ targets = [ "localhost:${toString cfg.metricsPort}" ]; }];
       }
     ];
-    services.grafana.provision.dashboards =
+    services.grafana.provision.dashboards.settings.providers =
       [
         { name = "Concourse"; folder = "Services"; options.path = ./dashboard.json; }
       ];
