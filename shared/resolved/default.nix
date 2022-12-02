@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgsUnstable, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
@@ -22,7 +22,7 @@ let
       find . -type f -exec install -Dm 755 "{}" "$out/etc/resolved/{}" \;
     '';
   };
-  resolved = pkgsUnstable.callPackage package { };
+  resolved = pkgs.callPackage package { };
 in
 {
   options.nixfiles.resolved = {
@@ -76,7 +76,7 @@ in
         static_configs = [{ targets = [ "localhost:${toString cfg.metrics_port}" ]; }];
       }
     ];
-    services.grafana.provision.dashboards =
+    services.grafana.provision.dashboards.settings.providers =
       [
         { name = "DNS Resolver"; folder = "Services"; options.path = ./dashboard.json; }
       ];

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgsUnstable, flakeInputs, ... }:
+{ config, lib, pkgs, flakeInputs, ... }:
 
 with lib;
 
@@ -43,7 +43,7 @@ in
     #############################################################################
 
     # The NixOS release to be compatible with for stateful data such as databases.
-    system.stateVersion = "22.05";
+    system.stateVersion = "22.11";
 
     # Only keep the last 500MiB of systemd journal.
     services.journald.extraConfig = "SystemMaxUse=500M";
@@ -188,16 +188,16 @@ in
 
     services.grafana = {
       enable = promcfg.enable;
-      auth.anonymous.enable = true;
+      settings."auth.anonymous".enabled = true;
       provision.enable = true;
-      provision.datasources = mkIf promcfg.enable [
+      provision.datasources.settings.datasources = mkIf promcfg.enable [
         {
           name = "prometheus";
           url = "http://localhost:${toString promcfg.port}";
           type = "prometheus";
         }
       ];
-      provision.dashboards =
+      provision.dashboards.settings.providers =
         let
           nodeExporterDashboard = { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/node-stats-detailed.json; };
           cAdvisorDashboard = { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/container-stats-detailed.json; };
@@ -260,15 +260,6 @@ in
     # `"true"` reports incorrect filesystem metrics
     systemd.services.prometheus-node-exporter.serviceConfig.ProtectHome = mkForce "read-only";
 
-    # override this to the node-exporter 1.4.0, which fixes an issue with
-    # missing zpool metrics (this can be removed when it's in the stable
-    # channel)
-    nixpkgs.overlays = [
-      (_: _: {
-        prometheus-node-exporter = pkgsUnstable.prometheus-node-exporter;
-      })
-    ];
-
     # Container metrics
     services.cadvisor = {
       enable = promcfg.enable;
@@ -319,7 +310,7 @@ in
       bind
       docker-compose
       chezmoi
-      emacs28NativeComp
+      emacs
       fd
       file
       fortune

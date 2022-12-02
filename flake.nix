@@ -1,20 +1,17 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-22_05.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, sops-nix, ... }@flakeInputs:
+  outputs = { nixpkgs, sops-nix, ... }@flakeInputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      pkgsUnstable = import nixpkgs-unstable { inherit system; };
-      specialArgs = { inherit flakeInputs pkgsUnstable; };
+      specialArgs = { inherit flakeInputs; };
     in
     {
       formatter.${system} = pkgs.nixpkgs-fmt;

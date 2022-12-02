@@ -119,7 +119,7 @@ in
 
       route /graphs/* {
         uri strip_prefix /graphs
-        reverse_proxy http://localhost:${toString config.services.grafana.port}
+        reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
       }
 
       reverse_proxy /background http://localhost:${toString backendPort}
@@ -242,34 +242,23 @@ in
 
   # Fancy graphs
   services.grafana = {
-    enable = true;
-    port = 8001;
-    domain = "lainon.life";
-    rootUrl = "https://lainon.life/graphs/";
-    security.adminPasswordFile = config.sops.secrets."services/grafana/admin_password".path;
-    security.secretKeyFile = config.sops.secrets."services/grafana/secret_key".path;
-
-    auth.anonymous.enable = true;
-    auth.anonymous.org_name = "lainon.life";
-    provision = {
-      enable = true;
-      datasources = [
-        {
-          name = "prometheus";
-          url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
-          type = "prometheus";
-        }
-      ];
-      dashboards = [
-        {
-          name = "lainon.life";
-          options.path = pkgs.writeTextDir "lainon.life" (fileContents ./dashboards/main.json);
-        }
-      ];
+    settings = {
+      "auth.anonymous".org_name = "lainon.life";
+      server.http_port = 8001;
+      server.root_url = "https://lainon.life/graphs/";
+      security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}";
+      security.secret_key = "$__file{${config.sops.secrets."services/grafana/secret_key".path}}";
     };
+    provision.dashboards.settings.providers = [
+      {
+        name = "lainon.life";
+        options.path = pkgs.writeTextDir "lainon.life" (fileContents ./dashboards/main.json);
+      }
+    ];
   };
   sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
   sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
+
   services.prometheus.scrapeConfigs = [
     {
       job_name = "radio";

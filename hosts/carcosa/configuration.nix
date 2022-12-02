@@ -180,7 +180,7 @@ in
 
     grafana.carcosa.barrucadu.co.uk {
       import common_config
-      reverse_proxy http://localhost:${toString config.services.grafana.port}
+      reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
     }
 
     prometheus.carcosa.barrucadu.co.uk {
@@ -290,7 +290,6 @@ in
   sops.secrets."services/caddy/fragments/registry".owner = config.users.users.caddy.name;
 
   services.phpfpm.pools.caddy = {
-    phpPackage = pkgs.php74;
     user = "caddy";
     group = "caddy";
     settings = {
@@ -368,10 +367,12 @@ in
   ###############################################################################
 
   # Metrics
-  services.grafana.port = grafanaPort;
-  services.grafana.rootUrl = "https://grafana.carcosa.barrucadu.co.uk";
-  services.grafana.security.adminPasswordFile = config.sops.secrets."services/grafana/admin_password".path;
-  services.grafana.security.secretKeyFile = config.sops.secrets."services/grafana/secret_key".path;
+  services.grafana.settings = {
+    server.http_port = grafanaPort;
+    server.root_url = "https://grafana.carcosa.barrucadu.co.uk";
+    security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}";
+    security.secret_key = "$__file{${config.sops.secrets."services/grafana/secret_key".path}}";
+  };
   sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
   sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
 

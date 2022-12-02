@@ -195,7 +195,7 @@ in
     http://grafana.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString config.services.grafana.port}
+      reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
     }
 
     http://prometheus.nyarlathotep.lan:80 {
@@ -402,23 +402,29 @@ in
   services.prometheus.alertmanager.environmentFile = config.sops.secrets."services/alertmanager/env".path;
   sops.secrets."services/alertmanager/env" = { };
 
-  services.grafana.port = grafanaPort;
-  services.grafana.rootUrl = "http://grafana.nyarlathotep.lan";
-  services.grafana.provision.datasources = [
-    {
-      name = "promscale";
-      url = "http://localhost:${toString promscalePort}";
-      type = "prometheus";
-    }
-  ];
-  services.grafana.provision.dashboards =
-    let
-      dashboard = folder: name: path: { inherit name folder; options.path = path; };
-    in
-    [
-      (dashboard "My Dashboards" "finance.json" ./dashboards/finance.json)
-      (dashboard "My Dashboards" "smart-home.json" ./dashboards/smart-home.json)
-    ];
+  services.grafana = {
+    settings = {
+      server.http_port = grafanaPort;
+      server.root_url = "http://grafana.nyarlathotep.lan";
+    };
+    provision = {
+      datasources.settings.datasources = [
+        {
+          name = "promscale";
+          url = "http://localhost:${toString promscalePort}";
+          type = "prometheus";
+        }
+      ];
+      dashboards.settings.providers =
+        let
+          dashboard = folder: name: path: { inherit name folder; options.path = path; };
+        in
+        [
+          (dashboard "My Dashboards" "finance.json" ./dashboards/finance.json)
+          (dashboard "My Dashboards" "smart-home.json" ./dashboards/smart-home.json)
+        ];
+    };
+  };
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
   services.prometheus.scrapeConfigs = [

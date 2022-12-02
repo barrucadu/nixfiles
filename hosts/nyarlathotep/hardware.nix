@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 
 {
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
@@ -49,6 +49,4 @@
     };
 
   swapDevices = [ ];
-
-  nix.maxJobs = lib.mkDefault 4;
 }
