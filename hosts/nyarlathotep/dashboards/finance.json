@@ -25,7 +25,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1662738382956,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -79,7 +78,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -152,7 +151,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -224,7 +223,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -296,7 +295,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -366,7 +365,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -438,7 +437,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -522,7 +521,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -551,6 +550,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -747,7 +748,8 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -972,8 +974,9 @@
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
+          "displayMode": "list",
           "placement": "bottom",
+          "showLegend": false,
           "values": [
             "value"
           ]
@@ -1091,7 +1094,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -1231,7 +1234,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -1315,7 +1318,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -1399,7 +1402,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -1483,7 +1486,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -1512,6 +1515,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1622,7 +1627,8 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1683,6 +1689,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1797,7 +1805,8 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1857,6 +1866,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1970,7 +1981,8 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2074,7 +2086,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2144,7 +2156,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2213,7 +2225,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2282,7 +2294,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2351,7 +2363,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2421,7 +2433,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2490,7 +2502,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2559,7 +2571,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2628,7 +2640,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2698,7 +2710,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2767,7 +2779,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2836,7 +2848,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -2905,7 +2917,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.11",
+      "pluginVersion": "9.2.6",
       "targets": [
         {
           "datasource": {
@@ -3163,7 +3175,8 @@
                 "min"
               ],
               "displayMode": "table",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -3276,7 +3289,8 @@
                 "min"
               ],
               "displayMode": "table",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -3389,7 +3403,8 @@
                 "min"
               ],
               "displayMode": "table",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -3502,7 +3517,8 @@
                 "min"
               ],
               "displayMode": "table",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -3615,7 +3631,8 @@
                 "min"
               ],
               "displayMode": "table",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -3646,7 +3663,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 36,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
