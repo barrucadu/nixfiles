@@ -28,9 +28,8 @@ SKIP_FILES = []
 TORRENT_FILES_DIR = "/mnt/nas/torrents/files/"
 
 
-def sizeof(num, suffix='B'):
-    """Turn a number of bytes into a human-friendly filesize.
-    """
+def sizeof(num, suffix="B"):
+    """Turn a number of bytes into a human-friendly filesize."""
 
     for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
         if abs(num) < 1024.0:
@@ -93,7 +92,7 @@ def guesstimate_needed_space(matches, stats, target_dev=None):
             total_size += stats[path].st_size
             if not stats[path].st_dev == target_dev:
                 copy_size += stats[path].st_size
-    return total_size, int(copy_size * 4/3)
+    return total_size, int(copy_size * 4 / 3)
 
 
 # traverse directories to find files
@@ -101,7 +100,9 @@ dirs = []
 matches = {}
 stats = {}
 for to_backup in BACKUP_DIRS:
-    traverse(to_backup, dirs, matches, stats, skip_dirs=SKIP_DIRS, skip_files=SKIP_FILES)
+    traverse(
+        to_backup, dirs, matches, stats, skip_dirs=SKIP_DIRS, skip_files=SKIP_FILES
+    )
 
 # check for free space
 target_dev = os.stat(TARGET).st_dev
@@ -109,7 +110,9 @@ statvfs = os.statvfs(TARGET)
 free_size = statvfs.f_frsize * statvfs.f_bavail
 total_size, needed_size = guesstimate_needed_space(matches, stats, target_dev)
 if free_size < needed_size:
-    print("Not enough free space on device (needed {}, got {}), aborting...".format(sizeof(needed_size), sizeof(free_size)))
+    print(
+        f"Not enough free space on device (needed {sizeof(needed_size)}, got {sizeof(free_size)}), aborting..."
+    )
     sys.exit(2)
 
 # create directory hierarchy
@@ -123,14 +126,14 @@ with open(f"{TARGET}/make-hardlinks.sh", "w") as f:
     print("", file=f)
 
     for match in matches.values():
-        percentage = '[{:8.4f}%]'.format(progress / total_size * 100)
+        percentage = progress / total_size * 100
         if len(match) == 1:
             path = match.pop()
             # don't copy across unlinked torrent files
             if TORRENT_FILES_DIR in path:
                 continue
             copy = os.link if stats[path].st_dev == target_dev else shutil.copy2
-            print(f"{percentage} Copying {path}")
+            print(f"[{percentage:8.4f}%] Copying {path}")
             copy(path, f"{TARGET}/{path}")
             progress += stats[path].st_size
         else:
@@ -142,5 +145,5 @@ with open(f"{TARGET}/make-hardlinks.sh", "w") as f:
             for link_name in match:
                 if target == link_name:
                     continue
-                print(f"{percentage} Linking {link_name}")
-                print("ln {} {}".format(shlex.quote(target), shlex.quote(link_name)), file=f)
+                print(f"[{percentage:8.4f}%] Linking {link_name}")
+                print(f"ln {shlex.quote(target)} {shlex.quote(link_name)}", file=f)

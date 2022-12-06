@@ -67,9 +67,16 @@
             ${pkgs.lib.fileContents ./scripts/backups.sh}
           '';
 
+        fmt =
+          pkgs.writeShellScriptBin "fmt.sh" ''
+            PATH=${with pkgs; lib.makeBinPath [ nix git python3Packages.black ]}
+
+            ${pkgs.lib.fileContents ./scripts/fmt.sh}
+          '';
+
         lint =
           pkgs.writeShellScriptBin "lint.sh" ''
-            PATH=${with pkgs; lib.makeBinPath [ findutils nix-linter shellcheck git gnugrep ]}
+            PATH=${with pkgs; lib.makeBinPath [ findutils nix-linter shellcheck git gnugrep python3Packages.flake8 ]}
 
             ${pkgs.lib.fileContents ./scripts/lint.sh}
           '';

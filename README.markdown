@@ -123,7 +123,7 @@ CI checks ensure that code is formatted and passes linting.  Run those locally
 with:
 
 ```bash
-nix fmt
+nix run .\#fmt
 nix run .\#lint
 ```
 
