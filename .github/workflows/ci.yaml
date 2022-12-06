@@ -13,6 +13,6 @@ jobs:
       - name: Lint
         run: |
           set -ex
-          nix fmt
+          nix run .#fmt
           nix run .#lint
           git diff --exit-code

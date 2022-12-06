@@ -1,0 +1,3 @@
+nix fmt
+
+black .
