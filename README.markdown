@@ -58,7 +58,7 @@ default.
 
 ### Hosts
 
-Currently I have 4 machines.  The naming convention is:
+Currently I have 4 NixOS machines.  The naming convention is:
 
 - **Local machines:** beings (gods, people, etc) of the Cthulhu Mythos.
 - **Remote machines:** places of the Cthulhu Mythos.
@@ -67,10 +67,10 @@ Currently I have 4 machines.  The naming convention is:
 
 This is my desktop computer.
 
-It dual-boots Windows 10 and NixOS, so it doesn’t run any services, as they
-won't be accessible half of the time.  I don't bother backing up either OS:
-everything I care about is in Syncthing, on GitHub, or on some other cloud
-service (eg, Steam).
+It dual-boots Windows and NixOS, so it doesn’t run any services, as they won't
+be accessible half of the time.  I don't bother backing up either OS: everything
+I care about is in Syncthing, on GitHub, or on some other cloud service (eg,
+Steam).
 
 #### carcosa
 
@@ -82,7 +82,8 @@ Let's Encrypt.
 
 It's set up in "erase your darlings" style, so most of the filesystem is wiped
 on boot and restored from the configuration, to ensure there's no accidentally
-unmanaged configuration or state hanging around.
+unmanaged configuration or state hanging around.  However, it doesn't reboot
+automatically, because I also use this server for a persistent IRC connection.
 
 [barrucadu.co.uk]: https://www.barrucadu.co.uk/
 [a bookdb instance]: https://bookdb.barrucadu.co.uk/
@@ -105,7 +106,7 @@ This machine disables syncthing, as I don't really SSH into it.
 
 This is my home server.
 
-It runs writable instances of the bookdb and bookmarks servers, which have any
+It runs writable instances of the bookdb and bookmarks services, which have any
 updates copied across to carcosa hourly; it acts as a NAS; and it runs a few
 utility services, such as a dashboard of finance information from my hledger
 journal, and a script to automatically tag and organise new podcast episodes or
@@ -123,8 +124,8 @@ CI checks ensure that code is formatted and passes linting.  Run those locally
 with:
 
 ```bash
-nix run .\#fmt
-nix run .\#lint
+nix run .#fmt
+nix run .#lint
 ```
 
 ### Adding a new host
@@ -164,9 +165,9 @@ And then in your configuration use `nixfiles.eraseYourDarlings`
 Secrets are managed with [sops-nix][].  Create / edit secrets with:
 
 ```bash
-nix run .\#secrets                   # secrets.yaml for current host
-nix run .\#secrets <hostname>        # secrets.yaml for <hostname>
-nix run .\#secrets <hostname> <name> # <name>.yaml for <hostname>
+nix run .#secrets                   # secrets.yaml for current host
+nix run .#secrets <hostname>        # secrets.yaml for <hostname>
+nix run .#secrets <hostname> <name> # <name>.yaml for <hostname>
 ```
 
 [sops-nix]: https://github.com/Mic92/sops-nix
@@ -182,16 +183,16 @@ Backups are managed by `shared/backups` and uploaded to S3 with [Duplicity][].
 Check the status of a backup collection with:
 
 ```bash
-nix run .\#backups                   # for the current host
-nix run .\#backups status            # for the current host
-nix run .\#backups status <hostname> # for another host
+nix run .#backups                   # for the current host
+nix run .#backups status            # for the current host
+nix run .#backups status <hostname> # for another host
 ```
 
 Restore a backup to `/tmp/backup-restore` with:
 
 ```bash
-nix run .\#backups restore            # for the current host
-nix run .\#backups restore <hostname> # for another host
+nix run .#backups restore            # for the current host
+nix run .#backups restore <hostname> # for another host
 ```
 
 Change the restore target by setting `$RESTORE_DIR`.
