@@ -13,6 +13,7 @@ jobs:
       - name: Lint
         run: |
           set -ex
+          nix flake check
           nix run .#fmt
           nix run .#lint
           git diff --exit-code

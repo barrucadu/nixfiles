@@ -11,83 +11,62 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      specialArgs = { inherit flakeInputs; };
     in
     {
       formatter.${system} = pkgs.nixpkgs-fmt;
 
-      nixosConfigurations.azathoth = nixpkgs.lib.nixosSystem {
-        inherit specialArgs system;
-        modules = [
-          ./shared
-          ./hosts/azathoth/configuration.nix
-          ./hosts/azathoth/hardware.nix
-          "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
-        ];
-      };
+      nixosConfigurations =
+        let
+          mkNixosConfiguration = name: extraModules: nixpkgs.lib.nixosSystem {
+            inherit system;
+            specialArgs = { inherit flakeInputs; };
+            modules = [
+              ./shared
+              # nix-linter doesn't support the ./hosts/${name}/foo.nix syntax yet
+              (./hosts + "/${name}" + /configuration.nix)
+              (./hosts + "/${name}" + /hardware.nix)
+            ] ++ extraModules;
+          };
+        in
+        {
+          azathoth = mkNixosConfiguration "azathoth" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
+          carcosa = mkNixosConfiguration "carcosa" [ "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix" sops-nix.nixosModules.sops ];
+          lainonlife = mkNixosConfiguration "lainonlife" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" sops-nix.nixosModules.sops ];
+          nyarlathotep = mkNixosConfiguration "nyarlathotep" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" sops-nix.nixosModules.sops ];
+        };
 
-      nixosConfigurations.carcosa = nixpkgs.lib.nixosSystem {
-        inherit specialArgs system;
-        modules = [
-          ./shared
-          ./hosts/carcosa/configuration.nix
-          ./hosts/carcosa/hardware.nix
-          "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix"
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      nixosConfigurations.lainonlife = nixpkgs.lib.nixosSystem {
-        inherit specialArgs system;
-        modules = [
-          ./shared
-          ./hosts/lainonlife/configuration.nix
-          ./hosts/lainonlife/hardware.nix
-          "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      nixosConfigurations.nyarlathotep = nixpkgs.lib.nixosSystem {
-        inherit specialArgs system;
-        modules = [
-          ./shared
-          ./hosts/nyarlathotep/configuration.nix
-          ./hosts/nyarlathotep/hardware.nix
-          "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      packages.${system} = {
-        backups =
-          pkgs.writeShellScriptBin "backups.sh" ''
+      apps.${system} =
+        let
+          mkApp = name: script: {
+            type = "app";
+            program = toString (pkgs.writeShellScript "${name}.sh" script);
+          };
+        in
+        {
+          backups = mkApp "backups" ''
             PATH=${with pkgs; lib.makeBinPath [ duplicity sops nettools ]}
 
             ${pkgs.lib.fileContents ./scripts/backups.sh}
           '';
 
-        fmt =
-          pkgs.writeShellScriptBin "fmt.sh" ''
+          fmt = mkApp "fmt" ''
             PATH=${with pkgs; lib.makeBinPath [ nix git python3Packages.black ]}
 
             ${pkgs.lib.fileContents ./scripts/fmt.sh}
           '';
 
-        lint =
-          pkgs.writeShellScriptBin "lint.sh" ''
+          lint = mkApp "lint" ''
             PATH=${with pkgs; lib.makeBinPath [ findutils nix-linter shellcheck git gnugrep python3Packages.flake8 ]}
 
             ${pkgs.lib.fileContents ./scripts/lint.sh}
           '';
 
-        secrets =
-          pkgs.writeShellScriptBin "backups.sh" ''
+          secrets = mkApp "secrets" ''
             PATH=${with pkgs; lib.makeBinPath [ sops nettools vim ]}
             export EDITOR=vim
 
             ${pkgs.lib.fileContents ./scripts/secrets.sh}
           '';
-      };
+        };
     };
 }
