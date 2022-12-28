@@ -35,35 +35,38 @@
           nyarlathotep = mkNixosConfiguration "nyarlathotep" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" sops-nix.nixosModules.sops ];
         };
 
-      packages.${system} = {
-        backups =
-          pkgs.writeShellScriptBin "backups.sh" ''
+      apps.${system} =
+        let
+          mkApp = name: script: {
+            type = "app";
+            program = toString (pkgs.writeShellScript "${name}.sh" script);
+          };
+        in
+        {
+          backups = mkApp "backups" ''
             PATH=${with pkgs; lib.makeBinPath [ duplicity sops nettools ]}
 
             ${pkgs.lib.fileContents ./scripts/backups.sh}
           '';
 
-        fmt =
-          pkgs.writeShellScriptBin "fmt.sh" ''
+          fmt = mkApp "fmt" ''
             PATH=${with pkgs; lib.makeBinPath [ nix git python3Packages.black ]}
 
             ${pkgs.lib.fileContents ./scripts/fmt.sh}
           '';
 
-        lint =
-          pkgs.writeShellScriptBin "lint.sh" ''
+          lint = mkApp "lint" ''
             PATH=${with pkgs; lib.makeBinPath [ findutils nix-linter shellcheck git gnugrep python3Packages.flake8 ]}
 
             ${pkgs.lib.fileContents ./scripts/lint.sh}
           '';
 
-        secrets =
-          pkgs.writeShellScriptBin "backups.sh" ''
+          secrets = mkApp "secrets" ''
             PATH=${with pkgs; lib.makeBinPath [ sops nettools vim ]}
             export EDITOR=vim
 
             ${pkgs.lib.fileContents ./scripts/secrets.sh}
           '';
-      };
+        };
     };
 }
