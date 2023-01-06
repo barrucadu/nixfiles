@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from decimal import Decimal
 from html.parser import HTMLParser
 
 import os
@@ -50,36 +49,6 @@ def get_financial_times_fund(isin):
     )
 
 
-def get_lgim_fund(path):
-    class PriceFinder(HTMLParser):
-        def __init__(self):
-            HTMLParser.__init__(self)
-            self.found = None
-            self.isnext = False
-
-        def handle_data(self, data):
-            if self.found is not None:
-                return
-
-            if data == "Dealing price":
-                self.isnext = True
-            elif self.isnext:
-                self.found = data
-                self.isnext = False
-
-    r = requests.get(
-        f"https://fundcentres.lgim.com/uk/en/fund-centre/{path}",
-        headers={"Cookie": 'srpperm="UT=INST&JR=UK"'},
-    )
-    r.raise_for_status()
-    finder = PriceFinder()
-    finder.feed(r.text)
-    if finder.found is None:
-        raise Exception("could not find price")
-    else:
-        return Decimal(finder.found[:-1]) / 100
-
-
 DATE = time.strftime("%Y-%m-%d")
 
 COMMODITIES = [
@@ -87,7 +56,6 @@ COMMODITIES = [
     ("JPY", get_financial_times_currency),
     ("USD", get_financial_times_currency),
     ("VANEA", "GB00B41XG308", get_financial_times_fund),
-    ("LGIMDP", "PMC/Ethical-Global-Equity-Index-Fund/?scope_code=DP", get_lgim_fund),
 ]
 
 with (sys.stdout if DRY_RUN else open(os.environ["PRICE_FILE"], "a")) as f:
