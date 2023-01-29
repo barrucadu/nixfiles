@@ -18,6 +18,8 @@ if not DRY_RUN:
 
     PROMSCALE_URI = os.environ["PROMSCALE_URI"]
 
+DOB = datetime.datetime(1991, 9, 9)
+
 
 def hledger_command(args):
     """Run a hledger command, throw an error if it fails, and return the
@@ -292,6 +294,28 @@ def metric_hledger_transactions_total(postings):
     return pivot(running_totals(counts_by_timestamp))
 
 
+def metric_quantified_self_age(credits_debits):
+    """`quantified_self_age{unit="{days|years}"}`"""
+
+    # ages_by_timestamp :: timestamp => key => int
+    ages_by_timestamp = {}
+    for datestr in sorted(credits_debits.keys()):
+        date = datetime.datetime.strptime(datestr, "%Y-%m-%d")
+        timestamp = calendar.timegm(date.timetuple()) * 1000
+
+        days = (date - DOB).days
+        years = date.year - DOB.year
+        if (date.month, date.day) < (DOB.month, DOB.day):
+            years -= 1
+
+        ages_by_timestamp[timestamp] = {
+            (("unit", "days"),): days,
+            (("unit", "years"),): years,
+        }
+
+    return pivot(ages_by_timestamp)
+
+
 raw_prices = hledger_command(["prices"]).splitlines()
 raw_postings = list(
     csv.DictReader(io.StringIO(hledger_command(["print", "-O", "csv"])))
@@ -309,6 +333,7 @@ metrics = {
     ),
     "hledger_age_of_money": metric_hledger_age_of_money(credits_debits),
     "hledger_transactions_total": metric_hledger_transactions_total(raw_postings),
+    "quantified_self_age": metric_quantified_self_age(credits_debits),
 }
 
 for name, values in metrics.items():
@@ -316,7 +341,7 @@ for name, values in metrics.items():
         requests.post(f"{PROMSCALE_URI}/delete_series?match[]={name}")
 
     for labels_tuples, samples in values.items():
-        print(f"Uploading {labels_tuples} ({len(samples)} samples)")
+        print(f"Uploading {name} {labels_tuples} ({len(samples)} samples)")
 
         labels = dict(labels_tuples)
         labels["__name__"] = name

@@ -844,7 +844,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "(\r\n    # average daily income\r\n    (\r\n        sum(hledger_balance{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * -1\r\n\r\n    # $age/10 years worth\r\n    * 365 * $age / 10\r\n) / 2\r\n\r\n# ignore gifted income\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n# add (subtract) liabilities, other than student loan\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)",
+          "expr": "(\r\n    # average daily income\r\n    (\r\n        sum(hledger_balance{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * -1\r\n\r\n    # age/10 years worth\r\n    * 365 * ignoring(unit) quantified_self_age{unit=\"years\"} / 10\r\n) / 2\r\n\r\n# ignore gifted income\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n# add (subtract) liabilities, other than student loan\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)",
           "hide": false,
           "interval": "",
           "legendFormat": "Target: AAW",
@@ -856,7 +856,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "(\r\n    # average daily income\r\n    (\r\n        sum(hledger_balance{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * -1\r\n\r\n    # $age/10 years worth\r\n    * 365 * $age / 10\r\n) * 2\r\n\r\n# ignore gifted income\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n# add (subtract) liabilities, other than student loan\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)",
+          "expr": "(\r\n    # average daily income\r\n    (\r\n        sum(hledger_balance{account=\"income\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        - on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n        + on(target_currency)\r\n        sum(hledger_balance{account=\"income:gift\"} offset ${agg_window}d * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n    ) / $agg_window * -1\r\n\r\n    # age/10 years worth\r\n    * 365 * ignoring(unit) quantified_self_age{unit=\"years\"} / 10\r\n) * 2\r\n\r\n# ignore gifted income\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"income:gift\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n\r\n# add (subtract) liabilities, other than student loan\r\n- on(target_currency)\r\nsum(hledger_balance{account=\"liabilities\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"liabilities:loan:slc\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by (target_currency)",
           "hide": false,
           "interval": "",
           "legendFormat": "Target: PAW",
@@ -3572,14 +3572,6 @@
         "hide": 2,
         "name": "fire_annual_factor",
         "query": "25",
-        "skipUrlSync": false,
-        "type": "constant"
-      },
-      {
-        "hide": 2,
-        "label": "",
-        "name": "age",
-        "query": "31",
         "skipUrlSync": false,
         "type": "constant"
       },
