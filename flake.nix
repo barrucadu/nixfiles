@@ -1,16 +1,18 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, sops-nix, ... }@flakeInputs:
+  outputs = { nixpkgs, sops-nix, nixpkgs-unstable, ... }@flakeInputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      pkgsUnstable = import nixpkgs-unstable { inherit system; };
     in
     {
       formatter.${system} = pkgs.nixpkgs-fmt;
@@ -19,7 +21,7 @@
         let
           mkNixosConfiguration = name: extraModules: nixpkgs.lib.nixosSystem {
             inherit system;
-            specialArgs = { inherit flakeInputs; };
+            specialArgs = { inherit flakeInputs pkgsUnstable; };
             modules = [
               ./shared
               # nix-linter doesn't support the ./hosts/${name}/foo.nix syntax yet
