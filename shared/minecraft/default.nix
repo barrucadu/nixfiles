@@ -7,6 +7,8 @@ let
   serverPorts = mapAttrsToList (_: server: server.port) cfg.servers;
 in
 {
+  imports = [ ./erase-your-darlings.nix ];
+
   # yes I know there's a NixOS minecraft module but it uses the
   # Minecraft in nixpkgs whereas I want to run modded servers and
   # packaging one is a pain.

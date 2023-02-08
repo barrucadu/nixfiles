@@ -224,21 +224,12 @@ in
 
   # Pleroma
   nixfiles.pleroma.enable = true;
-  nixfiles.pleroma.image = "registry.barrucadu.dev/pleroma:latest";
-  nixfiles.pleroma.registry = {
-    username = "registry";
-    passwordFile = config.sops.secrets."nixfiles/pleroma/docker_registry".path;
-    url = "https://registry.barrucadu.dev";
-  };
   nixfiles.pleroma.domain = "social.lainon.life";
   nixfiles.pleroma.faviconPath = ./pleroma-favicon.png;
   nixfiles.pleroma.secretsFile = config.sops.secrets."nixfiles/pleroma/exc".path;
+  nixfiles.pleroma.allowRegistration = true;
   nixfiles.oci-containers.volumeBaseDir = "/persist/docker-volumes";
-  # TODO: figure out how to lock this down so only the pleroma process
-  # can read it (remap the container UID / GID to something known,
-  # perhaps?)
-  sops.secrets."nixfiles/pleroma/exc".mode = "0444";
-  sops.secrets."nixfiles/pleroma/docker_registry" = { };
+  sops.secrets."nixfiles/pleroma/exc".owner = config.users.users.pleroma.name;
 
   # Fancy graphs
   services.grafana = {
@@ -265,25 +256,6 @@ in
       static_configs = [{ targets = [ "localhost:${toString backendPort}" ]; }];
     }
   ];
-
-  # barrucadu.dev concourse access
-  security.sudo.extraRules = [
-    {
-      users = [ "concourse-deploy-robot" ];
-      commands = [
-        { command = "${pkgs.systemd}/bin/systemctl restart docker-pleroma"; options = [ "NOPASSWD" ]; }
-      ];
-    }
-  ];
-  users.extraUsers.concourse-deploy-robot = {
-    home = "/home/system/concourse-deploy-robot";
-    createHome = true;
-    isSystemUser = true;
-    openssh.authorizedKeys.keys =
-      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuk+GIuV7G26dr3EEVlEX6YGKonb3Huiha24gF8DuFP concourse-worker@cd.barrucadu.dev" ];
-    shell = pkgs.bashInteractive;
-    group = "nogroup";
-  };
 
   # Extra users
   users.extraUsers.appleman1234 = {

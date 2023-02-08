@@ -8,6 +8,8 @@ let
   cfg = config.nixfiles.foundryvtt;
 in
 {
+  imports = [ ./erase-your-darlings.nix ];
+
   options.nixfiles.foundryvtt = {
     enable = mkOption { type = types.bool; default = false; };
     port = mkOption { type = types.int; default = 3000; };

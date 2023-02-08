@@ -63,9 +63,6 @@ in
     services.dockerRegistry.storagePath = "${toString cfg.persistDir}/var/lib/docker-registry";
     services.syncthing.dataDir = "${toString cfg.persistDir}/var/lib/syncthing";
 
-    # my services
-    nixfiles.foundryvtt.dataDir = "${toString cfg.persistDir}/srv/foundry";
-    nixfiles.minecraft.dataDir = "${toString cfg.persistDir}/srv/minecraft";
     nixfiles.oci-containers.volumeBaseDir = "${toString cfg.persistDir}/docker-volumes";
   };
 }
