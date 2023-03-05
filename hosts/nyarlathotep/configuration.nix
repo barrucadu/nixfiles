@@ -10,7 +10,6 @@ let
   finderPort = 3002;
   bookmarksPort = 3003;
   grafanaPort = 3004;
-  wikijsPort = 3005;
   promscalePort = 9201;
   prometheusAwairExporterPort = 9517;
 
@@ -204,12 +203,6 @@ in
       reverse_proxy http://localhost:${toString config.services.prometheus.port}
     }
 
-    http://wiki.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.nixfiles.wikijs.port}
-    }
-
     http://help.lan:80 {
       import vlan_matchers
       redir @vlan1 http://vlan1.help.lan 302
@@ -312,14 +305,6 @@ in
   nixfiles.finder.image = "localhost:5000/finder:latest";
   nixfiles.finder.port = finderPort;
   nixfiles.finder.mangaDir = "/mnt/nas/manga";
-
-
-  ###############################################################################
-  ## wiki.js
-  ###############################################################################
-
-  nixfiles.wikijs.enable = true;
-  nixfiles.wikijs.port = wikijsPort;
 
 
   ###############################################################################

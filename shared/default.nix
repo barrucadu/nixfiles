@@ -30,7 +30,6 @@ in
     ./pleroma
     ./resolved
     ./umami
-    ./wikijs
   ];
 
   options.nixfiles.firewall = {
