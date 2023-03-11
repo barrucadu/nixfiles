@@ -3,26 +3,6 @@
 with lib;
 let
   cfg = config.nixfiles.resolved;
-
-  package = { rustPlatform, fetchFromGitHub, ... }: rustPlatform.buildRustPackage rec {
-    pname = "resolved";
-    version = "3b9e0efe3c60526d25f19753895aae60b07743d7";
-
-    src = fetchFromGitHub {
-      owner = "barrucadu";
-      repo = pname;
-      rev = version;
-      sha256 = "sha256-004dT+5P0wTi6t/8C8yxYoDIgOXmgUgIXitgmttfWQ4=";
-    };
-
-    cargoSha256 = "sha256-ioP22XITAIxM+2L1+uraCwId52oAQ0tdYPZdBPXi3rM=";
-
-    postInstall = ''
-      cd config
-      find . -type f -exec install -Dm 755 "{}" "$out/etc/resolved/{}" \;
-    '';
-  };
-  resolved = pkgs.callPackage package { };
 in
 {
   options.nixfiles.resolved = {
@@ -47,14 +27,14 @@ in
       serviceConfig = {
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         ExecStart = concatStringsSep " " [
-          "${resolved}/bin/resolved"
+          "${pkgs.nixfiles.resolved}/bin/resolved"
           "-i ${cfg.interface}"
           "-s ${toString cfg.cache_size}"
           "--metrics-port ${toString cfg.metrics_port}"
           (if cfg.authoritative_only then "--authoritative-only " else "")
           (if cfg.forward_address != null then "--forward-address ${cfg.forward_address} " else "")
           (if cfg.hosts_dirs == [ ] then "" else "-A ${concatStringsSep " -A " cfg.hosts_dirs}")
-          (if cfg.use_default_zones then "-Z ${resolved}/etc/resolved/zones" else "")
+          (if cfg.use_default_zones then "-Z ${pkgs.nixfiles.resolved}/etc/resolved/zones" else "")
           (if cfg.zones_dirs == [ ] then "" else "-Z ${concatStringsSep " -Z " cfg.zones_dirs}")
         ];
         ExecReload = "${pkgs.coreutils}/bin/kill -USR1 $MAINPID";
