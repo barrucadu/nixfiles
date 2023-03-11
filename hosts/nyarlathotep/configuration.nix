@@ -22,7 +22,6 @@ in
   ## General
   ###############################################################################
 
-  networking.hostName = "nyarlathotep";
   networking.hostId = "4a592971"; # ZFS needs one of these
   boot.supportedFilesystems = [ "zfs" ];
 

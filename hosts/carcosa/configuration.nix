@@ -25,7 +25,6 @@ in
   ## General
   ###############################################################################
 
-  networking.hostName = "carcosa";
   networking.hostId = "f62895cc";
   boot.supportedFilesystems = [ "zfs" ];
 

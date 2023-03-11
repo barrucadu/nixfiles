@@ -23,8 +23,11 @@
             inherit system;
             specialArgs = { inherit flakeInputs pkgsUnstable; };
             modules = [
+              {
+                networking.hostName = name;
+                nixpkgs.overlays = [ (_: _: { nixfiles = self.packages.${system}; }) ];
+              }
               ./shared
-              { nixpkgs.overlays = [ (_: _: { nixfiles = self.packages.${system}; }) ]; }
               # nix-linter doesn't support the ./hosts/${name}/foo.nix syntax yet
               (./hosts + "/${name}" + /configuration.nix)
               (./hosts + "/${name}" + /hardware.nix)
