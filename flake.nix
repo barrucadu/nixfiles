@@ -19,7 +19,7 @@
 
       nixosConfigurations =
         let
-          mkNixosConfiguration = name: extraModules: nixpkgs.lib.nixosSystem {
+          mkNixosConfiguration = name: secrets: extraModules: nixpkgs.lib.nixosSystem {
             inherit system;
             specialArgs = { inherit flakeInputs pkgsUnstable; };
             modules = [
@@ -31,14 +31,15 @@
               # nix-linter doesn't support the ./hosts/${name}/foo.nix syntax yet
               (./hosts + "/${name}" + /configuration.nix)
               (./hosts + "/${name}" + /hardware.nix)
-            ] ++ extraModules;
+            ] ++ extraModules ++
+            (if secrets then [ sops-nix.nixosModules.sops { sops.defaultSopsFile = ./hosts + "/${name}" + /secrets.yaml; } ] else [ ]);
           };
         in
         {
-          azathoth = mkNixosConfiguration "azathoth" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
-          carcosa = mkNixosConfiguration "carcosa" [ "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix" sops-nix.nixosModules.sops ];
-          lainonlife = mkNixosConfiguration "lainonlife" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" sops-nix.nixosModules.sops ];
-          nyarlathotep = mkNixosConfiguration "nyarlathotep" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" sops-nix.nixosModules.sops ];
+          azathoth = mkNixosConfiguration "azathoth" false [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
+          carcosa = mkNixosConfiguration "carcosa" true [ "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix" ];
+          lainonlife = mkNixosConfiguration "lainonlife" true [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
+          nyarlathotep = mkNixosConfiguration "nyarlathotep" true [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
         };
 
       packages.${system} =
