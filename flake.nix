@@ -8,7 +8,7 @@
     };
   };
 
-  outputs = { nixpkgs, sops-nix, nixpkgs-unstable, ... }@flakeInputs:
+  outputs = { self, nixpkgs, sops-nix, nixpkgs-unstable, ... }@flakeInputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -24,6 +24,7 @@
             specialArgs = { inherit flakeInputs pkgsUnstable; };
             modules = [
               ./shared
+              { nixpkgs.overlays = [ (_: _: { nixfiles = self.packages.${system}; }) ]; }
               # nix-linter doesn't support the ./hosts/${name}/foo.nix syntax yet
               (./hosts + "/${name}" + /configuration.nix)
               (./hosts + "/${name}" + /hardware.nix)
@@ -35,6 +36,12 @@
           carcosa = mkNixosConfiguration "carcosa" [ "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix" sops-nix.nixosModules.sops ];
           lainonlife = mkNixosConfiguration "lainonlife" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" sops-nix.nixosModules.sops ];
           nyarlathotep = mkNixosConfiguration "nyarlathotep" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" sops-nix.nixosModules.sops ];
+        };
+
+      packages.${system} =
+        {
+          prometheus-awair-exporter = pkgs.callPackage ./packages/prometheus-awair-exporter { };
+          resolved = pkgs.callPackage ./packages/resolved { };
         };
 
       apps.${system} =

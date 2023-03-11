@@ -420,28 +420,12 @@ in
   ];
 
   systemd.services.prometheus-awair-exporter =
-    let
-      package = { buildGoModule, fetchFromGitHub, ... }: buildGoModule rec {
-        pname = "prometheus-awair-exporter";
-        version = "f154bbdc401886a1311d80d19d4461a0915ed310";
-
-        src = fetchFromGitHub {
-          owner = "barrucadu";
-          repo = pname;
-          rev = version;
-          sha256 = "180ys8ghm82l2l53wz3bhhjqjvrj4a2iv0xq66w9dbvsyw2mc863";
-        };
-
-        vendorSha256 = "1px1zzfihhdazaj31id1nxl6b09vy2yxj6wz5gv5f7mzdqdlmxxl";
-      };
-      prometheus_awair_exporter = pkgs.callPackage package { };
-    in
     {
       description = "barrucadu/prometheus-awair-exporter metrics exporter";
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
       serviceConfig = {
-        ExecStart = "${prometheus_awair_exporter}/bin/prometheus-awair-exporter --address 127.0.0.1:${toString prometheusAwairExporterPort} --sensor living-room:10.0.20.117 --sensor bedroom:10.0.20.187";
+        ExecStart = "${pkgs.nixfiles.prometheus-awair-exporter}/bin/prometheus-awair-exporter --address 127.0.0.1:${toString prometheusAwairExporterPort} --sensor living-room:10.0.20.117 --sensor bedroom:10.0.20.187";
         DynamicUser = "true";
         Restart = "on-failure";
       };
