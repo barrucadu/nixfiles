@@ -56,8 +56,6 @@ let
   };
 in
 {
-  networking.hostName = "lainonlife";
-
   sops.defaultSopsFile = ./secrets.yaml;
 
   # Bootloader
