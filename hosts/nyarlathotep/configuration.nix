@@ -32,7 +32,16 @@ in
   boot.loader.systemd-boot.memtest86.enable = true;
 
   # Firewall
-  networking.firewall.allowedTCPPorts = [ 80 8888 111 2049 4000 4001 4002 rtorrentExternalPort ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    8888
+    111 # NFS
+    2049 # NFS
+    config.services.nfs.server.mountdPort
+    config.services.nfs.server.lockdPort
+    config.services.nfs.server.statdPort
+    rtorrentExternalPort
+  ];
 
   # Wipe / on boot
   nixfiles.eraseYourDarlings.enable = true;
