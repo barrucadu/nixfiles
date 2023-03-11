@@ -28,8 +28,6 @@ in
   networking.hostId = "f62895cc";
   boot.supportedFilesystems = [ "zfs" ];
 
-  sops.defaultSopsFile = ./secrets.yaml;
-
   # Bootloader
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;

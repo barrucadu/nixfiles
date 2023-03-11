@@ -56,8 +56,6 @@ let
   };
 in
 {
-  sops.defaultSopsFile = ./secrets.yaml;
-
   # Bootloader
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
