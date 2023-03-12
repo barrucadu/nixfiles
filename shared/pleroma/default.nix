@@ -73,7 +73,7 @@ in
         ALLOW_REGISTRATION = if cfg.allowRegistration then "true" else "false";
       };
       serviceConfig.BindPaths =
-        "${toString (pkgs.copyPathToStore cfg.faviconPath)}:/var/lib/pleroma/static/favicon.png";
+        [ "${toString (pkgs.copyPathToStore cfg.faviconPath)}:/var/lib/pleroma/static/favicon.png" ];
     };
 
     nixfiles.oci-containers.containers.pleroma-db = {

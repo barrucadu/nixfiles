@@ -237,6 +237,11 @@ in
       }
     }
 
+    social.lainon.life {
+      import common_config
+      reverse_proxy http://127.0.0.1:${toString config.nixfiles.pleroma.port}
+    }
+
     www.lainon.life {
       import common_config
       redir https://lainon.life{uri}
@@ -377,6 +382,14 @@ in
   # Foundry VTT
   nixfiles.foundryvtt.enable = true;
   nixfiles.foundryvtt.port = foundryPort;
+
+  # social.lainon.life
+  nixfiles.pleroma.enable = true;
+  nixfiles.pleroma.domain = "social.lainon.life";
+  nixfiles.pleroma.faviconPath = ./pleroma-favicon.png;
+  nixfiles.pleroma.secretsFile = config.sops.secrets."nixfiles/pleroma/exc".path;
+  nixfiles.pleroma.allowRegistration = true;
+  sops.secrets."nixfiles/pleroma/exc".owner = config.users.users.pleroma.name;
 
 
   ###############################################################################
