@@ -130,7 +130,7 @@ in
         root ${httpdir}/barrucadu.co.uk/www
       }
 
-      ${fileContents ./www-barrucadu-co-uk.caddyfile}
+      ${fileContents ./caddy/www-barrucadu-co-uk.caddyfile}
     }
 
     bookdb.barrucadu.co.uk {
@@ -159,7 +159,7 @@ in
         root ${httpdir}/barrucadu.co.uk/memo
       }
 
-      ${fileContents ./memo-barrucadu-co-uk.caddyfile}
+      ${fileContents ./caddy/memo-barrucadu-co-uk.caddyfile}
     }
 
     misc.barrucadu.co.uk {
@@ -220,6 +220,26 @@ in
       }
       header /v2/* Docker-Distribution-Api-Version "registry/2.0"
       reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
+    }
+
+    lainon.life {
+      import common_config
+
+      root * ${./caddy/lainon-life}
+      file_server
+
+      handle_errors {
+        @404 {
+          expression {http.error.status_code} == 404
+        }
+        rewrite @404 /404.html
+        file_server
+      }
+    }
+
+    www.lainon.life {
+      import common_config
+      redir https://lainon.life{uri}
     }
 
     lookwhattheshoggothdraggedin.com {

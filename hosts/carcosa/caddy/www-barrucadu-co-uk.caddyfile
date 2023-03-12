@@ -1,0 +1,70 @@
+# Removed posts
+respond /posts/2013-05-27-a-gentle-introduction-to-parsec.html 410
+respond /posts/2014-01-07-garbage-collection.html 410
+respond /posts/2014-12-26-haskell-systematic-concurrency-testing.html 410
+respond /posts/2015-01-10-pre-emption-bounding.html 410
+respond /posts/2015-07-18-continuous-integration-with-jenkins-and-stack.html 410
+respond /posts/2015-07-26-erlang-gopher-server.html 410
+respond /posts/2015-08-01-debugging-an-allocation-issue.html 410
+respond /posts/2015-08-09-identity-monads-ahoy.html 410
+respond /posts/2015-09-23-icfp-retrospective.html 410
+respond /posts/2015-10-04-secure-communications-over-insecure-channels.html 410
+respond /posts/2015-12-15-finite-maps-in-isabelle.html 410
+respond /posts/2016-02-02-cabal-info.html 410
+respond /posts/2016-04-03-dejafu-0.3.0.0-release.html 410
+respond /posts/2016-05-18-some-thoughts-on-distributed-systems.html 410
+respond /posts/2016-09-10-dejafu-0.4.0.0-release.html 410
+respond /posts/2017-02-02-subconcurrency.html 410
+respond /posts/2017-02-21-concurrency-1.1.0.0-dejafu-0.5.0.1-release.html 410
+
+respond /posts/concurrency/2014-12-26-haskell-systematic-concurrency-testing.html 410
+respond /posts/concurrency/2015-01-10-pre-emption-bounding.html 410
+respond /posts/concurrency/2016-05-18-some-thoughts-on-distributed-systems.html 410
+respond /posts/concurrency/2017-02-02-subconcurrency.html 410
+respond /posts/etc/2013-05-27-a-gentle-introduction-to-parsec.html 410
+respond /posts/etc/2015-08-01-debugging-an-allocation-issue.html 410
+respond /posts/etc/2015-09-23-icfp-retrospective.html 410
+respond /posts/etc/2016-02-02-cabal-info.html 410
+respond /posts/etc/2017-03-15-optimising-haskell.html 410
+respond /posts/etc/2017-04-16-representing-generating-comparing-typed-expressions.html 410
+respond /posts/relnotes/2016-04-03-dejafu-0.3.0.0-release.html 410
+respond /posts/relnotes/2016-09-10-dejafu-0.4.0.0-release.html 410
+respond /posts/relnotes/2017-02-21-concurrency-1.1.0.0-dejafu-0.5.0.1-release.html 410
+
+# Moved proxies
+redir /bookdb   https://bookdb.barrucadu.co.uk permanent
+redir /bookdb/* https://bookdb.barrucadu.co.uk permanent
+
+# Removed files
+respond /sitemap.xml 410
+respond /now.html 410
+
+# Moved files
+redir /publications/coco-flops18-prelim.pdf /publications/coco-flops18.pdf permanent
+redir /publications/coco-flops18-prelim.bib /publications/coco-flops18.bib permanent
+
+# Renamed posts
+redir /posts/2015-08-21-reducing-combinatorial-explosion.html /posts/concurrency/2015-08-21-reducing-combinatorial-explosion.html permanent
+redir /posts/2015-08-27-announce-dejafu.html /posts/relnotes/2015-08-27-announce-dejafu.html permanent
+redir /posts/2015-11-29-breaking-the-law-verifying-typeclass-laws-with-quickcheck-and-dejafu.html /posts/concurrency/2015-11-29-breaking-the-law-verifying-typeclass-laws-with-quickcheck-and-dejafu.html permanent
+redir /posts/2016-01-09-c-is-not-turing-complete.html /posts/etc/2016-01-09-c-is-not-turing-complete.html permanent
+redir /posts/2016-02-12-strict-vs-lazy.html /posts/etc/2016-02-12-strict-vs-lazy.html permanent
+redir /posts/2016-05-13-systematic-concurrency-testing-and-daemon-threads.html /posts/concurrency/2016-05-13-systematic-concurrency-testing-and-daemon-threads.html permanent
+redir /posts/2016-08-25-three-months-of-go.html /posts/etc/2016-08-25-three-months-of-go.html permanent
+
+# Converted to memos
+redir /posts/concurrency/2015-08-21-reducing-combinatorial-explosion.html https://memo.barrucadu.co.uk/reducing-combinatorial-explosion.html permanent
+redir /posts/concurrency/2015-11-29-breaking-the-law-verifying-typeclass-laws-with-quickcheck-and-dejafu.html https://memo.barrucadu.co.uk/concurrency-and-typeclass-laws.html permanent
+redir /posts/concurrency/2016-05-13-systematic-concurrency-testing-and-daemon-threads.html https://memo.barrucadu.co.uk/sct-and-daemons.html permanent
+redir /posts/concurrency/2017-06-09-property-testing-side-effects.html https://memo.barrucadu.co.uk/property-testing-side-effects.html permanent
+redir /posts/concurrency/2017-10-14-writing-a-concurrency-testing-library-01.html https://memo.barrucadu.co.uk/minifu-01.html permanent
+redir /posts/concurrency/2017-10-28-writing-a-concurrency-testing-library-02.html https://memo.barrucadu.co.uk/minifu-02.html permanent
+redir /posts/etc/2016-01-09-c-is-not-turing-complete.html https://memo.barrucadu.co.uk/c-is-not-turing-complete.html permanent
+redir /posts/etc/2016-02-12-strict-vs-lazy.html https://memo.barrucadu.co.uk/strict-vs-lazy.html permanent
+redir /posts/etc/2016-08-25-three-months-of-go.html https://memo.barrucadu.co.uk/three-months-of-go.html permanent
+redir /posts/etc/2017-05-18-visualise-your-finances-with-hledger-influxdb-grafana.html https://memo.barrucadu.co.uk/hledger-influxdb-grafana.html permanent
+redir /posts/etc/2017-12-06-the-academic-mindset-and-me.html https://memo.barrucadu.co.uk/academic-mindset.html permanent
+redir /posts/etc/2017-12-16-i-need-a-budget.html https://memo.barrucadu.co.uk/2018-budget.html permanent
+redir /posts/relnotes/2015-08-27-announce-dejafu.html https://memo.barrucadu.co.uk/dejafu-0.1.0.0.html permanent
+redir /posts/relnotes/2017-08-16-significant-performance-improvements.html https://memo.barrucadu.co.uk/throwing-away-traces.html permanent
+redir /posts/relnotes/2017-09-22-irc-client-1.0.0.0.html https://memo.barrucadu.co.uk/irc-client-1.0.0.0.html permanent
