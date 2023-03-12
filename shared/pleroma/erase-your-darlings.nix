@@ -11,6 +11,6 @@ in
 {
   config = mkIf (cfg.enable && eyd.enable) {
     users.users.pleroma.home = mkForce pleromaHome;
-    systemd.services.pleroma.serviceConfig.BindPaths = "${pleromaHome}:/var/lib/pleroma";
+    systemd.services.pleroma.serviceConfig.BindPaths = [ "${pleromaHome}:/var/lib/pleroma" ];
   };
 }

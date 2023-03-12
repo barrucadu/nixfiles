@@ -38,7 +38,6 @@
         {
           azathoth = mkNixosConfiguration "azathoth" false [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
           carcosa = mkNixosConfiguration "carcosa" true [ "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix" ];
-          lainonlife = mkNixosConfiguration "lainonlife" true [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
           nyarlathotep = mkNixosConfiguration "nyarlathotep" true [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
         };
 
