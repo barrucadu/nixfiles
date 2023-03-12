@@ -8,12 +8,6 @@ creation_rules:
           - *barrucadu
           - 'age1ty4vs59695vuavnvgdftguyq2aau29nv75y4tqrr6ag8z26vfc5sc5rc4n'
 
-  - path_regex: hosts/lainonlife/secrets(/[^/]+)?\.yaml$
-    key_groups:
-      - age:
-          - *barrucadu
-          - 'age1ejn7n9was0dppxy6r43pew9c3jsxp303mh787nkv2m70e06qs36smuq6nu'
-
   - path_regex: hosts/nyarlathotep/secrets(/[^/]+)?\.yaml$
     key_groups:
       - age:

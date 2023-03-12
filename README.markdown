@@ -67,7 +67,7 @@ default.
 
 ### Hosts
 
-Currently I have 4 NixOS machines.  The naming convention is:
+Currently I have 3 NixOS machines.  The naming convention is:
 
 - **Local machines:** beings (gods, people, etc) of the Cthulhu Mythos.
 - **Remote machines:** places of the Cthulhu Mythos.
@@ -97,19 +97,6 @@ automatically, because I also use this server for a persistent IRC connection.
 [barrucadu.co.uk]: https://www.barrucadu.co.uk/
 [a bookdb instance]: https://bookdb.barrucadu.co.uk/
 [my blog]: https://memo.barrucadu.co.uk/
-
-#### lainonlife
-
-This is a dedicated server (hosted by Kimsufi).
-
-It serves the Lainchan radio (powered by MPD and Icecast) on [lainon.life][] and
-a Pleroma instance on [social.lainon.life][].  Like carcosa, it uses Caddy and
-Let's Encrypt.  This is the only multi-user host in my configuration.
-
-This machine disables syncthing, as I don't really SSH into it.
-
-[lainon.life]: https://lainon.life/
-[social.lainon.life]: https://social.lainon.life/
 
 #### nyarlathotep
 
