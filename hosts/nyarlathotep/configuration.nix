@@ -258,14 +258,9 @@ in
   nixfiles.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
   nixfiles.bookdb.port = bookdbPort;
 
-  systemd.timers.bookdb-sync = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "hourly";
-    };
-  };
   systemd.services.bookdb-sync = {
     description = "Upload bookdb data to carcosa";
+    startAt = "hourly";
     path = with pkgs; [ docker openssh ];
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "bookdb-sync.sh" (fileContents ./jobs/bookdb-sync.sh);
@@ -286,14 +281,9 @@ in
   nixfiles.bookmarks.environmentFile = config.sops.secrets."nixfiles/bookmarks/env".path;
   sops.secrets."nixfiles/bookmarks/env" = { };
 
-  systemd.timers.bookmarks-sync = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "hourly";
-    };
-  };
   systemd.services.bookmarks-sync = {
     description = "Upload bookmarks data to carcosa";
+    startAt = "hourly";
     path = with pkgs; [ docker openssh ];
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./jobs/bookmarks-sync.sh);
@@ -488,14 +478,9 @@ in
   # Finance dashboard & FX rate fetching
   ###############################################################################
 
-  systemd.timers.hledger-fetch-fx-rates = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "*-*-* 21:00:00";
-    };
-  };
   systemd.services.hledger-fetch-fx-rates = {
     description = "Download GBP exchange rates for commodities";
+    startAt = "*-*-* 21:00:00";
     path = with pkgs; [ hledger ];
     serviceConfig = {
       ExecStart =
@@ -509,14 +494,9 @@ in
     };
   };
 
-  systemd.timers.hledger-export-to-promscale = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "daily";
-    };
-  };
   systemd.services.hledger-export-to-promscale = {
     description = "Export personal finance data to promscale";
+    startAt = "daily";
     path = with pkgs; [ hledger ];
     serviceConfig = {
       ExecStart =

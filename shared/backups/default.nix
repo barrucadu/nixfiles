@@ -84,24 +84,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.timers.backup-scripts-full = {
-      wantedBy = [ "timers.target" ];
-      timerConfig.OnCalendar = cfg.onCalendarFull;
-    };
-
-    systemd.timers.backup-scripts-incr = {
-      wantedBy = [ "timers.target" ];
-      timerConfig.OnCalendar = cfg.onCalendarIncr;
-    };
-
     systemd.services.backup-scripts-full = {
       description = "Take a full backup";
+      startAt = cfg.onCalendarFull;
       path = servicePath;
       serviceConfig = serviceConfig "full";
     };
 
     systemd.services.backup-scripts-incr = {
       description = "Take an incremental backup";
+      startAt = cfg.onCalendarIncr;
       path = servicePath;
       serviceConfig = serviceConfig "incr";
     };
