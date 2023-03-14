@@ -51,7 +51,7 @@ in
 
     nixfiles.backups.scripts.bookdb = ''
       ${backend} cp "bookdb:/bookdb-covers" covers
-      ${backend} exec -i bookdb env ES_HOST=http://bookdb-db:9200 /app/dump-index.py | gzip -9 > dump.json.gz
+      ${backend} exec -i bookdb env ES_HOST=http://bookdb-db:9200 python -m bookdb.index.dump | gzip -9 > dump.json.gz
     '';
   };
 }

@@ -9,7 +9,7 @@ remote_sync_dir="/tmp/bookdb-sync"
 trap "rm -rf $local_sync_dir" EXIT
 
 docker cp "bookdb:/bookdb-covers" "${local_sync_dir}/covers"
-docker exec -i bookdb env ES_HOST=http://bookdb-db:9200 /app/dump-index.py > "${local_sync_dir}/dump.json"
+docker exec -i bookdb env ES_HOST=http://bookdb-db:9200 python -m bookdb.index.dump > "${local_sync_dir}/dump.json"
 
 scp -r "$local_sync_dir" "carcosa.barrucadu.co.uk:${remote_sync_dir}"
 
@@ -21,5 +21,5 @@ trap "rm -rf $remote_sync_dir" EXIT
 
 cd "$remote_sync_dir"
 docker cp covers/. "bookdb:/bookdb-covers"
-docker exec -i bookdb env DELETE_EXISTING_INDEX=1 ES_HOST=http://bookdb-db:9200 /app/create-index.py - < dump.json
+docker exec -i bookdb env DELETE_EXISTING_INDEX=1 ES_HOST=http://bookdb-db:9200 python -m bookdb.index.create - < dump.json
 EOF
