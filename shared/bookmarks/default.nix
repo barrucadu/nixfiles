@@ -50,7 +50,7 @@ in
     };
 
     nixfiles.backups.scripts.bookmarks = ''
-      ${backend} exec -i bookmarks env ES_HOST=http://bookmarks-db:9200 /app/dump-index.py | gzip -9 > dump.json.gz
+      ${backend} exec -i bookmarks env ES_HOST=http://bookmarks-db:9200 python -m bookmarks.index.dump | gzip -9 > dump.json.gz
     '';
   };
 }
