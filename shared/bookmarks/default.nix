@@ -1,39 +1,36 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
   cfg = config.nixfiles.bookmarks;
-  backend = config.nixfiles.oci-containers.backend;
 in
 {
   options.nixfiles.bookmarks = {
     enable = mkOption { type = types.bool; default = false; };
-    image = mkOption { type = types.str; };
-    port = mkOption { type = types.int; default = 3000; };
+    port = mkOption { type = types.int; default = 48372; };
+    esPort = mkOption { type = types.int; default = 43389; };
     esTag = mkOption { type = types.str; default = "8.0.0"; };
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
     environmentFile = mkOption { type = types.nullOr types.str; default = null; };
-    registry = {
-      username = mkOption { type = types.nullOr types.str; default = null; };
-      passwordFile = mkOption { type = types.nullOr types.str; default = null; };
-      url = mkOption { type = types.nullOr types.str; default = null; };
-    };
   };
 
   config = mkIf cfg.enable {
-    nixfiles.oci-containers.containers.bookmarks = {
-      image = cfg.image;
-      login = with cfg.registry; { inherit username passwordFile; registry = url; };
-      environment = {
-        "ALLOW_WRITES" = if cfg.readOnly then "0" else "1";
-        "BASE_URI" = cfg.baseURI;
-        "ES_HOST" = "http://bookmarks-db:9200";
+    systemd.services.bookmarks = {
+      description = "barrucadu/bookmarks webapp";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.nixfiles.bookmarks}/bin/gunicorn -w 4 -t 60 -b 127.0.0.1:${toString cfg.port} bookmarks.serve:app";
+        EnvironmentFile = mkIf (cfg.environmentFile != null) cfg.environmentFile;
+        DynamicUser = "true";
+        Restart = "always";
       };
-      environmentFiles = mkIf (cfg.environmentFile != null) [ cfg.environmentFile ];
-      dependsOn = [ "bookmarks-db" ];
-      network = "bookmarks_network";
-      ports = [{ host = cfg.port; inner = 8888; }];
+      environment = {
+        ALLOW_WRITES = if cfg.readOnly then "0" else "1";
+        BASE_URI = cfg.baseURI;
+        ES_HOST = "http://127.0.0.1:${toString cfg.esPort}";
+      };
     };
 
     nixfiles.oci-containers.containers.bookmarks-db = {
@@ -44,13 +41,13 @@ in
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      network = "bookmarks_network";
+      ports = [{ host = cfg.esPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
       volumeSubDir = "bookmarks";
     };
 
     nixfiles.backups.scripts.bookmarks = ''
-      ${backend} exec -i bookmarks env ES_HOST=http://bookmarks-db:9200 python -m bookmarks.index.dump | gzip -9 > dump.json.gz
+      env ES_HOST=http://127.0.0.1:${toString cfg.esPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | gzip -9 > dump.json.gz
     '';
   };
 }

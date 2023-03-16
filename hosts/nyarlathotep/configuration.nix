@@ -8,7 +8,6 @@ let
   bookdbPort = 3000;
   floodPort = 3001;
   finderPort = 3002;
-  bookmarksPort = 3003;
   grafanaPort = 3004;
   promscalePort = 9201;
   prometheusAwairExporterPort = 9517;
@@ -275,16 +274,14 @@ in
   ###############################################################################
 
   nixfiles.bookmarks.enable = true;
-  nixfiles.bookmarks.image = "localhost:5000/bookmarks:latest";
   nixfiles.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
-  nixfiles.bookmarks.port = bookmarksPort;
   nixfiles.bookmarks.environmentFile = config.sops.secrets."nixfiles/bookmarks/env".path;
   sops.secrets."nixfiles/bookmarks/env" = { };
 
   systemd.services.bookmarks-sync = {
     description = "Upload bookmarks data to carcosa";
     startAt = "hourly";
-    path = with pkgs; [ docker openssh ];
+    path = with pkgs; [ openssh systemd ];
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./jobs/bookmarks-sync.sh);
       User = "barrucadu";

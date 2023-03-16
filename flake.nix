@@ -43,6 +43,7 @@
 
       packages.${system} =
         {
+          bookmarks = pkgs.callPackage ./packages/bookmarks { };
           prometheus-awair-exporter = pkgs.callPackage ./packages/prometheus-awair-exporter { };
           resolved = pkgs.callPackage ./packages/resolved { };
         };

@@ -4,7 +4,6 @@ with lib;
 let
   dockerRegistryPort = 3000;
   bookdbPort = 3001;
-  bookmarksPort = 3002;
   concoursePort = 3003;
   umamiPort = 3006;
   concourseMetricsPort = 3009;
@@ -351,11 +350,8 @@ in
 
   # bookmarks
   nixfiles.bookmarks.enable = true;
-  nixfiles.bookmarks.image = "registry.barrucadu.dev/bookmarks:latest";
-  nixfiles.bookmarks.registry = registryBarrucaduDev;
   nixfiles.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
   nixfiles.bookmarks.readOnly = true;
-  nixfiles.bookmarks.port = bookmarksPort;
 
   # concourse
   nixfiles.concourse.enable = true;
@@ -423,7 +419,6 @@ in
       users = [ "concourse-deploy-robot" ];
       commands = [
         { command = "${pkgs.systemd}/bin/systemctl restart docker-bookdb"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.systemd}/bin/systemctl restart docker-bookmarks"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
