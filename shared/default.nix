@@ -280,6 +280,12 @@ in
       initialPassword = "breadbread";
       shell = pkgs.zsh;
 
+      packages = with pkgs; [
+        atuin
+        chezmoi
+        haskellPackages.hledger
+      ];
+
       # Such pubkey!
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIP5QUiJZ9TX1/fNAAg4UdtSM4AnpIgdSp7FsH1s1mnz barrucadu@azathoth"
@@ -305,10 +311,8 @@ in
     environment.systemPackages = with pkgs; [
       aspell
       aspellDicts.en
-      atuin
       bind
       docker-compose
-      chezmoi
       emacs
       fd
       file
@@ -318,7 +322,6 @@ in
       gnum4
       gnupg
       gnupg1compat
-      haskellPackages.hledger
       htop
       imagemagick
       iotop
@@ -330,7 +333,6 @@ in
       python3
       ripgrep
       rsync
-      rxvt_unicode.terminfo
       shellcheck
       smartmontools
       stow
