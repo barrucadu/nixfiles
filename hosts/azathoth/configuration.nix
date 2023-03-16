@@ -58,7 +58,7 @@ in
   services.urxvtd.enable = true;
 
   # Extra packages
-  environment.systemPackages = with pkgs; [
+  users.extraUsers.barrucadu.packages = with pkgs; [
     chromium
     clementine
     discord
@@ -70,9 +70,13 @@ in
     gmrun
     keepassxc
     mpv
-    rxvt_unicode
     scrot
     xclip
     (texlive.combine { inherit (texlive) scheme-full; })
+  ];
+
+  environment.systemPackages = with pkgs; [
+    rxvt_unicode
+    rxvt_unicode.terminfo
   ];
 }

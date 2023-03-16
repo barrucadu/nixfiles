@@ -424,7 +424,7 @@ in
   ];
 
   # Extra packages
-  environment.systemPackages = with pkgs; [
+  users.extraUsers.barrucadu.packages = with pkgs; [
     irssi
     perl
   ];
