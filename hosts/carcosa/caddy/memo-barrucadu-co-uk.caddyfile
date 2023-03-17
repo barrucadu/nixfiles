@@ -6,34 +6,34 @@ redir /machines.html https://github.com/barrucadu/nixfiles permanent
 redir /how-to-set-up-a-new-machine.html https://github.com/barrucadu/nixfiles permanent
 
 # Moved to personal wiki
-respond /taxon/self-recipes.html 410
-respond /taxon/self-recipes.xml 410
-respond /recipe-pasta-bake.html 410
-respond /recipe-chilli-slow-cooker.html 410
-respond /recipe-flapjacks.html 410
-respond /kitchen-staples.html 410
-respond /recipe-bread.html 410
-respond /recipe-chilli.html 410
-respond /recipe-bolognese.html 410
-respond /recipe-cottage-pie.html 410
+error /taxon/self-recipes.html 410
+error /taxon/self-recipes.xml 410
+error /recipe-pasta-bake.html 410
+error /recipe-chilli-slow-cooker.html 410
+error /recipe-flapjacks.html 410
+error /kitchen-staples.html 410
+error /recipe-bread.html 410
+error /recipe-chilli.html 410
+error /recipe-bolognese.html 410
+error /recipe-cottage-pie.html 410
 
 # Just removed
-respond /blub-crisis.html 410
-respond /contraptions-components-cables.html 410
-respond /game-systems.html 410
-respond /games-i-would-like-to-run.html 410
-respond /granfalloons.html 410
-respond /how-to-update-pihole.html 410
-respond /memo-organisation.html 410
-respond /memos-vs-blog-posts.html 410
-respond /one-shot-ideas.html 410
-respond /read-me-first.html 410
-respond /slog17.html 410
-respond /the-way.html 410
+error /blub-crisis.html 410
+error /contraptions-components-cables.html 410
+error /game-systems.html 410
+error /games-i-would-like-to-run.html 410
+error /granfalloons.html 410
+error /how-to-update-pihole.html 410
+error /memo-organisation.html 410
+error /memos-vs-blog-posts.html 410
+error /one-shot-ideas.html 410
+error /read-me-first.html 410
+error /slog17.html 410
+error /the-way.html 410
 
 # Superseded and point to removed memos
 redir /sms-email-alerting.html https://github.com/barrucadu/nixfiles permanent
-respond /sms-email-alerting.png 410
+error /sms-email-alerting.png 410
 
 # Renamed taxa
 redir /taxon/general-games.html /taxon/games.html permanent
@@ -41,7 +41,7 @@ redir /taxon/general-games.xml /taxon/games.xml permanent
 
 # Merged taxa
 redir /taxon/self-koans.html /taxon/general.html
-respond /taxon/self-koans.xml 410
+error /taxon/self-koans.xml 410
 
 # Weeknotes
 redir /taxon/weeknotes.html https://weeknotes.barrucadu.co.uk permanent
@@ -53,13 +53,13 @@ redir /taxon/weeknotes-2020.html https://weeknotes.barrucadu.co.uk permanent
 redir /taxon/weeknotes-2019.html https://weeknotes.barrucadu.co.uk permanent
 redir /taxon/weeknotes-2018.html https://weeknotes.barrucadu.co.uk permanent
 
-respond /taxon/weeknotes-2022.xml 410
-respond /taxon/weeknotes-2021.xml 410
-respond /taxon/weeknotes-2020.xml 410
-respond /taxon/weeknotes-2019.xml 410
-respond /taxon/weeknotes-2018.xml 410
+error /taxon/weeknotes-2022.xml 410
+error /taxon/weeknotes-2021.xml 410
+error /taxon/weeknotes-2020.xml 410
+error /taxon/weeknotes-2019.xml 410
+error /taxon/weeknotes-2018.xml 410
 
-respond /weeknotes-template.html 410
+error /weeknotes-template.html 410
 
 redir /weeknotes-001.html https://weeknotes.barrucadu.co.uk/notes/001.html permanent
 redir /weeknotes-002.html https://weeknotes.barrucadu.co.uk/notes/002.html permanent

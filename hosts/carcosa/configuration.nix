@@ -154,8 +154,15 @@ in
       header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
       header /*.css     Cache-Control "public, immutable, max-age=31536000"
 
-      file_server  {
-        root ${httpdir}/barrucadu.co.uk/memo
+      root * ${httpdir}/barrucadu.co.uk/memo
+      file_server
+
+      handle_errors {
+        @410 {
+          expression {http.error.status_code} == 410
+        }
+        rewrite @410 /410.html
+        file_server
       }
 
       ${fileContents ./caddy/memo-barrucadu-co-uk.caddyfile}
