@@ -1,49 +1,140 @@
-# Moved elsewhere
-redir /call-of-cthulhu-dice-rolls.html https://www.lookwhattheshoggothdraggedin.com/post/dice-rolls-in-call-of-cthulhu.html permanent
+# SUPERSEDED
+
+redir /2018-budget.html /personal-finance.html permanent
+redir /concourseci-nixos.html /ci-cd.html permanent
+redir /hledger.html /personal-finance.html permanent
+redir /taxon/general-games.html /taxon/games.html permanent
+redir /taxon/general-games.xml /taxon/games.xml permanent
+redir /taxon/self-koans.html /taxon/general.html permanent
+
+error /concourseci-on-nixos/barrucadu.co.uk-pipeline.png 410
+error /concourseci-on-nixos/dashboard.png 410
+error /taxon/self-koans.xml 410
+
+## By non-memos
 redir /backups.html https://github.com/barrucadu/nixfiles permanent
-redir /monitoring.html https://github.com/barrucadu/nixfiles permanent
-redir /machines.html https://github.com/barrucadu/nixfiles permanent
+redir /call-of-cthulhu-dice-rolls.html https://www.lookwhattheshoggothdraggedin.com/post/dice-rolls-in-call-of-cthulhu.html permanent
+redir /how-to-make-a-dejafu-release.html https://dejafu.readthedocs.io/en/latest/release_process.html permanent
 redir /how-to-set-up-a-new-machine.html https://github.com/barrucadu/nixfiles permanent
+redir /how-to-set-up-the-user-environment.html https://github.com/barrucadu/nixfiles permanent
+redir /machines.html https://github.com/barrucadu/nixfiles permanent
+redir /monitoring.html https://github.com/barrucadu/nixfiles permanent
+redir /sms-email-alerting.html https://github.com/barrucadu/nixfiles permanent
 
-# Moved to personal wiki
-error /taxon/self-recipes.html 410
-error /taxon/self-recipes.xml 410
-error /recipe-pasta-bake.html 410
-error /recipe-chilli-slow-cooker.html 410
-error /recipe-flapjacks.html 410
-error /kitchen-staples.html 410
-error /recipe-bread.html 410
-error /recipe-chilli.html 410
-error /recipe-bolognese.html 410
-error /recipe-cottage-pie.html 410
+error /sms-email-alerting.png 410
 
-# Just removed
+# -------------------------------------------------------------------------------
+# GONE
+
+error /a-new-kind-of-imageboard.html 410
+error /academic-mindset.html 410
 error /blub-crisis.html 410
+error /career-levels.html 410
 error /contraptions-components-cables.html 410
 error /game-systems.html 410
 error /games-i-would-like-to-run.html 410
 error /granfalloons.html 410
+error /haskell-style-guide.html 410
+error /how-to-add-new-emoji-to-pleroma.html 410
+error /how-to-fix-lainradio.html 410
 error /how-to-update-pihole.html 410
+error /imageboards.html 410
+error /incident-20210901-nyarlathotep-zpool-degraded.html 410
+error /incident-report-template.html 410
+error /m4-is-good.html 410
+error /magic-mechanics.html 410
 error /memo-organisation.html 410
 error /memos-vs-blog-posts.html 410
 error /one-shot-ideas.html 410
 error /read-me-first.html 410
+error /running-a-yusu-society.html 410
+error /sed-as-a-service.html 410
 error /slog17.html 410
+error /symlinks-are-bad.html 410
+error /taxon/techdocs-practices.html 410
+error /taxon/techdocs-practices.xml 410
+error /tea.html 410
+error /texttt-vs-verb.html 410
 error /the-way.html 410
+error /time-tracking.html 410
 
-# Superseded and point to removed memos
-redir /sms-email-alerting.html https://github.com/barrucadu/nixfiles permanent
-error /sms-email-alerting.png 410
+error /incident-20210901-nyarlathoteop-zpool-degraded/prometheus-state-change.png 410
+error /incident-20210901-nyarlathoteop-zpool-degraded/uptime.png 410
+error /running-a-yusu-society/societea-journal.txt 410
+error /running-a-yusu-society/societea-report.txt 410
 
-# Renamed taxa
-redir /taxon/general-games.html /taxon/games.html permanent
-redir /taxon/general-games.xml /taxon/games.xml permanent
+## Moved to personal notes
+error /book-wishlist.html 410
+error /cd-wishlist.html 410
 
-# Merged taxa
-redir /taxon/self-koans.html /taxon/general.html
-error /taxon/self-koans.xml 410
+error /kitchen-staples.html 410
+error /recipe-bolognese.html 410
+error /recipe-bread.html 410
+error /recipe-chilli-slow-cooker.html 410
+error /recipe-chilli.html 410
+error /recipe-cottage-pie.html 410
+error /recipe-flapjacks.html 410
+error /recipe-pasta-bake.html 410
+error /taxon/self-recipes.html 410
+error /taxon/self-recipes.xml 410
 
-# Weeknotes
+error /campaign-notes-2018-09-masks-of-nyarlathotep.html 410
+error /campaign-notes-2020-02-apocalypse-world.html 410
+error /campaign-notes-2020-04-golden-sky-stories.html 410
+error /campaign-notes-2020-05-call-of-cthulhu.html 410
+error /campaign-notes-2021-10-traveller.html 410
+error /campaign-notes-2021-11-ars-magica.html 410
+error /campaign-notes-2022-06-cartographic-curiosities.html 410
+error /campaign-notes-2022-08-goadventuring.html 410
+error /campaign-notes-2022-09-wicked-ones.html 410
+error /campaign-notes-2022-11-sylea-rising.html 410
+error /taxon/games-campaigns.html 410
+error /taxon/games-campaigns.xml 410
+
+error /campaign-notes-2020-05-call-of-cthulhu/ap-telegram.jpg 410
+error /campaign-notes-2020-05-call-of-cthulhu/central-america.png 410
+error /campaign-notes-2020-05-call-of-cthulhu/city-of-the-great-race.jpg 410
+error /campaign-notes-2020-05-call-of-cthulhu/city-of-the-great-race.xcf 410
+error /campaign-notes-2020-05-call-of-cthulhu/quebec.png 410
+error /campaign-notes-2020-05-call-of-cthulhu/rachels-notes-eye-of-light-and-darkness.png 410
+error /campaign-notes-2020-05-call-of-cthulhu/rachels-notes-eye-of-light-and-darkness.xcf 410
+error /campaign-notes-2020-05-call-of-cthulhu/san-jose-herald.png 410
+error /campaign-notes-2020-05-call-of-cthulhu/the-aftermath.png 410
+error /campaign-notes-2021-10-traveller/astraea-filipovna.png 410
+error /campaign-notes-2021-10-traveller/far-trader.png 410
+error /campaign-notes-2021-10-traveller/harrier.png 410
+error /campaign-notes-2021-10-traveller/htoua.jpg 410
+error /campaign-notes-2021-10-traveller/ilijah-veryn.png 410
+error /campaign-notes-2021-10-traveller/lynette-hershey.png 410
+error /campaign-notes-2021-10-traveller/metadata.xml 410
+error /campaign-notes-2021-10-traveller/orcan-march.png 410
+error /campaign-notes-2021-10-traveller/poster.png 410
+error /campaign-notes-2021-10-traveller/scout-courier.png 410
+error /campaign-notes-2021-10-traveller/sector-data.txt 410
+error /campaign-notes-2021-10-traveller/xavier-echithilei.png 410
+error /campaign-notes-2022-06-cartographic-curiosities/.gitignore 410
+error /campaign-notes-2022-06-cartographic-curiosities/1406-the-golden-wood.pdf 410
+error /campaign-notes-2022-06-cartographic-curiosities/1406-the-golden-wood.tex 410
+error /campaign-notes-2022-06-cartographic-curiosities/hexmap.png 410
+error /campaign-notes-2022-06-cartographic-curiosities/hexmap.xcf 410
+error /campaign-notes-2022-11-sylea-rising/bulletins/01.html 410
+error /campaign-notes-2022-11-sylea-rising/bulletins/02.html 410
+error /campaign-notes-2022-11-sylea-rising/bulletins/sfss-bulletin.css 410
+error /campaign-notes-2022-11-sylea-rising/bulletins/sfss-logo.svg 410
+error /campaign-notes-2022-11-sylea-rising/bulletins/template.html 410
+error /campaign-notes-2022-11-sylea-rising/generate-worlds-html.py 410
+error /campaign-notes-2022-11-sylea-rising/lishun-metadata--players.xml 410
+error /campaign-notes-2022-11-sylea-rising/lishun-metadata.xml 410
+error /campaign-notes-2022-11-sylea-rising/lishun-poster--players.png 410
+error /campaign-notes-2022-11-sylea-rising/lishun-poster.png 410
+error /campaign-notes-2022-11-sylea-rising/lishun-sector-data--players.txt 410
+error /campaign-notes-2022-11-sylea-rising/lishun-sector-data.txt 410
+error /campaign-notes-2022-11-sylea-rising/tweak-uwps.py 410
+
+
+# -------------------------------------------------------------------------------
+# WEEKNOTES
+
 redir /taxon/weeknotes.html https://weeknotes.barrucadu.co.uk permanent
 redir /taxon/weeknotes.xml https://weeknotes.barrucadu.co.uk/atom.xml permanent
 
