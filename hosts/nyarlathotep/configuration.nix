@@ -257,17 +257,6 @@ in
   nixfiles.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
   nixfiles.bookdb.port = bookdbPort;
 
-  systemd.services.bookdb-sync = {
-    description = "Upload bookdb data to carcosa";
-    startAt = "hourly";
-    path = with pkgs; [ docker openssh ];
-    serviceConfig = {
-      ExecStart = pkgs.writeShellScript "bookdb-sync.sh" (fileContents ./jobs/bookdb-sync.sh);
-      User = "barrucadu";
-      Group = "users";
-    };
-  };
-
 
   ###############################################################################
   ## bookmarks - https://github.com/barrucadu/bookmarks
@@ -277,17 +266,6 @@ in
   nixfiles.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
   nixfiles.bookmarks.environmentFile = config.sops.secrets."nixfiles/bookmarks/env".path;
   sops.secrets."nixfiles/bookmarks/env" = { };
-
-  systemd.services.bookmarks-sync = {
-    description = "Upload bookmarks data to carcosa";
-    startAt = "hourly";
-    path = with pkgs; [ openssh systemd ];
-    serviceConfig = {
-      ExecStart = pkgs.writeShellScript "bookmarks-sync.sh" (fileContents ./jobs/bookmarks-sync.sh);
-      User = "barrucadu";
-      Group = "users";
-    };
-  };
 
 
   ###############################################################################
@@ -524,4 +502,79 @@ in
     volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
     volumeSubDir = "promscale";
   };
+
+
+  ###############################################################################
+  # Remote Sync
+  ###############################################################################
+
+  users.extraUsers.remote-sync = {
+    home = "/var/lib/remote-sync";
+    createHome = true;
+    isSystemUser = true;
+    shell = pkgs.bashInteractive;
+    group = "nogroup";
+    extraGroups = [ "docker" ];
+  };
+
+  systemd.services.bookdb-sync = {
+    description = "Upload bookdb data to carcosa";
+    startAt = "hourly";
+    path = with pkgs; [ docker openssh ];
+    serviceConfig = {
+      ExecStart = pkgs.writeShellScript "bookdb-sync" ''
+        set -ex
+
+        docker cp "bookdb:/bookdb-covers" ~/bookdb-covers
+        scp -i "$SSH_KEY_FILE" \
+            -o UserKnownHostsFile=/dev/null \
+            -o StrictHostKeyChecking=no \
+            -r ~/bookdb-covers \
+            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk:~/bookdb-covers
+        ssh -i "$SSH_KEY_FILE" \
+            -o UserKnownHostsFile=/dev/null \
+            -o StrictHostKeyChecking=no \
+            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
+            bookdb-receive-covers
+        rm -rf ~/bookdb-covers
+
+        docker exec -i bookdb env ES_HOST=http://bookdb-db:9200 python -m bookdb.index.dump | \
+        ssh -i "$SSH_KEY_FILE" \
+            -o UserKnownHostsFile=/dev/null \
+            -o StrictHostKeyChecking=no \
+            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
+            bookdb-receive-elasticsearch
+      '';
+      User = config.users.extraUsers.remote-sync.name;
+    };
+    environment = {
+      SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
+    };
+  };
+
+  systemd.services.bookmarks-sync = {
+    description = "Upload bookmarks data to carcosa";
+    startAt = "hourly";
+    path = with pkgs; [ openssh systemd ];
+    serviceConfig = {
+      ExecStart = pkgs.writeShellScript "bookmarks-sync" ''
+        set -ex
+
+        env "ES_HOST=$ES_HOST" \
+            ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | \
+        ssh -i "$SSH_KEY_FILE" \
+            -o UserKnownHostsFile=/dev/null \
+            -o StrictHostKeyChecking=no \
+            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
+            bookmarks-receive-elasticsearch
+      '';
+      User = config.users.extraUsers.remote-sync.name;
+    };
+    environment = {
+      ES_HOST = config.systemd.services.bookmarks.environment.ES_HOST;
+      SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
+    };
+  };
+
+  sops.secrets."users/remote_sync/ssh_private_key".owner = config.users.extraUsers.remote-sync.name;
 }
