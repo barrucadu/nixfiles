@@ -396,6 +396,47 @@ in
 
 
   ###############################################################################
+  ## Nyarlathotep Sync
+  ###############################################################################
+
+  users.extraUsers.nyarlathotep-remote-sync = {
+    home = "/var/lib/nyarlathotep-remote-sync";
+    createHome = true;
+    isSystemUser = true;
+    openssh.authorizedKeys.keys =
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
+    shell = pkgs.bashInteractive;
+    group = "nogroup";
+    extraGroups = [ "docker" ];
+    packages =
+      let
+        bookdb-receive-covers = ''
+          if [[ ! -d ~/bookdb-covers ]]; then
+            echo "bookdb-covers does not exist"
+            exit 1
+          fi
+
+          docker cp ~/bookdb-covers/. bookdb:/bookdb-covers || exit 1
+
+          rm -rf ~/bookdb-covers
+        '';
+        bookdb-receive-elasticsearch = ''
+          docker exec -i bookdb env DELETE_EXISTING_INDEX=1 ES_HOST=http://bookdb-db:9200 python -m bookdb.index.create -
+        '';
+        bookmarks-receive-elasticsearch = ''
+          env ES_HOST=${config.systemd.services.bookmarks.environment.ES_HOST} \
+              DELETE_EXISTING_INDEX=1 \
+              ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.create -
+        '';
+      in
+      [
+        (pkgs.writeShellScriptBin "bookdb-receive-covers" bookdb-receive-covers)
+        (pkgs.writeShellScriptBin "bookdb-receive-elasticsearch" bookdb-receive-elasticsearch)
+        (pkgs.writeShellScriptBin "bookmarks-receive-elasticsearch" bookmarks-receive-elasticsearch)
+      ];
+  };
+
+  ###############################################################################
   ## Miscellaneous
   ###############################################################################
 
