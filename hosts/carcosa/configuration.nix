@@ -3,7 +3,6 @@
 with lib;
 let
   dockerRegistryPort = 3000;
-  bookdbPort = 3001;
   concoursePort = 3003;
   umamiPort = 3006;
   concourseMetricsPort = 3009;
@@ -11,13 +10,6 @@ let
   foundryPort = 3011;
 
   httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
-
-  registryBarrucaduDev = {
-    username = "registry";
-    passwordFile = config.sops.secrets."services/docker_registry/login".path;
-    url = "https://registry.barrucadu.dev";
-  };
-
 in
 {
   ###############################################################################
@@ -345,15 +337,10 @@ in
   services.dockerRegistry.enableGarbageCollect = true;
   services.dockerRegistry.port = dockerRegistryPort;
 
-  sops.secrets."services/docker_registry/login" = { };
-
   # bookdb
   nixfiles.bookdb.enable = true;
-  nixfiles.bookdb.image = "registry.barrucadu.dev/bookdb:latest";
-  nixfiles.bookdb.registry = registryBarrucaduDev;
   nixfiles.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   nixfiles.bookdb.readOnly = true;
-  nixfiles.bookdb.port = bookdbPort;
 
   # bookmarks
   nixfiles.bookmarks.enable = true;
@@ -407,7 +394,6 @@ in
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
     shell = pkgs.bashInteractive;
     group = "nogroup";
-    extraGroups = [ "docker" ];
     packages =
       let
         bookdb-receive-covers = ''
@@ -416,12 +402,13 @@ in
             exit 1
           fi
 
-          docker cp ~/bookdb-covers/. bookdb:/bookdb-covers || exit 1
-
-          rm -rf ~/bookdb-covers
+          /run/wrappers/bin/sudo rsync -a --delete ~/bookdb-covers/ ${config.nixfiles.bookdb.dataDir}/covers || exit 1
+          /run/wrappers/bin/sudo chown -R ${config.users.users.bookdb.name}.nogroup ${config.nixfiles.bookdb.dataDir}/covers || exit 1
         '';
         bookdb-receive-elasticsearch = ''
-          docker exec -i bookdb env DELETE_EXISTING_INDEX=1 ES_HOST=http://bookdb-db:9200 python -m bookdb.index.create -
+          env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} \
+              DELETE_EXISTING_INDEX=1 \
+              ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.create -
         '';
         bookmarks-receive-elasticsearch = ''
           env ES_HOST=${config.systemd.services.bookmarks.environment.ES_HOST} \
@@ -435,6 +422,16 @@ in
         (pkgs.writeShellScriptBin "bookmarks-receive-elasticsearch" bookmarks-receive-elasticsearch)
       ];
   };
+
+  security.sudo.extraRules = [
+    {
+      users = [ config.users.extraUsers.nyarlathotep-remote-sync.name ];
+      commands = [
+        { command = "${pkgs.rsync}/bin/rsync -a --delete ${config.users.extraUsers.nyarlathotep-remote-sync.home}/bookdb-covers/ ${config.nixfiles.bookdb.dataDir}/covers"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.coreutils-full}/bin/chown -R ${config.users.users.bookdb.name}.nogroup ${config.nixfiles.bookdb.dataDir}/covers"; options = [ "NOPASSWD" ]; }
+      ];
+    }
+  ];
 
   ###############################################################################
   ## Miscellaneous
@@ -451,25 +448,6 @@ in
   sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
 
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
-
-  # Concourse access
-  users.extraUsers.concourse-deploy-robot = {
-    home = "/home/system/concourse-deploy-robot";
-    createHome = true;
-    isSystemUser = true;
-    openssh.authorizedKeys.keys =
-      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFilTWek5xNpl82V48oQ99briJhn9BqwCACeRq1dQnZn concourse-worker@cd.barrucadu.dev" ];
-    shell = pkgs.bashInteractive;
-    group = "nogroup";
-  };
-  security.sudo.extraRules = [
-    {
-      users = [ "concourse-deploy-robot" ];
-      commands = [
-        { command = "${pkgs.systemd}/bin/systemctl restart docker-bookdb"; options = [ "NOPASSWD" ]; }
-      ];
-    }
-  ];
 
   # Extra packages
   users.extraUsers.barrucadu.packages = with pkgs; [

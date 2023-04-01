@@ -1,39 +1,41 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
   cfg = config.nixfiles.bookdb;
-  backend = config.nixfiles.oci-containers.backend;
 in
 {
+  imports = [ ./erase-your-darlings.nix ];
+
   options.nixfiles.bookdb = {
     enable = mkOption { type = types.bool; default = false; };
-    image = mkOption { type = types.str; };
-    port = mkOption { type = types.int; default = 3000; };
+    port = mkOption { type = types.int; default = 46667; };
+    esPort = mkOption { type = types.int; default = 47164; };
     esTag = mkOption { type = types.str; default = "8.0.0"; };
     baseURI = mkOption { type = types.str; };
     readOnly = mkOption { type = types.bool; default = false; };
-    registry = {
-      username = mkOption { type = types.nullOr types.str; default = null; };
-      passwordFile = mkOption { type = types.nullOr types.str; default = null; };
-      url = mkOption { type = types.nullOr types.str; default = null; };
-    };
+    dataDir = mkOption { type = types.str; default = "/srv/bookdb"; };
   };
 
   config = mkIf cfg.enable {
-    nixfiles.oci-containers.containers.bookdb = {
-      image = cfg.image;
-      login = with cfg.registry; { inherit username passwordFile; registry = url; };
+    systemd.services.bookdb = {
+      description = "barrucadu/bookdb webapp";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
+      path = [ pkgs.imagemagick ];
+      serviceConfig = {
+        ExecStart = "${pkgs.nixfiles.bookdb}/bin/gunicorn -w 4 -t 60 -b 127.0.0.1:${toString cfg.port} bookdb.serve:app";
+        Restart = "always";
+        User = config.users.users.bookdb.name;
+      };
       environment = {
         "ALLOW_WRITES" = if cfg.readOnly then "0" else "1";
         "BASE_URI" = cfg.baseURI;
-        "COVER_DIR" = "/bookdb-covers";
-        "ES_HOST" = "http://bookdb-db:9200";
+        "COVER_DIR" = "${cfg.dataDir}/covers";
+        "ES_HOST" = "http://127.0.0.1:${toString cfg.esPort}";
+        # TODO: make the upstream file an example, and define this config here
+        "UUIDS_FILE" = "${pkgs.nixfiles.bookdb}/etc/bookdb/config/uuids.yaml";
       };
-      dependsOn = [ "bookdb-db" ];
-      network = "bookdb_network";
-      ports = [{ host = cfg.port; inner = 8888; }];
-      volumes = [{ name = "covers"; inner = "/bookdb-covers"; }];
     };
 
     nixfiles.oci-containers.containers.bookdb-db = {
@@ -44,14 +46,34 @@ in
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      network = "bookdb_network";
+      ports = [{ host = cfg.esPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
       volumeSubDir = "bookdb";
     };
 
+    users.users.bookdb = {
+      description = "bookdb service user";
+      home = cfg.dataDir;
+      createHome = true;
+      isSystemUser = true;
+      group = "nogroup";
+    };
+
+    # TODO: figure out how to get `sudo` in the unit's path (adding the
+    # package doesn't help - need the wrapper)
     nixfiles.backups.scripts.bookdb = ''
-      ${backend} cp "bookdb:/bookdb-covers" covers
-      ${backend} exec -i bookdb env ES_HOST=http://bookdb-db:9200 python -m bookdb.index.dump | gzip -9 > dump.json.gz
+      /run/wrappers/bin/sudo tar cfz dump.tar.gz ${cfg.dataDir}
+      /run/wrappers/bin/sudo chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz
+      env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump | gzip -9 > dump.json.gz
     '';
+    security.sudo.extraRules = [
+      {
+        users = [ config.nixfiles.backups.user ];
+        commands = [
+          { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; options = [ "NOPASSWD" ]; }
+          { command = "${pkgs.coreutils}/bin/chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz"; options = [ "NOPASSWD" ]; }
+        ];
+      }
+    ];
   };
 }

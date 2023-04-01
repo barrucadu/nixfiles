@@ -5,7 +5,6 @@ with lib;
 let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
 
-  bookdbPort = 3000;
   floodPort = 3001;
   finderPort = 3002;
   grafanaPort = 3004;
@@ -253,9 +252,7 @@ in
   ###############################################################################
 
   nixfiles.bookdb.enable = true;
-  nixfiles.bookdb.image = "localhost:5000/bookdb:latest";
   nixfiles.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
-  nixfiles.bookdb.port = bookdbPort;
 
 
   ###############################################################################
@@ -514,31 +511,30 @@ in
     isSystemUser = true;
     shell = pkgs.bashInteractive;
     group = "nogroup";
-    extraGroups = [ "docker" ];
   };
 
   systemd.services.bookdb-sync = {
     description = "Upload bookdb data to carcosa";
     startAt = "hourly";
-    path = with pkgs; [ docker openssh ];
+    path = with pkgs; [ openssh rsync ];
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "bookdb-sync" ''
         set -ex
 
-        docker cp "bookdb:/bookdb-covers" ~/bookdb-covers
-        scp -i "$SSH_KEY_FILE" \
-            -o UserKnownHostsFile=/dev/null \
-            -o StrictHostKeyChecking=no \
-            -r ~/bookdb-covers \
-            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk:~/bookdb-covers
+        /run/wrappers/bin/sudo cp -r ${config.nixfiles.bookdb.dataDir}/covers/ ~/bookdb-covers
+        trap "/run/wrappers/bin/sudo rm -rf ~/bookdb-covers" EXIT
+        rsync -az\
+              -e "ssh -i $SSH_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
+              ~/bookdb-covers/ \
+              nyarlathotep-remote-sync@carcosa.barrucadu.co.uk:~/bookdb-covers/
         ssh -i "$SSH_KEY_FILE" \
             -o UserKnownHostsFile=/dev/null \
             -o StrictHostKeyChecking=no \
             nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
             bookdb-receive-covers
-        rm -rf ~/bookdb-covers
 
-        docker exec -i bookdb env ES_HOST=http://bookdb-db:9200 python -m bookdb.index.dump | \
+        env "ES_HOST=$ES_HOST" \
+            ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump | \
         ssh -i "$SSH_KEY_FILE" \
             -o UserKnownHostsFile=/dev/null \
             -o StrictHostKeyChecking=no \
@@ -548,6 +544,7 @@ in
       User = config.users.extraUsers.remote-sync.name;
     };
     environment = {
+      ES_HOST = config.systemd.services.bookdb.environment.ES_HOST;
       SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
     };
   };
@@ -555,7 +552,7 @@ in
   systemd.services.bookmarks-sync = {
     description = "Upload bookmarks data to carcosa";
     startAt = "hourly";
-    path = with pkgs; [ openssh systemd ];
+    path = with pkgs; [ openssh ];
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "bookmarks-sync" ''
         set -ex
@@ -575,6 +572,16 @@ in
       SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
     };
   };
+
+  security.sudo.extraRules = [
+    {
+      users = [ config.users.extraUsers.remote-sync.name ];
+      commands = [
+        { command = "${pkgs.coreutils}/bin/cp -r ${config.nixfiles.bookdb.dataDir}/covers/ ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.coreutils}/bin/rm -rf ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
+      ];
+    }
+  ];
 
   sops.secrets."users/remote_sync/ssh_private_key".owner = config.users.extraUsers.remote-sync.name;
 }
