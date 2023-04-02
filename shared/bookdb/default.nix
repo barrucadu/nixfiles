@@ -33,8 +33,7 @@ in
         "BASE_URI" = cfg.baseURI;
         "COVER_DIR" = "${cfg.dataDir}/covers";
         "ES_HOST" = "http://127.0.0.1:${toString cfg.esPort}";
-        # TODO: make the upstream file an example, and define this config here
-        "UUIDS_FILE" = "${pkgs.nixfiles.bookdb}/etc/bookdb/config/uuids.yaml";
+        "UUIDS_FILE" = ./uuids.yaml;
       };
     };
 

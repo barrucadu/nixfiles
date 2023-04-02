@@ -12,11 +12,6 @@ let
     overrides = poetry2nix.overrides.withDefaults (_: super: {
       elastic-transport = super.elastic-transport.overridePythonAttrs (old: { buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ]; });
     });
-
-    postFixup = ''
-      cd config
-      find . -type f -exec install -Dm 755 "{}" "$out/etc/bookdb/config/{}" \;
-    '';
   };
 in
 app.dependencyEnv
