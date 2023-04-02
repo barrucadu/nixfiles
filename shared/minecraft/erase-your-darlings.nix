@@ -7,6 +7,6 @@ let
 in
 {
   config = mkIf (cfg.enable && eyd.enable) {
-    nixfiles.minecraft.dataDir = "${toString eyd.persistDir}/srv/minecraft";
+    nixfiles.minecraft.dataDir = "${toString eyd.persistDir}/var/lib/minecraft";
   };
 }

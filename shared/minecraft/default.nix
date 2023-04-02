@@ -14,7 +14,7 @@ in
   # packaging one is a pain.
   options.nixfiles.minecraft = {
     enable = mkOption { type = types.bool; default = false; };
-    dataDir = mkOption { type = types.path; default = "/srv/minecraft"; };
+    dataDir = mkOption { type = types.path; default = "/var/lib/minecraft"; };
     servers = mkOption {
       type = types.attrsOf (types.submodule
         {
