@@ -13,7 +13,7 @@ in
   options.nixfiles.foundryvtt = {
     enable = mkOption { type = types.bool; default = false; };
     port = mkOption { type = types.int; default = 3000; };
-    dataDir = mkOption { type = types.str; default = "/srv/foundry"; };
+    dataDir = mkOption { type = types.str; default = "/var/lib/foundryvtt"; };
   };
 
   config = mkIf cfg.enable {
