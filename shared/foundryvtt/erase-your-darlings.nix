@@ -7,6 +7,6 @@ let
 in
 {
   config = mkIf (cfg.enable && eyd.enable) {
-    nixfiles.foundryvtt.dataDir = "${toString eyd.persistDir}/srv/foundry";
+    nixfiles.foundryvtt.dataDir = "${toString eyd.persistDir}/var/lib/foundryvtt";
   };
 }
