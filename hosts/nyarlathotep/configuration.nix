@@ -515,7 +515,7 @@ in
 
   systemd.services.bookdb-sync = {
     description = "Upload bookdb data to carcosa";
-    startAt = "hourly";
+    startAt = "*:15";
     path = with pkgs; [ openssh rsync ];
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "bookdb-sync" ''
@@ -551,7 +551,7 @@ in
 
   systemd.services.bookmarks-sync = {
     description = "Upload bookmarks data to carcosa";
-    startAt = "hourly";
+    startAt = "*:15";
     path = with pkgs; [ openssh ];
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "bookmarks-sync" ''
