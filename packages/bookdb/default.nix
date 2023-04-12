@@ -5,8 +5,8 @@ let
     projectDir = fetchFromGitHub {
       owner = "barrucadu";
       repo = "bookdb";
-      rev = "cb17cdc6ce63a38d8ebfec8e82c57e51a86a63a0";
-      sha256 = "sha256-W5bHAgzC+6u5sdVgta/NhCLz7NSHHOnKcQXPxsU3dB8=";
+      rev = "0d202dcfa12e05212ef28e4e04ff7446707558a2";
+      sha256 = "sha256-HgLmBxmtTJFcFHbzi1MtvhndaETokJtXcTjRrqJjsFQ=";
     };
 
     overrides = poetry2nix.overrides.withDefaults (_: super: {
