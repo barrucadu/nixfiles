@@ -312,8 +312,9 @@ in
         # Write filenames in UTF-8
         encoding.add = UTF-8
 
-        # Check hash on completion
+        # File options
         pieces.hash.on_completion.set = yes
+        pieces.sync.always_safe.set = yes
 
         # Monitor for new .torrent files
         schedule2 = watch_directory,5,5,load.start=${watchDir}*.torrent
