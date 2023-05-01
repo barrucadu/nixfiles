@@ -302,7 +302,12 @@ in
       redir /fosdem2020 /fosdem2020/
 
       root * ${httpdir}/uzbl.org/www
+
       php_fastcgi unix//run/phpfpm/caddy.sock
+      php_fastcgi /atom.xml unix//run/phpfpm/caddy.sock {
+        split .xml
+      }
+
       file_server
     }
   '';
@@ -321,6 +326,7 @@ in
       "pm.start_servers" = "2";
       "pm.min_spare_servers" = "1";
       "pm.max_spare_servers" = "3";
+      "security.limit_extensions" = ".php .xml";
     };
   };
 
