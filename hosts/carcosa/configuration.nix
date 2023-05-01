@@ -85,234 +85,234 @@ in
 
       header -Server
     }
+  '';
 
-    barrucadu.co.uk {
-      import common_config
-      redir https://www.barrucadu.co.uk{uri}
+  services.caddy.virtualHosts."barrucadu.co.uk".extraConfig = ''
+    import common_config
+    redir https://www.barrucadu.co.uk{uri}
+  '';
+
+  services.caddy.virtualHosts."barrucadu.com".extraConfig = ''
+    import common_config
+    redir https://www.barrucadu.co.uk{uri}
+  '';
+
+  services.caddy.virtualHosts."www.barrucadu.com".extraConfig = ''
+    import common_config
+    redir https://www.barrucadu.co.uk{uri}
+  '';
+
+  services.caddy.virtualHosts."barrucadu.uk".extraConfig = ''
+    import common_config
+    redir https://www.barrucadu.co.uk{uri}
+  '';
+
+  services.caddy.virtualHosts."www.barrucadu.uk".extraConfig = ''
+    import common_config
+    redir https://www.barrucadu.co.uk{uri}
+  '';
+
+  services.caddy.virtualHosts."www.barrucadu.co.uk".extraConfig = ''
+    import common_config
+
+    header /fonts/* Cache-Control "public, immutable, max-age=31536000"
+    header /*.css   Cache-Control "public, immutable, max-age=31536000"
+
+    file_server {
+      root ${httpdir}/barrucadu.co.uk/www
     }
 
-    barrucadu.com {
-      import common_config
-      redir https://www.barrucadu.co.uk{uri}
-    }
+    ${fileContents ./caddy/www-barrucadu-co-uk.caddyfile}
+  '';
 
-    www.barrucadu.com {
-      import common_config
-      redir https://www.barrucadu.co.uk{uri}
-    }
+  services.caddy.virtualHosts."bookdb.barrucadu.co.uk".extraConfig = ''
+    import common_config
+    reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookdb.port}
+  '';
 
-    barrucadu.uk {
-      import common_config
-      redir https://www.barrucadu.co.uk{uri}
-    }
+  services.caddy.virtualHosts."bookmarks.barrucadu.co.uk".extraConfig = ''
+    import common_config
+    reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookmarks.port}
+  '';
 
-    www.barrucadu.uk {
-      import common_config
-      redir https://www.barrucadu.co.uk{uri}
-    }
+  services.caddy.virtualHosts."foundry.barrucadu.co.uk".extraConfig = ''
+    import common_config
+    reverse_proxy http://localhost:${toString config.nixfiles.foundryvtt.port}
+  '';
 
-    www.barrucadu.co.uk {
-      import common_config
+  services.caddy.virtualHosts."memo.barrucadu.co.uk".extraConfig = ''
+    import common_config
 
-      header /fonts/* Cache-Control "public, immutable, max-age=31536000"
-      header /*.css   Cache-Control "public, immutable, max-age=31536000"
+    header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
+    header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
+    header /*.css     Cache-Control "public, immutable, max-age=31536000"
 
-      file_server {
-        root ${httpdir}/barrucadu.co.uk/www
+    root * ${httpdir}/barrucadu.co.uk/memo
+    file_server
+
+    handle_errors {
+      @410 {
+        expression {http.error.status_code} == 410
       }
-
-      ${fileContents ./caddy/www-barrucadu-co-uk.caddyfile}
-    }
-
-    bookdb.barrucadu.co.uk {
-      import common_config
-      reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookdb.port}
-    }
-
-    bookmarks.barrucadu.co.uk {
-      import common_config
-      reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookmarks.port}
-    }
-
-    foundry.barrucadu.co.uk {
-      import common_config
-      reverse_proxy http://localhost:${toString config.nixfiles.foundryvtt.port}
-    }
-
-    memo.barrucadu.co.uk {
-      import common_config
-
-      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-      header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
-      header /*.css     Cache-Control "public, immutable, max-age=31536000"
-
-      root * ${httpdir}/barrucadu.co.uk/memo
-      file_server
-
-      handle_errors {
-        @410 {
-          expression {http.error.status_code} == 410
-        }
-        rewrite @410 /410.html
-        file_server
-      }
-
-      ${fileContents ./caddy/memo-barrucadu-co-uk.caddyfile}
-    }
-
-    misc.barrucadu.co.uk {
-      import common_config
-      basicauth /_site/* {
-        import ${config.sops.secrets."services/caddy/fragments/misc_site".path}
-      }
-
-      @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
-
-      root * ${httpdir}/barrucadu.co.uk/misc
-      file_server @subdirectory browse
+      rewrite @410 /410.html
       file_server
     }
 
-    grafana.carcosa.barrucadu.co.uk {
-      import common_config
-      reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
+    ${fileContents ./caddy/memo-barrucadu-co-uk.caddyfile}
+  '';
+
+  services.caddy.virtualHosts."misc.barrucadu.co.uk".extraConfig = ''
+    import common_config
+    basicauth /_site/* {
+      import ${config.sops.secrets."services/caddy/fragments/misc_site".path}
     }
 
-    prometheus.carcosa.barrucadu.co.uk {
-      import common_config
-      reverse_proxy http://localhost:${toString config.services.prometheus.port}
+    @subdirectory path_regexp ^/(7day|14day|28day|forever)/[a-z0-9]
+
+    root * ${httpdir}/barrucadu.co.uk/misc
+    file_server @subdirectory browse
+    file_server
+  '';
+  sops.secrets."services/caddy/fragments/misc_site".owner = config.users.users.caddy.name;
+
+  services.caddy.virtualHosts."grafana.carcosa.barrucadu.co.uk".extraConfig = ''
+    import common_config
+    reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
+  '';
+
+  services.caddy.virtualHosts."prometheus.carcosa.barrucadu.co.uk".extraConfig = ''
+    import common_config
+    reverse_proxy http://localhost:${toString config.services.prometheus.port}
+  '';
+
+  services.caddy.virtualHosts."weeknotes.barrucadu.co.uk".extraConfig = ''
+    import common_config
+
+    header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
+    header /*.css     Cache-Control "public, immutable, max-age=31536000"
+
+    file_server  {
+      root ${httpdir}/barrucadu.co.uk/weeknotes
     }
+  '';
 
-    weeknotes.barrucadu.co.uk {
-      import common_config
+  services.caddy.virtualHosts."barrucadu.dev".extraConfig = ''
+    import common_config
+    redir https://www.barrucadu.co.uk
+  '';
 
-      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-      header /*.css     Cache-Control "public, immutable, max-age=31536000"
+  services.caddy.virtualHosts."www.barrucadu.dev".extraConfig = ''
+    import common_config
+    redir https://www.barrucadu.co.uk
+  '';
 
-      file_server  {
-        root ${httpdir}/barrucadu.co.uk/weeknotes
+  services.caddy.virtualHosts."cd.barrucadu.dev".extraConfig = ''
+    import common_config
+    reverse_proxy http://127.0.0.1:${toString config.nixfiles.concourse.port} {
+      flush_interval -1
+    }
+  '';
+
+  services.caddy.virtualHosts."registry.barrucadu.dev".extraConfig = ''
+    import common_config
+    basicauth /v2/* {
+      import ${config.sops.secrets."services/caddy/fragments/registry".path}
+    }
+    header /v2/* Docker-Distribution-Api-Version "registry/2.0"
+    reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
+  '';
+  sops.secrets."services/caddy/fragments/registry".owner = config.users.users.caddy.name;
+
+  services.caddy.virtualHosts."lainon.life".extraConfig = ''
+    import common_config
+
+    root * ${./caddy/lainon-life}
+    file_server
+
+    handle_errors {
+      @404 {
+        expression {http.error.status_code} == 404
       }
-    }
-
-    barrucadu.dev {
-      import common_config
-      redir https://www.barrucadu.co.uk
-    }
-
-    www.barrucadu.dev {
-      import common_config
-      redir https://www.barrucadu.co.uk
-    }
-
-    cd.barrucadu.dev {
-      import common_config
-      reverse_proxy http://127.0.0.1:${toString config.nixfiles.concourse.port} {
-        flush_interval -1
-      }
-    }
-
-    registry.barrucadu.dev {
-      import common_config
-      basicauth /v2/* {
-        import ${config.sops.secrets."services/caddy/fragments/registry".path}
-      }
-      header /v2/* Docker-Distribution-Api-Version "registry/2.0"
-      reverse_proxy /v2/* http://127.0.0.1:${toString config.services.dockerRegistry.port}
-    }
-
-    lainon.life {
-      import common_config
-
-      root * ${./caddy/lainon-life}
-      file_server
-
-      handle_errors {
-        @404 {
-          expression {http.error.status_code} == 404
-        }
-        rewrite @404 /404.html
-        file_server
-      }
-    }
-
-    social.lainon.life {
-      import common_config
-      reverse_proxy http://127.0.0.1:${toString config.nixfiles.pleroma.port}
-    }
-
-    www.lainon.life {
-      import common_config
-      redir https://lainon.life{uri}
-    }
-
-    lookwhattheshoggothdraggedin.com {
-      import common_config
-      redir https://www.lookwhattheshoggothdraggedin.com{uri}
-    }
-
-    www.lookwhattheshoggothdraggedin.com {
-      import common_config
-
-      header Content-Security-Policy "default-src 'self' umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data:"
-
-      header /files/*         Cache-Control "public, immutable, max-age=604800"
-      header /fonts/*         Cache-Control "public, immutable, max-age=31536000"
-      header /logo.png        Cache-Control "public, immutable, max-age=604800"
-      header /*.css           Cache-Control "public, immutable, max-age=31536000"
-      header /twitter-cards/* Cache-Control "public, immutable, max-age=604800"
-
-      root * ${httpdir}/lookwhattheshoggothdraggedin.com/www
-      file_server
-
-      handle_errors {
-        @404 {
-          expression {http.error.status_code} == 404
-        }
-        rewrite @404 /404.html
-        file_server
-      }
-    }
-
-    umami.lookwhattheshoggothdraggedin.com {
-      import common_config
-      reverse_proxy http://127.0.0.1:${toString config.nixfiles.umami.port}
-    }
-
-    uzbl.org {
-      import common_config
-      redir https://www.uzbl.org{uri}
-    }
-
-    www.uzbl.org {
-      import common_config
-
-      rewrite /archives.php    /index.php
-      rewrite /faq.php         /index.php
-      rewrite /readme.php      /index.php
-      rewrite /keybindings.php /index.php
-      rewrite /get.php         /index.php
-      rewrite /community.php   /index.php
-      rewrite /contribute.php  /index.php
-      rewrite /commits.php     /index.php
-      rewrite /news.php        /index.php
-      rewrite /doesitwork/     /index.php
-      rewrite /fosdem2010/     /index.php
-
-      redir /doesitwork /doesitwork/
-      redir /fosdem2020 /fosdem2020/
-
-      root * ${httpdir}/uzbl.org/www
-
-      php_fastcgi unix//run/phpfpm/caddy.sock
-      php_fastcgi /atom.xml unix//run/phpfpm/caddy.sock {
-        split .xml
-      }
-
+      rewrite @404 /404.html
       file_server
     }
   '';
-  sops.secrets."services/caddy/fragments/misc_site".owner = config.users.users.caddy.name;
-  sops.secrets."services/caddy/fragments/registry".owner = config.users.users.caddy.name;
+
+  services.caddy.virtualHosts."social.lainon.life".extraConfig = ''
+    import common_config
+    reverse_proxy http://127.0.0.1:${toString config.nixfiles.pleroma.port}
+  '';
+
+  services.caddy.virtualHosts."www.lainon.life".extraConfig = ''
+    import common_config
+    redir https://lainon.life{uri}
+  '';
+
+  services.caddy.virtualHosts."lookwhattheshoggothdraggedin.com".extraConfig = ''
+    import common_config
+    redir https://www.lookwhattheshoggothdraggedin.com{uri}
+  '';
+
+  services.caddy.virtualHosts."www.lookwhattheshoggothdraggedin.com".extraConfig = ''
+    import common_config
+
+    header Content-Security-Policy "default-src 'self' umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data:"
+
+    header /files/*         Cache-Control "public, immutable, max-age=604800"
+    header /fonts/*         Cache-Control "public, immutable, max-age=31536000"
+    header /logo.png        Cache-Control "public, immutable, max-age=604800"
+    header /*.css           Cache-Control "public, immutable, max-age=31536000"
+    header /twitter-cards/* Cache-Control "public, immutable, max-age=604800"
+
+    root * ${httpdir}/lookwhattheshoggothdraggedin.com/www
+    file_server
+
+    handle_errors {
+      @404 {
+        expression {http.error.status_code} == 404
+      }
+      rewrite @404 /404.html
+      file_server
+    }
+  '';
+
+  services.caddy.virtualHosts."umami.lookwhattheshoggothdraggedin.com".extraConfig = ''
+    import common_config
+    reverse_proxy http://127.0.0.1:${toString config.nixfiles.umami.port}
+  '';
+
+  services.caddy.virtualHosts."uzbl.org".extraConfig = ''
+    import common_config
+    redir https://www.uzbl.org{uri}
+  '';
+
+  services.caddy.virtualHosts."www.uzbl.org".extraConfig = ''
+    import common_config
+
+    rewrite /archives.php    /index.php
+    rewrite /faq.php         /index.php
+    rewrite /readme.php      /index.php
+    rewrite /keybindings.php /index.php
+    rewrite /get.php         /index.php
+    rewrite /community.php   /index.php
+    rewrite /contribute.php  /index.php
+    rewrite /commits.php     /index.php
+    rewrite /news.php        /index.php
+    rewrite /doesitwork/     /index.php
+    rewrite /fosdem2010/     /index.php
+
+    redir /doesitwork /doesitwork/
+    redir /fosdem2020 /fosdem2020/
+
+    root * ${httpdir}/uzbl.org/www
+
+    php_fastcgi unix//run/phpfpm/caddy.sock
+    php_fastcgi /atom.xml unix//run/phpfpm/caddy.sock {
+      split .xml
+    }
+
+    file_server
+  '';
 
   services.phpfpm.pools.caddy = {
     user = "caddy";
