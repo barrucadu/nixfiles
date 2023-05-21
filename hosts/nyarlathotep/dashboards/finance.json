@@ -2429,6 +2429,77 @@
         "x": 15,
         "y": 20
       },
+      "id": 88,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "9.4.9",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:cash:starling:saved:owlbear\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Owlbear",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 50,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 25
+              },
+              {
+                "color": "green",
+                "value": 37.5
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 18,
+        "y": 20
+      },
       "id": 37,
       "options": {
         "orientation": "auto",
@@ -2495,7 +2566,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 21,
         "y": 20
       },
       "id": 33,
@@ -2564,8 +2635,8 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
-        "y": 20
+        "x": 0,
+        "y": 26
       },
       "id": 38,
       "options": {
@@ -2634,7 +2705,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 0,
+        "x": 3,
         "y": 26
       },
       "id": 34,
@@ -2703,7 +2774,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
+        "x": 6,
         "y": 26
       },
       "id": 35,
@@ -2772,7 +2843,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 9,
         "y": 26
       },
       "id": 36,
@@ -2841,7 +2912,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 12,
         "y": 26
       },
       "id": 40,
@@ -2891,7 +2962,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -2927,7 +2999,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.9",
       "targets": [
         {
           "datasource": {
@@ -2960,7 +3032,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -2996,7 +3069,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.9",
       "targets": [
         {
           "datasource": {
