@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -23,7 +26,6 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 193,
   "graphTooltip": 0,
-  "iteration": 1648298085957,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -88,7 +90,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "targets": [
         {
           "datasource": {
@@ -170,7 +172,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "targets": [
         {
           "datasource": {
@@ -252,7 +254,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "targets": [
         {
           "datasource": {
@@ -316,7 +318,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -416,7 +418,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -515,7 +517,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -612,7 +614,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -708,7 +710,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -805,7 +807,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "9.4.9",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -864,7 +866,8 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 35,
+  "revision": 1,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -948,6 +951,6 @@
   "timezone": "browser",
   "title": "Container Stats (Detailed)",
   "uid": "WYgKjgsnk",
-  "version": 4,
+  "version": 1,
   "weekStart": ""
 }
