@@ -717,12 +717,8 @@
                 "id": "custom.stacking",
                 "value": {
                   "group": false,
-                  "mode": "normal"
+                  "mode": "none"
                 }
-              },
-              {
-                "id": "custom.transform",
-                "value": "constant"
               },
               {
                 "id": "custom.lineStyle",
@@ -2962,8 +2958,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -3032,8 +3027,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
