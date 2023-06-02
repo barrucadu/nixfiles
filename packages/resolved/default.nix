@@ -2,16 +2,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "resolved";
-  version = "7900906b2c6f67ab28265dd2df520ab5fb973f0e";
+  version = "fac82efaaf73166a70d43b06e7c7ca82ddd9485e";
 
   src = fetchFromGitHub {
     owner = "barrucadu";
     repo = pname;
     rev = version;
-    sha256 = "sha256-ZbabeNdd5Yfem4bYCGG0BBmkOGsS5LDoZoRVs3ulA7E=";
+    sha256 = "sha256-MkyMbSBex66T+HUSchy70SYtgUP0peoxGBk9A9IAFZk=";
   };
 
-  cargoSha256 = "sha256-tsLh+6yctoBqgLYndRpbGQmy7FHrXkQiQClpexfnjFY=";
+  cargoSha256 = "sha256-tJn9toqNr7DxfD43KBYQnY2kzjFSTPvCtd7jenA7YbY=";
 
   postInstall = ''
     cd config
