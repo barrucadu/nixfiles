@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -71,7 +71,8 @@
           '';
 
           lint = mkApp "lint" ''
-            PATH=${with pkgs; lib.makeBinPath [ findutils nix-linter shellcheck git gnugrep python3Packages.flake8 ]}
+            # TODO: add nix-linter back when the package is no longer broken
+            PATH=${with pkgs; lib.makeBinPath [ findutils shellcheck git gnugrep python3Packages.flake8 ]}
 
             ${pkgs.lib.fileContents ./scripts/lint.sh}
           '';
