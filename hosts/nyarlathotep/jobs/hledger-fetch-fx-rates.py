@@ -58,7 +58,7 @@ COMMODITIES = [
     ("VANEA", "GB00B41XG308", get_financial_times_fund),
 ]
 
-with (sys.stdout if DRY_RUN else open(os.environ["PRICE_FILE"], "a")) as f:
+with sys.stdout if DRY_RUN else open(os.environ["PRICE_FILE"], "a") as f:
     print("", file=f)
 
     for commodity in COMMODITIES:

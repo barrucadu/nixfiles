@@ -42,7 +42,7 @@ in
     #############################################################################
 
     # The NixOS release to be compatible with for stateful data such as databases.
-    system.stateVersion = "22.11";
+    system.stateVersion = "23.05";
 
     # Only keep the last 500MiB of systemd journal.
     services.journald.extraConfig = "SystemMaxUse=500M";
@@ -157,8 +157,8 @@ in
       enable = true;
 
       # Only pubkey auth
-      passwordAuthentication = false;
-      kbdInteractiveAuthentication = false;
+      settings.PasswordAuthentication = false;
+      settings.KbdInteractiveAuthentication = false;
     };
 
     # Start ssh-agent as a systemd user service
