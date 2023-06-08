@@ -2046,78 +2046,6 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 500,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 250
-              },
-              {
-                "color": "green",
-                "value": 375
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 0,
-        "y": 20
-      },
-      "id": 43,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "exemplar": true,
-          "expr": "sum(hledger_balance{account=\"assets:cash:nationwide:flexdirect:float\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n+ on(target_currency)\r\nsum(hledger_balance{account=\"assets:cash:starling:float\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "instant": false,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Float",
-      "transparent": true,
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
           "mappings": [],
           "max": 250,
           "min": 0,
@@ -2145,7 +2073,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
+        "x": 0,
         "y": 20
       },
       "id": 78,
@@ -2214,7 +2142,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 20
       },
       "id": 31,
@@ -2283,7 +2211,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 20
       },
       "id": 32,
@@ -2353,7 +2281,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 20
       },
       "id": 42,
@@ -2422,7 +2350,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 20
       },
       "id": 88,
@@ -2493,7 +2421,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 15,
         "y": 20
       },
       "id": 37,
@@ -2562,7 +2490,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
+        "x": 18,
         "y": 20
       },
       "id": 33,
@@ -2631,8 +2559,8 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 0,
-        "y": 26
+        "x": 21,
+        "y": 20
       },
       "id": 38,
       "options": {
@@ -2701,7 +2629,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
+        "x": 0,
         "y": 26
       },
       "id": 34,
@@ -2770,7 +2698,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 26
       },
       "id": 35,
@@ -2839,7 +2767,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 26
       },
       "id": 36,
@@ -2908,7 +2836,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 26
       },
       "id": 40,
@@ -2958,7 +2886,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -2994,7 +2923,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "9.5.2",
       "targets": [
         {
           "datasource": {
@@ -3027,7 +2956,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
