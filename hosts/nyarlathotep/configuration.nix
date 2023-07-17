@@ -54,7 +54,10 @@ in
 
   nixfiles.backups.enable = true;
   nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
-  nixfiles.backups.pythonScripts.share = fileContents ./jobs/backup-share.py;
+  nixfiles.backups.pythonScripts = {
+    share = fileContents ./jobs/backup-share.py;
+    youtube = fileContents ./jobs/backup-youtube.py;
+  };
   sops.secrets."nixfiles/backups/env" = { };
 
 
