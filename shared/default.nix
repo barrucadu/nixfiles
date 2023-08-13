@@ -182,6 +182,10 @@ in
     virtualisation.docker.enable = true;
     virtualisation.docker.autoPrune.enable = true;
 
+    # If running a docker registry, also enable deletion and garbage collection.
+    services.dockerRegistry.enableDelete = config.services.dockerRegistry.enable;
+    services.dockerRegistry.enableGarbageCollect = config.services.dockerRegistry.enable;
+
     #############################################################################
     ## Dashboards & Alerting
     #############################################################################
