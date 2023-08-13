@@ -62,8 +62,9 @@ in
     services.pleroma.secretConfigFile = cfg.secretsFile;
 
     systemd.services.pleroma = {
-      after = [ "docker-pleroma-db.service" ];
-      requires = [ "docker-pleroma-db.service" ];
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" "${backend}-pleroma-db.service" ];
+      requires = [ "${backend}-pleroma-db.service" ];
       environment = {
         DOMAIN = cfg.domain;
         PORT = toString cfg.port;

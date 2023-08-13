@@ -3,6 +3,7 @@
 with lib;
 let
   cfg = config.nixfiles.bookmarks;
+  backend = config.nixfiles.oci-containers.backend;
 in
 {
   options.nixfiles.bookmarks = {
@@ -19,7 +20,8 @@ in
     systemd.services.bookmarks = {
       description = "barrucadu/bookmarks webapp";
       wantedBy = [ "multi-user.target" ];
-      after = [ "network-online.target" ];
+      after = [ "network-online.target" "${backend}-bookmarks-db.service" ];
+      requires = [ "${backend}-bookmarks-db.service" ];
       serviceConfig = {
         ExecStart = "${pkgs.nixfiles.bookmarks}/bin/gunicorn -w 4 -t 60 -b 127.0.0.1:${toString cfg.port} bookmarks.serve:app";
         EnvironmentFile = mkIf (cfg.environmentFile != null) cfg.environmentFile;
