@@ -273,7 +273,7 @@ in
   ###############################################################################
 
   nixfiles.finder.enable = true;
-  nixfiles.finder.image = "localhost:5000/finder:latest";
+  nixfiles.finder.image = "localhost:${toString config.services.dockerRegistry.port}/finder:latest";
   nixfiles.finder.port = finderPort;
   nixfiles.finder.mangaDir = "/mnt/nas/manga";
 
@@ -409,7 +409,7 @@ in
   ###############################################################################
 
   services.dockerRegistry.enable = true;
-  virtualisation.docker.extraOptions = "--insecure-registry=localhost:5000";
+  virtualisation.docker.extraOptions = "--insecure-registry=localhost:${toString config.services.dockerRegistry.port}";
 
 
   ###############################################################################

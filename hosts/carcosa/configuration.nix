@@ -2,7 +2,6 @@
 
 with lib;
 let
-  dockerRegistryPort = 3000;
   concoursePort = 3003;
   umamiPort = 3006;
   concourseMetricsPort = 3009;
@@ -338,7 +337,6 @@ in
 
   # Docker registry
   services.dockerRegistry.enable = true;
-  services.dockerRegistry.port = dockerRegistryPort;
 
   # bookdb
   nixfiles.bookdb.enable = true;
