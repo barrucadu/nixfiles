@@ -97,7 +97,7 @@ in
 
     networking.firewall.enable = true;
     networking.firewall.allowPing = true;
-    networking.firewall.trustedInterfaces = if config.virtualisation.docker.enable then [ "docker0" ] else [ ];
+    networking.firewall.trustedInterfaces = if config.nixfiles.oci-containers.backend == "docker" then [ "docker0" ] else [ "podman" ];
 
     services.fail2ban.enable = true;
 
@@ -179,8 +179,7 @@ in
     };
 
     # Use docker for all the OCI container based services
-    virtualisation.docker.enable = true;
-    virtualisation.docker.autoPrune.enable = true;
+    nixfiles.oci-containers.backend = "docker";
 
     # If running a docker registry, also enable deletion and garbage collection.
     services.dockerRegistry.port = 46453;
@@ -281,7 +280,7 @@ in
       uid = 1000;
       description = "Michael Walker <mike@barrucadu.co.uk>";
       isNormalUser = true;
-      extraGroups = [ "docker" "wheel" ];
+      extraGroups = [ config.nixfiles.oci-containers.backend "wheel" ];
       group = "users";
       initialPassword = "breadbread";
       shell = pkgs.zsh;
@@ -318,7 +317,7 @@ in
       aspell
       aspellDicts.en
       bind
-      docker-compose
+      (if config.nixfiles.oci-containers.backend == "docker" then docker-compose else podman-compose)
       emacs
       fd
       file

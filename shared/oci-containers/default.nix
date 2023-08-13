@@ -42,7 +42,7 @@ let
 in
 {
   options.nixfiles.oci-containers = {
-    backend = mkOption { type = types.str; default = "docker"; };
+    backend = mkOption { type = types.enum [ "docker" "podman" ]; default = "docker"; };
     containers = mkOption {
       type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
@@ -72,6 +72,7 @@ in
   };
 
   config = {
+    virtualisation.${cfg.backend}.autoPrune.enable = true;
     virtualisation.oci-containers.backend = cfg.backend;
     virtualisation.oci-containers.containers = mapAttrs mkContainer cfg.containers;
     systemd.services = mapAttrs' (name: value: nameValuePair "${cfg.backend}-${name}" { preStart = mkPreStart name value; }) cfg.containers;

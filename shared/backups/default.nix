@@ -53,7 +53,7 @@ let
     bash
     coreutils
     curl
-    docker
+    (if config.nixfiles.oci-containers.backend == "docker" then docker else podman)
     duplicity
     git
     gnutar
