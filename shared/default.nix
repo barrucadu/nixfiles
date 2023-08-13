@@ -183,6 +183,7 @@ in
     virtualisation.docker.autoPrune.enable = true;
 
     # If running a docker registry, also enable deletion and garbage collection.
+    services.dockerRegistry.port = 46453;
     services.dockerRegistry.enableDelete = config.services.dockerRegistry.enable;
     services.dockerRegistry.enableGarbageCollect = config.services.dockerRegistry.enable;
 
