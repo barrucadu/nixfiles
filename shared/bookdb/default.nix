@@ -3,6 +3,7 @@
 with lib;
 let
   cfg = config.nixfiles.bookdb;
+  backend = config.nixfiles.oci-containers.backend;
 in
 {
   imports = [ ./erase-your-darlings.nix ];
@@ -21,7 +22,8 @@ in
     systemd.services.bookdb = {
       description = "barrucadu/bookdb webapp";
       wantedBy = [ "multi-user.target" ];
-      after = [ "network-online.target" ];
+      after = [ "network-online.target" "${backend}-bookdb-db.service" ];
+      requires = [ "${backend}-bookdb-db.service" ];
       path = [ pkgs.imagemagick ];
       serviceConfig = {
         ExecStart = "${pkgs.nixfiles.bookdb}/bin/gunicorn -w 4 -t 60 -b 127.0.0.1:${toString cfg.port} bookdb.serve:app";
