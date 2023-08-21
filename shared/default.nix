@@ -56,7 +56,6 @@ in
     # system
     nix.extraOptions = "experimental-features = nix-command flakes";
     nix.registry.nixpkgs.flake = flakeInputs.nixpkgs;
-    nix.registry.nixpkgs-unstable.flake = flakeInputs.nixpkgs-unstable;
 
     # Clear out /tmp after a fortnight and give all normal users a ~/tmp
     # cleaned out weekly.

@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -9,11 +8,10 @@
     };
   };
 
-  outputs = { self, nixpkgs, sops-nix, nixpkgs-unstable, ... }@flakeInputs:
+  outputs = { self, nixpkgs, sops-nix, ... }@flakeInputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      pkgsUnstable = import nixpkgs-unstable { inherit system; };
     in
     {
       formatter.${system} = pkgs.nixpkgs-fmt;
@@ -22,7 +20,7 @@
         let
           mkNixosConfiguration = name: secrets: extraModules: nixpkgs.lib.nixosSystem {
             inherit system;
-            specialArgs = { inherit flakeInputs pkgsUnstable; };
+            specialArgs = { inherit flakeInputs; };
             modules = [
               {
                 networking.hostName = name;

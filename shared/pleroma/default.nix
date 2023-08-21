@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgsUnstable, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
@@ -23,7 +23,6 @@ in
 
   config = mkIf cfg.enable {
     services.pleroma.enable = true;
-    services.pleroma.package = pkgsUnstable.pleroma;
     services.pleroma.configs = [
       ''
         import Config
