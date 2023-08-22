@@ -31,7 +31,7 @@ let
   mkPodService = name: pod:
     let
       package = if cfg.backend == "podman" then pkgs.podman else throw "mkPodService only supports podman";
-      ports = concatMap (container: container.ports) pod.containers;
+      ports = concatLists (catAttrs "ports" (attrValues pod.containers));
     in
     nameValuePair "${cfg.backend}-pod-${name}" {
       description = "Manage the ${name} pod for ${cfg.backend}";
