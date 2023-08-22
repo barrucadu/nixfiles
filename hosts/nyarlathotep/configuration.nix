@@ -47,6 +47,9 @@ in
   nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
+  # Podman!
+  nixfiles.oci-containers.backend = mkForce "podman";
+
 
   ###############################################################################
   ## Backups
@@ -409,7 +412,7 @@ in
   ###############################################################################
 
   services.dockerRegistry.enable = true;
-  virtualisation.docker.extraOptions = "--insecure-registry=localhost:${toString config.services.dockerRegistry.port}";
+  virtualisation.containers.registries.insecure = [ "localhost:${toString config.services.dockerRegistry.port}" ];
 
 
   ###############################################################################
@@ -490,7 +493,14 @@ in
     containers = {
       web = {
         image = "timescale/promscale:latest";
-        cmd = [ "-db.host=promscale-db" "-db.name=postgres" "-db.password=promscale" "-db.ssl-mode=allow" "-web.enable-admin-api=true" "-metrics.promql.lookback-delta=168h" ];
+        cmd = [
+          (if config.nixfiles.oci-containers.backend == "docker" then "-db.host=promscale-db" else "-db.host=localhost")
+          "-db.name=postgres"
+          "-db.password=promscale"
+          "-db.ssl-mode=allow"
+          "-web.enable-admin-api=true"
+          "-metrics.promql.lookback-delta=168h"
+        ];
         dependsOn = [ "promscale-db" ];
         ports = [{ host = promscalePort; inner = 9201; }];
       };

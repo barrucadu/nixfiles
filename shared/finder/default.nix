@@ -20,7 +20,7 @@ in
           image = cfg.image;
           environment = {
             "DATA_DIR" = "/data";
-            "ES_HOST" = "http://finder-db:9200";
+            "ES_HOST" = if config.nixfiles.oci-containers.backend == "docker" then "http://finder-db:9200" else "http://localhost:9200";
           };
           dependsOn = [ "finder-db" ];
           ports = [{ host = cfg.port; inner = 8888; }];
