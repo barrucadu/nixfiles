@@ -15,27 +15,27 @@ in
   };
 
   config = mkIf cfg.enable {
-    nixfiles.oci-containers.containers.umami = {
-      image = "ghcr.io/mikecao/umami:${cfg.umamiTag}";
-      environment = {
-        "DATABASE_URL" = "postgres://umami:umami@umami-db/umami";
+    nixfiles.oci-containers.pods.umami = {
+      containers = {
+        web = {
+          image = "ghcr.io/mikecao/umami:${cfg.umamiTag}";
+          environment = {
+            "DATABASE_URL" = "postgres://umami:umami@umami-db/umami";
+          };
+          environmentFiles = [ cfg.environmentFile ];
+          dependsOn = [ "umami-db" ];
+          ports = [{ host = cfg.port; inner = 3000; }];
+        };
+        db = {
+          image = "postgres:${cfg.postgresTag}";
+          environment = {
+            "POSTGRES_DB" = "umami";
+            "POSTGRES_USER" = "umami";
+            "POSTGRES_PASSWORD" = "umami";
+          };
+          volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
+        };
       };
-      environmentFiles = [ cfg.environmentFile ];
-      dependsOn = [ "umami-db" ];
-      network = "umami";
-      ports = [{ host = cfg.port; inner = 3000; }];
-    };
-
-    nixfiles.oci-containers.containers.umami-db = {
-      image = "postgres:${cfg.postgresTag}";
-      environment = {
-        "POSTGRES_DB" = "umami";
-        "POSTGRES_USER" = "umami";
-        "POSTGRES_PASSWORD" = "umami";
-      };
-      network = "umami";
-      volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
-      volumeSubDir = "umami";
     };
 
     nixfiles.backups.scripts.umami = ''
