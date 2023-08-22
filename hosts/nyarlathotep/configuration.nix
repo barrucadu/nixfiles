@@ -490,7 +490,7 @@ in
     image = "timescale/promscale:latest";
     cmd = [ "-db.host=promscale-db" "-db.name=postgres" "-db.password=promscale" "-db.ssl-mode=allow" "-web.enable-admin-api=true" "-metrics.promql.lookback-delta=168h" ];
     dependsOn = [ "promscale-db" ];
-    network = "promscale_network";
+    network = "promscale";
     ports = [{ host = promscalePort; inner = 9201; }];
   };
   nixfiles.oci-containers.containers.promscale-db = {
@@ -498,7 +498,7 @@ in
     environment = {
       POSTGRES_PASSWORD = "promscale";
     };
-    network = "promscale_network";
+    network = "promscale";
     volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
     volumeSubDir = "promscale";
   };

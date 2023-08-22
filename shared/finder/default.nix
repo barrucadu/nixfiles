@@ -21,7 +21,7 @@ in
         "ES_HOST" = "http://finder-db:9200";
       };
       dependsOn = [ "finder-db" ];
-      network = "finder_network";
+      network = "finder";
       ports = [{ host = cfg.port; inner = 8888; }];
       volumes = [{ host = cfg.mangaDir; inner = "/data"; }];
     };
@@ -34,7 +34,7 @@ in
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      network = "finder_network";
+      network = "finder";
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
       volumeSubDir = "finder";
     };
