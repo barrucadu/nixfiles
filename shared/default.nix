@@ -177,8 +177,8 @@ in
       openDefaultPorts = true;
     };
 
-    # Use docker for all the OCI container based services
-    nixfiles.oci-containers.backend = "docker";
+    # Use podman for all the OCI container based services
+    nixfiles.oci-containers.backend = "podman";
 
     # If running a docker registry, also enable deletion and garbage collection.
     services.dockerRegistry.port = 46453;
