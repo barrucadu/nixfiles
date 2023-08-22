@@ -39,7 +39,7 @@ in
       };
       environmentFiles = [ cfg.environmentFile ];
       dependsOn = [ "concourse-db" ];
-      network = "concourse_network";
+      network = "concourse";
       ports = [
         { host = cfg.port; inner = 8080; }
         { host = cfg.metricsPort; inner = 8088; }
@@ -59,7 +59,7 @@ in
       };
       extraOptions = [ "--privileged" ];
       dependsOn = [ "concourse-web" ];
-      network = "concourse_network";
+      network = "concourse";
       volumes =
         [{ name = "keys/worker"; inner = "/concourse-keys"; }] ++
         (if cfg.workerScratchDir == null then [ ] else [{ host = cfg.workerScratchDir; inner = "/workdir"; }]);
@@ -73,7 +73,7 @@ in
         "POSTGRES_USER" = "concourse";
         "POSTGRES_PASSWORD" = "concourse";
       };
-      network = "concourse_network";
+      network = "concourse";
       volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
       volumeSubDir = "concourse";
     };

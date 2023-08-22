@@ -1,11 +1,25 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
-  mkPreStart = _name: container: concatStringsSep "\n" [
-    (if container.pullOnStart then "${cfg.backend} pull ${container.image}" else "")
-    (if container.network != null then "${cfg.backend} network create -d bridge ${container.network} || true" else "")
-  ];
+  shouldPreStart = _name: container: container.pullOnStart;
+  mkPreStart = name: container: nameValuePair "${cfg.backend}-${name}" {
+    preStart = if container.pullOnStart then "${cfg.backend} pull ${container.image}" else "";
+  };
+
+  shouldNetworkService = _name: container: container.network != null;
+  mkNetworkService = _name: container:
+    let package = if cfg.backend == "docker" then pkgs.docker else pkgs.podman;
+    in nameValuePair "${cfg.backend}-net-${container.network}" {
+      description = "Manage the ${container.network} network for ${cfg.backend}";
+      preStart = "${package}/bin/${cfg.backend} network rm ${container.network} || true";
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${package}/bin/${cfg.backend} network create -d bridge ${container.network}";
+        ExecStop = "${package}/bin/${cfg.backend} network rm ${container.network}";
+        RemainAfterExit = "yes";
+      };
+    };
 
   mkPortDef = { host, inner }: "127.0.0.1:${toString host}:${toString inner}";
 
@@ -15,7 +29,10 @@ let
     else "${cfg.volumeBaseDir}/${container.volumeSubDir}/${name}:${inner}";
 
   mkContainer = _name: container: with container; {
-    inherit autoStart cmd dependsOn environment environmentFiles image login;
+    inherit autoStart cmd environment environmentFiles image login;
+    dependsOn =
+      container.dependsOn ++
+      (if container.network != null then [ "net-${container.network}" ] else [ ]);
     extraOptions =
       container.extraOptions ++
       (if container.network != null then [ "--network=${container.network}" ] else [ ]);
@@ -75,6 +92,9 @@ in
     virtualisation.${cfg.backend}.autoPrune.enable = true;
     virtualisation.oci-containers.backend = cfg.backend;
     virtualisation.oci-containers.containers = mapAttrs mkContainer cfg.containers;
-    systemd.services = mapAttrs' (name: value: nameValuePair "${cfg.backend}-${name}" { preStart = mkPreStart name value; }) cfg.containers;
+    systemd.services = mkMerge [
+      (mapAttrs' mkPreStart (filterAttrs shouldPreStart cfg.containers))
+      (mapAttrs' mkNetworkService (filterAttrs shouldNetworkService cfg.containers))
+    ];
   };
 }

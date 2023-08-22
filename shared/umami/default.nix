@@ -22,7 +22,7 @@ in
       };
       environmentFiles = [ cfg.environmentFile ];
       dependsOn = [ "umami-db" ];
-      network = "umami_network";
+      network = "umami";
       ports = [{ host = cfg.port; inner = 3000; }];
     };
 
@@ -33,7 +33,7 @@ in
         "POSTGRES_USER" = "umami";
         "POSTGRES_PASSWORD" = "umami";
       };
-      network = "umami_network";
+      network = "umami";
       volumes = [{ name = "pgdata"; inner = "/var/lib/postgresql/data"; }];
       volumeSubDir = "umami";
     };
