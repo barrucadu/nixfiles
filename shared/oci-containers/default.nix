@@ -1,5 +1,7 @@
 { config, lib, pkgs, ... }:
 
+# TODO: ensure podman containers run as a non-root user
+
 with lib;
 let
   mkPortDef = { host, inner }: "127.0.0.1:${toString host}:${toString inner}";

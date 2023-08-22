@@ -47,9 +47,6 @@ in
   nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
-  # Podman!
-  nixfiles.oci-containers.backend = mkForce "podman";
-
 
   ###############################################################################
   ## Backups

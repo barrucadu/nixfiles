@@ -98,7 +98,7 @@ in
       /run/wrappers/bin/sudo cp -a ${config.users.users.pleroma.home}/static/emoji/custom emoji
       /run/wrappers/bin/sudo chown -R ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} uploads
       /run/wrappers/bin/sudo chown -R ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} emoji
-      ${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma > postgres.dump
+      /run/wrappers/bin/sudo ${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma > postgres.dump
     '';
     security.sudo.extraRules = [
       {
@@ -108,6 +108,12 @@ in
           { command = "${pkgs.coreutils}/bin/cp -a ${config.users.users.pleroma.home}/static/emoji/custom emoji"; options = [ "NOPASSWD" ]; }
           { command = "${pkgs.coreutils}/bin/chown -R ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} uploads"; options = [ "NOPASSWD" ]; }
           { command = "${pkgs.coreutils}/bin/chown -R ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} emoji"; options = [ "NOPASSWD" ]; }
+          {
+            command =
+              let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
+              in "${pkg}/bin/${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma";
+            options = [ "NOPASSWD" ];
+          }
         ];
       }
     ];

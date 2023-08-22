@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
@@ -20,7 +20,7 @@ in
         web = {
           image = "ghcr.io/mikecao/umami:${cfg.umamiTag}";
           environment = {
-            "DATABASE_URL" = "postgres://umami:umami@umami-db/umami";
+            "DATABASE_URL" = if backend == "docker" then "postgres://umami:umami@umami-db/umami" else "postgres://umami:umami@localhost/umami";
           };
           environmentFiles = [ cfg.environmentFile ];
           dependsOn = [ "umami-db" ];
@@ -39,7 +39,20 @@ in
     };
 
     nixfiles.backups.scripts.umami = ''
-      ${backend} exec -i umami-db pg_dump -U umami --no-owner umami | gzip -9 > dump.sql.gz
+      /run/wrappers/bin/sudo ${backend} exec -i umami-db pg_dump -U umami --no-owner umami | gzip -9 > dump.sql.gz
     '';
+    security.sudo.extraRules = [
+      {
+        users = [ config.nixfiles.backups.user ];
+        commands = [
+          {
+            command =
+              let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
+              in "${pkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner umami";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
   };
 }
