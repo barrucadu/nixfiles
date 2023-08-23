@@ -2,14 +2,14 @@
 
 buildGoModule rec {
   pname = "prometheus-awair-exporter";
-  version = "f154bbdc401886a1311d80d19d4461a0915ed310";
+  version = "2d598d18a80277e022ff1e2ebbb84ec19f7e79a0";
 
   src = fetchFromGitHub {
     owner = "barrucadu";
     repo = pname;
     rev = version;
-    sha256 = "180ys8ghm82l2l53wz3bhhjqjvrj4a2iv0xq66w9dbvsyw2mc863";
+    sha256 = "sha256-pgf5qCaENi0OHazBqdpgcnPXi7ZPqFaA7olNBwANaP0=";
   };
 
-  vendorSha256 = "1px1zzfihhdazaj31id1nxl6b09vy2yxj6wz5gv5f7mzdqdlmxxl";
+  vendorSha256 = "sha256-c2T6T+viz6+VpfQMHDED8JdvwC1H3qrAs7SzCvPektk=";
 }
