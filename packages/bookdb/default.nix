@@ -5,12 +5,23 @@ let
     projectDir = fetchFromGitHub {
       owner = "barrucadu";
       repo = "bookdb";
-      rev = "3fbe6e5fe1bc96219c2f3c63d961c1ed71838a3e";
-      sha256 = "sha256-kyN2tHWc0VP2qpbsL5ITa0zZKOgjHMX9sPNO+VbTzEk=";
+      rev = "4302546248c9006da32423f08d6b368d5e659fb4";
+      sha256 = "sha256-i+0HoZErkAkKYvr5nZhCXTMwsXDhqv+2qn4rB7xIsGs=";
     };
 
-    overrides = poetry2nix.overrides.withDefaults (_: super: {
-      elastic-transport = super.elastic-transport.overridePythonAttrs (old: { buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ]; });
+    overrides = poetry2nix.overrides.withDefaults (self: super: {
+      elastic-transport = super.elastic-transport.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
+      });
+      flask = super.flask.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.flit-core ];
+      });
+      gunicorn = super.gunicorn.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.packaging ];
+      });
+      werkzeug = super.werkzeug.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.flit-core ];
+      });
     });
   };
 in
