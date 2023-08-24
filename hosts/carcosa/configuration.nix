@@ -2,7 +2,6 @@
 
 with lib;
 let
-  umamiPort = 3006;
   grafanaPort = 3010;
 
   httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
@@ -353,7 +352,6 @@ in
 
   # Look what the Shoggoth Dragged In
   nixfiles.umami.enable = true;
-  nixfiles.umami.port = umamiPort;
   nixfiles.umami.environmentFile = config.sops.secrets."nixfiles/umami/env".path;
   sops.secrets."nixfiles/umami/env" = { };
 
