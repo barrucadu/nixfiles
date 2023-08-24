@@ -2,9 +2,7 @@
 
 with lib;
 let
-  concoursePort = 3003;
   umamiPort = 3006;
-  concourseMetricsPort = 3009;
   grafanaPort = 3010;
   foundryPort = 3011;
 
@@ -350,8 +348,6 @@ in
 
   # concourse
   nixfiles.concourse.enable = true;
-  nixfiles.concourse.port = concoursePort;
-  nixfiles.concourse.metricsPort = concourseMetricsPort;
   nixfiles.concourse.environmentFile = config.sops.secrets."nixfiles/concourse/env".path;
   nixfiles.concourse.workerScratchDir = "/var/concourse-worker-scratch";
   sops.secrets."nixfiles/concourse/env" = { };
