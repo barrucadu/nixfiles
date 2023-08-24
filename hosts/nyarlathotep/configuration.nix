@@ -6,8 +6,6 @@ let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
 
   floodPort = 3001;
-  finderPort = 3002;
-  grafanaPort = 3004;
   promscalePort = 9201;
   prometheusAwairExporterPort = 9517;
 
@@ -274,7 +272,6 @@ in
 
   nixfiles.finder.enable = true;
   nixfiles.finder.image = "localhost:${toString config.services.dockerRegistry.port}/finder:latest";
-  nixfiles.finder.port = finderPort;
   nixfiles.finder.mangaDir = "/mnt/nas/manga";
 
 
@@ -360,10 +357,7 @@ in
   sops.secrets."services/alertmanager/env" = { };
 
   services.grafana = {
-    settings = {
-      server.http_port = grafanaPort;
-      server.root_url = "http://grafana.nyarlathotep.lan";
-    };
+    settings.server.root_url = "http://grafana.nyarlathotep.lan";
     provision = {
       datasources.settings.datasources = [
         {

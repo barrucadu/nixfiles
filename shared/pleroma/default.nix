@@ -10,7 +10,7 @@ in
 
   options.nixfiles.pleroma = {
     enable = mkOption { type = types.bool; default = false; };
-    port = mkOption { type = types.int; default = 4000; };
+    port = mkOption { type = types.int; default = 46283; };
     pgTag = mkOption { type = types.str; default = "13"; };
     domain = mkOption { type = types.str; };
     faviconPath = mkOption { type = types.nullOr types.path; default = null; };

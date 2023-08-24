@@ -2,12 +2,6 @@
 
 with lib;
 let
-  concoursePort = 3003;
-  umamiPort = 3006;
-  concourseMetricsPort = 3009;
-  grafanaPort = 3010;
-  foundryPort = 3011;
-
   httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
 in
 {
@@ -350,15 +344,12 @@ in
 
   # concourse
   nixfiles.concourse.enable = true;
-  nixfiles.concourse.port = concoursePort;
-  nixfiles.concourse.metricsPort = concourseMetricsPort;
   nixfiles.concourse.environmentFile = config.sops.secrets."nixfiles/concourse/env".path;
   nixfiles.concourse.workerScratchDir = "/var/concourse-worker-scratch";
   sops.secrets."nixfiles/concourse/env" = { };
 
   # Look what the Shoggoth Dragged In
   nixfiles.umami.enable = true;
-  nixfiles.umami.port = umamiPort;
   nixfiles.umami.environmentFile = config.sops.secrets."nixfiles/umami/env".path;
   sops.secrets."nixfiles/umami/env" = { };
 
@@ -372,7 +363,6 @@ in
 
   # Foundry VTT
   nixfiles.foundryvtt.enable = true;
-  nixfiles.foundryvtt.port = foundryPort;
 
   # social.lainon.life
   nixfiles.pleroma.enable = true;
@@ -440,7 +430,6 @@ in
 
   # Metrics
   services.grafana.settings = {
-    server.http_port = grafanaPort;
     server.root_url = "https://grafana.carcosa.barrucadu.co.uk";
     security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}";
     security.secret_key = "$__file{${config.sops.secrets."services/grafana/secret_key".path}}";
