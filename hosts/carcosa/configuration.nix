@@ -4,7 +4,6 @@ with lib;
 let
   umamiPort = 3006;
   grafanaPort = 3010;
-  foundryPort = 3011;
 
   httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
 in
@@ -368,7 +367,6 @@ in
 
   # Foundry VTT
   nixfiles.foundryvtt.enable = true;
-  nixfiles.foundryvtt.port = foundryPort;
 
   # social.lainon.life
   nixfiles.pleroma.enable = true;
