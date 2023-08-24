@@ -6,7 +6,6 @@ let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
 
   floodPort = 3001;
-  grafanaPort = 3004;
   promscalePort = 9201;
   prometheusAwairExporterPort = 9517;
 
@@ -358,10 +357,7 @@ in
   sops.secrets."services/alertmanager/env" = { };
 
   services.grafana = {
-    settings = {
-      server.http_port = grafanaPort;
-      server.root_url = "http://grafana.nyarlathotep.lan";
-    };
+    settings.server.root_url = "http://grafana.nyarlathotep.lan";
     provision = {
       datasources.settings.datasources = [
         {

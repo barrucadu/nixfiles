@@ -191,6 +191,7 @@ in
 
     services.grafana = {
       enable = promcfg.enable;
+      settings.server.http_port = 47652;
       settings."auth.anonymous".enabled = true;
       provision.enable = true;
       provision.datasources.settings.datasources = mkIf promcfg.enable [

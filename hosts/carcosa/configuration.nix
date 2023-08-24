@@ -2,8 +2,6 @@
 
 with lib;
 let
-  grafanaPort = 3010;
-
   httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
 in
 {
@@ -432,7 +430,6 @@ in
 
   # Metrics
   services.grafana.settings = {
-    server.http_port = grafanaPort;
     server.root_url = "https://grafana.carcosa.barrucadu.co.uk";
     security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}";
     security.secret_key = "$__file{${config.sops.secrets."services/grafana/secret_key".path}}";
