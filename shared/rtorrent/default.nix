@@ -53,7 +53,7 @@ in
     downloadDir = mkOption { type = types.str; };
     watchDir = mkOption { type = types.str; };
     user = mkOption { type = types.str; };
-    logLevels = mkOption { type = types.listOf types.str; default = [ "info" "torrent_info" ]; };
+    logLevels = mkOption { type = types.listOf types.str; default = [ "info" ]; };
     openFirewall = mkOption { type = types.bool; default = true; };
     portRange = {
       from = mkOption { type = types.int; default = 50000; };
