@@ -29,6 +29,7 @@ in
     ./oci-containers
     ./pleroma
     ./resolved
+    ./rtorrent
     ./umami
   ];
 
