@@ -5,11 +5,8 @@ with lib;
 let
   shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
 
-  floodPort = 3001;
   promscalePort = 9201;
   prometheusAwairExporterPort = 9517;
-
-  rtorrentExternalPort = 50000;
 
   httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
 in
@@ -36,7 +33,6 @@ in
     config.services.nfs.server.mountdPort
     config.services.nfs.server.lockdPort
     config.services.nfs.server.statdPort
-    rtorrentExternalPort
   ];
 
   # Wipe / on boot
@@ -187,7 +183,7 @@ in
     http://flood.nyarlathotep.lan:80 {
       import restrict_vlan
       encode gzip
-      reverse_proxy http://localhost:${toString floodPort}
+      reverse_proxy http://localhost:${toString config.nixfiles.rtorrent.flood.port}
     }
 
     http://finder.nyarlathotep.lan:80 {
@@ -279,74 +275,10 @@ in
   ## rTorrent
   ###############################################################################
 
-  systemd.services.rtorrent =
-    let
-      downloadDir = "/mnt/nas/torrents/files/";
-      watchDir = "/mnt/nas/torrents/watch/";
-      sessionDir = "/persist/rtorrent/session/";
-      logDir = "/persist/rtorrent/logs/";
-      rpcSock = "/run/rtorrent/rpc.sock";
-
-      rtorrentrc = pkgs.writeText "rtorrent.rc" ''
-        # Paths
-        directory.default.set = ${downloadDir}
-        session.path.set      = ${sessionDir}
-
-        # Logging
-        method.insert = cfg.logfile, private|const|string, (cat,"${logDir}",(system.time),".log")
-        log.open_file = "log", (cfg.logfile)
-        log.add_output = "info", "log"
-
-        # Listening port for incoming peer traffic
-        network.port_range.set  = ${toString rtorrentExternalPort}-${toString rtorrentExternalPort}
-        network.port_random.set = no
-
-        # Optimise for private trackers (disable DHT & UDP trackers)
-        dht.mode.set         = disable
-        protocol.pex.set     = no
-        trackers.use_udp.set = no
-
-        # Force encryption
-        protocol.encryption.set = allow_incoming,try_outgoing,require,require_RC4
-
-        # Write filenames in UTF-8
-        encoding.add = UTF-8
-
-        # File options
-        pieces.hash.on_completion.set = yes
-        pieces.sync.always_safe.set = yes
-
-        # Monitor for new .torrent files
-        schedule2 = watch_directory,5,5,load.start=${watchDir}*.torrent
-
-        # XMLRPC
-        network.scgi.open_local = ${rpcSock}
-      '';
-    in
-    {
-      enable = true;
-      wantedBy = [ "default.target" ];
-      after = [ "network.target" ];
-      serviceConfig = {
-        ExecStart = "${pkgs.rtorrent}/bin/rtorrent -n -o system.daemon.set=true -o import=${rtorrentrc}";
-        User = "barrucadu";
-        Restart = "on-failure";
-        RuntimeDirectory = "rtorrent";
-        # with a lot of torrents, rtorrent can take a while to shut down
-        TimeoutStopSec = 300;
-      };
-    };
-
-  systemd.services.flood = {
-    enable = true;
-    wantedBy = [ "default.target" ];
-    after = [ "network.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.flood}/bin/flood --noauth --port=${toString floodPort} --rundir=/persist/rtorrent/flood --rtsocket=/run/rtorrent/rpc.sock";
-      User = "barrucadu";
-      Restart = "on-failure";
-    };
-  };
+  nixfiles.rtorrent.enable = true;
+  nixfiles.rtorrent.downloadDir = "/mnt/nas/torrents/files/";
+  nixfiles.rtorrent.watchDir = "/mnt/nas/torrents/watch/";
+  nixfiles.rtorrent.user = "barrucadu";
 
 
   ###############################################################################
