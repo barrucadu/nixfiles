@@ -76,6 +76,15 @@ in
     enable = mkOption { type = types.bool; default = false; };
     scripts = mkOption { type = types.attrsOf types.str; default = { }; };
     pythonScripts = mkOption { type = types.attrsOf types.str; default = { }; };
+    sudoRules = mkOption {
+      type = types.listOf (types.submodule {
+        options = {
+          command = mkOption { type = types.str; };
+          runAs = mkOption { type = types.str; default = "ALL:ALL"; };
+        };
+      });
+      default = { };
+    };
     environmentFile = mkOption { type = types.str; };
     onCalendarFull = mkOption { type = types.str; default = "monthly"; };
     onCalendarIncr = mkOption { type = types.str; default = "Mon, 04:00"; };
@@ -97,5 +106,15 @@ in
       path = servicePath;
       serviceConfig = serviceConfig "incr";
     };
+
+    security.sudo.extraRules =
+      let
+        mkRule = rule: {
+          users = [ cfg.user ];
+          runAs = rule.runAs;
+          commands = [{ command = rule.command; options = [ "NOPASSWD" ]; }];
+        };
+      in
+      map mkRule cfg.sudoRules;
   };
 }

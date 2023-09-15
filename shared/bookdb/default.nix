@@ -67,14 +67,9 @@ in
       /run/wrappers/bin/sudo chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz
       env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump | gzip -9 > dump.json.gz
     '';
-    security.sudo.extraRules = [
-      {
-        users = [ config.nixfiles.backups.user ];
-        commands = [
-          { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; options = [ "NOPASSWD" ]; }
-          { command = "${pkgs.coreutils}/bin/chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz"; options = [ "NOPASSWD" ]; }
-        ];
-      }
+    nixfiles.backups.sudoRules = [
+      { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; }
+      { command = "${pkgs.coreutils}/bin/chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz"; }
     ];
   };
 }

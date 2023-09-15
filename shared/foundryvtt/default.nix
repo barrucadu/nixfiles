@@ -46,16 +46,11 @@ in
       /run/wrappers/bin/sudo chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz
       /run/wrappers/bin/sudo systemctl start foundryvtt
     '';
-    security.sudo.extraRules = [
-      {
-        users = [ config.nixfiles.backups.user ];
-        commands = [
-          { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; options = [ "NOPASSWD" ]; }
-          { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; options = [ "NOPASSWD" ]; }
-          { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; options = [ "NOPASSWD" ]; }
-          { command = "${pkgs.coreutils}/bin/chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz"; options = [ "NOPASSWD" ]; }
-        ];
-      }
+    nixfiles.backups.sudoRules = [
+      { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; }
+      { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; }
+      { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; }
+      { command = "${pkgs.coreutils}/bin/chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz"; }
     ];
   };
 }

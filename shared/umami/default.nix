@@ -41,17 +41,11 @@ in
     nixfiles.backups.scripts.umami = ''
       /run/wrappers/bin/sudo ${backend} exec -i umami-db pg_dump -U umami --no-owner umami | gzip -9 > dump.sql.gz
     '';
-    security.sudo.extraRules = [
+    nixfiles.backups.sudoRules = [
       {
-        users = [ config.nixfiles.backups.user ];
-        commands = [
-          {
-            command =
-              let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
-              in "${pkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner umami";
-            options = [ "NOPASSWD" ];
-          }
-        ];
+        command =
+          let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
+          in "${pkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner umami";
       }
     ];
   };
