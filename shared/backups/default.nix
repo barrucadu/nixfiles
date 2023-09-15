@@ -6,6 +6,8 @@ let
   cfg = config.nixfiles.backups;
   hostname = config.networking.hostName;
 
+  chown = name: "${pkgs.coreutils}/bin/chown -R ${cfg.user}.${cfg.group} ./${name}/";
+
   runScript = cmd: name: source: ''
     echo "${name}"
     mkdir "${name}"
@@ -14,6 +16,7 @@ let
       fail "Backup failed in ${name}"
     fi
     popd
+    /run/wrappers/bin/sudo ${chown name}
   '';
 
   script = pkgs.writeShellScript "backup.sh" ''
@@ -114,7 +117,8 @@ in
           runAs = rule.runAs;
           commands = [{ command = rule.command; options = [ "NOPASSWD" ]; }];
         };
+        mkChownRule = name: _: mkRule { command = chown name; runAs = "root"; };
       in
-      map mkRule cfg.sudoRules;
+      map mkRule cfg.sudoRules ++ mapAttrsToList mkChownRule cfg.scripts ++ mapAttrsToList mkChownRule cfg.pythonScripts;
   };
 }

@@ -64,12 +64,10 @@ in
     # package doesn't help - need the wrapper)
     nixfiles.backups.scripts.bookdb = ''
       /run/wrappers/bin/sudo tar cfz dump.tar.gz ${cfg.dataDir}
-      /run/wrappers/bin/sudo chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz
       env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump | gzip -9 > dump.json.gz
     '';
     nixfiles.backups.sudoRules = [
       { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; }
-      { command = "${pkgs.coreutils}/bin/chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz"; }
     ];
   };
 }

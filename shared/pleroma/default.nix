@@ -96,15 +96,11 @@ in
     nixfiles.backups.scripts.pleroma = ''
       /run/wrappers/bin/sudo cp -a ${config.users.users.pleroma.home}/uploads uploads
       /run/wrappers/bin/sudo cp -a ${config.users.users.pleroma.home}/static/emoji/custom emoji
-      /run/wrappers/bin/sudo chown -R ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} uploads
-      /run/wrappers/bin/sudo chown -R ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} emoji
       /run/wrappers/bin/sudo ${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma > postgres.dump
     '';
     nixfiles.backups.sudoRules = [
       { command = "${pkgs.coreutils}/bin/cp -a ${config.users.users.pleroma.home}/uploads uploads"; }
       { command = "${pkgs.coreutils}/bin/cp -a ${config.users.users.pleroma.home}/static/emoji/custom emoji"; }
-      { command = "${pkgs.coreutils}/bin/chown -R ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} uploads"; }
-      { command = "${pkgs.coreutils}/bin/chown -R ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} emoji"; }
       {
         command =
           let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;

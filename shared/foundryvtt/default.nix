@@ -43,14 +43,12 @@ in
     nixfiles.backups.scripts.foundryvtt = ''
       /run/wrappers/bin/sudo systemctl stop foundryvtt
       /run/wrappers/bin/sudo tar cfz dump.tar.gz ${cfg.dataDir}
-      /run/wrappers/bin/sudo chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz
       /run/wrappers/bin/sudo systemctl start foundryvtt
     '';
     nixfiles.backups.sudoRules = [
       { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; }
       { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; }
       { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; }
-      { command = "${pkgs.coreutils}/bin/chown ${config.nixfiles.backups.user}.${config.nixfiles.backups.group} dump.tar.gz"; }
     ];
   };
 }
