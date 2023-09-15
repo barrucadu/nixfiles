@@ -42,13 +42,15 @@ in
     # package doesn't help - need the wrapper)
     nixfiles.backups.scripts.foundryvtt = ''
       /run/wrappers/bin/sudo systemctl stop foundryvtt
-      /run/wrappers/bin/sudo tar cfz dump.tar.gz ${cfg.dataDir}
+      /run/wrappers/bin/sudo tar cfz bin.tar.gz ${cfg.dataDir}/bin
+      /run/wrappers/bin/sudo cp -a ${cfg.dataDir}/data data
       /run/wrappers/bin/sudo systemctl start foundryvtt
     '';
     nixfiles.backups.sudoRules = [
       { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; }
       { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; }
-      { command = "${pkgs.gnutar}/bin/tar cfz dump.tar.gz ${cfg.dataDir}"; }
+      { command = "${pkgs.gnutar}/bin/tar cfz bin.tar.gz ${cfg.dataDir}/bin"; }
+      { command = "${pkgs.coreutils}/bin/cp -a ${cfg.dataDir}/data data"; }
     ];
   };
 }
