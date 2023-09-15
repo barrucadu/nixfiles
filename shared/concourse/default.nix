@@ -90,17 +90,11 @@ in
     nixfiles.backups.scripts.concourse = ''
       /run/wrappers/bin/sudo ${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse | gzip -9 > dump.sql.gz
     '';
-    security.sudo.extraRules = [
+    nixfiles.backups.sudoRules = [
       {
-        users = [ config.nixfiles.backups.user ];
-        commands = [
-          {
-            command =
-              let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
-              in "${pkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse";
-            options = [ "NOPASSWD" ];
-          }
-        ];
+        command =
+          let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
+          in "${pkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse";
       }
     ];
   };

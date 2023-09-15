@@ -6,6 +6,8 @@ let
   cfg = config.nixfiles.backups;
   hostname = config.networking.hostName;
 
+  chown = name: "${pkgs.coreutils}/bin/chown -R ${cfg.user}.${cfg.group} ./${name}/";
+
   runScript = cmd: name: source: ''
     echo "${name}"
     mkdir "${name}"
@@ -14,6 +16,7 @@ let
       fail "Backup failed in ${name}"
     fi
     popd
+    /run/wrappers/bin/sudo ${chown name}
   '';
 
   script = pkgs.writeShellScript "backup.sh" ''
@@ -76,6 +79,15 @@ in
     enable = mkOption { type = types.bool; default = false; };
     scripts = mkOption { type = types.attrsOf types.str; default = { }; };
     pythonScripts = mkOption { type = types.attrsOf types.str; default = { }; };
+    sudoRules = mkOption {
+      type = types.listOf (types.submodule {
+        options = {
+          command = mkOption { type = types.str; };
+          runAs = mkOption { type = types.str; default = "ALL:ALL"; };
+        };
+      });
+      default = { };
+    };
     environmentFile = mkOption { type = types.str; };
     onCalendarFull = mkOption { type = types.str; default = "monthly"; };
     onCalendarIncr = mkOption { type = types.str; default = "Mon, 04:00"; };
@@ -97,5 +109,16 @@ in
       path = servicePath;
       serviceConfig = serviceConfig "incr";
     };
+
+    security.sudo.extraRules =
+      let
+        mkRule = rule: {
+          users = [ cfg.user ];
+          runAs = rule.runAs;
+          commands = [{ command = rule.command; options = [ "NOPASSWD" ]; }];
+        };
+        mkChownRule = name: _: mkRule { command = chown name; runAs = "root"; };
+      in
+      map mkRule cfg.sudoRules ++ mapAttrsToList mkChownRule cfg.scripts ++ mapAttrsToList mkChownRule cfg.pythonScripts;
   };
 }
