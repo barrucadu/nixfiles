@@ -153,94 +153,94 @@ in
       import vlan_matchers
       redir @vlan20 http://help.lan 307
     }
+  '';
 
-    http://nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      file_server {
-        root ${httpdir}/nyarlathotep.lan
-      }
+  services.caddy.virtualHosts."nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    file_server {
+      root ${httpdir}/nyarlathotep.lan
     }
+  '';
 
-    http://alertmanager.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.services.prometheus.alertmanager.port}
-    }
+  services.caddy.virtualHosts."alertmanager.nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    reverse_proxy http://localhost:${toString config.services.prometheus.alertmanager.port}
+  '';
 
-    http://bookdb.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.nixfiles.bookdb.port}
-    }
+  services.caddy.virtualHosts."bookdb.nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    reverse_proxy http://localhost:${toString config.nixfiles.bookdb.port}
+  '';
 
-    http://bookmarks.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.nixfiles.bookmarks.port}
-    }
+  services.caddy.virtualHosts."bookmarks.nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    reverse_proxy http://localhost:${toString config.nixfiles.bookmarks.port}
+  '';
 
-    http://flood.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.nixfiles.rtorrent.flood.port}
-    }
+  services.caddy.virtualHosts."flood.nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    reverse_proxy http://localhost:${toString config.nixfiles.rtorrent.flood.port}
+  '';
 
-    http://finder.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.nixfiles.finder.port}
-    }
+  services.caddy.virtualHosts."finder.nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    reverse_proxy http://localhost:${toString config.nixfiles.finder.port}
+  '';
 
-    http://grafana.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
-    }
+  services.caddy.virtualHosts."grafana.nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
+  '';
 
-    http://prometheus.nyarlathotep.lan:80 {
-      import restrict_vlan
-      encode gzip
-      reverse_proxy http://localhost:${toString config.services.prometheus.port}
-    }
+  services.caddy.virtualHosts."prometheus.nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    reverse_proxy http://localhost:${toString config.services.prometheus.port}
+  '';
 
-    http://help.lan:80 {
-      import vlan_matchers
-      redir @vlan1 http://vlan1.help.lan 302
-      redir @vlan10 http://vlan10.help.lan 302
-      redir @vlan20 http://vlan20.help.lan 302
-    }
+  services.caddy.virtualHosts."help.lan:80".extraConfig = ''
+    import vlan_matchers
+    redir @vlan1 http://vlan1.help.lan 302
+    redir @vlan10 http://vlan10.help.lan 302
+    redir @vlan20 http://vlan20.help.lan 302
+  '';
 
-    http://vlan1.help.lan:80 {
-      import vlan_matchers
-      encode gzip
-      redir @not_vlan1 http://help.lan 302
-      file_server {
-        root ${httpdir}/vlan1.help.lan
-      }
+  services.caddy.virtualHosts."vlan1.help.lan:80".extraConfig = ''
+    import vlan_matchers
+    encode gzip
+    redir @not_vlan1 http://help.lan 302
+    file_server {
+      root ${httpdir}/vlan1.help.lan
     }
+  '';
 
-    http://vlan10.help.lan:80 {
-      import vlan_matchers
-      encode gzip
-      redir @not_vlan10 http://help.lan 302
-      file_server {
-        root ${httpdir}/vlan10.help.lan
-      }
+  services.caddy.virtualHosts."vlan10.help.lan:80".extraConfig = ''
+    import vlan_matchers
+    encode gzip
+    redir @not_vlan10 http://help.lan 302
+    file_server {
+      root ${httpdir}/vlan10.help.lan
     }
+  '';
 
-    http://vlan20.help.lan:80 {
-      import vlan_matchers
-      encode gzip
-      redir @not_vlan20 http://help.lan 302
-      file_server {
-        root ${httpdir}/vlan20.help.lan
-      }
+  services.caddy.virtualHosts."vlan20.help.lan:80".extraConfig = ''
+    import vlan_matchers
+    encode gzip
+    redir @not_vlan20 http://help.lan 302
+    file_server {
+      root ${httpdir}/vlan20.help.lan
     }
+  '';
 
-    http://*:80 {
-      respond * 421
-    }
+  services.caddy.virtualHosts."*:80".extraConfig = ''
+    respond * 421
   '';
 
 
