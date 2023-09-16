@@ -417,7 +417,7 @@ in
       web = {
         image = "timescale/promscale:latest";
         cmd = [
-          (if config.nixfiles.oci-containers.backend == "docker" then "-db.host=promscale-db" else "-db.host=localhost")
+          "-db.host=promscale-db"
           "-db.name=postgres"
           "-db.password=promscale"
           "-db.ssl-mode=allow"

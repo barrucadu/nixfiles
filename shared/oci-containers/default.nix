@@ -33,6 +33,7 @@ let
   mkPodService = name: pod:
     let
       package = if cfg.backend == "podman" then pkgs.podman else throw "mkPodService only supports podman";
+      aliases = map (cn: "${name}-${cn}") (attrNames pod.containers);
       ports = concatLists (catAttrs "ports" (attrValues pod.containers));
     in
     nameValuePair "${cfg.backend}-pod-${name}" {
@@ -40,7 +41,9 @@ let
       preStart = "${package}/bin/${cfg.backend} pod rm --force --ignore ${name} || true";
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = "${package}/bin/${cfg.backend} pod create ${concatMapStringsSep " " (pd: "-p ${mkPortDef pd}") ports} ${name}";
+        ExecStart =
+          let args = map (n: "--network-alias=${n}") aliases ++ map (pd: "-p ${mkPortDef pd}") ports;
+          in "${package}/bin/${cfg.backend} pod create ${concatStringsSep " " args} ${name}";
         ExecStop = "${package}/bin/${cfg.backend} pod rm ${name}";
         RemainAfterExit = "yes";
       };

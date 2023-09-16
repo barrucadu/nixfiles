@@ -27,7 +27,7 @@ in
           image = "concourse/concourse:${cfg.concourseTag}";
           cmd = [ "web" ];
           environment = {
-            "CONCOURSE_POSTGRES_HOST" = if backend == "docker" then "concourse-db" else "localhost";
+            "CONCOURSE_POSTGRES_HOST" = "concourse-db";
             "CONCOURSE_POSTGRES_USER" = "concourse";
             "CONCOURSE_POSTGRES_PASSWORD" = "concourse";
             "CONCOURSE_POSTGRES_DATABASE" = "concourse";
@@ -52,7 +52,7 @@ in
           image = "concourse/concourse:${cfg.concourseTag}";
           cmd = [ "worker" "--ephemeral" ];
           environment = {
-            "CONCOURSE_TSA_HOST" = if backend == "docker" then "concourse-web:2222" else "localhost:2222";
+            "CONCOURSE_TSA_HOST" = "concourse-web:2222";
             "CONCOURSE_CONTAINERD_DNS_PROXY_ENABLE" = "false";
             "CONCOURSE_GARDEN_DNS_SERVER" = "1.1.1.1,8.8.8.8";
             "CONCOURSE_WORK_DIR" = mkIf (cfg.workerScratchDir != null) "/workdir";
