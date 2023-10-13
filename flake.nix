@@ -1,6 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -8,10 +12,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, sops-nix, ... }@flakeInputs:
+  outputs = { self, nixpkgs, poetry2nix, sops-nix, ... }@flakeInputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ poetry2nix.overlay ];
+      };
     in
     {
       formatter.${system} = pkgs.nixpkgs-fmt;
