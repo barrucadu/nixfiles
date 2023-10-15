@@ -93,9 +93,8 @@ let
           volumeSubDir = pod.volumeSubDir;
         }
       );
-      podContainers = concatMapAttrs (podName: pod: mapAttrs' (mkPodContainer podName pod) pod.containers) cfg.pods;
     in
-    attrsets.unionOfDisjoint cfg.containers podContainers;
+    concatMapAttrs (podName: pod: mapAttrs' (mkPodContainer podName pod) pod.containers) cfg.pods;
 in
 {
   imports = [

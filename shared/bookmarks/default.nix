@@ -41,7 +41,7 @@ in
       };
     };
 
-    nixfiles.oci-containers.containers.bookmarks-db = {
+    nixfiles.oci-containers.pods.bookmarks.containers.db = {
       image = "elasticsearch:${cfg.elasticsearchTag}";
       environment = {
         "http.host" = "0.0.0.0";
@@ -51,7 +51,6 @@ in
       };
       ports = [{ host = cfg.elasticsearchPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
-      volumeSubDir = "bookmarks";
     };
 
     nixfiles.backups.scripts.bookmarks = ''

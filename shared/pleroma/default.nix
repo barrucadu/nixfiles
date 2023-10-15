@@ -77,7 +77,7 @@ in
         [ "${toString (pkgs.copyPathToStore cfg.faviconPath)}:/var/lib/pleroma/static/favicon.png" ];
     };
 
-    nixfiles.oci-containers.containers.pleroma-db = {
+    nixfiles.oci-containers.pods.pleroma.containers.db = {
       image = "postgres:${cfg.postgresTag}";
       environment = {
         "POSTGRES_DB" = "pleroma";
@@ -89,7 +89,6 @@ in
         { name = "pgdata"; inner = "/var/lib/postgresql/data"; }
         { host = "/var/run/pleroma/db"; inner = "/var/run/postgresql"; }
       ];
-      volumeSubDir = "pleroma";
     };
 
     # TODO: figure out how to get `sudo` in the unit's path (adding the package

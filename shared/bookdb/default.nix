@@ -46,7 +46,7 @@ in
       };
     };
 
-    nixfiles.oci-containers.containers.bookdb-db = {
+    nixfiles.oci-containers.pods.bookdb.containers.db = {
       image = "elasticsearch:${cfg.elasticsearchTag}";
       environment = {
         "http.host" = "0.0.0.0";
@@ -56,7 +56,6 @@ in
       };
       ports = [{ host = cfg.elasticsearchPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
-      volumeSubDir = "bookdb";
     };
 
     users.users.bookdb = {

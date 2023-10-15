@@ -167,43 +167,6 @@ in
       '';
     };
 
-    containers = mkOption {
-      type = types.attrsOf (types.submodule ({ name, ... }: {
-        options =
-          containerOptions //
-          {
-            pod = mkOption {
-              type = types.nullOr types.str;
-              default = null;
-              description = mdDoc ''
-                Pod to attach the container to.  This is only valid if using
-                podman as the backend.
-              '';
-            };
-            network = mkOption {
-              type = types.nullOr types.str;
-              default = null;
-              description = mdDoc ''
-                Network to attach the container to.  This is only valid if using
-                docker as the backend.
-              '';
-            };
-            volumeSubDir = mkOption {
-              type = types.str;
-              default = name;
-              description = mdDoc ''
-                Subdirectory of the `''${volumeBaseDir}` to store bind-mounts
-                under.
-              '';
-            };
-          };
-      }));
-      default = { };
-      description = mdDoc ''
-        Attrset of container definitions.
-      '';
-    };
-
     pods = mkOption {
       type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
