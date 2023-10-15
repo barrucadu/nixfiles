@@ -1,3 +1,4 @@
+# Common configuration enabled on all hosts.
 { config, lib, pkgs, flakeInputs, ... }:
 
 with lib;
