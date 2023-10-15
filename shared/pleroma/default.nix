@@ -1,3 +1,14 @@
+# [Pleroma][] is a fediverese server.
+#
+# Pleroma uses a containerised postgres database.
+#
+# If the `backups` module is enabled, adds a script to backup the database and
+# uploaded files.
+#
+# If the `erase-your-darlings` module is enabled, stores its data on the
+# persistent volume.
+#
+# [Pleroma]: https://pleroma.social/
 { config, lib, pkgs, ... }:
 
 with lib;
