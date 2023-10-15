@@ -1,3 +1,17 @@
+# [Concourse CI][] is a "continuous thing-doer", it's a CI / CD tool.  This
+# module sets up a single-user instance, with GitHub authentication.
+#
+# Concourse uses a containerised postgres database.
+#
+# If the `backups` module is enabled, adds a script to backup the database.
+#
+# If the `erase-your-darlings` module is enabled, stores its data on the
+# persistent volume.
+#
+# Enabling this module also provisions a [Grafana][] dashboard.
+#
+# [Concourse CI]: https://concourse-ci.org/
+# [Grafana]: https://grafana.com/
 { config, lib, pkgs, ... }:
 
 with lib;
