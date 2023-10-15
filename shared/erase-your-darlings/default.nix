@@ -5,9 +5,10 @@
 # which makes any changes that they need.
 #
 # This requires a setting up ZFS in a specific way when first installing NixOS.
-# See the [README](./index.html#optional-configure-wiping--on-boot).
+# See the ["set up a new host"][] runbook.
 #
 # ["erase your darlings"]: https://grahamc.com/blog/erase-your-darlings/
+# ["set up a new host"]: ./runbooks/set-up-a-new-host.md
 { config, lib, ... }:
 
 with lib;
