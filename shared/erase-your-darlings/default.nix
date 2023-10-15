@@ -1,3 +1,13 @@
+# Wipe `/` on boot, inspired by ["erase your darlings"][].
+#
+# This module is responsible for configuring standard NixOS options and
+# services, all of my modules have their own `erase-your-darlings.nix` file
+# which makes any changes that they need.
+#
+# This requires a setting up ZFS in a specific way when first installing NixOS.
+# See the [README](./index.html#optional-configure-wiping--on-boot).
+#
+# ["erase your darlings"]: https://grahamc.com/blog/erase-your-darlings/
 { config, lib, ... }:
 
 with lib;
