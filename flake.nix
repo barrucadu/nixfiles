@@ -89,7 +89,7 @@
             ${pkgs.lib.fileContents ./scripts/secrets.sh}
           '';
 
-          option-docs =
+          documentation =
             let
               eval = pkgs.lib.evalModules {
                 modules = [
@@ -115,15 +115,11 @@
                 warningsAreErrors = false;
               };
             in
-            mkApp "options-json" ''
-              case "$1" in
-                "json")
-                  cat ${optionsDoc.optionsJSON}/share/doc/nixos/options.json
-                  ;;
-                *)
-                  cat ${optionsDoc.optionsCommonMark}
-                  ;;
-              esac
+            mkApp "documentation" ''
+              PATH=${with pkgs; lib.makeBinPath [ coreutils mdbook mdbook-admonish python3 ]}
+              export NIXOS_OPTIONS_JSON="${optionsDoc.optionsJSON}/share/doc/nixos/options.json"
+
+              ${pkgs.lib.fileContents ./scripts/documentation.sh}
             '';
         };
     };

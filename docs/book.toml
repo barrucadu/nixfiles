@@ -1,0 +1,17 @@
+[book]
+title = "nixfiles"
+authors = ["Michael Walker (barrucadu)"]
+description = "My NixOS configuration and assorted other crap, powered by flakes."
+language = "en"
+multilingual = false
+
+[build]
+create-missing = false
+
+[output.html]
+git-repository-url = "https://github.com/barrucadu/nixfiles"
+cname = "nixfiles.docs.barrucadu.co.uk"
+
+[preprocessor.admonish]
+on_failure = "bail"
+command = "mdbook-admonish"
