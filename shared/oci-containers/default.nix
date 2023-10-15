@@ -1,3 +1,15 @@
+# An abstraction over running containers as systemd units, enforcing some good
+# practices:
+#
+# - Container DNS behaves the same under docker and podman.
+# - Ports are exposed on `127.0.0.1`, rather than `0.0.0.0`.
+# - Volumes are backed up by bind-mounts to the host filesystem.
+#
+# Switching between using docker or podman for the container runtime should be
+# totally transparent.
+#
+# If the `erase-your-darlings` module is enabled, stores volume bind-mounts on
+# the persistent volume.
 { config, lib, pkgs, ... }:
 
 # TODO: ensure podman containers run as a non-root user
