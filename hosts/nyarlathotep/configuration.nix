@@ -60,9 +60,9 @@ in
   ###############################################################################
 
   nixfiles.resolved.enable = true;
-  nixfiles.resolved.cache_size = 1000000;
-  nixfiles.resolved.hosts_dirs = [ "/etc/dns/hosts" ];
-  nixfiles.resolved.zones_dirs = [ "/etc/dns/zones" ];
+  nixfiles.resolved.cacheSize = 1000000;
+  nixfiles.resolved.hostsDirs = [ "/etc/dns/hosts" ];
+  nixfiles.resolved.zonesDirs = [ "/etc/dns/zones" ];
 
   environment.etc."dns/hosts/stevenblack".source = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";

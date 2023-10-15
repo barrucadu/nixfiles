@@ -20,7 +20,7 @@ with lib;
       '';
     };
 
-    metrics_address = mkOption {
+    metricsAddress = mkOption {
       type = types.str;
       default = "127.0.0.1:9420";
       description = mdDoc ''
@@ -28,7 +28,7 @@ with lib;
       '';
     };
 
-    authoritative_only = mkOption {
+    authoritativeOnly = mkOption {
       type = types.bool;
       default = false;
       description = mdDoc ''
@@ -37,7 +37,7 @@ with lib;
       '';
     };
 
-    protocol_mode = mkOption {
+    protocolMode = mkOption {
       type = types.str;
       default = "only-v4";
       description = mdDoc ''
@@ -46,7 +46,7 @@ with lib;
       '';
     };
 
-    forward_address = mkOption {
+    forwardAddress = mkOption {
       type = types.nullOr types.str;
       default = null;
       description = mdDoc ''
@@ -56,7 +56,7 @@ with lib;
       '';
     };
 
-    cache_size = mkOption {
+    cacheSize = mkOption {
       type = types.int;
       default = 512;
       description = mdDoc ''
@@ -64,7 +64,7 @@ with lib;
       '';
     };
 
-    hosts_dirs = mkOption {
+    hostsDirs = mkOption {
       type = types.listOf types.str;
       default = [ ];
       description = mdDoc ''
@@ -72,7 +72,7 @@ with lib;
       '';
     };
 
-    zones_dirs = mkOption {
+    zonesDirs = mkOption {
       type = types.listOf types.str;
       default = [ ];
       description = mdDoc ''
@@ -80,7 +80,7 @@ with lib;
       '';
     };
 
-    use_default_zones = mkOption {
+    useDefaultZones = mkOption {
       type = types.bool;
       default = true;
       description = mdDoc ''
@@ -88,7 +88,7 @@ with lib;
       '';
     };
 
-    log_level = mkOption {
+    logLevel = mkOption {
       type = types.str;
       default = "dns_resolver=info,resolved=info";
       description = mdDoc ''
@@ -96,7 +96,7 @@ with lib;
       '';
     };
 
-    log_format = mkOption {
+    logFormat = mkOption {
       type = types.str;
       default = "json,no-time";
       description = mdDoc ''
