@@ -37,7 +37,7 @@ in
       environment = {
         ALLOW_WRITES = if cfg.readOnly then "0" else "1";
         BASE_URI = cfg.baseURI;
-        ES_HOST = "http://127.0.0.1:${toString cfg.esPort}";
+        ES_HOST = "http://127.0.0.1:${toString cfg.elasticsearchPort}";
       };
     };
 
@@ -49,13 +49,13 @@ in
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      ports = [{ host = cfg.esPort; inner = 9200; }];
+      ports = [{ host = cfg.elasticsearchPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
       volumeSubDir = "bookmarks";
     };
 
     nixfiles.backups.scripts.bookmarks = ''
-      env ES_HOST=http://127.0.0.1:${toString cfg.esPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | gzip -9 > dump.json.gz
+      env ES_HOST=http://127.0.0.1:${toString cfg.elasticsearchPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | gzip -9 > dump.json.gz
     '';
   };
 }

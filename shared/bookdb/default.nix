@@ -41,7 +41,7 @@ in
         "ALLOW_WRITES" = if cfg.readOnly then "0" else "1";
         "BASE_URI" = cfg.baseURI;
         "COVER_DIR" = "${cfg.dataDir}/covers";
-        "ES_HOST" = "http://127.0.0.1:${toString cfg.esPort}";
+        "ES_HOST" = "http://127.0.0.1:${toString cfg.elasticsearchPort}";
         "UUIDS_FILE" = ./uuids.yaml;
       };
     };
@@ -54,7 +54,7 @@ in
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      ports = [{ host = cfg.esPort; inner = 9200; }];
+      ports = [{ host = cfg.elasticsearchPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
       volumeSubDir = "bookdb";
     };

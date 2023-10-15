@@ -20,7 +20,7 @@ with lib;
       '';
     };
 
-    esPort = mkOption {
+    elasticsearchPort = mkOption {
       type = types.int;
       default = 43389;
       description = mdDoc ''
