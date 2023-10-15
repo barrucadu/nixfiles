@@ -1,3 +1,17 @@
+# [bookdb][] is a webapp to keep track of all my books, with a public instance
+# on [bookdb.barrucadu.co.uk][].
+#
+# bookdb uses a containerised elasticsearch database, it also stores uploaded
+# book cover images.
+#
+# If the `backups` module is enabled, adds a script to backup the database and
+# uploaded files.
+#
+# If the `erase-your-darlings` module is enabled, stores its data on the
+# persistent volume.
+#
+# [bookdb]: https://github.com/barrucadu/bookdb
+# [bookdb.barrucadu.co.uk]: https://bookdb.barrucadu.co.uk/
 { config, lib, pkgs, ... }:
 
 with lib;
