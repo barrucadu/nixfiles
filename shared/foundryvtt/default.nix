@@ -1,6 +1,18 @@
-# FoundryVTT is licensed software and needs to be downloaded after
-# purchase.
-
+# [FoundryVTT][] is a virtual tabletop to run roleplaying games.  It is licensed
+# software and needs to be downloaded after purchase.  This module doesn't
+# manage the FoundryVTT program files, only operating it.
+#
+# The downloaded FoundryVTT program files must be in
+# `{nixfiles.foundryvtt.dataDir}/bin`.
+#
+# If the `backups` module is enabled, adds a script to backup the data files.
+# This requires briefly stopping the service, so don't schedule backups during
+# game time.
+#
+# If the `erase-your-darlings` module is enabled, stores its data on the
+# persistent volume.
+#
+# [FoundryVTT]: https://foundryvtt.com/
 { config, lib, pkgs, ... }:
 
 with lib;
