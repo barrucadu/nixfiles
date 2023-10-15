@@ -18,6 +18,8 @@ let
 in
 {
   imports = [
+    ./options.nix
+    # modules
     ./backups
     ./bookdb
     ./bookmarks
@@ -32,10 +34,6 @@ in
     ./rtorrent
     ./umami
   ];
-
-  options.nixfiles.firewall = {
-    ipBlocklistFile = mkOption { type = types.nullOr types.str; default = null; };
-  };
 
   config = {
     #############################################################################

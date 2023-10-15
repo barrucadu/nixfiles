@@ -1,3 +1,6 @@
+# Yes I know there's a NixOS minecraft module but it uses the Minecraft in
+# nixpkgs whereas I want to run modded servers and packaging one is a pain.
+
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -7,29 +10,10 @@ let
   serverPorts = mapAttrsToList (_: server: server.port) cfg.servers;
 in
 {
-  imports = [ ./erase-your-darlings.nix ];
-
-  # yes I know there's a NixOS minecraft module but it uses the
-  # Minecraft in nixpkgs whereas I want to run modded servers and
-  # packaging one is a pain.
-  options.nixfiles.minecraft = {
-    enable = mkOption { type = types.bool; default = false; };
-    dataDir = mkOption { type = types.path; default = "/var/lib/minecraft"; };
-    servers = mkOption {
-      type = types.attrsOf (types.submodule
-        {
-          options = {
-            autoStart = mkOption { type = types.bool; default = true; };
-            port = mkOption { type = types.int; };
-            jar = mkOption { type = types.str; default = "minecraft-server.jar"; };
-            jre = mkOption { type = types.package; default = pkgs.jdk17_headless; };
-            jvmOpts = mkOption { type = types.separatedString " "; default = "-Xmx4G -Xms4G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M"; };
-          };
-        }
-      );
-      default = { };
-    };
-  };
+  imports = [
+    ./erase-your-darlings.nix
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     # from https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/services/games/minecraft-server.nix

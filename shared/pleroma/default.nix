@@ -6,20 +6,10 @@ let
   backend = config.nixfiles.oci-containers.backend;
 in
 {
-  imports = [ ./erase-your-darlings.nix ];
-
-  options.nixfiles.pleroma = {
-    enable = mkOption { type = types.bool; default = false; };
-    port = mkOption { type = types.int; default = 46283; };
-    pgTag = mkOption { type = types.str; default = "13"; };
-    domain = mkOption { type = types.str; };
-    faviconPath = mkOption { type = types.nullOr types.path; default = null; };
-    instanceName = mkOption { type = types.str; default = cfg.domain; };
-    adminEmail = mkOption { type = types.str; default = "mike@barrucadu.co.uk"; };
-    notifyEmail = mkOption { type = types.str; default = cfg.adminEmail; };
-    allowRegistration = mkOption { type = types.bool; default = false; };
-    secretsFile = mkOption { type = types.str; };
-  };
+  imports = [
+    ./erase-your-darlings.nix
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     services.pleroma.enable = true;
@@ -67,9 +57,9 @@ in
       environment = {
         DOMAIN = cfg.domain;
         PORT = toString cfg.port;
-        INSTANCE_NAME = cfg.instanceName;
+        INSTANCE_NAME = if cfg.instanceName == null then cfg.domain else cfg.instanceName;
         ADMIN_EMAIL = cfg.adminEmail;
-        NOTIFY_EMAIL = cfg.notifyEmail;
+        NOTIFY_EMAIL = if cfg.notifyEmail == null then cfg.adminEmail else cfg.notifyEmail;
         ALLOW_REGISTRATION = if cfg.allowRegistration then "true" else "false";
       };
       serviceConfig.BindPaths =
