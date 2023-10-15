@@ -1,3 +1,11 @@
+# finder is a webapp to read downloaded manga.  There is no public deployment.
+#
+# finder uses a containerised elasticsearch database, and requires read access
+# to the filesystem where manga is stored.  It does not manage the manga, only
+# provides an interface to search and read.
+#
+# The database can be recreated from the manga files, so this module does not
+# include a backup script.
 { config, lib, ... }:
 
 with lib;
