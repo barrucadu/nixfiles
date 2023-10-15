@@ -78,7 +78,7 @@ in
     };
 
     nixfiles.oci-containers.containers.pleroma-db = {
-      image = "postgres:${cfg.pgTag}";
+      image = "postgres:${cfg.postgresTag}";
       environment = {
         "POSTGRES_DB" = "pleroma";
         "POSTGRES_USER" = "pleroma";

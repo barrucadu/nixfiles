@@ -20,7 +20,7 @@ with lib;
       '';
     };
 
-    pgTag = mkOption {
+    postgresTag = mkOption {
       type = types.str;
       default = "13";
       description = mdDoc ''
