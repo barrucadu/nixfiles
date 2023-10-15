@@ -1,3 +1,15 @@
+# [bookmarks][] is a webapp to keep track of all my bookmarks, with a public
+# instance on [bookmarks.barrucadu.co.uk][].
+#
+# bookmarks uses a containerised elasticsearch database.
+#
+# If the `backups` module is enabled, adds a script to backup the database.
+#
+# If the `erase-your-darlings` module is enabled, stores its data on the
+# persistent volume.
+#
+# [bookmarks]: https://github.com/barrucadu/bookmarks
+# [bookmarks.barrucadu.co.uk]: https://bookmarks.barrucadu.co.uk/
 { config, lib, pkgs, ... }:
 
 with lib;
