@@ -112,7 +112,6 @@
               };
               optionsDoc = pkgs.nixosOptionsDoc {
                 options = eval.options;
-                warningsAreErrors = false;
               };
             in
             mkApp "documentation" ''
