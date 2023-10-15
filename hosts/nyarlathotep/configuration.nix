@@ -1,3 +1,20 @@
+# This is my home server.
+#
+# It runs writable instances of the bookdb and bookmarks services, which have
+# any updates copied across to carcosa hourly; it acts as a NAS; and it runs a
+# few utility services.
+#
+# Like carcosa, this host is set up in "erase your darlings" style but, unlike
+# carcosa, it automatically reboots to install updates: so that takes effect
+# significantly more frequently.
+#
+# **Alerting:** enabled (standard only)
+#
+# **Backups:** enabled (standard + extras)
+#
+# **Public hostname:** n/a
+#
+# **Role:** server
 { config, pkgs, lib, ... }:
 
 # Bring names from 'lib' into scope.

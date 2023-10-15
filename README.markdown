@@ -65,53 +65,6 @@ default.
 
 [wiping `/` on boot]: https://grahamc.com/blog/erase-your-darlings
 
-### Hosts
-
-Currently I have 3 NixOS machines.  The naming convention is:
-
-- **Local machines:** beings (gods, people, etc) of the Cthulhu Mythos.
-- **Remote machines:** places of the Cthulhu Mythos.
-
-#### azathoth
-
-This is my desktop computer.
-
-It dual-boots Windows and NixOS, so it doesn’t run any services, as they won't
-be accessible half of the time.  I don't bother backing up either OS: everything
-I care about is in Syncthing, on GitHub, or on some other cloud service (eg,
-Steam).
-
-#### carcosa
-
-This is a VPS (hosted by Hetzner Cloud).
-
-It serves [barrucadu.co.uk][] and other services on it, such as [a bookdb
-instance][] and [my blog][].  Websites are served with Caddy, with certs from
-Let's Encrypt.
-
-It's set up in "erase your darlings" style, so most of the filesystem is wiped
-on boot and restored from the configuration, to ensure there's no accidentally
-unmanaged configuration or state hanging around.  However, it doesn't reboot
-automatically, because I also use this server for a persistent IRC connection.
-
-[barrucadu.co.uk]: https://www.barrucadu.co.uk/
-[a bookdb instance]: https://bookdb.barrucadu.co.uk/
-[my blog]: https://memo.barrucadu.co.uk/
-
-#### nyarlathotep
-
-This is my home server.
-
-It runs writable instances of the bookdb and bookmarks services, which have any
-updates copied across to carcosa hourly; it acts as a NAS; and it runs a few
-utility services, such as a dashboard of finance information from my hledger
-journal, and a script to automatically tag and organise new podcast episodes or
-CD rips which I copy over to it.
-
-Like carcosa, this host is set up in "erase your darlings" style but, unlike
-carcosa, it automatically reboots to install updates: so that takes effect
-significantly more frequently.
-
 
 Setting up a new host
 ---------------------

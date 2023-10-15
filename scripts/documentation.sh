@@ -6,6 +6,32 @@ popd
 
 cp README.markdown docs/src/README.md
 
+python3 - <<'EOF' > docs/src/hosts.md
+import os
+
+print("# Hosts")
+print("")
+
+hosts = sorted([name for name in os.listdir("hosts") if name not in [".", ".."]])
+for host in hosts:
+    source_file = f"hosts/{host}/configuration.nix"
+
+    print(f"## {host}")
+
+    has_doc = False
+    with open(source_file, "r") as f:
+        for line in f:
+            if line.startswith("#"):
+                has_doc = True
+                print(line[1:].strip())
+            else:
+                break
+    if not has_doc:
+        print("This host has no description.")
+    print(f"\n**Declared in:** [{source_file}](https://github.com/barrucadu/nixfiles/blob/master/{source_file})")
+    print("")
+EOF
+
 python3 - <<'EOF' > docs/src/modules.md
 import json
 import os
