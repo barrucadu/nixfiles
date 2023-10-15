@@ -1,11 +1,16 @@
+# A database and web app to keep track of my bookmarks.
 { poetry2nix, fetchFromGitHub, ... }:
 
 let
+  githubOwner = "barrucadu";
+  githubRepo = "bookmarks";
+  githubRev = "afe9c2a59c1e9d385074e17d684ac0ae7556fced";
+
   app = poetry2nix.mkPoetryApplication {
     projectDir = fetchFromGitHub {
-      owner = "barrucadu";
-      repo = "bookmarks";
-      rev = "afe9c2a59c1e9d385074e17d684ac0ae7556fced";
+      owner = githubOwner;
+      repo = githubRepo;
+      rev = githubRev;
       sha256 = "sha256-uSsycnSWpIBc7SojptIgvjLkoZ0gTScelfygLJ9zvxI=";
     };
 

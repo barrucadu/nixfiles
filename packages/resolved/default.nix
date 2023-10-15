@@ -1,13 +1,19 @@
+#  A simple DNS server for home networks.
 { rustPlatform, fetchFromGitHub, ... }:
 
-rustPlatform.buildRustPackage rec {
-  pname = "resolved";
-  version = "cc43b526dea18825288fa03a0c4a3ce98f053856";
+let
+  githubOwner = "barrucadu";
+  githubRepo = "resolved";
+  githubRev = "cc43b526dea18825288fa03a0c4a3ce98f053856";
+in
+rustPlatform.buildRustPackage {
+  pname = githubRepo;
+  version = githubRev;
 
   src = fetchFromGitHub {
-    owner = "barrucadu";
-    repo = pname;
-    rev = version;
+    owner = githubOwner;
+    repo = githubRepo;
+    rev = githubRev;
     sha256 = "sha256-gox2b9bqerH0rgC3CvJedvW1vP1vMpDZwKpHBWHQK7E=";
   };
 
