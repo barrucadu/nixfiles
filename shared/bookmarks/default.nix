@@ -42,7 +42,7 @@ in
     };
 
     nixfiles.oci-containers.containers.bookmarks-db = {
-      image = "elasticsearch:${cfg.esTag}";
+      image = "elasticsearch:${cfg.elasticsearchTag}";
       environment = {
         "http.host" = "0.0.0.0";
         "discovery.type" = "single-node";

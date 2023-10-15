@@ -47,7 +47,7 @@ in
     };
 
     nixfiles.oci-containers.containers.bookdb-db = {
-      image = "elasticsearch:${cfg.esTag}";
+      image = "elasticsearch:${cfg.elasticsearchTag}";
       environment = {
         "http.host" = "0.0.0.0";
         "discovery.type" = "single-node";

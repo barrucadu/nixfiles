@@ -27,7 +27,7 @@ with lib;
       '';
     };
 
-    esTag = mkOption {
+    elasticsearchTag = mkOption {
       type = types.str;
       default = "8.0.0";
       description = mdDoc ''
