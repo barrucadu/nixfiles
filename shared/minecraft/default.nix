@@ -1,6 +1,19 @@
-# Yes I know there's a NixOS minecraft module but it uses the Minecraft in
-# nixpkgs whereas I want to run modded servers and packaging one is a pain.
-
+# [Minecraft][] Java Edition runner.  Supports multiple servers, with mods.
+# This module doesn't manage the Minecraft server files, only operating them.
+#
+# Yes, I know there's a NixOS minecraft module, but it uses the Minecraft in
+# nixpkgs and only runs one server, whereas I want to run multiple modded
+# servers.
+#
+# The Minecraft server files must be in `{nixfiles.minecraft.dataDir}/{name}`.
+#
+# This module does not include a backup script.  Servers must be backed up
+# independently.
+#
+# If the `erase-your-darlings` module is enabled, stores its data on the
+# persistent volume.
+#
+# [Minecraft]: https://www.minecraft.net/en-us
 { config, lib, pkgs, ... }:
 
 with lib;
