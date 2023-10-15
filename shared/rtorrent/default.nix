@@ -1,3 +1,13 @@
+# [rTorrent][] is a bittorrent client.  This module configures it in a way
+# appropriate for private trackers.
+#
+# This module does not include a backup script.  Torrented files must be backed
+# up independently.
+#
+# If the `erase-your-darlings` module is enabled, stores the session data and
+# logs on the persistent volume.
+#
+# [rTorrent]: https://github.com/rakshasa/rtorrent
 { config, lib, pkgs, ... }:
 
 with lib;
