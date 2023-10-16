@@ -46,7 +46,7 @@ with lib;
 
     postgresTag = mkOption {
       type = types.str;
-      default = "13";
+      default = "16";
       description = mdDoc ''
         Tag to use of the `postgres` container image.
       '';
