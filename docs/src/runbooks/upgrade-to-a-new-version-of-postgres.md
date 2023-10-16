@@ -63,7 +63,7 @@ Replace `podman` with `docker` in the following commands if you're using that.
 6. Bring up a new database container with the dump bind-mounted into it:
 
     ```bash
-    sudo podman run --rm --name="$CONTAINER" -v "$(pwd):/backup" -v "${VOLUME_DIR}:/var/lib/postgresql/data" -e "POSTGRES_DB=${POSTGRES_DB}" -e "POSTGRES_USER=${POSTGRES_USER}" -e "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" "postgres:${TAG}"
+    sudo podman run --rm --name="$CONTAINER" -v "$(pwd):/backup" -v "${VOLUME_DIR}:/var/lib/postgresql/data" -e "POSTGRES_DB=${POSTGRES_DB}" -e "POSTGRES_USER=${POSTGRES_USER}" -e "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" --shm-size=1g "postgres:${TAG}"
     ```
 
 7. In another shell, restore the dump:
