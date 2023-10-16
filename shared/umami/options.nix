@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the umami service.
+        Enable the [umami](https://umami.is/) service.
       '';
     };
 
@@ -39,8 +39,11 @@ with lib;
     environmentFile = mkOption {
       type = types.str;
       description = mdDoc ''
-        Environment file to be pased to the container.  This needs to contain a
-        `HASH_SALT`.
+        Environment file to pass secrets into the service.  This is of the form:
+
+        ```text
+        HASH_SALT="..."
+        ```
       '';
     };
   };

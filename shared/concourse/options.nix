@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the Concourse CI service.
+        Enable the [Concourse CI](https://concourse-ci.org/) service.
       '';
     };
 
@@ -32,7 +32,7 @@ with lib;
       type = types.int;
       default = 46498;
       description = mdDoc ''
-        Port (on 127.0.0.1) to expose the Concourse CI web UI on.
+        Port (on 127.0.0.1) to expose Concourse CI on.
       '';
     };
 
@@ -40,7 +40,7 @@ with lib;
       type = types.int;
       default = 45811;
       description = mdDoc ''
-        Port (on 127.0.0.1) to expose the Concourse CI Prometheus metrics on.
+        Port (on 127.0.0.1) to expose the Prometheus metrics on.
       '';
     };
 
@@ -65,13 +65,18 @@ with lib;
     environmentFile = mkOption {
       type = types.str;
       description = mdDoc ''
-        Environment file to be passed into the containers.  This needs to contain:
+        Environment file to pass secrets into the service.  This is of the form:
 
-        - `CONCOURSE_GITHUB_CLIENT_ID` / `CONCOURSE_GITHUB_CLIENT_SECRET` - the
-          GitHub OAuth credentials used for user authentication
-        - `CONCOURSE_AWS_SSM_REGION` / `CONCOURSE_AWS_SSM_ACCESS_KEY` /
-          `CONCOURSE_AWS_SSM_SECRET_KEY` - the AWS credentials used to fetch
-          secrets from SSM
+        ```text
+        # GitHub OAuth credentials
+        CONCOURSE_GITHUB_CLIENT_ID="..."
+        CONCOURSE_GITHUB_CLIENT_SECRET="..."
+
+        # AWS SSM credentials
+        CONCOURSE_AWS_SSM_REGION="..."
+        CONCOURSE_AWS_SSM_ACCESS_KEY="..."
+        CONCOURSE_AWS_SSM_SECRET_KEY="..."
+        ```
       '';
     };
   };

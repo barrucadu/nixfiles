@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the Minecraft service.
+        Enable the [Minecraft](https://www.minecraft.net/en-us) service.
       '';
     };
 
@@ -31,7 +31,7 @@ with lib;
               type = types.bool;
               default = true;
               description = mdDoc ''
-                Start this server on boot.
+                Start the server automatically on boot.
               '';
             };
 

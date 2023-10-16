@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the Pleroma service.
+        Enable the [Pleroma](https://pleroma.social/) service.
       '';
     };
 
@@ -40,7 +40,7 @@ with lib;
       type = types.nullOr types.path;
       default = null;
       description = mdDoc ''
-        Path to the favicon file.
+        File to use for the favicon.
       '';
     };
 
@@ -73,14 +73,14 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Whether to allow new users to sign up.
+        Allow new users to sign up.
       '';
     };
 
     secretsFile = mkOption {
       type = types.str;
       description = mdDoc ''
-        Path to the secret configuration file.
+        File containing secret configuration.
 
         See the Pleroma documentation for what this needs to contain.
       '';

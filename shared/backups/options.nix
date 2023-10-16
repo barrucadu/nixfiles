@@ -62,16 +62,23 @@ with lib;
     environmentFile = mkOption {
       type = types.str;
       description = mdDoc ''
-        Environment file to be passed to the systemd services.  This needs to contain:
+        Environment file to pass secrets into the service.  This is of the form:
 
-        - `PASSPHRASE` - the password duplicity uses to encrypt the files
-        - `AWS_ACCESS_KEY` / `AWS_SECRET_ACCESS_KEY` / `AWS_DEFAULT_REGION` -
-          the AWS credentials used to upload the backup to s3 and publish to the
-          SNS topic
-        - `TOPIC_ARN` - the SNS topic to publish to if an error occurs
+        ```text
+        # Duplicity encryption password
+        PASSPHRASE="..."
+
+        # AWS S3 & SNS credentials
+        AWS_ACCESS_KEY="..."
+        AWS_SECRET_ACCESS_KEY="..."
+        AWS_DEFAULT_REGION="..."
+
+        # SNS topic to send alerts to
+        TOPIC_ARN="..."
+        ```
 
         If any of the `scripts` or `pythonScripts` need secrets, those should be
-        specified here.
+        specified in this file as well.
       '';
     };
 

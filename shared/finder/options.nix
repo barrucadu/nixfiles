@@ -15,7 +15,7 @@ with lib;
     image = mkOption {
       type = types.str;
       description = mdDoc ''
-        Container image to use.
+        Container image to run.
       '';
     };
 
@@ -23,7 +23,7 @@ with lib;
       type = types.int;
       default = 44986;
       description = mdDoc ''
-        Port (on 127.0.0.1) to expose the finder service on.
+        Port (on 127.0.0.1) to expose finder on.
       '';
     };
 

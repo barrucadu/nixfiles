@@ -6,14 +6,14 @@ let
     host = mkOption {
       type = types.int;
       description = mdDoc ''
-        Host port (on 127.0.0.1) to expose the inner port on.
+        Host port (on 127.0.0.1) to expose the container port on.
       '';
     };
 
     inner = mkOption {
       type = types.int;
       description = mdDoc ''
-        Container port.
+        The container port to expose to the hosti.
       '';
     };
   };
@@ -23,10 +23,13 @@ let
       type = types.nullOr types.str;
       default = null;
       description = mdDoc ''
-        Name of the volume.  This creates a bind-mount to
-        `''${volumeBaseDir}/''${volumeSubDir}/''${name}`.
+        Name of the volume.  This is equivalent to:
 
-        Exactly one of this or `''${host}` must be specified.
+        ```nix
+        host = "''${volumeBaseDir}/''${volumeSubDir}/''${name}";
+        ```
+
+        This option c.logonflicts with `''${host}`.
       '';
     };
 
@@ -36,7 +39,7 @@ let
       description = mdDoc ''
         Directory on the host to bind-mount into the container.
 
-        Exactly one of this or `''${name}` must be specified.
+        This option conflicts with `''${name}`.
       '';
     };
 
@@ -54,7 +57,7 @@ let
       type = types.bool;
       default = true;
       description = mdDoc ''
-        Whether to start the container automatically on boot.
+        Start the container automatically on boot.
       '';
     };
 
@@ -69,8 +72,10 @@ let
     dependsOn = mkOption {
       type = types.listOf types.str;
       default = [ ];
+      example = [ "concourse-db" ];
       description = mdDoc ''
-        Other containers that this one depends on.
+        Other containers that this one depends on, in `''${pod}-''${name}`
+        format.
       '';
     };
 
@@ -151,8 +156,7 @@ let
       type = types.bool;
       default = true;
       description = mdDoc ''
-        Whether to pull the container image when starting (useful for `:latest`
-        images).
+        Pull the container image when starting (useful for `:latest` images).
       '';
     };
   };

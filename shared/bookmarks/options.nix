@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the bookmarks service.
+        Enable the [bookmarks](https://github.com/barrucadu/bookmarks) service.
       '';
     };
 
@@ -16,7 +16,7 @@ with lib;
       type = types.int;
       default = 48372;
       description = mdDoc ''
-        Port (on 127.0.0.1) to expose the bookmarks service on.
+        Port (on 127.0.0.1) to expose bookmarks on.
       '';
     };
 
@@ -48,8 +48,8 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Whether to launch the service in "read-only" mode.  Enable this if
-        exposing it to a public network.
+        Launch the service in "read-only" mode.  Enable this if exposing it to a
+        public network.
       '';
     };
 
@@ -57,8 +57,13 @@ with lib;
       type = types.nullOr types.str;
       default = null;
       description = mdDoc ''
-        Environment file to be passed to the systemd services.  This needs to
-        contain a `YOUTUBE_API_KEY` if not running in read-only mode.
+        Environment file to pass secrets into the service.  This is of the form:
+
+        ```text
+        YOUTUBE_API_KEY="..."
+        ```
+
+        This is only required if not running in read-only mode.
       '';
     };
   };

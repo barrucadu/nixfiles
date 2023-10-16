@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the rTorrent service.
+        Enable the [rTorrent](https://github.com/rakshasa/rtorrent) service.
       '';
     };
 
@@ -74,14 +74,14 @@ with lib;
         type = types.bool;
         default = true;
         description = mdDoc ''
-          Enable the [flood](https://flood.js.org/) web UI.
+          Enable the [Flood](https://flood.js.org/) web UI.
         '';
       };
       port = mkOption {
         type = types.int;
         default = 45904;
         description = mdDoc ''
-          Port (on 127.0.0.1) to expose the flood service on.
+          Port (on 127.0.0.1) to expose Flood on.
         '';
       };
     };

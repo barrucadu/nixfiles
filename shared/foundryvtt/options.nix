@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the FoundryVTT service.
+        Enable the [FoundryVTT](https://foundryvtt.com/) service.
       '';
     };
 

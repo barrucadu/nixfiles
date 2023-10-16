@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the bookdb service.
+        Enable the [bookdb](https://github.com/barrucadu/bookdb) service.
       '';
     };
 
@@ -16,7 +16,7 @@ with lib;
       type = types.int;
       default = 46667;
       description = mdDoc ''
-        Port (on 127.0.0.1) to expose the bookdb service on.
+        Port (on 127.0.0.1) to expose bookdb on.
       '';
     };
 
@@ -48,8 +48,8 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Whether to launch the service in "read-only" mode.  Enable this if
-        exposing it to a public network.
+        Launch the service in "read-only" mode.  Enable this if exposing it to a
+        public network.
       '';
     };
 

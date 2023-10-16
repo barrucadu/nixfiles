@@ -16,8 +16,7 @@ with lib;
     barrucaduPasswordFile = mkOption {
       type = types.str;
       description = mdDoc ''
-        Path to a file containing the hashed password for `barrucadu`.  This
-        file must be available in early boot.
+        File containing the hashed password for `barrucadu`.
 
         If using [sops-nix](https://github.com/Mic92/sops-nix) set the
         `neededForUsers` option on the secret.

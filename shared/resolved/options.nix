@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description = mdDoc ''
-        Enable the resolved service.
+        Enable the [resolved](https://github.com/barrucadu/resolved) service.
       '';
     };
 
