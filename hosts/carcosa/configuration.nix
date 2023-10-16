@@ -1,3 +1,22 @@
+# This is a VPS (hosted by Hetzner Cloud).
+#
+# It serves [barrucadu.co.uk][] and other services on it.  Websites are served
+# with Caddy, with certs from Let's Encrypt.
+#
+# It's set up in "erase your darlings" style, so most of the filesystem is wiped
+# on boot and restored from the configuration, to ensure there's no accidentally
+# unmanaged configuration or state hanging around.  However, it doesn't reboot
+# automatically, because I also use this server for a persistent IRC connection.
+#
+# **Alerting:** enabled (standard only)
+#
+# **Backups:** enabled (standard + extras)
+#
+# **Public hostname:** `carcosa.barrucadu.co.uk`
+#
+# **Role:** server
+#
+# [barrucadu.co.uk]: https://www.barrucadu.co.uk/
 { config, lib, pkgs, ... }:
 
 with lib;

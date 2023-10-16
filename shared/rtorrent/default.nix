@@ -1,3 +1,13 @@
+# [rTorrent][] is a bittorrent client.  This module configures it in a way
+# appropriate for private trackers.
+#
+# This module does not include a backup script.  Torrented files must be backed
+# up independently.
+#
+# **Erase your darlings:** transparently stores session data and logs on the
+# persistent volume.
+#
+# [rTorrent]: https://github.com/rakshasa/rtorrent
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -46,24 +56,10 @@ let
 
 in
 {
-  imports = [ ./erase-your-darlings.nix ];
-
-  options.nixfiles.rtorrent = {
-    enable = mkOption { type = types.bool; default = false; };
-    downloadDir = mkOption { type = types.str; };
-    watchDir = mkOption { type = types.str; };
-    user = mkOption { type = types.str; };
-    logLevels = mkOption { type = types.listOf types.str; default = [ "info" ]; };
-    openFirewall = mkOption { type = types.bool; default = true; };
-    portRange = {
-      from = mkOption { type = types.int; default = 50000; };
-      to = mkOption { type = types.int; default = 50000; };
-    };
-    flood = {
-      enable = mkOption { type = types.bool; default = true; };
-      port = mkOption { type = types.int; default = 45904; };
-    };
-  };
+  imports = [
+    ./erase-your-darlings.nix
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     networking.firewall.allowedTCPPortRanges = mkIf cfg.openFirewall [ cfg.portRange ];

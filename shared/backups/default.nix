@@ -1,3 +1,32 @@
+# Manage regular incremental and full backups with [Duplicity][].
+#
+# Backups are encrypted and uploaded to the `barrucadu-backups` s3 bucket,
+# [defined in the ops repo][].
+#
+# Check the status of a backup collection with:
+#
+# ```bash
+# nix run .#backups                   # for the current host
+# nix run .#backups status            # for the current host
+# nix run .#backups status <hostname> # for another host
+# ```
+#
+# Restore a backup to `/tmp/backup-restore` with:
+#
+# ```bash
+# nix run .#backups restore            # for the current host
+# nix run .#backups restore <hostname> # for another host
+# ```
+#
+# Change the restore target by setting `$RESTORE_DIR`.
+#
+# **Alerts:**
+#
+# - A backup script terminates with an error.
+# - Uploading the backup to s3 fails.
+#
+# [Duplicity]: https://duplicity.gitlab.io/
+# [defined in the ops repo]: https://github.com/barrucadu/ops/blob/master/aws/backups.tf
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -75,25 +104,9 @@ let
   };
 in
 {
-  options.nixfiles.backups = {
-    enable = mkOption { type = types.bool; default = false; };
-    scripts = mkOption { type = types.attrsOf types.str; default = { }; };
-    pythonScripts = mkOption { type = types.attrsOf types.str; default = { }; };
-    sudoRules = mkOption {
-      type = types.listOf (types.submodule {
-        options = {
-          command = mkOption { type = types.str; };
-          runAs = mkOption { type = types.str; default = "ALL:ALL"; };
-        };
-      });
-      default = { };
-    };
-    environmentFile = mkOption { type = types.str; };
-    onCalendarFull = mkOption { type = types.str; default = "monthly"; };
-    onCalendarIncr = mkOption { type = types.str; default = "Mon, 04:00"; };
-    user = mkOption { type = types.str; default = "barrucadu"; };
-    group = mkOption { type = types.str; default = "users"; };
-  };
+  imports = [
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     systemd.services.backup-scripts-full = {

@@ -1,3 +1,8 @@
+# [resolved][] is a recursive DNS server for LAN DNS.
+#
+# Provides a grafana dashboard.
+#
+# [resolved]: https://github.com/barrucadu/resolved
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -5,20 +10,9 @@ let
   cfg = config.nixfiles.resolved;
 in
 {
-  options.nixfiles.resolved = {
-    enable = mkOption { type = types.bool; default = false; };
-    address = mkOption { type = types.str; default = "0.0.0.0:53"; };
-    metrics_address = mkOption { type = types.str; default = "127.0.0.1:9420"; };
-    authoritative_only = mkOption { type = types.bool; default = false; };
-    protocol_mode = mkOption { type = types.str; default = "only-v4"; };
-    forward_address = mkOption { type = types.nullOr types.str; default = null; };
-    cache_size = mkOption { type = types.int; default = 512; };
-    hosts_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
-    zones_dirs = mkOption { type = types.listOf types.str; default = [ ]; };
-    use_default_zones = mkOption { type = types.bool; default = true; };
-    log_level = mkOption { type = types.str; default = "dns_resolver=info,resolved=info"; };
-    log_format = mkOption { type = types.str; default = "json,no-time"; };
-  };
+  imports = [
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     systemd.services.resolved = {
@@ -30,22 +24,22 @@ in
         ExecStart = concatStringsSep " " [
           "${pkgs.nixfiles.resolved}/bin/resolved"
           "-i ${cfg.address}"
-          "-s ${toString cfg.cache_size}"
-          "--metrics-address ${cfg.metrics_address}"
-          "--protocol-mode ${cfg.protocol_mode}"
-          (if cfg.authoritative_only then "--authoritative-only " else "")
-          (if cfg.forward_address != null then "--forward-address ${cfg.forward_address} " else "")
-          (if cfg.hosts_dirs == [ ] then "" else "-A ${concatStringsSep " -A " cfg.hosts_dirs}")
-          (if cfg.use_default_zones then "-Z ${pkgs.nixfiles.resolved}/etc/resolved/zones" else "")
-          (if cfg.zones_dirs == [ ] then "" else "-Z ${concatStringsSep " -Z " cfg.zones_dirs}")
+          "-s ${toString cfg.cacheSize}"
+          "--metrics-address ${cfg.metricsAddress}"
+          "--protocol-mode ${cfg.protocolMode}"
+          (if cfg.authoritativeOnly then "--authoritative-only " else "")
+          (if cfg.forwardAddress != null then "--forward-address ${cfg.forwardAddress} " else "")
+          (if cfg.hostsDirs == [ ] then "" else "-A ${concatStringsSep " -A " cfg.hostsDirs}")
+          (if cfg.useDefaultZones then "-Z ${pkgs.nixfiles.resolved}/etc/resolved/zones" else "")
+          (if cfg.zonesDirs == [ ] then "" else "-Z ${concatStringsSep " -Z " cfg.zonesDirs}")
         ];
         ExecReload = "${pkgs.coreutils}/bin/kill -USR1 $MAINPID";
         DynamicUser = "true";
         Restart = "on-failure";
       };
       environment = {
-        RUST_LOG = cfg.log_level;
-        RUST_LOG_FORMAT = cfg.log_format;
+        RUST_LOG = cfg.logLevel;
+        RUST_LOG_FORMAT = cfg.logFormat;
       };
     };
 
@@ -55,7 +49,7 @@ in
     services.prometheus.scrapeConfigs = [
       {
         job_name = "${config.networking.hostName}-resolved";
-        static_configs = [{ targets = [ cfg.metrics_address ]; }];
+        static_configs = [{ targets = [ cfg.metricsAddress ]; }];
       }
     ];
     services.grafana.provision.dashboards.settings.providers =

@@ -1,3 +1,15 @@
+# [bookdb][] is a webapp to keep track of all my books, with a public instance
+# on [bookdb.barrucadu.co.uk][].
+#
+# bookdb uses a containerised elasticsearch database, it also stores uploaded
+# book cover images.
+#
+# **Backups:** the elasticsearch database and uploaded files.
+#
+# **Erase your darlings:** overrides the `dataDir`.
+#
+# [bookdb]: https://github.com/barrucadu/bookdb
+# [bookdb.barrucadu.co.uk]: https://bookdb.barrucadu.co.uk/
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -6,17 +18,10 @@ let
   backend = config.nixfiles.oci-containers.backend;
 in
 {
-  imports = [ ./erase-your-darlings.nix ];
-
-  options.nixfiles.bookdb = {
-    enable = mkOption { type = types.bool; default = false; };
-    port = mkOption { type = types.int; default = 46667; };
-    esPort = mkOption { type = types.int; default = 47164; };
-    esTag = mkOption { type = types.str; default = "8.0.0"; };
-    baseURI = mkOption { type = types.str; };
-    readOnly = mkOption { type = types.bool; default = false; };
-    dataDir = mkOption { type = types.str; default = "/srv/bookdb"; };
-  };
+  imports = [
+    ./erase-your-darlings.nix
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     systemd.services.bookdb = {
@@ -34,22 +39,21 @@ in
         "ALLOW_WRITES" = if cfg.readOnly then "0" else "1";
         "BASE_URI" = cfg.baseURI;
         "COVER_DIR" = "${cfg.dataDir}/covers";
-        "ES_HOST" = "http://127.0.0.1:${toString cfg.esPort}";
+        "ES_HOST" = "http://127.0.0.1:${toString cfg.elasticsearchPort}";
         "UUIDS_FILE" = ./uuids.yaml;
       };
     };
 
-    nixfiles.oci-containers.containers.bookdb-db = {
-      image = "elasticsearch:${cfg.esTag}";
+    nixfiles.oci-containers.pods.bookdb.containers.db = {
+      image = "elasticsearch:${cfg.elasticsearchTag}";
       environment = {
         "http.host" = "0.0.0.0";
         "discovery.type" = "single-node";
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      ports = [{ host = cfg.esPort; inner = 9200; }];
+      ports = [{ host = cfg.elasticsearchPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
-      volumeSubDir = "bookdb";
     };
 
     users.users.bookdb = {

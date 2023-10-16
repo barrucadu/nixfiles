@@ -1,3 +1,13 @@
+# [Concourse CI][] is a "continuous thing-doer", it's a CI / CD tool.  This
+# module sets up a single-user instance, with GitHub authentication.
+#
+# Concourse uses a containerised postgres database.
+#
+# Provides a grafana dashboard.
+#
+# **Backups:** the postgres database.
+#
+# [Concourse CI]: https://concourse-ci.org/
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -6,16 +16,9 @@ let
   backend = config.nixfiles.oci-containers.backend;
 in
 {
-  options.nixfiles.concourse = {
-    enable = mkOption { type = types.bool; default = false; };
-    concourseTag = mkOption { type = types.str; default = "7.8.2"; };
-    githubUser = mkOption { type = types.str; default = "barrucadu"; };
-    port = mkOption { type = types.int; default = 46498; };
-    metricsPort = mkOption { type = types.int; default = 45811; };
-    postgresTag = mkOption { type = types.str; default = "13"; };
-    workerScratchDir = mkOption { type = types.nullOr types.path; default = null; };
-    environmentFile = mkOption { type = types.str; };
-  };
+  imports = [
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     # https://github.com/concourse/concourse/discussions/6529

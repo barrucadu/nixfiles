@@ -1,3 +1,20 @@
+# This is my home server.
+#
+# It runs writable instances of the bookdb and bookmarks services, which have
+# any updates copied across to carcosa hourly; it acts as a NAS; and it runs a
+# few utility services.
+#
+# Like carcosa, this host is set up in "erase your darlings" style but, unlike
+# carcosa, it automatically reboots to install updates: so that takes effect
+# significantly more frequently.
+#
+# **Alerting:** enabled (standard only)
+#
+# **Backups:** enabled (standard + extras)
+#
+# **Public hostname:** n/a
+#
+# **Role:** server
 { config, pkgs, lib, ... }:
 
 # Bring names from 'lib' into scope.
@@ -60,9 +77,9 @@ in
   ###############################################################################
 
   nixfiles.resolved.enable = true;
-  nixfiles.resolved.cache_size = 1000000;
-  nixfiles.resolved.hosts_dirs = [ "/etc/dns/hosts" ];
-  nixfiles.resolved.zones_dirs = [ "/etc/dns/zones" ];
+  nixfiles.resolved.cacheSize = 1000000;
+  nixfiles.resolved.hostsDirs = [ "/etc/dns/hosts" ];
+  nixfiles.resolved.zonesDirs = [ "/etc/dns/zones" ];
 
   environment.etc."dns/hosts/stevenblack".source = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";

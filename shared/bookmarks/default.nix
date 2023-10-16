@@ -1,3 +1,12 @@
+# [bookmarks][] is a webapp to keep track of all my bookmarks, with a public
+# instance on [bookmarks.barrucadu.co.uk][].
+#
+# bookmarks uses a containerised elasticsearch database.
+#
+# **Backups:** the elasticsearch database.
+#
+# [bookmarks]: https://github.com/barrucadu/bookmarks
+# [bookmarks.barrucadu.co.uk]: https://bookmarks.barrucadu.co.uk/
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -6,15 +15,9 @@ let
   backend = config.nixfiles.oci-containers.backend;
 in
 {
-  options.nixfiles.bookmarks = {
-    enable = mkOption { type = types.bool; default = false; };
-    port = mkOption { type = types.int; default = 48372; };
-    esPort = mkOption { type = types.int; default = 43389; };
-    esTag = mkOption { type = types.str; default = "8.0.0"; };
-    baseURI = mkOption { type = types.str; };
-    readOnly = mkOption { type = types.bool; default = false; };
-    environmentFile = mkOption { type = types.nullOr types.str; default = null; };
-  };
+  imports = [
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     systemd.services.bookmarks = {
@@ -31,25 +34,24 @@ in
       environment = {
         ALLOW_WRITES = if cfg.readOnly then "0" else "1";
         BASE_URI = cfg.baseURI;
-        ES_HOST = "http://127.0.0.1:${toString cfg.esPort}";
+        ES_HOST = "http://127.0.0.1:${toString cfg.elasticsearchPort}";
       };
     };
 
-    nixfiles.oci-containers.containers.bookmarks-db = {
-      image = "elasticsearch:${cfg.esTag}";
+    nixfiles.oci-containers.pods.bookmarks.containers.db = {
+      image = "elasticsearch:${cfg.elasticsearchTag}";
       environment = {
         "http.host" = "0.0.0.0";
         "discovery.type" = "single-node";
         "xpack.security.enabled" = "false";
         "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
-      ports = [{ host = cfg.esPort; inner = 9200; }];
+      ports = [{ host = cfg.elasticsearchPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
-      volumeSubDir = "bookmarks";
     };
 
     nixfiles.backups.scripts.bookmarks = ''
-      env ES_HOST=http://127.0.0.1:${toString cfg.esPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | gzip -9 > dump.json.gz
+      env ES_HOST=http://127.0.0.1:${toString cfg.elasticsearchPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | gzip -9 > dump.json.gz
     '';
   };
 }

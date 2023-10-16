@@ -1,3 +1,14 @@
+# Wipe `/` on boot, inspired by ["erase your darlings"][].
+#
+# This module is responsible for configuring standard NixOS options and
+# services, all of my modules have their own `erase-your-darlings.nix` file
+# which makes any changes that they need.
+#
+# This requires a setting up ZFS in a specific way when first installing NixOS.
+# See the ["set up a new host"][] runbook.
+#
+# ["erase your darlings"]: https://grahamc.com/blog/erase-your-darlings/
+# ["set up a new host"]: ./runbooks/set-up-a-new-host.md
 { config, lib, ... }:
 
 with lib;
@@ -6,13 +17,9 @@ let
   cfg = config.nixfiles.eraseYourDarlings;
 in
 {
-  options.nixfiles.eraseYourDarlings = {
-    enable = mkOption { type = types.bool; default = false; };
-    barrucaduPasswordFile = mkOption { type = types.str; };
-    rootSnapshot = mkOption { type = types.str; default = "local/volatile/root@blank"; };
-    persistDir = mkOption { type = types.path; default = "/persist"; };
-    machineId = mkOption { type = types.str; };
-  };
+  imports = [
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     # Wipe / on boot
@@ -62,7 +69,5 @@ in
     services.caddy.dataDir = "${toString cfg.persistDir}/var/lib/caddy";
     services.dockerRegistry.storagePath = "${toString cfg.persistDir}/var/lib/docker-registry";
     services.syncthing.dataDir = "${toString cfg.persistDir}/var/lib/syncthing";
-
-    nixfiles.oci-containers.volumeBaseDir = "${toString cfg.persistDir}/docker-volumes";
   };
 }

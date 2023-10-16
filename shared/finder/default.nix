@@ -1,3 +1,11 @@
+# finder is a webapp to read downloaded manga.  There is no public deployment.
+#
+# finder uses a containerised elasticsearch database, and requires read access
+# to the filesystem where manga is stored.  It does not manage the manga, only
+# provides an interface to search and read.
+#
+# The database can be recreated from the manga files, so this module does not
+# include a backup script.
 { config, lib, ... }:
 
 with lib;
@@ -5,13 +13,9 @@ let
   cfg = config.nixfiles.finder;
 in
 {
-  options.nixfiles.finder = {
-    enable = mkOption { type = types.bool; default = false; };
-    image = mkOption { type = types.str; };
-    port = mkOption { type = types.int; default = 44986; };
-    esTag = mkOption { type = types.str; default = "8.0.0"; };
-    mangaDir = mkOption { type = types.path; };
-  };
+  imports = [
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     nixfiles.oci-containers.pods.finder = {
@@ -28,7 +32,7 @@ in
         };
 
         db = {
-          image = "elasticsearch:${cfg.esTag}";
+          image = "elasticsearch:${cfg.elasticsearchTag}";
           environment = {
             "http.host" = "0.0.0.0";
             "discovery.type" = "single-node";

@@ -88,6 +88,38 @@
 
             ${pkgs.lib.fileContents ./scripts/secrets.sh}
           '';
+
+          documentation =
+            let
+              eval = pkgs.lib.evalModules {
+                modules = [
+                  { config._module.args = { inherit pkgs; }; }
+                  ./shared/options.nix
+                  ./shared/bookmarks/options.nix
+                  ./shared/umami/options.nix
+                  ./shared/concourse/options.nix
+                  ./shared/rtorrent/options.nix
+                  ./shared/oci-containers/options.nix
+                  ./shared/pleroma/options.nix
+                  ./shared/resolved/options.nix
+                  ./shared/bookdb/options.nix
+                  ./shared/minecraft/options.nix
+                  ./shared/erase-your-darlings/options.nix
+                  ./shared/backups/options.nix
+                  ./shared/foundryvtt/options.nix
+                  ./shared/finder/options.nix
+                ];
+              };
+              optionsDoc = pkgs.nixosOptionsDoc {
+                options = eval.options;
+              };
+            in
+            mkApp "documentation" ''
+              PATH=${with pkgs; lib.makeBinPath [ coreutils gnused mdbook mdbook-admonish python3 ]}
+              export NIXOS_OPTIONS_JSON="${optionsDoc.optionsJSON}/share/doc/nixos/options.json"
+
+              ${pkgs.lib.fileContents ./scripts/documentation.sh}
+            '';
         };
     };
 }

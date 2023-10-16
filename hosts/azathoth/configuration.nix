@@ -1,3 +1,16 @@
+# This is my desktop computer.
+#
+# It dual-boots Windows and NixOS.  I don't bother backing up either OS:
+# everything I care about is in Syncthing, on GitHub, or on some other cloud
+# service (eg, Steam).
+#
+# **Alerting:** disabled
+#
+# **Backups:** disabled
+#
+# **Public hostname:** n/a
+#
+# **Role:** desktop
 { pkgs, ... }:
 let
   nfsShare = name:

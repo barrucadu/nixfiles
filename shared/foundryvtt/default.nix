@@ -1,6 +1,15 @@
-# FoundryVTT is licensed software and needs to be downloaded after
-# purchase.
-
+# [FoundryVTT][] is a virtual tabletop to run roleplaying games.  It is licensed
+# software and needs to be downloaded after purchase.  This module doesn't
+# manage the FoundryVTT program files, only operating it.
+#
+# The downloaded FoundryVTT program files must be in `''${dataDir}/bin`.
+#
+# **Backups:** the data files - this requires briefly stopping the service, so
+# don't schedule backups during game time.
+#
+# **Erase your darlings:** overrides the `dataDir`.
+#
+# [FoundryVTT]: https://foundryvtt.com/
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -8,13 +17,10 @@ let
   cfg = config.nixfiles.foundryvtt;
 in
 {
-  imports = [ ./erase-your-darlings.nix ];
-
-  options.nixfiles.foundryvtt = {
-    enable = mkOption { type = types.bool; default = false; };
-    port = mkOption { type = types.int; default = 46885; };
-    dataDir = mkOption { type = types.str; default = "/var/lib/foundryvtt"; };
-  };
+  imports = [
+    ./erase-your-darlings.nix
+    ./options.nix
+  ];
 
   config = mkIf cfg.enable {
     systemd.services.foundryvtt = {
