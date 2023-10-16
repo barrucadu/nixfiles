@@ -98,7 +98,7 @@ Optional: Configure secrets
 After first boot, generate an age public key from the host SSH key:
 
 ```bash
-nix-shell -p ssh-to-age --run 'ssh-keyscan <hostname>.barrucadu.co.uk | ssh-to-age'
+nix-shell -p ssh-to-age --run 'ssh-keyscan localhost | ssh-to-age'
 ```
 
 Add a new section with this key to `.sops.yaml`:
@@ -112,8 +112,6 @@ creation_rules:
           - *barrucadu
           - '<key>'
 ```
-
-Then enable secrets in the flake.nix.
 
 
 Optional: Configure alerting
