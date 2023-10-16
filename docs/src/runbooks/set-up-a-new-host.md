@@ -113,8 +113,6 @@ creation_rules:
           - '<key>'
 ```
 
-Then enable secrets in the flake.nix.
-
 
 Optional: Configure alerting
 ----------------------------
