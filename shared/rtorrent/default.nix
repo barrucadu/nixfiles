@@ -4,8 +4,8 @@
 # This module does not include a backup script.  Torrented files must be backed
 # up independently.
 #
-# If the `erase-your-darlings` module is enabled, stores the session data and
-# logs on the persistent volume.
+# **Erase your darlings:** transparently stores session data and logs on the
+# persistent volume.
 #
 # [rTorrent]: https://github.com/rakshasa/rtorrent
 { config, lib, pkgs, ... }:

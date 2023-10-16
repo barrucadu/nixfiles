@@ -2,15 +2,12 @@
 # software and needs to be downloaded after purchase.  This module doesn't
 # manage the FoundryVTT program files, only operating it.
 #
-# The downloaded FoundryVTT program files must be in
-# `{nixfiles.foundryvtt.dataDir}/bin`.
+# The downloaded FoundryVTT program files must be in `''${dataDir}/bin`.
 #
-# If the `backups` module is enabled, adds a script to backup the data files.
-# This requires briefly stopping the service, so don't schedule backups during
-# game time.
+# **Backups:** the data files - this requires briefly stopping the service, so
+# don't schedule backups during game time.
 #
-# If the `erase-your-darlings` module is enabled, stores its data on the
-# persistent volume.
+# **Erase your darlings:** overrides the `dataDir`.
 #
 # [FoundryVTT]: https://foundryvtt.com/
 { config, lib, pkgs, ... }:

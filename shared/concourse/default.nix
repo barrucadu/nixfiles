@@ -3,15 +3,11 @@
 #
 # Concourse uses a containerised postgres database.
 #
-# If the `backups` module is enabled, adds a script to backup the database.
+# Provides a grafana dashboard.
 #
-# If the `erase-your-darlings` module is enabled, stores its data on the
-# persistent volume.
-#
-# Enabling this module also provisions a [Grafana][] dashboard.
+# **Backups:** the postgres database.
 #
 # [Concourse CI]: https://concourse-ci.org/
-# [Grafana]: https://grafana.com/
 { config, lib, pkgs, ... }:
 
 with lib;

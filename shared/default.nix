@@ -1,4 +1,8 @@
 # Common configuration enabled on all hosts.
+#
+# **Alerts:**
+#
+# - A zpool is in "degraded" status (alertmanager)
 { config, lib, pkgs, flakeInputs, ... }:
 
 with lib;

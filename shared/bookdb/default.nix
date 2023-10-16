@@ -4,11 +4,9 @@
 # bookdb uses a containerised elasticsearch database, it also stores uploaded
 # book cover images.
 #
-# If the `backups` module is enabled, adds a script to backup the database and
-# uploaded files.
+# **Backups:** the elasticsearch database and uploaded files.
 #
-# If the `erase-your-darlings` module is enabled, stores its data on the
-# persistent volume.
+# **Erase your darlings:** overrides the `dataDir`.
 #
 # [bookdb]: https://github.com/barrucadu/bookdb
 # [bookdb.barrucadu.co.uk]: https://bookdb.barrucadu.co.uk/

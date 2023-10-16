@@ -69,7 +69,5 @@ in
     services.caddy.dataDir = "${toString cfg.persistDir}/var/lib/caddy";
     services.dockerRegistry.storagePath = "${toString cfg.persistDir}/var/lib/docker-registry";
     services.syncthing.dataDir = "${toString cfg.persistDir}/var/lib/syncthing";
-
-    nixfiles.oci-containers.volumeBaseDir = "${toString cfg.persistDir}/docker-volumes";
   };
 }

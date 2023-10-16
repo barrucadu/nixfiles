@@ -2,10 +2,7 @@
 #
 # umami uses a containerised postgres database.
 #
-# If the `backups` module is enabled, adds a script to backup the database.
-#
-# If the `erase-your-darlings` module is enabled, stores its data on the
-# persistent volume.
+# **Backups:** the postgres database.
 #
 # [umami]: https://umami.is/
 { config, lib, pkgs, ... }:

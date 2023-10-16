@@ -5,13 +5,12 @@
 # nixpkgs and only runs one server, whereas I want to run multiple modded
 # servers.
 #
-# The Minecraft server files must be in `{nixfiles.minecraft.dataDir}/{name}`.
+# The Minecraft server files must be in `''${dataDir}/{name}`.
 #
 # This module does not include a backup script.  Servers must be backed up
 # independently.
 #
-# If the `erase-your-darlings` module is enabled, stores its data on the
-# persistent volume.
+# **Erase your darlings:** overrides the `dataDir`.
 #
 # [Minecraft]: https://www.minecraft.net/en-us
 { config, lib, pkgs, ... }:

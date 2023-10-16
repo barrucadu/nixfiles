@@ -3,10 +3,7 @@
 #
 # bookmarks uses a containerised elasticsearch database.
 #
-# If the `backups` module is enabled, adds a script to backup the database.
-#
-# If the `erase-your-darlings` module is enabled, stores its data on the
-# persistent volume.
+# **Backups:** the elasticsearch database.
 #
 # [bookmarks]: https://github.com/barrucadu/bookmarks
 # [bookmarks.barrucadu.co.uk]: https://bookmarks.barrucadu.co.uk/

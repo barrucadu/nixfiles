@@ -1,9 +1,8 @@
 # [resolved][] is a recursive DNS server for LAN DNS.
 #
-# Enabling this module also provisions a [Grafana][] dashboard.
+# Provides a grafana dashboard.
 #
 # [resolved]: https://github.com/barrucadu/resolved
-# [Grafana]: https://grafana.com/
 { config, lib, pkgs, ... }:
 
 with lib;

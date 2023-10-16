@@ -1,3 +1,7 @@
+# ```admonish note title="To do"
+# Run podman containers run as a non-root user.
+# ```
+#
 # An abstraction over running containers as systemd units, enforcing some good
 # practices:
 #
@@ -8,11 +12,8 @@
 # Switching between using docker or podman for the container runtime should be
 # totally transparent.
 #
-# If the `erase-your-darlings` module is enabled, stores volume bind-mounts on
-# the persistent volume.
+# **Erase your darlings:** overrides the `volumeBaseDir`.
 { config, lib, pkgs, ... }:
-
-# TODO: ensure podman containers run as a non-root user
 
 with lib;
 let
@@ -99,6 +100,7 @@ in
 {
   imports = [
     ./options.nix
+    ./erase-your-darlings.nix
   ];
 
   config = {

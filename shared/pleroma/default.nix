@@ -2,11 +2,9 @@
 #
 # Pleroma uses a containerised postgres database.
 #
-# If the `backups` module is enabled, adds a script to backup the database and
-# uploaded files.
+# **Backups:** the postgres database, uploaded files, and custom emojis.
 #
-# If the `erase-your-darlings` module is enabled, stores its data on the
-# persistent volume.
+# **Erase your darlings:** transparently stores data on the persistent volume.
 #
 # [Pleroma]: https://pleroma.social/
 { config, lib, pkgs, ... }:

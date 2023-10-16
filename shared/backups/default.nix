@@ -20,6 +20,11 @@
 #
 # Change the restore target by setting `$RESTORE_DIR`.
 #
+# **Alerts:**
+#
+# - A backup script terminates with an error.
+# - Uploading the backup to s3 fails.
+#
 # [Duplicity]: https://duplicity.gitlab.io/
 # [defined in the ops repo]: https://github.com/barrucadu/ops/blob/master/aws/backups.tf
 { config, lib, pkgs, ... }:
