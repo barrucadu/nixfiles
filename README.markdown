@@ -13,6 +13,8 @@ nix run .#fmt
 nix run .#lint
 ```
 
+See [the documentation](https://nixfiles.docs.barrucadu.co.uk).
+
 [NixOS]: https://nixos.org
 [flakes]: https://nixos.wiki/wiki/Flakes
 

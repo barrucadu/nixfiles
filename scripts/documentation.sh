@@ -4,7 +4,7 @@ pushd docs
 mdbook-admonish install
 popd
 
-cp README.markdown docs/src/README.md
+sed 's#See \[the documentation\].*##' < README.markdown > docs/src/README.md
 
 python3 - <<'EOF' > docs/src/hosts.md
 import os
