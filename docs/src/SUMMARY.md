@@ -12,3 +12,4 @@
 # Runbooks
 
 - [Set up a new host](./runbooks/set-up-a-new-host.md)
+- [Upgrade to a new version of postgres](./runbooks/upgrade-to-a-new-version-of-postgres.md)
