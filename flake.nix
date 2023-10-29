@@ -2,10 +2,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     poetry2nix = {
-      url = "github:nix-community/poetry2nix";
+      url = "github:nix-community/poetry2nix?rev=e23218d1599e3369dfc878757e58974017e0ecc8";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
-      inputs.systems.follows = "systems";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
