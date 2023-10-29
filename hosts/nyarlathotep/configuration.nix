@@ -20,7 +20,7 @@
 # Bring names from 'lib' into scope.
 with lib;
 let
-  shares = [ "anime" "manga" "misc" "music" "movies" "tv" "images" "torrents" ];
+  shares = [ "anime" "manga" "misc" "music" "movies" "tv" "torrents" ];
 
   promscalePort = 9201;
   prometheusAwairExporterPort = 9517;
