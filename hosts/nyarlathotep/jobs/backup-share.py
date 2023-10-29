@@ -19,7 +19,7 @@ BACKUP_DIRS = ["/mnt/nas"]
 
 # Directories to mkdir, and then skip all children.  Do not end with a
 # trailing "/".
-SKIP_DIRS = ["/mnt/nas/images", "/mnt/nas/misc", "/mnt/nas/music"]
+SKIP_DIRS = ["/mnt/nas/misc", "/mnt/nas/music"]
 
 # Files to skip.
 SKIP_FILES = []
