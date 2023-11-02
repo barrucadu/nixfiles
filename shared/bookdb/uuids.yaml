@@ -30,9 +30,6 @@ ordered_categories:
   - name: Miscellaneous
     uuid: fb2dd601-883a-4254-a294-fcf0a0f98d2f
 
-- name: Penguin Little Black Classics
-  uuid: b96b2465-2995-4ee9-a59a-048ecb217a7c
-
 - name: Prose Fiction + Graphic Novels
   uuid: 590ac55d-0644-4a71-b902-587faa5b03d9
 
