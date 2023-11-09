@@ -363,7 +363,7 @@ in
     enable = true;
     description = "Automatically tag new podcast files";
     wantedBy = [ "multi-user.target" ];
-    path = with pkgs; [ inotifyTools id3v2 ];
+    path = with pkgs; [ ffmpeg inotifyTools id3v2 ];
     unitConfig.RequiresMountsFor = "/mnt/nas";
     serviceConfig = {
       WorkingDirectory = "/mnt/nas/music/Podcasts/";
