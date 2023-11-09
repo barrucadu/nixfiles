@@ -4,6 +4,18 @@ set -e
 
 sleep 60
 
+for m4afile in */in/*.m4a; do
+  if [[ ! -f "$m4afile" ]]; then
+    break
+  fi
+
+  bitrate=$(ffprobe -v quiet -of flat=s=_ -show_entries format=bit_rate "${m4afile}" | sed 's/[^0-9]*//g')
+  destination="$(echo "$m4afile" | sed 's:m4a$:mp3:')"
+  echo "m4a: ${m4afile} -> ${destination}" >&2
+  ffmpeg -y -i "$m4afile" -codec:a libmp3lame -b:a "$bitrate" -q:a 2 "$destination"
+  rm "$m4afile"
+done
+
 for mp3file in */in/*.mp3; do
   if [[ ! -f "$mp3file" ]]; then
     break
