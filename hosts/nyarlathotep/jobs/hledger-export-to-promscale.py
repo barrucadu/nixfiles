@@ -81,10 +81,13 @@ def preprocess_group_credits_debits(postings):
     """Group postings by date and work out the total debit / credit for
     each account.  This is then used to simplify other metrics.
 
+    Accounts are projected forwards and backwards in time.
+
     Postings are applied to an account and all of its superaccounts.
     """
 
     key = lambda account, currency: (("account", account), ("currency", currency))
+    all_keys = set()
 
     # credits_debits_by_date :: date => key => {credit, debit}
     credits_debits_by_date = {}
@@ -104,12 +107,22 @@ def preprocess_group_credits_debits(postings):
             else:
                 account = f"{account}:{segment}"
 
-            old = credits_debits.get(key(account, currency), {"credit": 0, "debit": 0})
-            credits_debits[key(account, currency)] = {
+            k = key(account, currency)
+            all_keys.add(k)
+
+            old = credits_debits.get(k, {"credit": 0, "debit": 0})
+            credits_debits[k] = {
                 "credit": old["credit"] + credit,
                 "debit": old["debit"] + debit,
             }
         credits_debits_by_date[posting["date"]] = credits_debits
+
+    # Project accounts through all time
+    for timestamp in credits_debits_by_date.keys():
+        credits_debits = credits_debits_by_date[timestamp]
+        for k in all_keys:
+            credits_debits[k] = credits_debits.get(k, {"credit": 0, "debit": 0})
+        credits_debits_by_date[timestamp] = credits_debits
 
     return credits_debits_by_date
 
@@ -172,8 +185,6 @@ def metric_hledger_balance(credits_debits):
     Accounts are propagated forward in time: if an account is seen at
     time T, then its balance will also be reported at time T+1, T+2,
     etc.
-
-    Postings are applied to an account and all of its superaccounts.
     """
 
     # deltas_by_timestamp :: timestamp => key => delta
