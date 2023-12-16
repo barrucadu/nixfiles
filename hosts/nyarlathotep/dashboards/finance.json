@@ -78,7 +78,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -151,7 +151,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -225,7 +225,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -297,7 +297,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -367,7 +367,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -439,7 +439,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -525,7 +525,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -1094,7 +1094,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -1234,7 +1234,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -1318,7 +1318,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -1402,7 +1402,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -1486,7 +1486,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2090,7 +2090,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2159,7 +2159,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2228,7 +2228,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2298,7 +2298,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2367,7 +2367,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2438,7 +2438,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2507,7 +2507,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2576,7 +2576,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2646,7 +2646,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2715,7 +2715,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2784,7 +2784,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2853,7 +2853,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2886,8 +2886,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -2923,7 +2922,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
@@ -2956,8 +2955,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -2993,7 +2991,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.5.13",
       "targets": [
         {
           "datasource": {
