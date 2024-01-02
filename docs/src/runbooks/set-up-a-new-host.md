@@ -1,7 +1,9 @@
 Set up a new host
 =================
 
+```admonish info
 See also [the NixOS installation instructions](https://nixos.org/manual/nixos/stable/index.html#ch-installation).
+```
 
 1. Create & format partitions
 1. **Optional:** Configure wiping / on boot (pre-first-boot steps)
@@ -19,7 +21,7 @@ See also [the NixOS installation instructions](https://nixos.org/manual/nixos/st
 1. Build the new system configuration with `sudo nixos-rebuild switch --flake '.#<hostname>'`
 1. Reboot
 1. Commit, push, & merge
-
+1. **Optional:** Configure Syncthing
 
 Optional: Configure wiping / on boot
 ------------------------------------
@@ -27,7 +29,7 @@ Optional: Configure wiping / on boot
 Before installing NixOS, create the `local` pool and datasets:
 
 ```bash
-zpool create -o mountpoint=legacy -o autotrim=on local <device>
+zpool create -o autotrim=on local <device>
 
 zfs create -o mountpoint=legacy local/volatile
 zfs create -o mountpoint=legacy local/volatile/root
@@ -36,7 +38,7 @@ zfs create -o mountpoint=legacy local/persistent
 zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true local/persistent/home
 zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true local/persistent/nix
 zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true local/persistent/persist
-zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true local/persistent/var-log
+zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true -o xattr=sa -o acltype=posix local/persistent/var-log
 ```
 
 Take a snapshot of the empty root dataset:
@@ -185,3 +187,14 @@ file](https://github.com/barrucadu/dotfiles/blob/master/dot_config/git/allowed_s
 
 **If the host should be able to connect to other machines:** add the public key
 to `shared/default.nix`.
+
+
+Optional: Configure Syncthing
+-----------------------------
+
+Use the Syncthing Web UI (`localhost:8384`) to get the machine's ID.  Add this
+ID to any other machines which it should synchronise files with, through their
+web UIs.
+
+Then configure any shared folders.
+
