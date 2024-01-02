@@ -83,7 +83,7 @@ in
 
   environment.etc."dns/hosts/stevenblack".source = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
-    sha256 = "0zh5184apb1c6mv8sabfwlg49s6xxapwxq5qid7d48786xggq6wi";
+    sha256 = "1jzfgf8q3wvm88gb4hv80f1cgvs88krgmcc29w1j81qnfrkblxm9";
   };
 
   environment.etc."dns/zones/10.in-addr.arpa".text = ''
@@ -143,7 +143,7 @@ in
     description = "Guest user";
     isNormalUser = true;
     group = "users";
-    passwordFile = config.sops.secrets."users/notbarrucadu".path;
+    hashedPasswordFile = config.sops.secrets."users/notbarrucadu".path;
     shell = "/run/current-system/sw/bin/nologin";
   };
   sops.secrets."users/notbarrucadu".neededForUsers = true;
