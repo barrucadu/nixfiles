@@ -46,7 +46,7 @@ in
     #############################################################################
 
     # The NixOS release to be compatible with for stateful data such as databases.
-    system.stateVersion = "23.05";
+    system.stateVersion = "23.11";
 
     # Only keep the last 500MiB of systemd journal.
     services.journald.extraConfig = "SystemMaxUse=500M";
@@ -87,7 +87,7 @@ in
     i18n.defaultLocale = "en_GB.UTF-8";
 
     # Timezone
-    services.timesyncd.enable = true;
+    services.timesyncd.enable = mkForce true;
     time.timeZone = "Europe/London";
 
     # Keyboard

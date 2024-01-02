@@ -41,6 +41,7 @@ print("")
 
 with open(os.getenv("NIXOS_OPTIONS_JSON"), "r") as f:
     options = json.load(f)
+    del options["_module.args"]
 
 modules = {}
 for key, defn in options.items():
@@ -84,6 +85,7 @@ print("")
 
 with open(os.getenv("NIXOS_OPTIONS_JSON"), "r") as f:
     options = json.load(f)
+    del options["_module.args"]
 
 for option in sorted(options.keys()):
     defn = options[option]

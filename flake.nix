@@ -1,8 +1,8 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     poetry2nix = {
-      url = "github:nix-community/poetry2nix?rev=e23218d1599e3369dfc878757e58974017e0ecc8";
+      url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
@@ -23,7 +23,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [ poetry2nix.overlay ];
+        overlays = [ poetry2nix.overlays.default ];
       };
     in
     {
