@@ -475,8 +475,8 @@ in
       ExecStart = pkgs.writeShellScript "bookdb-sync" ''
         set -ex
 
-        /run/wrappers/bin/sudo cp -r ${config.nixfiles.bookdb.dataDir}/covers/ ~/bookdb-covers
-        trap "/run/wrappers/bin/sudo rm -rf ~/bookdb-covers" EXIT
+        /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -r ${config.nixfiles.bookdb.dataDir}/covers/ ~/bookdb-covers
+        trap "/run/wrappers/bin/sudo ${pkgs.coreutils}/bin/rm -rf ~/bookdb-covers" EXIT
         rsync -az\
               -e "ssh -i $SSH_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
               ~/bookdb-covers/ \
