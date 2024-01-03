@@ -13,6 +13,7 @@ with lib;
 let
   cfg = config.nixfiles.pleroma;
   backend = config.nixfiles.oci-containers.backend;
+  backendPkg = if backend == "docker" then pkgs.docker else pkgs.podman;
 in
 {
   imports = [
@@ -92,18 +93,14 @@ in
     # TODO: figure out how to get `sudo` in the unit's path (adding the package
     # doesn't help - need the wrapper)
     nixfiles.backups.scripts.pleroma = ''
-      /run/wrappers/bin/sudo cp -a ${config.users.users.pleroma.home}/uploads uploads
-      /run/wrappers/bin/sudo cp -a ${config.users.users.pleroma.home}/static/emoji/custom emoji
-      /run/wrappers/bin/sudo ${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma > postgres.dump
+      /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -a ${config.users.users.pleroma.home}/uploads uploads
+      /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -a ${config.users.users.pleroma.home}/static/emoji/custom emoji
+      /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma > postgres.dump
     '';
     nixfiles.backups.sudoRules = [
       { command = "${pkgs.coreutils}/bin/cp -a ${config.users.users.pleroma.home}/uploads uploads"; }
       { command = "${pkgs.coreutils}/bin/cp -a ${config.users.users.pleroma.home}/static/emoji/custom emoji"; }
-      {
-        command =
-          let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
-          in "${pkg}/bin/${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma";
-      }
+      { command = "${backendPkg}/bin/${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma"; }
     ];
   };
 }

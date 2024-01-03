@@ -47,10 +47,10 @@ in
     # TODO: figure out how to get `sudo` in the unit's path (adding the
     # package doesn't help - need the wrapper)
     nixfiles.backups.scripts.foundryvtt = ''
-      /run/wrappers/bin/sudo systemctl stop foundryvtt
-      /run/wrappers/bin/sudo tar cfz bin.tar.gz ${cfg.dataDir}/bin
-      /run/wrappers/bin/sudo cp -a ${cfg.dataDir}/data data
-      /run/wrappers/bin/sudo systemctl start foundryvtt
+      /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl stop foundryvtt
+      /run/wrappers/bin/sudo ${pkgs.gnutar}/bin/tar cfz bin.tar.gz ${cfg.dataDir}/bin
+      /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -a ${cfg.dataDir}/data data
+      /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl start foundryvtt
     '';
     nixfiles.backups.sudoRules = [
       { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; }

@@ -11,6 +11,7 @@ with lib;
 let
   cfg = config.nixfiles.umami;
   backend = config.nixfiles.oci-containers.backend;
+  backendPkg = if backend == "docker" then pkgs.docker else pkgs.podman;
 in
 {
   imports = [
@@ -42,14 +43,10 @@ in
     };
 
     nixfiles.backups.scripts.umami = ''
-      /run/wrappers/bin/sudo ${backend} exec -i umami-db pg_dump -U umami --no-owner umami | gzip -9 > dump.sql.gz
+      /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner umami | gzip -9 > dump.sql.gz
     '';
     nixfiles.backups.sudoRules = [
-      {
-        command =
-          let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
-          in "${pkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner umami";
-      }
+      { command = "${backendPkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner umami"; }
     ];
   };
 }

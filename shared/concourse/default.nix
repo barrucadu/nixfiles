@@ -14,6 +14,7 @@ with lib;
 let
   cfg = config.nixfiles.concourse;
   backend = config.nixfiles.oci-containers.backend;
+  backendPkg = if backend == "docker" then pkgs.docker else pkgs.podman;
 in
 {
   imports = [
@@ -91,14 +92,10 @@ in
       ];
 
     nixfiles.backups.scripts.concourse = ''
-      /run/wrappers/bin/sudo ${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse | gzip -9 > dump.sql.gz
+      /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse | gzip -9 > dump.sql.gz
     '';
     nixfiles.backups.sudoRules = [
-      {
-        command =
-          let pkg = if backend == "docker" then pkgs.docker else pkgs.podman;
-          in "${pkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse";
-      }
+      { command = "${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse"; }
     ];
   };
 }
