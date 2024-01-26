@@ -64,19 +64,6 @@ in
   ## Backups
   ###############################################################################
 
-  nixfiles.backups.enable = true;
-  nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
-  nixfiles.backups.scripts.syncthing = "cp -a /home/barrucadu/s .";
-  # TODO: this will break when I have >100 github repos
-  nixfiles.backups.scripts.git = ''
-    curl -u "barrucadu:''${GITHUB_TOKEN}" 'https://api.github.com/user/repos?type=owner&per_page=100' 2>/dev/null | \
-      jq -r '.[].ssh_url' | \
-      while read url; do
-        git clone --bare "$url"
-      done
-  '';
-  sops.secrets."nixfiles/backups/env" = { };
-
   nixfiles.restic-backups.enable = true;
   nixfiles.restic-backups.environmentFile = config.sops.secrets."nixfiles/restic-backups/env".path;
   nixfiles.restic-backups.backups.github = {

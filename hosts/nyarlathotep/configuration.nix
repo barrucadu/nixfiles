@@ -63,14 +63,6 @@ in
   ## Backups
   ###############################################################################
 
-  nixfiles.backups.enable = true;
-  nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
-  nixfiles.backups.pythonScripts = {
-    share = fileContents ./jobs/backup-share.py;
-    youtube = fileContents ./jobs/backup-youtube.py;
-  };
-  sops.secrets."nixfiles/backups/env" = { };
-
   nixfiles.restic-backups.enable = true;
   nixfiles.restic-backups.environmentFile = config.sops.secrets."nixfiles/restic-backups/env".path;
   nixfiles.restic-backups.backups.torrents = {

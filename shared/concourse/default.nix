@@ -102,12 +102,5 @@ in
     nixfiles.restic-backups.sudoRules = [
       { command = "${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner -Fc concourse"; }
     ];
-
-    nixfiles.backups.scripts.concourse = ''
-      /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse | gzip -9 > dump.sql.gz
-    '';
-    nixfiles.backups.sudoRules = [
-      { command = "${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse"; }
-    ];
   };
 }

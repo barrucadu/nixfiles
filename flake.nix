@@ -69,12 +69,6 @@
           };
         in
         {
-          backups = mkApp "backups" ''
-            PATH=${with pkgs; lib.makeBinPath [ duplicity sops nettools ]}
-
-            ${pkgs.lib.fileContents ./scripts/backups.sh}
-          '';
-
           fmt = mkApp "fmt" ''
             PATH=${with pkgs; lib.makeBinPath [ nix git python3Packages.black ]}
 
@@ -117,7 +111,6 @@
                   ./shared/bookdb/options.nix
                   ./shared/minecraft/options.nix
                   ./shared/erase-your-darlings/options.nix
-                  ./shared/backups/options.nix
                   ./shared/foundryvtt/options.nix
                   ./shared/finder/options.nix
                   ./shared/restic-backups/options.nix

@@ -58,9 +58,5 @@ in
         "elasticsearch-dump.json"
       ];
     };
-
-    nixfiles.backups.scripts.bookmarks = ''
-      env ES_HOST=http://127.0.0.1:${toString cfg.elasticsearchPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | gzip -9 > dump.json.gz
-    '';
   };
 }

@@ -53,12 +53,5 @@ in
     nixfiles.restic-backups.sudoRules = [
       { command = "${backendPkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner -Fc umami"; }
     ];
-
-    nixfiles.backups.scripts.umami = ''
-      /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner umami | gzip -9 > dump.sql.gz
-    '';
-    nixfiles.backups.sudoRules = [
-      { command = "${backendPkg}/bin/${backend} exec -i umami-db pg_dump -U umami --no-owner umami"; }
-    ];
   };
 }
