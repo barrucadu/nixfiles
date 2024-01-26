@@ -90,6 +90,19 @@ in
       ];
     };
 
+    nixfiles.restic-backups.backups.pleroma = {
+      prepareCommand = ''
+        /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma > postgres.dump
+      '';
+      paths = [
+        config.users.users.pleroma.home
+        "postgres.dump"
+      ];
+    };
+    nixfiles.restic-backups.sudoRules = [
+      { command = "${backendPkg}/bin/${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma"; }
+    ];
+
     # TODO: figure out how to get `sudo` in the unit's path (adding the package
     # doesn't help - need the wrapper)
     nixfiles.backups.scripts.pleroma = ''

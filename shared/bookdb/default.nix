@@ -64,6 +64,16 @@ in
       group = "nogroup";
     };
 
+    nixfiles.restic-backups.backups.bookdb = {
+      prepareCommand = ''
+        env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump > elasticsearch-dump.json
+      '';
+      paths = [
+        cfg.dataDir
+        "elasticsearch-dump.json"
+      ];
+    };
+
     # TODO: figure out how to get `sudo` in the unit's path (adding the
     # package doesn't help - need the wrapper)
     nixfiles.backups.scripts.bookdb = ''

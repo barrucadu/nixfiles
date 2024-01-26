@@ -88,6 +88,12 @@
             ${pkgs.lib.fileContents ./scripts/lint.sh}
           '';
 
+          restic-backups = mkApp "backups" ''
+            PATH=${with pkgs; lib.makeBinPath [ restic sops nettools ]}
+
+            ${pkgs.lib.fileContents ./scripts/restic-backups.sh}
+          '';
+
           secrets = mkApp "secrets" ''
             PATH=${with pkgs; lib.makeBinPath [ sops nettools vim ]}
             export EDITOR=vim
@@ -114,6 +120,7 @@
                   ./shared/backups/options.nix
                   ./shared/foundryvtt/options.nix
                   ./shared/finder/options.nix
+                  ./shared/restic-backups/options.nix
                 ];
               };
               optionsDoc = pkgs.nixosOptionsDoc {

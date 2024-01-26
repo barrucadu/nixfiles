@@ -44,6 +44,22 @@ in
       group = "nogroup";
     };
 
+    nixfiles.restic-backups.backups.foundryvtt = {
+      prepareCommand = ''
+        /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl stop foundryvtt
+      '';
+      cleanupCommand = ''
+        /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl start foundryvtt
+      '';
+      paths = [
+        cfg.dataDir
+      ];
+    };
+    nixfiles.restic-backups.sudoRules = [
+      { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; }
+      { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; }
+    ];
+
     # TODO: figure out how to get `sudo` in the unit's path (adding the
     # package doesn't help - need the wrapper)
     nixfiles.backups.scripts.foundryvtt = ''

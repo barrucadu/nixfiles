@@ -77,6 +77,33 @@ in
   '';
   sops.secrets."nixfiles/backups/env" = { };
 
+  nixfiles.restic-backups.enable = true;
+  nixfiles.restic-backups.environmentFile = config.sops.secrets."nixfiles/restic-backups/env".path;
+  nixfiles.restic-backups.backups.github = {
+    # TODO: this will break when I have >100 github repos
+    # TODO: use a backup-specific SSH key?
+    prepareCommand = ''
+      ${pkgs.coreutils}/bin/mkdir repositories
+      cd repositories
+
+      ${pkgs.curl}/bin/curl -u "barrucadu:''${GITHUB_TOKEN}" 'https://api.github.com/user/repos?type=owner&per_page=100' 2>/dev/null | \
+        ${pkgs.jq}/bin/jq -r '.[].ssh_url' | \
+        while read url; do
+          env GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/barrucadu/.ssh/id_ed25519" \
+            ${pkgs.git}/bin/git clone --bare "$url"
+        done
+    '';
+    paths = [
+      "repositories"
+    ];
+  };
+  nixfiles.restic-backups.backups.syncthing = {
+    paths = [
+      "/home/barrucadu/s"
+    ];
+  };
+  sops.secrets."nixfiles/restic-backups/env" = { };
+
 
   ###############################################################################
   ## Services

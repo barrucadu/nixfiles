@@ -50,6 +50,15 @@ in
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
     };
 
+    nixfiles.restic-backups.backups.bookmarks = {
+      prepareCommand = ''
+        env ES_HOST=http://127.0.0.1:${toString cfg.elasticsearchPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump > elasticsearch-dump.json
+      '';
+      paths = [
+        "elasticsearch-dump.json"
+      ];
+    };
+
     nixfiles.backups.scripts.bookmarks = ''
       env ES_HOST=http://127.0.0.1:${toString cfg.elasticsearchPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | gzip -9 > dump.json.gz
     '';

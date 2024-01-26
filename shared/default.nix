@@ -36,6 +36,7 @@ in
     ./oci-containers
     ./pleroma
     ./resolved
+    ./restic-backups
     ./rtorrent
     ./umami
   ];
