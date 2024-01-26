@@ -66,6 +66,7 @@ in
 
   nixfiles.restic-backups.enable = true;
   nixfiles.restic-backups.environmentFile = config.sops.secrets."nixfiles/restic-backups/env".path;
+  nixfiles.restic-backups.checkRepositoryAt = "Wed, 12:00";
   nixfiles.restic-backups.backups.github = {
     # TODO: this will break when I have >100 github repos
     # TODO: use a backup-specific SSH key?
