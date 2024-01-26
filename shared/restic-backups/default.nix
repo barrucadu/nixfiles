@@ -5,15 +5,15 @@
 # List all the snapshots with:
 #
 # ```bash
-# nix run .#restic-backups                                # all snapshots
-# nix run .#restic-backups -- snapshots --host <hostname> # for a specific host
-# nix run .#restic-backups -- snapshots --tag <tag>       # for a specific tag
+# nix run .#backups                                # all snapshots
+# nix run .#backups -- snapshots --host <hostname> # for a specific host
+# nix run .#backups -- snapshots --tag <tag>       # for a specific tag
 # ```
 #
 # Restore a snapshot to `<restore-dir>` with:
 #
 # ```bash
-# nix run .#restic-backups restore <snapshot> [<restore-dir>]
+# nix run .#backups restore <snapshot> [<restore-dir>]
 # ```
 #
 # If unspecified, the snapshot is restored to `/tmp/restic-restore-<snapshot>`.

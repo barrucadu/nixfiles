@@ -69,6 +69,12 @@
           };
         in
         {
+          backups = mkApp "backups" ''
+            PATH=${with pkgs; lib.makeBinPath [ restic sops nettools ]}
+
+            ${pkgs.lib.fileContents ./scripts/backups.sh}
+          '';
+
           fmt = mkApp "fmt" ''
             PATH=${with pkgs; lib.makeBinPath [ nix git python3Packages.black ]}
 
@@ -80,12 +86,6 @@
             PATH=${with pkgs; lib.makeBinPath [ findutils shellcheck git gnugrep python3Packages.flake8 ]}
 
             ${pkgs.lib.fileContents ./scripts/lint.sh}
-          '';
-
-          restic-backups = mkApp "backups" ''
-            PATH=${with pkgs; lib.makeBinPath [ restic sops nettools ]}
-
-            ${pkgs.lib.fileContents ./scripts/restic-backups.sh}
           '';
 
           secrets = mkApp "secrets" ''
