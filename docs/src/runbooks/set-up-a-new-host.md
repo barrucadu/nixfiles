@@ -153,18 +153,16 @@ nix run .#secrets
 Then enable backups in the host configuration:
 
 ```nix
-nixfiles.backups.enable = true;
-nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
-sops.secrets."nixfiles/backups/env" = { };
+nixfiles.restic-backups.enable = true;
+nixfiles.restic-backups.environmentFile = config.sops.secrets."nixfiles/restic-backups/env".path;
+sops.secrets."nixfiles/restic-backups/env" = { };
 ```
 
 Most services define their own backup scripts.  For any other needs, write a
-custom script:
+custom backup job:
 
 ```nix
-nixfiles.backups.scripts.<name> = ''
-  <script which copies files to backup to the current working directory>
-'';
+nixfiles.restic-backups.backups.<name> = { ... };
 ```
 
 
