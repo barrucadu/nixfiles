@@ -25,7 +25,6 @@ in
   imports = [
     ./options.nix
     # modules
-    ./backups
     ./bookdb
     ./bookmarks
     ./concourse
@@ -36,6 +35,7 @@ in
     ./oci-containers
     ./pleroma
     ./resolved
+    ./restic-backups
     ./rtorrent
     ./umami
   ];

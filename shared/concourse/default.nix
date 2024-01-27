@@ -91,11 +91,16 @@ in
         { name = "Concourse"; folder = "Services"; options.path = ./dashboard.json; }
       ];
 
-    nixfiles.backups.scripts.concourse = ''
-      /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse | gzip -9 > dump.sql.gz
-    '';
-    nixfiles.backups.sudoRules = [
-      { command = "${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner concourse"; }
+    nixfiles.restic-backups.backups.concourse = {
+      prepareCommand = ''
+        /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner -Fc concourse > postgres.dump
+      '';
+      paths = [
+        "postgres.dump"
+      ];
+    };
+    nixfiles.restic-backups.sudoRules = [
+      { command = "${backendPkg}/bin/${backend} exec -i concourse-db pg_dump -U concourse --no-owner -Fc concourse"; }
     ];
   };
 }

@@ -64,14 +64,14 @@ in
       group = "nogroup";
     };
 
-    # TODO: figure out how to get `sudo` in the unit's path (adding the
-    # package doesn't help - need the wrapper)
-    nixfiles.backups.scripts.bookdb = ''
-      /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -a ${cfg.dataDir}/covers covers
-      env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump | gzip -9 > dump.json.gz
-    '';
-    nixfiles.backups.sudoRules = [
-      { command = "${pkgs.coreutils}/bin/cp -a ${cfg.dataDir}/covers covers"; }
-    ];
+    nixfiles.restic-backups.backups.bookdb = {
+      prepareCommand = ''
+        env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump > elasticsearch-dump.json
+      '';
+      paths = [
+        cfg.dataDir
+        "elasticsearch-dump.json"
+      ];
+    };
   };
 }

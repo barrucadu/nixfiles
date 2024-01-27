@@ -70,7 +70,7 @@
         in
         {
           backups = mkApp "backups" ''
-            PATH=${with pkgs; lib.makeBinPath [ duplicity sops nettools ]}
+            PATH=${with pkgs; lib.makeBinPath [ restic sops nettools ]}
 
             ${pkgs.lib.fileContents ./scripts/backups.sh}
           '';
@@ -111,9 +111,9 @@
                   ./shared/bookdb/options.nix
                   ./shared/minecraft/options.nix
                   ./shared/erase-your-darlings/options.nix
-                  ./shared/backups/options.nix
                   ./shared/foundryvtt/options.nix
                   ./shared/finder/options.nix
+                  ./shared/restic-backups/options.nix
                 ];
               };
               optionsDoc = pkgs.nixosOptionsDoc {

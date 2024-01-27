@@ -63,13 +63,26 @@ in
   ## Backups
   ###############################################################################
 
-  nixfiles.backups.enable = true;
-  nixfiles.backups.environmentFile = config.sops.secrets."nixfiles/backups/env".path;
-  nixfiles.backups.pythonScripts = {
-    share = fileContents ./jobs/backup-share.py;
-    youtube = fileContents ./jobs/backup-youtube.py;
+  nixfiles.restic-backups.enable = true;
+  nixfiles.restic-backups.environmentFile = config.sops.secrets."nixfiles/restic-backups/env".path;
+  nixfiles.restic-backups.backups.torrents = {
+    prepareCommand = ''
+      ${pkgs.python3}/bin/python3 ${./jobs/restic-prepare--hardlink-torrent-files.py} > hardlink-torrent-files.sh
+    '';
+    paths = [
+      "hardlink-torrent-files.sh"
+      "/mnt/nas/torrents/watch"
+    ];
   };
-  sops.secrets."nixfiles/backups/env" = { };
+  nixfiles.restic-backups.backups.youtube = {
+    prepareCommand = ''
+      ${pkgs.python3}/bin/python3 ${./jobs/restic-prepare--fetch-youtube.py} > fetch-youtube.sh
+    '';
+    paths = [
+      "fetch-youtube.sh"
+    ];
+  };
+  sops.secrets."nixfiles/restic-backups/env" = { };
 
 
   ###############################################################################

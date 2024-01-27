@@ -44,19 +44,20 @@ in
       group = "nogroup";
     };
 
-    # TODO: figure out how to get `sudo` in the unit's path (adding the
-    # package doesn't help - need the wrapper)
-    nixfiles.backups.scripts.foundryvtt = ''
-      /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl stop foundryvtt
-      /run/wrappers/bin/sudo ${pkgs.gnutar}/bin/tar cfz bin.tar.gz ${cfg.dataDir}/bin
-      /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -a ${cfg.dataDir}/data data
-      /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl start foundryvtt
-    '';
-    nixfiles.backups.sudoRules = [
+    nixfiles.restic-backups.backups.foundryvtt = {
+      prepareCommand = ''
+        /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl stop foundryvtt
+      '';
+      cleanupCommand = ''
+        /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl start foundryvtt
+      '';
+      paths = [
+        cfg.dataDir
+      ];
+    };
+    nixfiles.restic-backups.sudoRules = [
       { command = "${pkgs.systemd}/bin/systemctl stop foundryvtt"; }
       { command = "${pkgs.systemd}/bin/systemctl start foundryvtt"; }
-      { command = "${pkgs.gnutar}/bin/tar cfz bin.tar.gz ${cfg.dataDir}/bin"; }
-      { command = "${pkgs.coreutils}/bin/cp -a ${cfg.dataDir}/data data"; }
     ];
   };
 }
