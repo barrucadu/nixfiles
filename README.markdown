@@ -73,26 +73,27 @@ Tools
 
 ### Backups
 
-Backups are managed by `shared/backups` and uploaded to S3 with [Duplicity][].
+Backups are managed by `shared/restic-backups` and uploaded to [Backblaze B2][]
+with [restic][].
 
-Check the status of a backup collection with:
-
-```bash
-nix run .#backups                   # for the current host
-nix run .#backups status            # for the current host
-nix run .#backups status <hostname> # for another host
-```
-
-Restore a backup to `/tmp/backup-restore` with:
+List all the snapshots with:
 
 ```bash
-nix run .#backups restore            # for the current host
-nix run .#backups restore <hostname> # for another host
+nix run .#backups                                # all snapshots
+nix run .#backups -- snapshots --host <hostname> # for a specific host
+nix run .#backups -- snapshots --tag <tag>       # for a specific tag
 ```
 
-Change the restore target by setting `$RESTORE_DIR`.
+Restore a snapshot to `<restore-dir>` with:
 
-[Duplicity]: https://duplicity.gitlab.io/
+```bash
+nix run .#backups restore <snapshot> [<restore-dir>]
+```
+
+If unspecified, the snapshot is restored to `/tmp/restic-restore-<snapshot>`.
+
+[Backblaze B2]: https://www.backblaze.com/
+[restic]: https://restic.net/
 
 ### Secrets
 
