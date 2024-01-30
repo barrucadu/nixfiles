@@ -1,0 +1,59 @@
+# Removed
+error /files/privacy/analytics.png 410
+error /glossary.html 410
+error /privacy.html 410
+
+# Redirected
+redir /arden-vul-6-months-in-censored/session-screenshot.png /post/arden-vul-6-months-in-censored/session-screenshot.png permanent
+redir /arden-vul-6-months-in/house-rules.pdf /post/arden-vul-6-months-in/house-rules.pdf permanent
+redir /arden-vul-6-months-in/miro-full.jpg /post/arden-vul-6-months-in/miro-full.jpg permanent
+redir /arden-vul-6-months-in/miro-level3.jpg /post/arden-vul-6-months-in/miro-level3.jpg permanent
+redir /arden-vul-6-months-in/session-screenshot.png /post/arden-vul-6-months-in/session-screenshot.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/all.png /post/dice-rolls-in-call-of-cthulhu/all.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/all.thumb.png /post/dice-rolls-in-call-of-cthulhu/all.thumb.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/basic.png /post/dice-rolls-in-call-of-cthulhu/basic.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/bonus.png /post/dice-rolls-in-call-of-cthulhu/bonus.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/difficulties.png /post/dice-rolls-in-call-of-cthulhu/difficulties.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/opposed-bonus.png /post/dice-rolls-in-call-of-cthulhu/opposed-bonus.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/opposed-penalty.png /post/dice-rolls-in-call-of-cthulhu/opposed-penalty.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/opposed.png /post/dice-rolls-in-call-of-cthulhu/opposed.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/penalty.png /post/dice-rolls-in-call-of-cthulhu/penalty.png permanent
+redir /files/dice-rolls-in-call-of-cthulhu/pushed.png /post/dice-rolls-in-call-of-cthulhu/pushed.png permanent
+redir /files/dice-rolls-in-traveller/basic.png /post/dice-rolls-in-traveller/basic.png permanent
+redir /files/dice-rolls-in-traveller/boon-bane.png /post/dice-rolls-in-traveller/boon-bane.png permanent
+redir /files/dice-rolls-in-traveller/difficulties.png /post/dice-rolls-in-traveller/difficulties.png permanent
+redir /files/dice-rolls-in-traveller/normalised-difficulties-trimmed.png /post/dice-rolls-in-traveller/normalised-difficulties-trimmed.png permanent
+redir /files/dice-rolls-in-traveller/normalised-difficulties.png /post/dice-rolls-in-traveller/normalised-difficulties.png permanent
+redir /files/dice-rolls-in-traveller/opposed-heat-chain-dm.png /post/dice-rolls-in-traveller/opposed-heat-chain-dm.png permanent
+redir /files/dice-rolls-in-traveller/opposed-heat.png /post/dice-rolls-in-traveller/opposed-heat.png permanent
+redir /files/dice-rolls-in-traveller/task-chain-dms.png /post/dice-rolls-in-traveller/task-chain-dms.png permanent
+redir /files/dice-rolls-in-traveller/task-chain-heat-unbound.png /post/dice-rolls-in-traveller/task-chain-heat-unbound.png permanent
+redir /files/dice-rolls-in-traveller/task-chain-heat.png /post/dice-rolls-in-traveller/task-chain-heat.png permanent
+redir /files/dice-rolls-in-traveller/try-again.png /post/dice-rolls-in-traveller/try-again.png permanent
+redir /files/first-impressions-troika/beef-steaks.jpg /post/first-impressions-troika/beef-steaks.jpg permanent
+redir /files/first-impressions-troika/book-interior.jpg /post/first-impressions-troika/book-interior.jpg permanent
+redir /files/first-impressions-troika/damage-table.jpg /post/first-impressions-troika/damage-table.jpg permanent
+redir /files/how-to-learn-a-new-system/pulp-cthulhu.pdf /post/how-to-learn-a-new-system/pulp-cthulhu.pdf permanent
+redir /files/how-to-learn-a-new-system/traveller.pdf /post/how-to-learn-a-new-system/traveller.pdf permanent
+redir /files/knock-issue-1/art.jpg /post/knock-issue-1/art.jpg permanent
+redir /files/knock-issue-1/leaving-kansas.jpg /post/knock-issue-1/leaving-kansas.jpg permanent
+redir /files/knock-issue-1/spine.jpg /post/knock-issue-1/spine.jpg permanent
+redir /files/troika-the-manse-of-mazirian/manse.png /post/troika-the-manse-of-mazirian/manse.png permanent
+redir /ironsworn/flowchart.png /post/ironsworn/flowchart.png permanent
+redir /ironsworn/move.png /post/ironsworn/move.png permanent
+redir /ironsworn/progress.png /post/ironsworn/progress.png permanent
+redir /ironsworn/sabine-4.1.png /post/ironsworn/sabine-4.1.png permanent
+redir /ironsworn/sabine-4.2.png /post/ironsworn/sabine-4.2.png permanent
+redir /ironsworn/sabine-4.3.png /post/ironsworn/sabine-4.3.png permanent
+redir /ironsworn/sabine-4.4.png /post/ironsworn/sabine-4.4.png permanent
+redir /ironsworn/sabine-4.5.png /post/ironsworn/sabine-4.5.png permanent
+redir /ironsworn/sabine.png /post/ironsworn/sabine.png permanent
+redir /izirions-enchiridion/book.jpg /post/izirions-enchiridion/book.jpg permanent
+redir /izirions-enchiridion/boots-of-cartography.jpg /post/izirions-enchiridion/boots-of-cartography.jpg permanent
+redir /izirions-enchiridion/danger-level.jpg /post/izirions-enchiridion/danger-level.jpg permanent
+redir /izirions-enchiridion/dice-rolls.jpg /post/izirions-enchiridion/dice-rolls.jpg permanent
+redir /traveller-cheatsheets/basics-no-houserules.pdf /post/traveller-cheatsheets/basics-no-houserules.pdf permanent
+redir /traveller-cheatsheets/basics.pdf /post/traveller-cheatsheets/basics.pdf permanent
+redir /traveller-cheatsheets/piracy.pdf /post/traveller-cheatsheets/piracy.pdf permanent
+redir /traveller-cheatsheets/spacecraft.pdf /post/traveller-cheatsheets/spacecraft.pdf permanent
+redir /traveller-cheatsheets/uwp.pdf /post/traveller-cheatsheets/uwp.pdf permanent
