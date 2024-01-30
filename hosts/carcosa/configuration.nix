@@ -297,9 +297,15 @@ in
       @404 {
         expression {http.error.status_code} == 404
       }
+      @410 {
+        expression {http.error.status_code} == 410
+      }
       rewrite @404 /404.html
+      rewrite @410 /404.html
       file_server
     }
+
+    ${fileContents ./caddy/www-lookwhattheshoggothdraggedin-com.caddyfile}
   '';
 
   services.caddy.virtualHosts."umami.lookwhattheshoggothdraggedin.com".extraConfig = ''
