@@ -96,7 +96,7 @@ in
 
   environment.etc."dns/hosts/stevenblack".source = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
-    sha256 = "1drs3326i7z673gvirw9riiqx38zlz9s8ky2l3c0c1xvx83mjprf";
+    sha256 = "12zy3jd6a79psr0k17gf1l9fpxy5zjdrf47ib3wy1k4yjn4wgy4l";
   };
 
   environment.etc."dns/zones/10.in-addr.arpa".text = ''
