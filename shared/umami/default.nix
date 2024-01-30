@@ -22,7 +22,7 @@ in
     nixfiles.oci-containers.pods.umami = {
       containers = {
         web = {
-          image = "ghcr.io/mikecao/umami:${cfg.umamiTag}";
+          image = "ghcr.io/umami-software/umami:${cfg.umamiTag}";
           environment = {
             "DATABASE_URL" = if backend == "docker" then "postgres://umami:umami@umami-db/umami" else "postgres://umami:umami@localhost/umami";
           };

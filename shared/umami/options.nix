@@ -30,9 +30,9 @@ with lib;
 
     umamiTag = mkOption {
       type = types.str;
-      default = "postgresql-latest";
+      default = "postgresql-v1.40";
       description = mdDoc ''
-        Tag to use of the `ghcr.io/mikecao/umami` container image.
+        Tag to use of the `ghcr.io/umami-software/umami` container image.
       '';
     };
 
