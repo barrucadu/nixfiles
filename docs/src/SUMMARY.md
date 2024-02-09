@@ -1,6 +1,6 @@
 # Summary
 
-- [README](./README.md)
+[README](./README.md)
 
 # Reference
 
@@ -9,7 +9,11 @@
 - [Options](./options.md)
 - [Packages](./packages.md)
 
-# Runbooks
+# Alert Runbooks
+
+- [ZPoolStatusDegraded](./runbooks/alerts/zpoolstatusdegraded.md)
+
+# "How to" Runbooks
 
 - [Set up a new host](./runbooks/set-up-a-new-host.md)
 - [Move a configuration to a new machine](./runbooks/move-a-configuration-to-a-new-machine.md)
