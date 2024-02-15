@@ -31,16 +31,16 @@ in
       requires = [ "${backend}-bookdb-db.service" ];
       path = [ pkgs.imagemagick ];
       serviceConfig = {
-        ExecStart = "${pkgs.nixfiles.bookdb}/bin/gunicorn -w 4 -t 60 -b 127.0.0.1:${toString cfg.port} bookdb.serve:app";
+        ExecStart = "${pkgs.nixfiles.bookdb}/bin/bookdb ${optionalString (!cfg.readOnly) "--allow-writes"} ${./uuids.yaml}";
         Restart = "always";
         User = config.users.users.bookdb.name;
       };
       environment = {
-        "ALLOW_WRITES" = if cfg.readOnly then "0" else "1";
-        "BASE_URI" = cfg.baseURI;
-        "COVER_DIR" = "${cfg.dataDir}/covers";
-        "ES_HOST" = "http://127.0.0.1:${toString cfg.elasticsearchPort}";
-        "UUIDS_FILE" = ./uuids.yaml;
+        BOOKDB_ADDRESS = "127.0.0.1:${toString cfg.port}";
+        BOOKDB_UPLOADS_DIR = "${cfg.dataDir}/covers";
+        ES_HOST = "http://127.0.0.1:${toString cfg.elasticsearchPort}";
+        RUST_LOG = cfg.logLevel;
+        RUST_LOG_FORMAT = cfg.logFormat;
       };
     };
 
@@ -66,7 +66,7 @@ in
 
     nixfiles.restic-backups.backups.bookdb = {
       prepareCommand = ''
-        env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump > elasticsearch-dump.json
+        env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/bookdb_ctl dump-index > elasticsearch-dump.json
       '';
       paths = [
         cfg.dataDir
