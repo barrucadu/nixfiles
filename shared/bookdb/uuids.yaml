@@ -1,48 +1,48 @@
 # shared between nyarlathotep & carcosa
-ordered_locations:
+locations:
 - name: London
-  uuid: be60be7b-a10f-42e1-8769-d43f12cad02d
+  slug: be60be7b-a10f-42e1-8769-d43f12cad02d
 - name: Missing
-  uuid: 6a233e5e-3b64-4169-ac67-cf46113afd97
+  slug: 6a233e5e-3b64-4169-ac67-cf46113afd97
 
-ordered_categories:
+categories:
 - name: Light Novels + Manga
-  uuid: a3bbb1c6-5ff8-4ddf-81f4-820593a2a5ff
+  slug: a3bbb1c6-5ff8-4ddf-81f4-820593a2a5ff
 
 - name: Nonfiction
-  uuid: 58c63aea-72b6-4988-96a0-aca572661303
-  ordered_children:
+  slug: 58c63aea-72b6-4988-96a0-aca572661303
+  children:
   - name: Computer Science + Software Engineering
-    uuid: afc7135b-bf67-4284-bcc1-2bbd3386aea3
+    slug: afc7135b-bf67-4284-bcc1-2bbd3386aea3
   - name: Kitchen, Food, + Recipe
-    uuid: b5451ba6-a3ef-4c27-99fc-a07d8cd54161
+    slug: b5451ba6-a3ef-4c27-99fc-a07d8cd54161
   - name: Politics, Philosophy, Economics, + History
-    uuid: ac4706f3-54c3-4e6d-a72d-85321d9dcd72
+    slug: ac4706f3-54c3-4e6d-a72d-85321d9dcd72
   - name: RPG
-    uuid: cf921942-f65a-40e3-8e98-2f565bb8d033
-    ordered_children:
+    slug: cf921942-f65a-40e3-8e98-2f565bb8d033
+    children:
       - name: Call of Cthulhu
-        uuid: 08bc011e-1a42-4d23-961a-803d786d7e58
+        slug: 08bc011e-1a42-4d23-961a-803d786d7e58
       - name: Traveller
-        uuid: d8d4ee9d-e5d8-4d4d-8a78-65ebc23fc451
+        slug: d8d4ee9d-e5d8-4d4d-8a78-65ebc23fc451
       - name: Miscellaneous
-        uuid: 70196ec9-dd61-4241-afc9-dd6be7be30a6
+        slug: 70196ec9-dd61-4241-afc9-dd6be7be30a6
   - name: Miscellaneous
-    uuid: fb2dd601-883a-4254-a294-fcf0a0f98d2f
+    slug: fb2dd601-883a-4254-a294-fcf0a0f98d2f
 
 - name: Prose Fiction + Graphic Novels
-  uuid: 590ac55d-0644-4a71-b902-587faa5b03d9
+  slug: 590ac55d-0644-4a71-b902-587faa5b03d9
 
 - name: Religion, Mythology, + Folklore
-  uuid: a7d83bc9-0352-4fb5-a9dc-68428562a17f
-  ordered_children:
+  slug: a7d83bc9-0352-4fb5-a9dc-68428562a17f
+  children:
   - name: Abrahamic
-    uuid: 384664d5-e256-4787-a729-1eb5e7a7de6f
+    slug: 384664d5-e256-4787-a729-1eb5e7a7de6f
   - name: Miscellaneous
-    uuid: 0435b803-d2e9-49b9-a1c7-bc7fc1b30cdd
+    slug: 0435b803-d2e9-49b9-a1c7-bc7fc1b30cdd
 
 - name: Verse
-  uuid: 217f8eaa-b54a-466c-83f8-3f569f46732e
+  slug: 217f8eaa-b54a-466c-83f8-3f569f46732e
 
 - name: To Donate
-  uuid: 957d6a70-5dfc-46e2-8e3c-2f193878b2a5
+  slug: 957d6a70-5dfc-46e2-8e3c-2f193878b2a5

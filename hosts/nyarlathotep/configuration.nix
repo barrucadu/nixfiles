@@ -279,7 +279,6 @@ in
   ###############################################################################
 
   nixfiles.bookdb.enable = true;
-  nixfiles.bookdb.baseURI = "http://bookdb.nyarlathotep.lan";
 
 
   ###############################################################################
@@ -488,7 +487,7 @@ in
       ExecStart = pkgs.writeShellScript "bookdb-sync" ''
         set -ex
 
-        /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -r ${config.nixfiles.bookdb.dataDir}/covers/ ~/bookdb-covers
+        /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ~/bookdb-covers
         trap "/run/wrappers/bin/sudo ${pkgs.coreutils}/bin/rm -rf ~/bookdb-covers" EXIT
         rsync -az\
               -e "ssh -i $SSH_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
@@ -501,7 +500,7 @@ in
             bookdb-receive-covers
 
         env "ES_HOST=$ES_HOST" \
-            ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.dump | \
+            ${pkgs.nixfiles.bookdb}/bin/bookdb_ctl export-index | \
         ssh -i "$SSH_KEY_FILE" \
             -o UserKnownHostsFile=/dev/null \
             -o StrictHostKeyChecking=no \
@@ -544,7 +543,7 @@ in
     {
       users = [ config.users.extraUsers.remote-sync.name ];
       commands = [
-        { command = "${pkgs.coreutils}/bin/cp -r ${config.nixfiles.bookdb.dataDir}/covers/ ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.coreutils}/bin/rm -rf ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
       ];
     }

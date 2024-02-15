@@ -1,24 +1,24 @@
 # A database and web app to keep track of all my books.
-{ poetry2nix, fetchFromGitHub, ... }:
+{ rustPlatform, fetchFromGitHub, openssl, pkg-config, ... }:
 
 let
   githubOwner = "barrucadu";
   githubRepo = "bookdb";
-  githubRev = "6040d270ae7ac7ecec09849885b6405d0650dff2";
-
-  app = poetry2nix.mkPoetryApplication {
-    projectDir = fetchFromGitHub {
-      owner = githubOwner;
-      repo = githubRepo;
-      rev = githubRev;
-      sha256 = "sha256-U93t2dbGjBej6+IsI2mUVqm0Sirw/DIJqYH0USUF7to=";
-    };
-
-    overrides = poetry2nix.overrides.withDefaults (self: super: {
-      elastic-transport = super.elastic-transport.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
-      });
-    });
-  };
+  githubRev = "a8ae9b427d08ef7e30eee57ce43a367e85f63e70";
 in
-app.dependencyEnv
+rustPlatform.buildRustPackage {
+  pname = githubRepo;
+  version = githubRev;
+
+  src = fetchFromGitHub {
+    owner = githubOwner;
+    repo = githubRepo;
+    rev = githubRev;
+    sha256 = "sha256-7hD2BPEIl2j9dS86Bvx6ERTKzV84zzAp7b/jH48cUoY=";
+  };
+
+  cargoSha256 = "sha256-3/T6DKWkKjrxu3b25nDunmd3zGThL7uDre1pJ+HXkMc=";
+
+  nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ openssl ];
+}

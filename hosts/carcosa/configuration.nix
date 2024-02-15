@@ -374,7 +374,6 @@ in
 
   # bookdb
   nixfiles.bookdb.enable = true;
-  nixfiles.bookdb.baseURI = "https://bookdb.barrucadu.co.uk";
   nixfiles.bookdb.readOnly = true;
 
   # bookmarks
@@ -433,13 +432,12 @@ in
             exit 1
           fi
 
-          /run/wrappers/bin/sudo ${pkgs.rsync}/bin/rsync -a --delete ~/bookdb-covers/ ${config.nixfiles.bookdb.dataDir}/covers || exit 1
-          /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/chown -R ${config.users.users.bookdb.name}.nogroup ${config.nixfiles.bookdb.dataDir}/covers || exit 1
+          /run/wrappers/bin/sudo ${pkgs.rsync}/bin/rsync -a --delete ~/bookdb-covers/ ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR} || exit 1
+          /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/chown -R ${config.users.users.bookdb.name}.nogroup ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR} || exit 1
         '';
         bookdb-receive-elasticsearch = ''
           env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} \
-              DELETE_EXISTING_INDEX=1 \
-              ${pkgs.nixfiles.bookdb}/bin/python -m bookdb.index.create -
+              ${pkgs.nixfiles.bookdb}/bin/bookdb_ctl import-index --drop-existing
         '';
         bookmarks-receive-elasticsearch = ''
           env ES_HOST=${config.systemd.services.bookmarks.environment.ES_HOST} \
@@ -458,8 +456,8 @@ in
     {
       users = [ config.users.extraUsers.nyarlathotep-remote-sync.name ];
       commands = [
-        { command = "${pkgs.rsync}/bin/rsync -a --delete ${config.users.extraUsers.nyarlathotep-remote-sync.home}/bookdb-covers/ ${config.nixfiles.bookdb.dataDir}/covers"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.coreutils}/bin/chown -R ${config.users.users.bookdb.name}.nogroup ${config.nixfiles.bookdb.dataDir}/covers"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.rsync}/bin/rsync -a --delete ${config.users.extraUsers.nyarlathotep-remote-sync.home}/bookdb-covers/ ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}"; options = [ "NOPASSWD" ]; }
+        { command = "${pkgs.coreutils}/bin/chown -R ${config.users.users.bookdb.name}.nogroup ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
