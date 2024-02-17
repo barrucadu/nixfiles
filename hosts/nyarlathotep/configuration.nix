@@ -94,10 +94,12 @@ in
   nixfiles.resolved.hostsDirs = [ "/etc/dns/hosts" ];
   nixfiles.resolved.zonesDirs = [ "/etc/dns/zones" ];
 
-  environment.etc."dns/hosts/stevenblack".source = builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
-    sha256 = "0079x21cijk9q8zpi9isfwzn06mbxd8xd7di79ap6pnnsmbg9z5n";
-  };
+  environment.etc."dns/hosts/stevenblack".source =
+    let commit = "61080e8dadbc9ee10d4567668cdbf017bb9f172e";
+    in builtins.fetchurl {
+      url = "https://raw.githubusercontent.com/StevenBlack/hosts/${commit}/hosts";
+      sha256 = "0ydcxxxhxhalnifr323wnvysjnp65hxhlrzvzzghlm2ja9d1z448";
+    };
 
   environment.etc."dns/zones/10.in-addr.arpa".text = ''
     $ORIGIN 10.in-addr.arpa.
