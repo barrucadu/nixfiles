@@ -288,9 +288,6 @@ in
   ###############################################################################
 
   nixfiles.bookmarks.enable = true;
-  nixfiles.bookmarks.baseURI = "http://bookmarks.nyarlathotep.lan";
-  nixfiles.bookmarks.environmentFile = config.sops.secrets."nixfiles/bookmarks/env".path;
-  sops.secrets."nixfiles/bookmarks/env" = { };
 
 
   ###############################################################################
@@ -526,7 +523,7 @@ in
         set -ex
 
         env "ES_HOST=$ES_HOST" \
-            ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump | \
+            ${pkgs.nixfiles.bookmarks}/bin/bookmarks_ctl export-index | \
         ssh -i "$SSH_KEY_FILE" \
             -o UserKnownHostsFile=/dev/null \
             -o StrictHostKeyChecking=no \

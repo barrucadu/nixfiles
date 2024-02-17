@@ -378,7 +378,6 @@ in
 
   # bookmarks
   nixfiles.bookmarks.enable = true;
-  nixfiles.bookmarks.baseURI = "https://bookmarks.barrucadu.co.uk";
   nixfiles.bookmarks.readOnly = true;
 
   # concourse
@@ -441,8 +440,7 @@ in
         '';
         bookmarks-receive-elasticsearch = ''
           env ES_HOST=${config.systemd.services.bookmarks.environment.ES_HOST} \
-              DELETE_EXISTING_INDEX=1 \
-              ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.create -
+              ${pkgs.nixfiles.bookmarks}/bin/bookmarks_ctl import-index --drop-existing
         '';
       in
       [

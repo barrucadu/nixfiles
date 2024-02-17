@@ -36,14 +36,6 @@ with lib;
       '';
     };
 
-    baseURI = mkOption {
-      type = types.str;
-      example = "https://bookmarks.barrucadu.co.uk";
-      description = mdDoc ''
-        URI which the service will be exposed on, used to generate URLs.
-      '';
-    };
-
     readOnly = mkOption {
       type = types.bool;
       default = false;
@@ -53,17 +45,19 @@ with lib;
       '';
     };
 
-    environmentFile = mkOption {
-      type = types.nullOr types.str;
-      default = null;
+    logLevel = mkOption {
+      type = types.str;
+      default = "info";
       description = mdDoc ''
-        Environment file to pass secrets into the service.  This is of the form:
+        Verbosity of the log messages.
+      '';
+    };
 
-        ```text
-        YOUTUBE_API_KEY="..."
-        ```
-
-        This is only required if not running in read-only mode.
+    logFormat = mkOption {
+      type = types.str;
+      default = "json,no-time";
+      description = mdDoc ''
+        Format of the log messages.
       '';
     };
   };

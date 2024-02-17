@@ -26,15 +26,15 @@ in
       after = [ "network-online.target" "${backend}-bookmarks-db.service" ];
       requires = [ "${backend}-bookmarks-db.service" ];
       serviceConfig = {
-        ExecStart = "${pkgs.nixfiles.bookmarks}/bin/gunicorn -w 4 -t 60 -b 127.0.0.1:${toString cfg.port} bookmarks.serve:app";
-        EnvironmentFile = mkIf (cfg.environmentFile != null) cfg.environmentFile;
+        ExecStart = "${pkgs.nixfiles.bookmarks}/bin/bookmarks ${optionalString (!cfg.readOnly) "--allow-writes"}";
         DynamicUser = "true";
         Restart = "always";
       };
       environment = {
-        ALLOW_WRITES = if cfg.readOnly then "0" else "1";
-        BASE_URI = cfg.baseURI;
+        BOOKMARKS_ADDRESS = "127.0.0.1:${toString cfg.port}";
         ES_HOST = "http://127.0.0.1:${toString cfg.elasticsearchPort}";
+        RUST_LOG = cfg.logLevel;
+        RUST_LOG_FORMAT = cfg.logFormat;
       };
     };
 
@@ -52,7 +52,7 @@ in
 
     nixfiles.restic-backups.backups.bookmarks = {
       prepareCommand = ''
-        env ES_HOST=http://127.0.0.1:${toString cfg.elasticsearchPort} ${pkgs.nixfiles.bookmarks}/bin/python -m bookmarks.index.dump > elasticsearch-dump.json
+        env ES_HOST=${config.systemd.services.bookmarks.environment.ES_HOST} ${pkgs.nixfiles.bookmarks}/bin/bookmarks_ctl export-index > elasticsearch-dump.json
       '';
       paths = [
         "elasticsearch-dump.json"
