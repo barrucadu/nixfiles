@@ -1,24 +1,24 @@
 # A database and web app to keep track of my bookmarks.
-{ poetry2nix, fetchFromGitHub, ... }:
+{ rustPlatform, fetchFromGitHub, openssl, pkg-config, ... }:
 
 let
   githubOwner = "barrucadu";
   githubRepo = "bookmarks";
-  githubRev = "afe9c2a59c1e9d385074e17d684ac0ae7556fced";
-
-  app = poetry2nix.mkPoetryApplication {
-    projectDir = fetchFromGitHub {
-      owner = githubOwner;
-      repo = githubRepo;
-      rev = githubRev;
-      sha256 = "sha256-uSsycnSWpIBc7SojptIgvjLkoZ0gTScelfygLJ9zvxI=";
-    };
-
-    overrides = poetry2nix.overrides.withDefaults (self: super: {
-      elastic-transport = super.elastic-transport.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
-      });
-    });
-  };
+  githubRev = "ba0355602445d02a818a03d7343eecf19eadde7f";
 in
-app.dependencyEnv
+rustPlatform.buildRustPackage {
+  pname = githubRepo;
+  version = githubRev;
+
+  src = fetchFromGitHub {
+    owner = githubOwner;
+    repo = githubRepo;
+    rev = githubRev;
+    sha256 = "sha256-XSpE7XnieEIjwXewGKij6AXOaonCsKZC6zwx60Z3foI=";
+  };
+
+  cargoSha256 = "sha256-b2nFcK3UnYYSAfKdbQdhEyWDhp/FUBZXvN1/TfgKkHs=";
+
+  nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ openssl ];
+}
