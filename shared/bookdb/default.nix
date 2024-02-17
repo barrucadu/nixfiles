@@ -66,7 +66,7 @@ in
 
     nixfiles.restic-backups.backups.bookdb = {
       prepareCommand = ''
-        env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/bookdb_ctl dump-index > elasticsearch-dump.json
+        env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} ${pkgs.nixfiles.bookdb}/bin/bookdb_ctl export-index > elasticsearch-dump.json
       '';
       paths = [
         cfg.dataDir
