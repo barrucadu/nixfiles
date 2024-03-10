@@ -90,6 +90,7 @@ in
   ###############################################################################
 
   nixfiles.resolved.enable = true;
+  nixfiles.resolved.address = "10.0.0.3:53";
   nixfiles.resolved.cacheSize = 1000000;
   nixfiles.resolved.hostsDirs = [ "/etc/dns/hosts" ];
   nixfiles.resolved.zonesDirs = [ "/etc/dns/zones" ];
