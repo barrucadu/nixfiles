@@ -104,9 +104,16 @@ in
   ];
 
   config = {
-    virtualisation.${cfg.backend}.autoPrune.enable = true;
-    virtualisation.oci-containers.backend = cfg.backend;
-    virtualisation.oci-containers.containers = mapAttrs mkContainer allContainers;
+    virtualisation.${cfg.backend} = {
+      enable = true;
+      autoPrune.enable = true;
+    };
+
+    virtualisation.oci-containers = {
+      backend = cfg.backend;
+      containers = mapAttrs mkContainer allContainers;
+    };
+
     systemd.services = mkMerge [
       (mapAttrs' mkPreStart (filterAttrs shouldPreStart allContainers))
       (mapAttrs' mkNetworkService (filterAttrs shouldNetworkService allContainers))
