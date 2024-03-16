@@ -5,105 +5,37 @@ Set up a new host
 See also [the NixOS installation instructions](https://nixos.org/manual/nixos/stable/index.html#ch-installation).
 ```
 
-1. Create & format partitions
-1. **Optional:** Configure wiping / on boot (pre-first-boot steps)
-1. Install NixOS with the standard installer
-1. Reboot into the installed system
-1. Clone this repo to `/etc/nixos`
-1. Move the generated configuration to `hosts/<hostname>/` and edit to fit repo conventions
-1. Add an entry for the host to `flake.nix`
-1. **Optional:** Add DNS records
-1. **Optional:** Configure secrets
-1. **Optional:** Configure wiping / on boot (post-first-boot steps)
-1. **Optional:** Configure alerting
-1. **Optional:** Configure backups
-1. **Optional:** Generate SSH key
-1. Build the new system configuration with `sudo nixos-rebuild switch --flake '.#<hostname>'`
-1. Reboot
-1. Commit, push, & merge
-1. **Optional:** Configure Syncthing
+Install NixOS
+-------------
 
-Optional: Configure wiping / on boot
-------------------------------------
-
-Before installing NixOS, create the `local` pool and datasets:
+Boot into the ISO and install NixOS with `tools/provision-machine.sh`:
 
 ```bash
-zpool create -o autotrim=on local <device>
-
-zfs create -o mountpoint=legacy local/volatile
-zfs create -o mountpoint=legacy local/volatile/root
-
-zfs create -o mountpoint=legacy local/persistent
-zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true local/persistent/home
-zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true local/persistent/nix
-zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true local/persistent/persist
-zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true -o xattr=sa -o acltype=posix local/persistent/var-log
+sudo -i
+nix-env -f '<nixpkgs>' -iA git
+curl https://raw.githubusercontent.com/barrucadu/nixfiles/master/tools/provision-machine.sh > provision-machine.sh
+bash provision-machine.sh gpt /dev/sda
 ```
 
-Take a snapshot of the empty root dataset:
+Then:
 
-```bash
-zfs snapshot local/volatile/root@blank
-```
-
-Mount all the filesystems under `/mnt`:
-
-```bash
-mount -t zfs local/volatile/root /mnt
-
-mkdir /mnt/boot
-mkdir /mnt/home
-mkdir /mnt/nix
-mkdir /mnt/persist
-mkdir -p /mnt/var/log
-
-mount /dev/<boot device> /mnt/boot
-mount -t zfs local/persistent/home /mnt/home
-mount -t zfs local/persistent/nix /mnt/nix
-mount -t zfs local/persistent/persist /mnt/persist
-mount -t zfs local/persistent/var-log /mnt/var/log
-```
-
-Then run the installer, making sure to add ZFS details to the generated configuration:
-
-```nix
-networking.hostId = "<random 32-bit hex value>";
-boot.supportedFilesystems = [ "zfs" ];
-```
-
-**After first boot:** copy any needed files (eg, SSH host keys) to the
-appropriate place in `/persist`, add the user password to the secrets, and set
-up `nixfiles.eraseYourDarlings`:
-
-```nix
-nixfiles.eraseYourDarlings.enable = true;
-nixfiles.eraseYourDarlings.machineId = "<contents of /etc/machine-id>";
-nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
-sops.secrets."users/barrucadu".neededForUsers = true;
-```
+1. Rename `/mnt/persist/etc/nixos/hosts/new` after the new hostname
+2. Add the host to `/mnt/persist/etc/nixos/flake.nix`
+3. Add the new files to git
+4. Run `nixos-install --flake /mnt/persist/etc/nixos#hostname`
+5. Reboot
 
 
-Optional: Add DNS records
--------------------------
+First boot
+----------
 
-Add `A` / `AAAA` records to [the ops repo][] and apply the change via
-[Concourse][].
-
-[the ops repo]: https://github.com/barrucadu/ops
-[Concourse]: https://cd.barrucadu.dev/
-
-
-Optional: Configure secrets
----------------------------
-
-After first boot, generate an age public key from the host SSH key:
+Generate an age public key from the host SSH key:
 
 ```bash
 nix-shell -p ssh-to-age --run 'ssh-keyscan localhost | ssh-to-age'
 ```
 
-Add a new section with this key to `.sops.yaml`:
+Add a new section with this key to `/persist/etc/nixos/.sops.yaml`:
 
 ```yaml
 creation_rules:
@@ -114,6 +46,43 @@ creation_rules:
           - *barrucadu
           - '<key>'
 ```
+
+Add a `users/barrucadu` secret with the hashed user password:
+
+```bash
+nix run .#secrets
+```
+
+Copy the host SSH keys to `/etc/persist`:
+
+```bash
+mkdir /persist/etc/ssh
+cp /etc/ssh/ssh_host_rsa_key /persist/etc/ssh/ssh_host_rsa_key
+cp /etc/ssh/ssh_host_ed25519_key /persist/etc/ssh/ssh_host_ed25519_key
+```
+
+Enable `nixfiles.eraseYourDarlings`:
+
+```nix
+nixfiles.eraseYourDarlings.enable = true;
+nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
+sops.secrets."users/barrucadu".neededForUsers = true;
+```
+
+Then:
+
+1. Rebuild the system: `sudo nixos-rebuild boot --flake /persist/etc/nixos`
+2. Reboot
+
+
+Optional: Add DNS records
+-------------------------
+
+Add `A` / `AAAA` records to [the ops repo][] and apply the change via
+[Concourse][].
+
+[the ops repo]: https://github.com/barrucadu/ops
+[Concourse]: https://cd.barrucadu.dev/
 
 
 Optional: Configure alerting
