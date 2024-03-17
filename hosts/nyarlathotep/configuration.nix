@@ -124,10 +124,10 @@ in
   nixfiles.resolved.zonesDirs = [ "/etc/dns/zones" ];
 
   environment.etc."dns/hosts/stevenblack".source =
-    let commit = "61080e8dadbc9ee10d4567668cdbf017bb9f172e";
+    let commit = "14b698abcd97446bae349292aacc9ecb4feb2db5";
     in builtins.fetchurl {
       url = "https://raw.githubusercontent.com/StevenBlack/hosts/${commit}/hosts";
-      sha256 = "0ydcxxxhxhalnifr323wnvysjnp65hxhlrzvzzghlm2ja9d1z448";
+      sha256 = "1hwyn1w1c7brzigp7fqpsgh107pzvsrahilq6n90jw7yzvi704gl";
     };
 
   environment.etc."dns/zones/10.in-addr.arpa".text = ''

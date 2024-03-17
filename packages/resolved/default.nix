@@ -4,7 +4,7 @@
 let
   githubOwner = "barrucadu";
   githubRepo = "resolved";
-  githubRev = "cc43b526dea18825288fa03a0c4a3ce98f053856";
+  githubRev = "d99013dd1de52f74e5dc3dcdbff628e5f33e624b";
 in
 rustPlatform.buildRustPackage {
   pname = githubRepo;
@@ -14,10 +14,10 @@ rustPlatform.buildRustPackage {
     owner = githubOwner;
     repo = githubRepo;
     rev = githubRev;
-    sha256 = "sha256-gox2b9bqerH0rgC3CvJedvW1vP1vMpDZwKpHBWHQK7E=";
+    sha256 = "sha256-kH2frFYuoMVX9b3uFl325zHuWG2Y0XhNE6lSYk8AD0g=";
   };
 
-  cargoSha256 = "sha256-YP2xPccVj7NDqDxSlqgVrmTsG1x9NWHSUxp0OOsf+ZE=";
+  cargoSha256 = "sha256-vGgvECImU7QSxBdrS4cCAkAzYWEhx/vRp5nSJkWCpck=";
 
   postInstall = ''
     cd config

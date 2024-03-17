@@ -4,7 +4,7 @@
 let
   githubOwner = "barrucadu";
   githubRepo = "bookdb";
-  githubRev = "a8ae9b427d08ef7e30eee57ce43a367e85f63e70";
+  githubRev = "47ef43ed5815eb3e9ad545966ab96328adf3339d";
 in
 rustPlatform.buildRustPackage {
   pname = githubRepo;
@@ -14,10 +14,10 @@ rustPlatform.buildRustPackage {
     owner = githubOwner;
     repo = githubRepo;
     rev = githubRev;
-    sha256 = "sha256-7hD2BPEIl2j9dS86Bvx6ERTKzV84zzAp7b/jH48cUoY=";
+    sha256 = "sha256-SexmGBZiv5Lb0clrYHb5WRgt3IAzwgqC+sgM7PWFCIQ=";
   };
 
-  cargoSha256 = "sha256-3/T6DKWkKjrxu3b25nDunmd3zGThL7uDre1pJ+HXkMc=";
+  cargoSha256 = "sha256-JtVH04p2MqyGdWDLopIN4aZEIvKnDpYoonBqm6Sdz9s=";
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ openssl ];
