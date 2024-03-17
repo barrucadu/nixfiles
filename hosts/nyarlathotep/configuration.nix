@@ -84,6 +84,9 @@ in
   };
   networking.bridges.br0.interfaces = [ "enp8s0" ];
 
+  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.allowedBridges = [ "br0" ];
+
   ###############################################################################
   ## Backups
   ###############################################################################
