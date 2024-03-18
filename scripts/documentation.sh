@@ -106,40 +106,6 @@ for option in sorted(options.keys()):
     print("")
 EOF
 
-python3 - <<'EOF' > docs/src/packages.md
-import os
-
-print("# Packages")
-print("")
-
-packages = sorted([name for name in os.listdir("packages") if name not in [".", ".."]])
-for package in packages:
-    source_file = f"packages/{package}/default.nix"
-
-    print(f"## {package}")
-
-    has_doc = False
-    doc = True
-    github = {}
-    with open(source_file, "r") as f:
-        for line in f:
-            if doc:
-                if line.startswith("#"):
-                    has_doc = True
-                    print(line[1:].strip())
-                else:
-                    doc = False
-            elif line.strip().startswith("github"):
-                prefix, suffix = line.split("=")
-                github[prefix.strip().removeprefix("github").lower()] = suffix.split('"')[1]
-    if not has_doc:
-        print("This package has no description.")
-    github_name = f"{github['owner']}/{github['repo']}"
-    print(f"\n**Source:** [{github_name}](https://github.com/{github_name}) @ [`{github['rev'][:7]}`](https://github.com/{github_name}/tree/{github['rev']})")
-    print(f"\n**Declared in:** [{source_file}](https://github.com/barrucadu/nixfiles/blob/master/{source_file})")
-    print("")
-EOF
-
 mdbook build docs
 mv docs/book _site
 
