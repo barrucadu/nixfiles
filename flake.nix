@@ -24,6 +24,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.gitignore.follows = "gitignore";
     };
+    resolved = {
+      url = "github:barrucadu/resolved";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.gitignore.follows = "gitignore";
+      inputs.rust-overlay.follows = "rust-overlay";
+    };
     gitignore = {
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -73,7 +79,7 @@
           bookdb = flakeInputs.bookdb.packages.${system}.default;
           bookmarks = flakeInputs.bookmarks.packages.${system}.default;
           prometheus-awair-exporter = flakeInputs.prometheus-awair-exporter.packages.${system}.default;
-          resolved = pkgs.callPackage ./packages/resolved { };
+          resolved = flakeInputs.resolved.packages.${system}.default;
         };
 
       apps.${system} =

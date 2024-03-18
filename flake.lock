@@ -129,6 +129,32 @@
         "type": "github"
       }
     },
+    "resolved": {
+      "inputs": {
+        "gitignore": [
+          "gitignore"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710771896,
+        "narHash": "sha256-DY6pkReic3kmJZuZWihOOjDxtk+McS6uY8zZnPGcGIg=",
+        "owner": "barrucadu",
+        "repo": "resolved",
+        "rev": "5246f7111a843ff6a9d8a0165d17b8b4615a7cb1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "barrucadu",
+        "repo": "resolved",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "bookdb": "bookdb",
@@ -136,6 +162,7 @@
         "gitignore": "gitignore",
         "nixpkgs": "nixpkgs",
         "prometheus-awair-exporter": "prometheus-awair-exporter",
+        "resolved": "resolved",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix"
       }
