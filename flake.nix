@@ -19,6 +19,11 @@
       inputs.gitignore.follows = "gitignore";
       inputs.rust-overlay.follows = "rust-overlay";
     };
+    prometheus-awair-exporter = {
+      url = "github:barrucadu/prometheus-awair-exporter";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.gitignore.follows = "gitignore";
+    };
     gitignore = {
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -67,7 +72,7 @@
         {
           bookdb = flakeInputs.bookdb.packages.${system}.default;
           bookmarks = flakeInputs.bookmarks.packages.${system}.default;
-          prometheus-awair-exporter = pkgs.callPackage ./packages/prometheus-awair-exporter { };
+          prometheus-awair-exporter = flakeInputs.prometheus-awair-exporter.packages.${system}.default;
           resolved = pkgs.callPackage ./packages/resolved { };
         };
 

@@ -106,12 +106,36 @@
         "type": "github"
       }
     },
+    "prometheus-awair-exporter": {
+      "inputs": {
+        "gitignore": [
+          "gitignore"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710770357,
+        "narHash": "sha256-3rZTjOPrQqF69HzUSCAXGHfrL7aqNdbHiFwpNed0+/w=",
+        "owner": "barrucadu",
+        "repo": "prometheus-awair-exporter",
+        "rev": "76c25135d9aeba3de589830b82b29964e7b5fa26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "barrucadu",
+        "repo": "prometheus-awair-exporter",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "bookdb": "bookdb",
         "bookmarks": "bookmarks",
         "gitignore": "gitignore",
         "nixpkgs": "nixpkgs",
+        "prometheus-awair-exporter": "prometheus-awair-exporter",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix"
       }
