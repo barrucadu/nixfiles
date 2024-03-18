@@ -1,12 +1,102 @@
 {
   "nodes": {
+    "bookdb": {
+      "inputs": {
+        "gitignore": [
+          "gitignore"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710770850,
+        "narHash": "sha256-pnWnfXoKkMY/1VoeFo75FAHdEF6jcIBZahkYzGtG+8g=",
+        "owner": "barrucadu",
+        "repo": "bookdb",
+        "rev": "52207f919c2c4ffcc97e53a2245b1c6205dbb36d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "barrucadu",
+        "repo": "bookdb",
+        "type": "github"
+      }
+    },
+    "bookmarks": {
+      "inputs": {
+        "gitignore": [
+          "gitignore"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710771283,
+        "narHash": "sha256-5qHny3fkzWoYCLIX67bj2pJn2Dmglx+JlOGx8BuD/xs=",
+        "owner": "barrucadu",
+        "repo": "bookmarks",
+        "rev": "c6e075a6c90aa676a36b1aa516465555d9914126",
+        "type": "github"
+      },
+      "original": {
+        "owner": "barrucadu",
+        "repo": "bookmarks",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1705309234,
+        "narHash": "sha256-uNRRNRKmJyCRC/8y1RqBkqWBLM034y4qN7EprSdmgyA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "gitignore": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709087332,
+        "narHash": "sha256-HG2cCnktfHsKV0s4XW83gU3F57gaTljL9KNSuG6bnQs=",
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1710565619,
-        "narHash": "sha256-xu/EnZCNdIj7m/QjCNIG5vrCA4TYg5uwFReb9XDxET0=",
+        "lastModified": 1710695816,
+        "narHash": "sha256-3Eh7fhEID17pv9ZxrPwCLfqXnYP006RKzSs0JptsN84=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8ac30a39abc5ea67037dfbf090d6e89f187c6e50",
+        "rev": "614b4613980a522ba49f0d194531beddbb7220d3",
         "type": "github"
       },
       "original": {
@@ -16,10 +106,86 @@
         "type": "github"
       }
     },
+    "prometheus-awair-exporter": {
+      "inputs": {
+        "gitignore": [
+          "gitignore"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710770357,
+        "narHash": "sha256-3rZTjOPrQqF69HzUSCAXGHfrL7aqNdbHiFwpNed0+/w=",
+        "owner": "barrucadu",
+        "repo": "prometheus-awair-exporter",
+        "rev": "76c25135d9aeba3de589830b82b29964e7b5fa26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "barrucadu",
+        "repo": "prometheus-awair-exporter",
+        "type": "github"
+      }
+    },
+    "resolved": {
+      "inputs": {
+        "gitignore": [
+          "gitignore"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710771896,
+        "narHash": "sha256-DY6pkReic3kmJZuZWihOOjDxtk+McS6uY8zZnPGcGIg=",
+        "owner": "barrucadu",
+        "repo": "resolved",
+        "rev": "5246f7111a843ff6a9d8a0165d17b8b4615a7cb1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "barrucadu",
+        "repo": "resolved",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "bookdb": "bookdb",
+        "bookmarks": "bookmarks",
+        "gitignore": "gitignore",
         "nixpkgs": "nixpkgs",
+        "prometheus-awair-exporter": "prometheus-awair-exporter",
+        "resolved": "resolved",
+        "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710727870,
+        "narHash": "sha256-Ulsx+t4SnRmjMJx4eF2Li+3rBGYhZp0XNShVjIheCfg=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "a1b17cacfa7a6ed18f553a195a047f4e73e95da9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "sops-nix": {
@@ -42,6 +208,21 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
         "type": "github"
       }
     }
