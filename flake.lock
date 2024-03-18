@@ -26,6 +26,32 @@
         "type": "github"
       }
     },
+    "bookmarks": {
+      "inputs": {
+        "gitignore": [
+          "gitignore"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710771283,
+        "narHash": "sha256-5qHny3fkzWoYCLIX67bj2pJn2Dmglx+JlOGx8BuD/xs=",
+        "owner": "barrucadu",
+        "repo": "bookmarks",
+        "rev": "c6e075a6c90aa676a36b1aa516465555d9914126",
+        "type": "github"
+      },
+      "original": {
+        "owner": "barrucadu",
+        "repo": "bookmarks",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -83,6 +109,7 @@
     "root": {
       "inputs": {
         "bookdb": "bookdb",
+        "bookmarks": "bookmarks",
         "gitignore": "gitignore",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay",
