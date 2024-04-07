@@ -201,6 +201,11 @@ in
   '';
   sops.secrets."services/caddy/fragments/misc_site".owner = config.users.users.caddy.name;
 
+  services.caddy.virtualHosts."carcosa.barrucadu.co.uk".extraConfig = ''
+    import common_config
+    redir https://www.barrucadu.co.uk
+  '';
+
   services.caddy.virtualHosts."grafana.carcosa.barrucadu.co.uk".extraConfig = ''
     import common_config
     reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
