@@ -297,7 +297,6 @@ in
 
       # Such pubkey!
       openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIP5QUiJZ9TX1/fNAAg4UdtSM4AnpIgdSp7FsH1s1mnz barrucadu@azathoth"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDGsbaoX0seFfMTXePyaQchxU3g58xFMUipZPvddCT8c azathoth-windows"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIWvwOx9opSKGomvq8C3u1SghmaGiv0yiMZUdql6nBDB barrucadu@nyarlathotep"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVnNyKbBcHMY7Tcak07bL6svb/x8KXCL5WJRck9PaDI barrucadu@carcosa"
