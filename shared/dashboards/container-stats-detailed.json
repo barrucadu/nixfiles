@@ -88,9 +88,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -170,9 +171,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -252,9 +254,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -298,7 +301,6 @@
       },
       "hiddenSeries": false,
       "id": 2,
-      "isNew": true,
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -318,7 +320,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -398,7 +400,6 @@
       },
       "hiddenSeries": false,
       "id": 1,
-      "isNew": true,
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -418,7 +419,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -499,7 +500,6 @@
       },
       "hiddenSeries": false,
       "id": 3,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -517,7 +517,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -596,7 +596,6 @@
       },
       "hiddenSeries": false,
       "id": 4,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -614,7 +613,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -692,7 +691,6 @@
       },
       "hiddenSeries": false,
       "id": 8,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -710,7 +708,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -789,7 +787,6 @@
       },
       "hiddenSeries": false,
       "id": 9,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -807,7 +804,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -867,8 +864,7 @@
   ],
   "refresh": "1m",
   "revision": 1,
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
@@ -876,7 +872,7 @@
         "current": {
           "selected": false,
           "text": "prometheus",
-          "value": "prometheus"
+          "value": "P1809F7CD0C75ACF3"
         },
         "hide": 0,
         "includeAll": false,

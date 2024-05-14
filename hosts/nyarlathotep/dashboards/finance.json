@@ -76,9 +76,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -149,9 +150,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -223,9 +225,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -295,9 +298,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -365,9 +369,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -437,9 +442,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -523,9 +529,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -554,6 +561,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -567,6 +575,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1092,9 +1101,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1232,9 +1242,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1316,9 +1327,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1400,9 +1412,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1484,9 +1497,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1515,6 +1529,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1528,6 +1543,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1689,6 +1705,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1702,6 +1719,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1866,6 +1884,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1879,6 +1898,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2078,6 +2098,8 @@
       },
       "id": 78,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2088,9 +2110,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2149,6 +2172,8 @@
       },
       "id": 31,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2159,9 +2184,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2220,6 +2246,8 @@
       },
       "id": 32,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2230,9 +2258,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2292,6 +2321,8 @@
       },
       "id": 42,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2302,9 +2333,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2361,6 +2393,8 @@
       },
       "id": 88,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2371,9 +2405,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2432,6 +2467,8 @@
       },
       "id": 37,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2442,9 +2479,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2503,6 +2541,8 @@
       },
       "id": 33,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2513,9 +2553,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2574,6 +2615,8 @@
       },
       "id": 38,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2584,9 +2627,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2646,6 +2690,8 @@
       },
       "id": 34,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2656,9 +2702,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2717,6 +2764,8 @@
       },
       "id": 35,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2727,9 +2776,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2788,6 +2838,8 @@
       },
       "id": 36,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2798,9 +2850,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2859,6 +2912,8 @@
       },
       "id": 40,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2869,9 +2924,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -3514,8 +3570,7 @@
   ],
   "refresh": "",
   "revision": 1,
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
@@ -3530,7 +3585,7 @@
         "current": {
           "selected": false,
           "text": "promscale",
-          "value": "promscale"
+          "value": "P3354215654B729CB"
         },
         "hide": 0,
         "includeAll": false,
