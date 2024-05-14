@@ -121,6 +121,8 @@
       "id": 20,
       "links": [],
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -130,9 +132,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -202,6 +205,8 @@
       "id": 155,
       "links": [],
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -211,9 +216,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -283,6 +289,8 @@
       "id": 19,
       "links": [],
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -292,9 +300,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -355,6 +364,8 @@
       "id": 16,
       "links": [],
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -364,9 +375,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -447,6 +459,8 @@
       "id": 21,
       "links": [],
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -456,9 +470,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -526,6 +541,8 @@
       "id": 154,
       "links": [],
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -535,9 +552,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -612,9 +630,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -692,9 +711,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -773,9 +793,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -852,9 +873,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -929,9 +951,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1032,7 +1055,7 @@
         "alertThreshold": true
       },
       "percentage": true,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1233,7 +1256,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1425,7 +1448,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1542,7 +1565,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.4.9",
+      "pluginVersion": "10.2.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -13964,8 +13987,7 @@
   ],
   "refresh": "1m",
   "revision": 1,
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
@@ -13973,7 +13995,7 @@
         "current": {
           "selected": false,
           "text": "prometheus",
-          "value": "prometheus"
+          "value": "P1809F7CD0C75ACF3"
         },
         "hide": 0,
         "includeAll": false,

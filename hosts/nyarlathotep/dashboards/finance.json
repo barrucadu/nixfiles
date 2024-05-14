@@ -76,9 +76,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -149,9 +150,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -223,9 +225,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -295,9 +298,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -365,9 +369,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -437,9 +442,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -523,9 +529,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -554,6 +561,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -567,6 +575,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1092,9 +1101,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1232,9 +1242,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1316,9 +1327,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1400,9 +1412,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1484,9 +1497,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -1515,6 +1529,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1528,6 +1543,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1689,6 +1705,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1702,6 +1719,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1866,6 +1884,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1879,6 +1898,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2078,6 +2098,8 @@
       },
       "id": 78,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2088,9 +2110,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2149,6 +2172,8 @@
       },
       "id": 31,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2159,9 +2184,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2220,6 +2246,8 @@
       },
       "id": 32,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2230,9 +2258,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2259,9 +2288,8 @@
       },
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
           "mappings": [],
-          "max": 996,
+          "max": 50,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2272,11 +2300,11 @@
               },
               {
                 "color": "yellow",
-                "value": 500
+                "value": 25
               },
               {
                 "color": "green",
-                "value": 750
+                "value": 37.5
               }
             ]
           },
@@ -2290,148 +2318,10 @@
         "x": 9,
         "y": 20
       },
-      "id": 42,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "9.5.13",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "exemplar": true,
-          "expr": "sum(hledger_balance{account=\"assets:investments:nsi:premium_bonds:move\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Move",
-      "transparent": true,
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "max": 50,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 25
-              },
-              {
-                "color": "green",
-                "value": 37.5
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 12,
-        "y": 20
-      },
-      "id": 88,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "9.5.13",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\".*:saved:owlbear\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "interval": "",
-          "legendFormat": "",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Owlbear",
-      "transparent": true,
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "max": 50,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 25
-              },
-              {
-                "color": "green",
-                "value": 37.5
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 15,
-        "y": 20
-      },
       "id": 37,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2442,9 +2332,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2498,11 +2389,13 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 18,
+        "x": 12,
         "y": 20
       },
       "id": 33,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2513,9 +2406,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2569,11 +2463,13 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
+        "x": 15,
         "y": 20
       },
       "id": 38,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2584,9 +2480,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2641,11 +2538,13 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 0,
-        "y": 26
+        "x": 18,
+        "y": 20
       },
       "id": 34,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2656,9 +2555,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2712,11 +2612,13 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 3,
-        "y": 26
+        "x": 21,
+        "y": 20
       },
       "id": 35,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2727,9 +2629,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2783,11 +2686,13 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 6,
+        "x": 0,
         "y": 26
       },
       "id": 36,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2798,9 +2703,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2828,7 +2734,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 500,
+          "max": 300,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2839,11 +2745,11 @@
               },
               {
                 "color": "yellow",
-                "value": 250
+                "value": 150
               },
               {
                 "color": "green",
-                "value": 375
+                "value": 225
               }
             ]
           },
@@ -2854,11 +2760,13 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 9,
+        "x": 3,
         "y": 26
       },
       "id": 40,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2869,9 +2777,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2906,7 +2815,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -2930,6 +2840,8 @@
       },
       "id": 77,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2940,9 +2852,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -2969,21 +2882,22 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
-          "max": 25,
+          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "yellow",
-                "value": 12.5
+                "value": 50
               },
               {
                 "color": "green",
-                "value": 18.75
+                "value": 75
               }
             ]
           },
@@ -2999,6 +2913,8 @@
       },
       "id": 76,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -3009,9 +2925,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.5.13",
+      "pluginVersion": "10.2.6",
       "targets": [
         {
           "datasource": {
@@ -3514,8 +3431,7 @@
   ],
   "refresh": "",
   "revision": 1,
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
@@ -3530,7 +3446,7 @@
         "current": {
           "selected": false,
           "text": "promscale",
-          "value": "promscale"
+          "value": "P3354215654B729CB"
         },
         "hide": 0,
         "includeAll": false,
