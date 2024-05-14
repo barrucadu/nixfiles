@@ -472,7 +472,7 @@ in
   # Metrics
   services.grafana.settings = {
     server.root_url = "https://grafana.carcosa.barrucadu.co.uk";
-    security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}";
+    security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}}";
     security.secret_key = "$__file{${config.sops.secrets."services/grafana/secret_key".path}}";
   };
   sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
