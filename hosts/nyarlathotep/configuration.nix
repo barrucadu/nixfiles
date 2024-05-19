@@ -260,6 +260,14 @@ in
     reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
   '';
 
+  services.caddy.virtualHosts."rpg-tools.nyarlathotep.lan:80".extraConfig = ''
+    import restrict_vlan
+    encode gzip
+    file_server {
+      root ${httpdir}/rpg-tools.nyarlathotep.lan
+    }
+  '';
+
   services.caddy.virtualHosts."prometheus.nyarlathotep.lan:80".extraConfig = ''
     import restrict_vlan
     encode gzip
