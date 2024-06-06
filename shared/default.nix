@@ -79,6 +79,13 @@ in
     system.autoUpgrade.flake = "/etc/nixos";
     system.autoUpgrade.dates = "06:45";
 
+    # Reboot on panic and oops
+    # https://utcc.utoronto.ca/~cks/space/blog/linux/RebootOnPanicSettings
+    boot.kernel.sysctl = {
+      "kernel.panic" = 10;
+      "kernel.panic_on_oops" = 1;
+    };
+
     #############################################################################
     ## Locale
     #############################################################################
@@ -150,6 +157,12 @@ in
             expr: node_zfs_zpool_state{state!="online"} > 0
       ''
     ];
+
+    # Actually panic when ZFS "panics"
+    # https://utcc.utoronto.ca/~cks/space/blog/linux/ZFSPanicsNotKernelPanics
+    boot.extraModprobeConfig = mkIf thereAreZfsFilesystems ''
+      options spl spl_panic_halt=1
+    '';
 
     #############################################################################
     ## Services
