@@ -13,11 +13,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1715818407,
-        "narHash": "sha256-mJWD7Z/4c7Kse57nG7gFaJumlzB5keeb4zkqUEImTQo=",
+        "lastModified": 1718093248,
+        "narHash": "sha256-aCsvnYBVmQh9x4TYhT3pA7pRWsPvaJQ+ITHH3A9dYPU=",
         "owner": "barrucadu",
         "repo": "bookdb",
-        "rev": "f24235749d9b414b1af587b6496af5341d81d36b",
+        "rev": "75d6b19cd503810afcadffeaae6a7adef66621f4",
         "type": "github"
       },
       "original": {
@@ -92,16 +92,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1717530100,
-        "narHash": "sha256-b4Dn+PnrZoVZ/BoR9JN2fTxXxplJrAsdSUIePf4Cacs=",
+        "lastModified": 1718208800,
+        "narHash": "sha256-US1tAChvPxT52RV8GksWZS415tTS7PV42KTc2PNDBmc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a2e1d0414259a144ebdc048408a807e69e0565af",
+        "rev": "cc54fb41d13736e92229c21627ea4f22199fee6b",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-23.11",
+        "ref": "nixos-24.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -142,11 +142,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1717154494,
-        "narHash": "sha256-56DvvRgqqWIZHUCQAnXvqzbceGK/xzItw3O9j+cxwEU=",
+        "lastModified": 1718096261,
+        "narHash": "sha256-iy/0qjoalx5CaTgT7klueuQhktV3FSbncmdpcugsz7c=",
         "owner": "barrucadu",
         "repo": "resolved",
-        "rev": "049d2555c8e48ed8e2cbd360809eb1e74e274977",
+        "rev": "f44e1883492d6a8de46bc05bc9676b1ca1cc60be",
         "type": "github"
       },
       "original": {
@@ -199,11 +199,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1717455931,
-        "narHash": "sha256-8Q6mKSsto8gaGczXd4G0lvawdAYLa5Dlh3/g4hl5CaM=",
+        "lastModified": 1718137936,
+        "narHash": "sha256-psA+1Q5fPaK6yI3vzlLINNtb6EeXj111zQWnZYyJS9c=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "d4555e80d80d2fa77f0a44201ca299f9602492a0",
+        "rev": "c279dec105dd53df13a5e57525da97905cc0f0d6",
         "type": "github"
       },
       "original": {

@@ -106,7 +106,7 @@ cat <<EOF > /mnt/persist/etc/nixos/hosts/new/header.nix
 with lib;
 {
   networking.hostId = "$(head -c 4 /dev/urandom | xxd -p)";
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = { zfs = true; };
 
   ###############################################################################
   ## GENERATED CONFIG BELOW THIS LINE

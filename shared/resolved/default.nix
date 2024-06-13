@@ -19,6 +19,7 @@ in
       description = "barrucadu/resolved nameserver";
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
       serviceConfig = {
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         ExecStart = concatStringsSep " " [

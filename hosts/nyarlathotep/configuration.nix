@@ -33,7 +33,7 @@ in
   ###############################################################################
 
   networking.hostId = "4a592971"; # ZFS needs one of these
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = { zfs = true; };
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -387,6 +387,7 @@ in
       description = "barrucadu/prometheus-awair-exporter metrics exporter";
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
       serviceConfig = {
         ExecStart = "${pkgs.nixfiles.prometheus-awair-exporter}/bin/prometheus-awair-exporter --address 127.0.0.1:${toString prometheusAwairExporterPort} --sensor living-room:10.0.20.117 --sensor bedroom:10.0.20.187";
         DynamicUser = "true";

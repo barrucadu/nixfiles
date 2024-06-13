@@ -46,7 +46,7 @@ in
     #############################################################################
 
     # The NixOS release to be compatible with for stateful data such as databases.
-    system.stateVersion = "23.11";
+    system.stateVersion = "24.05";
 
     # Only keep the last 500MiB of systemd journal.
     services.journald.extraConfig = "SystemMaxUse=500M";
@@ -56,10 +56,8 @@ in
     nix.gc.options = "--delete-older-than 30d";
     nix.optimise.automatic = true;
 
-    # Enable flakes & pin nixpkgs to the same version that built the
-    # system
+    # Enable flakes
     nix.extraOptions = "experimental-features = nix-command flakes";
-    nix.registry.nixpkgs.flake = flakeInputs.nixpkgs;
 
     # Clear out /tmp after a fortnight and give all normal users a ~/tmp
     # cleaned out weekly.
@@ -99,7 +97,7 @@ in
 
     # Keyboard
     console.keyMap = "uk";
-    services.xserver.layout = "gb";
+    services.xserver.xkb.layout = "gb";
 
     #############################################################################
     ## Firewall
@@ -175,6 +173,7 @@ in
       # Only pubkey auth
       settings.PasswordAuthentication = false;
       settings.KbdInteractiveAuthentication = false;
+      authorizedKeysInHomedir = true;
     };
 
     # Start ssh-agent as a systemd user service
