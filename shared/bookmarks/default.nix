@@ -24,6 +24,7 @@ in
       description = "barrucadu/bookmarks webapp";
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" "${backend}-bookmarks-db.service" ];
+      wants = [ "network-online.target" ];
       requires = [ "${backend}-bookmarks-db.service" ];
       serviceConfig = {
         ExecStart = "${pkgs.nixfiles.bookmarks}/bin/bookmarks ${optionalString (!cfg.readOnly) "--allow-writes"}";

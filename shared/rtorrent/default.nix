@@ -68,6 +68,7 @@ in
       enable = true;
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
       serviceConfig = {
         ExecStart = "${pkgs.rtorrent}/bin/rtorrent -n -o system.daemon.set=true -o import=${rtorrentrc}";
         User = cfg.user;

@@ -29,7 +29,7 @@ in
   ###############################################################################
 
   networking.hostId = "f62895cc";
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = { zfs = true; };
 
   # Bootloader
   boot.loader.grub.enable = true;

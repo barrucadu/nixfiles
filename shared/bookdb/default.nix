@@ -28,6 +28,7 @@ in
       description = "barrucadu/bookdb webapp";
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" "${backend}-bookdb-db.service" ];
+      wants = [ "network-online.target" ];
       requires = [ "${backend}-bookdb-db.service" ];
       path = [ pkgs.imagemagick ];
       serviceConfig = {

@@ -63,6 +63,7 @@ in
     systemd.services.pleroma = {
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" "${backend}-pleroma-db.service" ];
+      wants = [ "network-online.target" ];
       requires = [ "${backend}-pleroma-db.service" ];
       environment = {
         DOMAIN = cfg.domain;
