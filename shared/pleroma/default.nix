@@ -14,6 +14,7 @@ let
   cfg = config.nixfiles.pleroma;
   backend = config.nixfiles.oci-containers.backend;
   backendPkg = if backend == "docker" then pkgs.docker else pkgs.podman;
+  dbSocketDir = "/var/run/pleroma/db";
 in
 {
   imports = [
@@ -44,7 +45,7 @@ in
           username: "pleroma",
           password: "pleroma",
           database: "pleroma",
-          socket_dir: "/var/run/pleroma/db/",
+          socket_dir: "${dbSocketDir}/",
           pool_size: 10
 
         config :web_push_encryption, :vapid_details, subject: "mailto:#{System.fetch_env!("NOTIFY_EMAIL")}"
@@ -87,9 +88,11 @@ in
       extraOptions = [ "--shm-size=1g" ];
       volumes = [
         { name = "pgdata"; inner = "/var/lib/postgresql/data"; }
-        { host = "/var/run/pleroma/db"; inner = "/var/run/postgresql"; }
+        { host = dbSocketDir; inner = "/var/run/postgresql"; }
       ];
     };
+
+    systemd.tmpfiles.rules = [ "d ${dbSocketDir} 0700 root root" ];
 
     nixfiles.restic-backups.backups.pleroma = {
       prepareCommand = ''
