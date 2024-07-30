@@ -22,9 +22,6 @@ in
   ];
 
   config = mkIf cfg.enable {
-    # https://github.com/concourse/concourse/discussions/6529
-    boot.kernelParams = [ "systemd.unified_cgroup_hierarchy=0" ];
-
     nixfiles.oci-containers.pods.concourse = {
       containers = {
         web = {
@@ -38,7 +35,6 @@ in
             "CONCOURSE_EXTERNAL_URL" = "https://cd.barrucadu.dev";
             "CONCOURSE_MAIN_TEAM_GITHUB_USER" = cfg.githubUser;
             "CONCOURSE_LOG_LEVEL" = "error";
-            "CONCOURSE_GARDEN_LOG_LEVEL" = "error";
             "CONCOURSE_PROMETHEUS_BIND_IP" = "0.0.0.0";
             "CONCOURSE_PROMETHEUS_BIND_PORT" = "8088";
             "CONCOURSE_BAGGAGECLAIM_RESPONSE_HEADER_TIMEOUT" = "30m";
@@ -57,8 +53,9 @@ in
           cmd = [ "worker" "--ephemeral" ];
           environment = {
             "CONCOURSE_TSA_HOST" = "concourse-web:2222";
+            "CONCOURSE_RUNTIME" = "containerd";
             "CONCOURSE_CONTAINERD_DNS_PROXY_ENABLE" = "false";
-            "CONCOURSE_GARDEN_DNS_SERVER" = "1.1.1.1,8.8.8.8";
+            "CONCOURSE_CONTAINERD_DNS_SERVER" = "1.1.1.1,8.8.8.8";
             "CONCOURSE_WORK_DIR" = mkIf (cfg.workerScratchDir != null) "/workdir";
           };
           extraOptions = [ "--privileged" ];
