@@ -14,7 +14,7 @@ with lib;
 
     concourseTag = mkOption {
       type = types.str;
-      default = "7.8.2";
+      default = "7.11.2";
       description = mdDoc ''
         Tag to use of the `concourse/concourse` container image.
       '';
