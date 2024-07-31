@@ -146,16 +146,6 @@ in
     services.zfs.autoSnapshot.enable = thereAreZfsFilesystems;
     services.zfs.autoSnapshot.monthly = 3;
 
-    services.prometheus.rules = mkIf thereAreZfsFilesystems [
-      ''
-        groups:
-        - name: zfs
-          rules:
-          - alert: ZPoolStatusDegraded
-            expr: node_zfs_zpool_state{state!="online"} > 0
-      ''
-    ];
-
     # Actually panic when ZFS "panics"
     # https://utcc.utoronto.ca/~cks/space/blog/linux/ZFSPanicsNotKernelPanics
     boot.extraModprobeConfig = mkIf thereAreZfsFilesystems ''
@@ -272,6 +262,20 @@ in
         ];
       };
     };
+
+    services.prometheus.rules = [
+      ''
+        groups:
+        - name: disk
+          rules:
+          - alert: DiskSpaceLow
+            expr: node_filesystem_avail_bytes{fstype!~"(ramfs|tmpfs)"} / node_filesystem_size_bytes < 0.1
+        - name: zfs
+          rules:
+          - alert: ZPoolStatusDegraded
+            expr: node_zfs_zpool_state{state!="online"} > 0
+      ''
+    ];
 
     # Host metrics
     services.prometheus.exporters.node.enable = promcfg.enable;
