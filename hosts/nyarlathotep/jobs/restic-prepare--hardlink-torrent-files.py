@@ -11,7 +11,7 @@ import sys
 # Directories to link
 MEDIA_DIRS = ["/mnt/nas/anime", "/mnt/nas/movies", "/mnt/nas/tv"]
 
-# Where rtorrent downloads its files to
+# Where torrent files are downloaded to
 TORRENT_FILES_DIR = "/mnt/nas/torrents/files"
 
 # Where .torrent files are stored

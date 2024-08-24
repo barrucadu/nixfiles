@@ -245,7 +245,7 @@ in
   services.caddy.virtualHosts."flood.nyarlathotep.lan:80".extraConfig = ''
     import restrict_vlan
     encode gzip
-    reverse_proxy http://localhost:${toString config.nixfiles.rtorrent.flood.port}
+    reverse_proxy http://localhost:${toString config.nixfiles.torrents.rpcPort}
   '';
 
   services.caddy.virtualHosts."finder.nyarlathotep.lan:80".extraConfig = ''
@@ -337,13 +337,14 @@ in
 
 
   ###############################################################################
-  ## rTorrent
+  ## torrents
   ###############################################################################
 
-  nixfiles.rtorrent.enable = true;
-  nixfiles.rtorrent.downloadDir = "/mnt/nas/torrents/files/";
-  nixfiles.rtorrent.watchDir = "/mnt/nas/torrents/watch/";
-  nixfiles.rtorrent.user = "barrucadu";
+  nixfiles.torrents.enable = true;
+  nixfiles.torrents.downloadDir = "/mnt/nas/torrents/files";
+  nixfiles.torrents.watchDir = "/mnt/nas/torrents/watch";
+  nixfiles.torrents.user = "barrucadu";
+  nixfiles.torrents.group = "users";
 
 
   ###############################################################################

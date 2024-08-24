@@ -124,7 +124,7 @@
                   ./shared/bookmarks/options.nix
                   ./shared/umami/options.nix
                   ./shared/concourse/options.nix
-                  ./shared/rtorrent/options.nix
+                  ./shared/torrents/options.nix
                   ./shared/oci-containers/options.nix
                   ./shared/pleroma/options.nix
                   ./shared/resolved/options.nix
