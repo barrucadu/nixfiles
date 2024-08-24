@@ -245,7 +245,7 @@ in
   services.caddy.virtualHosts."flood.nyarlathotep.lan:80".extraConfig = ''
     import restrict_vlan
     encode gzip
-    reverse_proxy http://localhost:${toString config.nixfiles.torrents.flood.port}
+    reverse_proxy http://localhost:${toString config.nixfiles.torrents.rpcPort}
   '';
 
   services.caddy.virtualHosts."finder.nyarlathotep.lan:80".extraConfig = ''

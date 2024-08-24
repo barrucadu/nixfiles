@@ -82,22 +82,5 @@ with lib;
         Port to accept RPC connections on.  Bound on 127.0.0.1.
       '';
     };
-
-    flood = {
-      enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = mdDoc ''
-          Enable the [Flood](https://flood.js.org/) web UI.
-        '';
-      };
-      port = mkOption {
-        type = types.port;
-        default = 45904;
-        description = mdDoc ''
-          Port (on 127.0.0.1) to expose Flood on.
-        '';
-      };
-    };
   };
 }
