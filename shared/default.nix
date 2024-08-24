@@ -36,7 +36,7 @@ in
     ./pleroma
     ./resolved
     ./restic-backups
-    ./rtorrent
+    ./torrents
     ./umami
   ];
 
