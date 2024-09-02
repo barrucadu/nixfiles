@@ -588,4 +588,35 @@ in
   ];
 
   sops.secrets."users/remote_sync/ssh_private_key".owner = config.users.extraUsers.remote-sync.name;
+
+  ###############################################################################
+  # RSS-to-Mastodon
+  ###############################################################################
+
+  users.extraUsers.rss-to-mastodon = {
+    home = "/persist/var/lib/rss-to-mastodon";
+    createHome = true;
+    isSystemUser = true;
+    group = "nogroup";
+  };
+
+  systemd.services.rss-to-mastodon-kjp-hacksrus = {
+    description = "Publish King James Programming to hacksrus.xyz";
+    startAt = "hourly";
+    serviceConfig = {
+      ExecStart =
+        let python = pkgs.python3.withPackages (ps: [ ps.docopt ps.feedparser ps.requests ]);
+        in concatStringsSep " " [
+          "${python}/bin/python3"
+          (pkgs.writeText "rss-to-mastodon.py" (fileContents ./jobs/rss-to-mastodon.py))
+          "-d https://hacksrus.xyz/"
+          "-f https://kingjamesprogramming.tumblr.com/rss"
+          "-l /persist/var/lib/rss-to-mastodon/kjp-hacksrus.txt"
+        ];
+      User = "rss-to-mastodon";
+      EnvironmentFile = config.sops.secrets."users/rss_to_mastodon/kjp_hacksrus_env".path;
+    };
+  };
+
+  sops.secrets."users/rss_to_mastodon/kjp_hacksrus_env" = { };
 }
