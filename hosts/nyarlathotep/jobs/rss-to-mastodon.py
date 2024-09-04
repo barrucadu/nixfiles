@@ -5,9 +5,10 @@
 Requires the API_KEY environment variable to be set.
 
 Usage:
-  rss-to-mastodon -d <domain> -f <feed-url> -l <history-file> [-e <entries>] [-v <visibility>]
+  rss-to-mastodon [--dry-run] -d <domain> -f <feed-url> -l <history-file> [-e <entries>] [-v <visibility>]
 
 Options:
+  --dry-run          just print what would be published
   -d <domain>        api domain
   -f <feed-url>      rss feed URL
   -l <history-file>  file to log feed item IDs to (to prevent double-posting)
@@ -17,6 +18,7 @@ Options:
 
 import docopt
 import feedparser
+import html.parser
 import http.client
 import os
 import pathlib
@@ -24,16 +26,19 @@ import requests
 import sys
 import time
 
-api_token = os.getenv("API_KEY")
-if api_token is None:
-    raise Exception("missing API key")
-
 args = docopt.docopt(__doc__)
+dry_run = args["--dry-run"]
 api_domain = args["-d"]
 feed_url = args["-f"]
 history_file = pathlib.Path(args["-l"])
 entries = int(args["-e"])
 visibility = args["-v"]
+
+if not dry_run:
+    api_token = os.getenv("API_KEY")
+    if api_token is None:
+        print("missing API key", file=sys.stderr)
+        sys.exit(1)
 
 attempts = 0
 feed = None
@@ -59,9 +64,15 @@ items = [entry for entry in feed["items"][:entries] if entry["id"] not in histor
 
 # if there are multiple items, post the older ones first
 for item in reversed(items):
+    # handle entities
+    title = html.parser.unescape(item["title"])
+
     print(item["id"])
-    print(item["title"])
+    print(title)
     print()
+
+    if dry_run:
+        continue
 
     requests.post(
         f"{api_domain}/api/v1/statuses",
@@ -70,7 +81,7 @@ for item in reversed(items):
             "Idempotency-Key": item["id"],
         },
         json={
-            "status": item["title"],
+            "status": title,
             "visibility": visibility,
         },
     ).raise_for_status()
