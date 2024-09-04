@@ -18,6 +18,7 @@ Options:
 
 import docopt
 import feedparser
+import html.parser
 import http.client
 import os
 import pathlib
@@ -63,8 +64,11 @@ items = [entry for entry in feed["items"][:entries] if entry["id"] not in histor
 
 # if there are multiple items, post the older ones first
 for item in reversed(items):
+    # handle entities
+    title = html.parser.unescape(item["title"])
+
     print(item["id"])
-    print(item["title"])
+    print(title)
     print()
 
     if dry_run:
@@ -77,7 +81,7 @@ for item in reversed(items):
             "Idempotency-Key": item["id"],
         },
         json={
-            "status": item["title"],
+            "status": title,
             "visibility": visibility,
         },
     ).raise_for_status()
