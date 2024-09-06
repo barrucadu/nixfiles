@@ -605,10 +605,11 @@ in
     startAt = "hourly";
     serviceConfig = {
       ExecStart =
-        let python = pkgs.python3.withPackages (ps: [ ps.docopt ps.feedparser ps.requests ]);
+        let python = pkgs.python3.withPackages (ps: [ ps.beautifulsoup4 ps.docopt ps.feedparser ps.requests ]);
         in concatStringsSep " " [
           "${python}/bin/python3"
           (pkgs.writeText "rss-to-mastodon.py" (fileContents ./jobs/rss-to-mastodon.py))
+          "--use-summary"
           "-d https://hacksrus.xyz/"
           "-f https://kingjamesprogramming.tumblr.com/rss"
           "-l /persist/var/lib/rss-to-mastodon/kjp-hacksrus.txt"

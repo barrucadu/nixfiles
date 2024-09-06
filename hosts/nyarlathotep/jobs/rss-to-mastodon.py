@@ -5,10 +5,11 @@
 Requires the API_KEY environment variable to be set.
 
 Usage:
-  rss-to-mastodon [--dry-run] -d <domain> -f <feed-url> -l <history-file> [-e <entries>] [-v <visibility>]
+  rss-to-mastodon [--dry-run] [--use-summary] -d <domain> -f <feed-url> -l <history-file> [-e <entries>] [-v <visibility>]
 
 Options:
   --dry-run          just print what would be published
+  --use-summary      use the (de-HTMLised) sumamry field, rather than the title
   -d <domain>        api domain
   -f <feed-url>      rss feed URL
   -l <history-file>  file to log feed item IDs to (to prevent double-posting)
@@ -16,6 +17,7 @@ Options:
   -v <visibility>    visibility of entries [default: public]
 """
 
+import bs4
 import docopt
 import feedparser
 import html.parser
@@ -28,6 +30,7 @@ import time
 
 args = docopt.docopt(__doc__)
 dry_run = args["--dry-run"]
+use_summary = args["--use-summary"]
 api_domain = args["-d"]
 feed_url = args["-f"]
 history_file = pathlib.Path(args["-l"])
@@ -64,8 +67,10 @@ items = [entry for entry in feed["items"][:entries] if entry["id"] not in histor
 
 # if there are multiple items, post the older ones first
 for item in reversed(items):
-    # handle entities
     title = html.parser.unescape(item["title"])
+
+    if use_summary:
+        title = bs4.BeautifulSoup(item["summary"], "html.parser").get_text().strip()
 
     print(item["id"])
     print(title)
