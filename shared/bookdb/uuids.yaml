@@ -16,17 +16,21 @@ categories:
     slug: afc7135b-bf67-4284-bcc1-2bbd3386aea3
   - name: Kitchen, Food, + Recipe
     slug: b5451ba6-a3ef-4c27-99fc-a07d8cd54161
-  - name: Politics, Philosophy, Economics, + History
-    slug: ac4706f3-54c3-4e6d-a72d-85321d9dcd72
-  - name: RPG
-    slug: cf921942-f65a-40e3-8e98-2f565bb8d033
+  - name: History
+    slug: 6e7ffdc5-9571-43b3-800b-6e9fc0e0bb92
     children:
-      - name: Call of Cthulhu
-        slug: 08bc011e-1a42-4d23-961a-803d786d7e58
-      - name: Traveller
-        slug: d8d4ee9d-e5d8-4d4d-8a78-65ebc23fc451
-      - name: Miscellaneous
-        slug: 70196ec9-dd61-4241-afc9-dd6be7be30a6
+    - name: Ancient Near East
+      slug: e859b37c-454b-40a3-afef-f7678f487377
+    - name: Greece + Rome
+      slug: 22987d70-6910-44e5-a7db-8979c0030400
+    - name: Modern
+      slug: b3b648d8-e64e-446e-8553-9de38070d78f
+    - name: Miscellaneous
+      slug: e3553aae-c91e-4c77-a26d-d1a63d755e69
+  - name: Economics + Finance
+    slug: 8a8b44cd-65c1-49ed-a126-2b05acc82539
+  - name: Politics + Philosophy
+    slug: ac4706f3-54c3-4e6d-a72d-85321d9dcd72
   - name: Miscellaneous
     slug: fb2dd601-883a-4254-a294-fcf0a0f98d2f
 
@@ -35,11 +39,24 @@ categories:
 
 - name: Religion, Mythology, + Folklore
   slug: a7d83bc9-0352-4fb5-a9dc-68428562a17f
+
+- name: RPG
+  slug: cf921942-f65a-40e3-8e98-2f565bb8d033
   children:
-  - name: Abrahamic
-    slug: 384664d5-e256-4787-a729-1eb5e7a7de6f
+  - name: ALIEN
+    slug: e5a2fe09-f4b6-447a-9d83-8e2a89a9c605
+  - name: Call of Cthulhu
+    slug: 08bc011e-1a42-4d23-961a-803d786d7e58
+  - name: Delta Green
+    slug: 3aa3b315-a93a-42af-b221-c36ddfb556d0
+  - name: "D&D + OSR"
+    slug: 99569e4e-d52c-4e3b-8c2b-8e69e2ff29b7
+  - name: The One Ring
+    slug: 833cfe57-0092-4acb-9bb2-5211f5c89016
+  - name: Traveller
+    slug: d8d4ee9d-e5d8-4d4d-8a78-65ebc23fc451
   - name: Miscellaneous
-    slug: 0435b803-d2e9-49b9-a1c7-bc7fc1b30cdd
+    slug: 70196ec9-dd61-4241-afc9-dd6be7be30a6
 
 - name: Verse
   slug: 217f8eaa-b54a-466c-83f8-3f569f46732e
