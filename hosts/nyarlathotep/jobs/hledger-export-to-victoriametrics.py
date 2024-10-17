@@ -16,7 +16,7 @@ DRY_RUN = "--dry-run" in sys.argv
 if not DRY_RUN:
     import requests
 
-    PROMSCALE_URI = os.environ["PROMSCALE_URI"]
+    VICTORIAMETRICS_URI = os.environ["VICTORIAMETRICS_URI"]
 
 DOB = datetime.datetime(1991, 9, 9)
 
@@ -349,16 +349,30 @@ metrics = {
 
 for name, values in metrics.items():
     if not DRY_RUN:
-        requests.post(f"{PROMSCALE_URI}/delete_series?match[]={name}")
+        requests.post(
+            f"{VICTORIAMETRICS_URI}/api/v1/admin/tsdb/delete_series?match[]={name}"
+        ).raise_for_status()
 
     for labels_tuples, samples in values.items():
         print(f"Uploading {name} {labels_tuples} ({len(samples)} samples)")
 
         labels = dict(labels_tuples)
         labels["__name__"] = name
-        json = {"labels": labels, "samples": convert_samples(samples)}
+        samples = convert_samples(samples)
+        json = {
+            "metric": labels,
+            "values": [v for _, v in samples],
+            "timestamps": [t for t, _ in samples],
+        }
 
         if DRY_RUN:
             print(json)
         else:
-            requests.post(f"{PROMSCALE_URI}/write", json=json).raise_for_status()
+            requests.post(
+                f"{VICTORIAMETRICS_URI}/api/v1/import", json=json
+            ).raise_for_status()
+
+if not DRY_RUN:
+    requests.get(
+        f"{VICTORIAMETRICS_URI}/internal/resetRollupResultCache"
+    ).raise_for_status()
