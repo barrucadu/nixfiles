@@ -477,6 +477,8 @@ in
       VICTORIAMETRICS_URI = "http://${config.services.victoriametrics.listenAddress}";
     };
   };
+  # also reload data after boot
+  systemd.timers.hledger-export-to-victoriametrics.timerConfig.OnBootSec = "5m";
 
   services.victoriametrics = {
     enable = true;
