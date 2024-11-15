@@ -10,7 +10,6 @@ with lib;
 let
   promcfg = config.services.prometheus;
   nodeExporter = promcfg.enable && config.services.prometheus.exporters.node.enable;
-  cAdvisor = promcfg.enable && config.services.cadvisor.enable;
 
   thereAreZfsFilesystems = any id (mapAttrsToList (_: attrs: attrs.fsType == "zfs") config.fileSystems);
 
@@ -210,10 +209,8 @@ in
       provision.dashboards.settings.providers =
         let
           nodeExporterDashboard = { name = "Node Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/node-stats-detailed.json; };
-          cAdvisorDashboard = { name = "Container Stats (Detailed)"; folder = "Common"; options.path = ./dashboards/container-stats-detailed.json; };
         in
-        (if nodeExporter then [ nodeExporterDashboard ] else [ ]) ++
-        (if cAdvisor then [ cAdvisorDashboard ] else [ ]);
+        (if nodeExporter then [ nodeExporterDashboard ] else [ ]);
     };
 
     services.prometheus = {
@@ -227,13 +224,8 @@ in
             job_name = "${config.networking.hostName}-node";
             static_configs = [{ targets = [ "localhost:${toString promcfg.exporters.node.port}" ]; }];
           };
-          cAdvisorScraper = {
-            job_name = "${config.networking.hostName}-cadvisor";
-            static_configs = [{ targets = [ "localhost:${toString config.services.cadvisor.port}" ]; }];
-          };
         in
-        (if nodeExporter then [ nodeExporterScraper ] else [ ]) ++
-        (if cAdvisor then [ cAdvisorScraper ] else [ ]);
+        (if nodeExporter then [ nodeExporterScraper ] else [ ]);
       alertmanagers = mkIf promcfg.alertmanager.enable [
         {
           static_configs = [{ targets = [ "localhost:${toString promcfg.alertmanager.port}" ]; }];
@@ -286,12 +278,6 @@ in
     # if a disk is mounted at /home, then the default value of
     # `"true"` reports incorrect filesystem metrics
     systemd.services.prometheus-node-exporter.serviceConfig.ProtectHome = mkForce "read-only";
-
-    # Container metrics
-    services.cadvisor = {
-      enable = promcfg.enable;
-      port = 9418;
-    };
 
     #############################################################################
     ## User accounts
