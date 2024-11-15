@@ -278,7 +278,10 @@ in
     ];
 
     # Host metrics
-    services.prometheus.exporters.node.enable = promcfg.enable;
+    services.prometheus.exporters.node = {
+      enable = promcfg.enable;
+      enabledCollectors = [ "processes" "systemd" ];
+    };
 
     # if a disk is mounted at /home, then the default value of
     # `"true"` reports incorrect filesystem metrics
