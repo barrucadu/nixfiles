@@ -493,7 +493,10 @@ in
 
   nixfiles.bookdb.remoteSync.send.enable = true;
   nixfiles.bookdb.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookdb_remote_sync/ssh_private_key".path;
-  nixfiles.bookdb.remoteSync.send.targets = [ "carcosa.barrucadu.co.uk" ];
+  nixfiles.bookdb.remoteSync.send.targets = [
+    "carcosa.barrucadu.co.uk"
+    "yuggoth.barrucadu.co.uk"
+  ];
 
   sops.secrets."users/bookdb_remote_sync/ssh_private_key" = {
     owner = config.users.extraUsers.bookdb-remote-sync-send.name;
@@ -502,7 +505,10 @@ in
 
   nixfiles.bookmarks.remoteSync.send.enable = true;
   nixfiles.bookmarks.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookmarks_remote_sync/ssh_private_key".path;
-  nixfiles.bookmarks.remoteSync.send.targets = [ "carcosa.barrucadu.co.uk" ];
+  nixfiles.bookmarks.remoteSync.send.targets = [
+    "carcosa.barrucadu.co.uk"
+    "yuggoth.barrucadu.co.uk"
+  ];
 
   sops.secrets."users/bookmarks_remote_sync/ssh_private_key" = {
     owner = config.users.extraUsers.bookmarks-remote-sync-send.name;

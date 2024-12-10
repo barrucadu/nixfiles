@@ -5,6 +5,7 @@
 # Reference
 
 - [Hosts](./hosts.md)
+- [Host Templates](./host-templates.md)
 - [Modules](./modules.md)
 - [Options](./options.md)
 

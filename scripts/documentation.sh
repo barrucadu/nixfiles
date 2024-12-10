@@ -12,9 +12,12 @@ import os
 print("# Hosts")
 print("")
 
-hosts = sorted([name for name in os.listdir("hosts") if name not in [".", ".."]])
+hosts = sorted([name for name in os.listdir("hosts")])
 for host in hosts:
     source_file = f"hosts/{host}/configuration.nix"
+
+    if not os.path.isfile(source_file):
+        continue
 
     print(f"## {host}")
 
@@ -28,6 +31,35 @@ for host in hosts:
                 break
     if not has_doc:
         print("This host has no description.")
+    print(f"\n**Declared in:** [{source_file}](https://github.com/barrucadu/nixfiles/blob/master/{source_file})")
+    print("")
+EOF
+
+python3 - <<'EOF' > docs/src/host-templates.md
+import os
+
+print("# Host Templates")
+print("")
+
+templates = sorted([name for name in os.listdir("hosts/_templates")])
+for template in templates:
+    source_file = f"hosts/_templates/{template}"
+
+    if not os.path.isfile(source_file):
+        continue
+
+    print(f"## {template.replace('.nix','')}")
+
+    has_doc = False
+    with open(source_file, "r") as f:
+        for line in f:
+            if line.startswith("#"):
+                has_doc = True
+                print(line[1:].strip())
+            else:
+                break
+    if not has_doc:
+        print("This template has no description.")
     print(f"\n**Declared in:** [{source_file}](https://github.com/barrucadu/nixfiles/blob/master/{source_file})")
     print("")
 EOF
