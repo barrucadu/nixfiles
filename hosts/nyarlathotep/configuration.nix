@@ -491,48 +491,21 @@ in
   # Remote Sync
   ###############################################################################
 
+  nixfiles.bookdb.remoteSync.send.enable = true;
+  nixfiles.bookdb.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookdb_remote_sync/ssh_private_key".path;
+  nixfiles.bookdb.remoteSync.send.targets = [ "carcosa.barrucadu.co.uk" ];
+
+  sops.secrets."users/bookdb_remote_sync/ssh_private_key" = {
+    owner = config.users.extraUsers.bookdb-remote-sync-send.name;
+    key = "users/remote_sync/ssh_private_key";
+  };
+
   users.extraUsers.remote-sync = {
     home = "/var/lib/remote-sync";
     createHome = true;
     isSystemUser = true;
     shell = pkgs.bashInteractive;
     group = "nogroup";
-  };
-
-  systemd.services.bookdb-sync = {
-    description = "Upload bookdb data to carcosa";
-    startAt = "*:15";
-    path = with pkgs; [ openssh rsync ];
-    serviceConfig = {
-      ExecStart = pkgs.writeShellScript "bookdb-sync" ''
-        set -ex
-
-        /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ~/bookdb-covers
-        trap "/run/wrappers/bin/sudo ${pkgs.coreutils}/bin/rm -rf ~/bookdb-covers" EXIT
-        rsync -az\
-              -e "ssh -i $SSH_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
-              ~/bookdb-covers/ \
-              nyarlathotep-remote-sync@carcosa.barrucadu.co.uk:~/bookdb-covers/
-        ssh -i "$SSH_KEY_FILE" \
-            -o UserKnownHostsFile=/dev/null \
-            -o StrictHostKeyChecking=no \
-            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
-            bookdb-receive-covers
-
-        env "ES_HOST=$ES_HOST" \
-            ${pkgs.nixfiles.bookdb}/bin/bookdb_ctl export-index | \
-        ssh -i "$SSH_KEY_FILE" \
-            -o UserKnownHostsFile=/dev/null \
-            -o StrictHostKeyChecking=no \
-            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
-            bookdb-receive-elasticsearch
-      '';
-      User = config.users.extraUsers.remote-sync.name;
-    };
-    environment = {
-      ES_HOST = config.systemd.services.bookdb.environment.ES_HOST;
-      SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
-    };
   };
 
   systemd.services.bookmarks-sync = {
@@ -558,16 +531,6 @@ in
       SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
     };
   };
-
-  security.sudo.extraRules = [
-    {
-      users = [ config.users.extraUsers.remote-sync.name ];
-      commands = [
-        { command = "${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.coreutils}/bin/rm -rf ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
-      ];
-    }
-  ];
 
   sops.secrets."users/remote_sync/ssh_private_key".owner = config.users.extraUsers.remote-sync.name;
 

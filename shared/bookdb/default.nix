@@ -21,6 +21,8 @@ in
   imports = [
     ./erase-your-darlings.nix
     ./options.nix
+    ./remote-sync-receive.nix
+    ./remote-sync-send.nix
   ];
 
   config = mkIf cfg.enable {

@@ -420,6 +420,10 @@ in
   ## Nyarlathotep Sync
   ###############################################################################
 
+  nixfiles.bookdb.remoteSync.receive.enable = true;
+  nixfiles.bookdb.remoteSync.receive.authorizedKeys =
+    [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
+
   users.extraUsers.nyarlathotep-remote-sync = {
     home = "/var/lib/nyarlathotep-remote-sync";
     createHome = true;
@@ -430,40 +434,15 @@ in
     group = "nogroup";
     packages =
       let
-        bookdb-receive-covers = ''
-          if [[ ! -d ~/bookdb-covers ]]; then
-            echo "bookdb-covers does not exist"
-            exit 1
-          fi
-
-          /run/wrappers/bin/sudo ${pkgs.rsync}/bin/rsync -a --delete ~/bookdb-covers/ ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR} || exit 1
-          /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/chown -R ${config.users.users.bookdb.name}.nogroup ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR} || exit 1
-        '';
-        bookdb-receive-elasticsearch = ''
-          env ES_HOST=${config.systemd.services.bookdb.environment.ES_HOST} \
-              ${pkgs.nixfiles.bookdb}/bin/bookdb_ctl import-index --drop-existing
-        '';
         bookmarks-receive-elasticsearch = ''
           env ES_HOST=${config.systemd.services.bookmarks.environment.ES_HOST} \
               ${pkgs.nixfiles.bookmarks}/bin/bookmarks_ctl import-index --drop-existing
         '';
       in
       [
-        (pkgs.writeShellScriptBin "bookdb-receive-covers" bookdb-receive-covers)
-        (pkgs.writeShellScriptBin "bookdb-receive-elasticsearch" bookdb-receive-elasticsearch)
         (pkgs.writeShellScriptBin "bookmarks-receive-elasticsearch" bookmarks-receive-elasticsearch)
       ];
   };
-
-  security.sudo.extraRules = [
-    {
-      users = [ config.users.extraUsers.nyarlathotep-remote-sync.name ];
-      commands = [
-        { command = "${pkgs.rsync}/bin/rsync -a --delete ${config.users.extraUsers.nyarlathotep-remote-sync.home}/bookdb-covers/ ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.coreutils}/bin/chown -R ${config.users.users.bookdb.name}.nogroup ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}"; options = [ "NOPASSWD" ]; }
-      ];
-    }
-  ];
 
   ###############################################################################
   ## Miscellaneous
