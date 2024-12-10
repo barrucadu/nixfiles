@@ -500,39 +500,14 @@ in
     key = "users/remote_sync/ssh_private_key";
   };
 
-  users.extraUsers.remote-sync = {
-    home = "/var/lib/remote-sync";
-    createHome = true;
-    isSystemUser = true;
-    shell = pkgs.bashInteractive;
-    group = "nogroup";
+  nixfiles.bookmarks.remoteSync.send.enable = true;
+  nixfiles.bookmarks.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookmarks_remote_sync/ssh_private_key".path;
+  nixfiles.bookmarks.remoteSync.send.targets = [ "carcosa.barrucadu.co.uk" ];
+
+  sops.secrets."users/bookmarks_remote_sync/ssh_private_key" = {
+    owner = config.users.extraUsers.bookmarks-remote-sync-send.name;
+    key = "users/remote_sync/ssh_private_key";
   };
-
-  systemd.services.bookmarks-sync = {
-    description = "Upload bookmarks data to carcosa";
-    startAt = "*:15";
-    path = with pkgs; [ openssh ];
-    serviceConfig = {
-      ExecStart = pkgs.writeShellScript "bookmarks-sync" ''
-        set -ex
-
-        env "ES_HOST=$ES_HOST" \
-            ${pkgs.nixfiles.bookmarks}/bin/bookmarks_ctl export-index | \
-        ssh -i "$SSH_KEY_FILE" \
-            -o UserKnownHostsFile=/dev/null \
-            -o StrictHostKeyChecking=no \
-            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
-            bookmarks-receive-elasticsearch
-      '';
-      User = config.users.extraUsers.remote-sync.name;
-    };
-    environment = {
-      ES_HOST = config.systemd.services.bookmarks.environment.ES_HOST;
-      SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
-    };
-  };
-
-  sops.secrets."users/remote_sync/ssh_private_key".owner = config.users.extraUsers.remote-sync.name;
 
   ###############################################################################
   # RSS-to-Mastodon

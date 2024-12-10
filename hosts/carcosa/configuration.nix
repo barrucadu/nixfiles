@@ -424,25 +424,9 @@ in
   nixfiles.bookdb.remoteSync.receive.authorizedKeys =
     [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
 
-  users.extraUsers.nyarlathotep-remote-sync = {
-    home = "/var/lib/nyarlathotep-remote-sync";
-    createHome = true;
-    isSystemUser = true;
-    openssh.authorizedKeys.keys =
-      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
-    shell = pkgs.bashInteractive;
-    group = "nogroup";
-    packages =
-      let
-        bookmarks-receive-elasticsearch = ''
-          env ES_HOST=${config.systemd.services.bookmarks.environment.ES_HOST} \
-              ${pkgs.nixfiles.bookmarks}/bin/bookmarks_ctl import-index --drop-existing
-        '';
-      in
-      [
-        (pkgs.writeShellScriptBin "bookmarks-receive-elasticsearch" bookmarks-receive-elasticsearch)
-      ];
-  };
+  nixfiles.bookmarks.remoteSync.receive.enable = true;
+  nixfiles.bookmarks.remoteSync.receive.authorizedKeys =
+    [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
 
   ###############################################################################
   ## Miscellaneous
