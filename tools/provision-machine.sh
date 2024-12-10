@@ -116,8 +116,9 @@ EOF
 
 nixos-generate-config --root /mnt
 cat /mnt/persist/etc/nixos/hosts/new/header.nix /mnt/etc/nixos/configuration.nix > /mnt/persist/etc/nixos/hosts/new/configuration.nix
+rm /mnt/persist/etc/nixos/hosts/new/header.nix
 rm /mnt/etc/nixos/configuration.nix
-mv /mnt/etc/nixos/hardware-configuration.nix /mnt/persist/etc/nixos/hardware.nix
+mv /mnt/etc/nixos/hardware-configuration.nix /mnt/persist/etc/nixos/hosts/new/hardware.nix
 rmdir /mnt/etc/nixos
 
 nano /mnt/persist/etc/nixos/hosts/new/configuration.nix

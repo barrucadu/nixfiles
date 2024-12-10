@@ -70,6 +70,7 @@
         {
           carcosa = mkNixosConfiguration "carcosa" [ "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix" ];
           nyarlathotep = mkNixosConfiguration "nyarlathotep" [ "${nixpkgs}/nixos/modules/installer/scan/not-detected.nix" ];
+          yuggoth = mkNixosConfiguration "yuggoth" [ "${nixpkgs}/nixos/modules/profiles/qemu-guest.nix" ];
         };
 
       packages.${system} =

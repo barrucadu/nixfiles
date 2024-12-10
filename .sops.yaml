@@ -13,3 +13,9 @@ creation_rules:
       - age:
           - *barrucadu
           - 'age1700sgwfejx38fh66k6sajxe507w9x6ptcxfh4dmyffflml75w4fqmteyfy'
+
+  - path_regex: hosts/yuggoth/secrets(/[^/]+)?\.yaml$
+    key_groups:
+      - age:
+          - *barrucadu
+          - 'age1xj0vderjss6wvyuu5uw5gag6lhxzfh6qwfrewgpff5ttpfa03azsxc8600'
