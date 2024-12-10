@@ -24,6 +24,10 @@ let
   httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
 in
 {
+  imports = [
+    ../_templates/barrucadu-website-mirror.nix
+  ];
+
   ###############################################################################
   ## General
   ###############################################################################
@@ -97,7 +101,7 @@ in
   ## Services
   ###############################################################################
 
-  # WWW
+  # WWW - there are more websites, see barrucadu-website-mirror
   services.caddy.enable = true;
   services.caddy.extraConfig = ''
     (common_config) {
@@ -113,78 +117,9 @@ in
     }
   '';
 
-  services.caddy.virtualHosts."barrucadu.co.uk".extraConfig = ''
-    import common_config
-    redir https://www.barrucadu.co.uk{uri}
-  '';
-
-  services.caddy.virtualHosts."barrucadu.com".extraConfig = ''
-    import common_config
-    redir https://www.barrucadu.co.uk{uri}
-  '';
-
-  services.caddy.virtualHosts."www.barrucadu.com".extraConfig = ''
-    import common_config
-    redir https://www.barrucadu.co.uk{uri}
-  '';
-
-  services.caddy.virtualHosts."barrucadu.uk".extraConfig = ''
-    import common_config
-    redir https://www.barrucadu.co.uk{uri}
-  '';
-
-  services.caddy.virtualHosts."www.barrucadu.uk".extraConfig = ''
-    import common_config
-    redir https://www.barrucadu.co.uk{uri}
-  '';
-
-  services.caddy.virtualHosts."www.barrucadu.co.uk".extraConfig = ''
-    import common_config
-
-    header /fonts/* Cache-Control "public, immutable, max-age=31536000"
-    header /*.css   Cache-Control "public, immutable, max-age=31536000"
-
-    file_server {
-      root ${httpdir}/barrucadu.co.uk/www
-    }
-
-    ${fileContents ./caddy/www-barrucadu-co-uk.caddyfile}
-  '';
-
-  services.caddy.virtualHosts."bookdb.barrucadu.co.uk".extraConfig = ''
-    import common_config
-    reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookdb.port}
-  '';
-
-  services.caddy.virtualHosts."bookmarks.barrucadu.co.uk".extraConfig = ''
-    import common_config
-    reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookmarks.port}
-  '';
-
   services.caddy.virtualHosts."foundry.barrucadu.co.uk".extraConfig = ''
     import common_config
     reverse_proxy http://localhost:${toString config.nixfiles.foundryvtt.port}
-  '';
-
-  services.caddy.virtualHosts."memo.barrucadu.co.uk".extraConfig = ''
-    import common_config
-
-    header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-    header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
-    header /*.css     Cache-Control "public, immutable, max-age=31536000"
-
-    root * ${httpdir}/barrucadu.co.uk/memo
-    file_server
-
-    handle_errors {
-      @410 {
-        expression {http.error.status_code} == 410
-      }
-      rewrite @410 /410.html
-      file_server
-    }
-
-    ${fileContents ./caddy/memo-barrucadu-co-uk.caddyfile}
   '';
 
   services.caddy.virtualHosts."misc.barrucadu.co.uk".extraConfig = ''
@@ -214,27 +149,6 @@ in
   services.caddy.virtualHosts."prometheus.carcosa.barrucadu.co.uk".extraConfig = ''
     import common_config
     reverse_proxy http://localhost:${toString config.services.prometheus.port}
-  '';
-
-  services.caddy.virtualHosts."weeknotes.barrucadu.co.uk".extraConfig = ''
-    import common_config
-
-    header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-    header /*.css     Cache-Control "public, immutable, max-age=31536000"
-
-    file_server  {
-      root ${httpdir}/barrucadu.co.uk/weeknotes
-    }
-  '';
-
-  services.caddy.virtualHosts."barrucadu.dev".extraConfig = ''
-    import common_config
-    redir https://www.barrucadu.co.uk
-  '';
-
-  services.caddy.virtualHosts."www.barrucadu.dev".extraConfig = ''
-    import common_config
-    redir https://www.barrucadu.co.uk
   '';
 
   services.caddy.virtualHosts."cd.barrucadu.dev".extraConfig = ''
@@ -377,14 +291,6 @@ in
   # Docker registry
   services.dockerRegistry.enable = true;
 
-  # bookdb
-  nixfiles.bookdb.enable = true;
-  nixfiles.bookdb.readOnly = true;
-
-  # bookmarks
-  nixfiles.bookmarks.enable = true;
-  nixfiles.bookmarks.readOnly = true;
-
   # concourse
   nixfiles.concourse.enable = true;
   nixfiles.concourse.environmentFile = config.sops.secrets."nixfiles/concourse/env".path;
@@ -442,17 +348,6 @@ in
   sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
 
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
-
-  # Concourse access
-  users.extraUsers.concourse-deploy-robot = {
-    home = "/var/lib/concourse-deploy-robot";
-    createHome = true;
-    isSystemUser = true;
-    openssh.authorizedKeys.keys =
-      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFilTWek5xNpl82V48oQ99briJhn9BqwCACeRq1dQnZn concourse-worker@cd.barrucadu.dev" ];
-    shell = pkgs.bashInteractive;
-    group = "nogroup";
-  };
 
   # Extra packages
   users.extraUsers.barrucadu.packages = with pkgs; [
