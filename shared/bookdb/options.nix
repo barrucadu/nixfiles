@@ -71,5 +71,47 @@ with lib;
         Format of the log messages.
       '';
     };
+
+    remoteSync = {
+      receive = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = mdDoc ''
+            Enable receiving push-based remote sync from other hosts.
+          '';
+        };
+        authorizedKeys = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = mdDoc ''
+            SSH public keys to allow pushes from.
+          '';
+        };
+      };
+
+      send = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = mdDoc ''
+            Enable periodically pushing local state to other hosts.
+          '';
+        };
+        sshKeyFile = mkOption {
+          type = types.str;
+          description = mdDoc ''
+            Path to SSH private key.
+          '';
+        };
+        targets = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = mdDoc ''
+            Hosts to push to.
+          '';
+        };
+      };
+    };
   };
 }

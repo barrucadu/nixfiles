@@ -491,85 +491,23 @@ in
   # Remote Sync
   ###############################################################################
 
-  users.extraUsers.remote-sync = {
-    home = "/var/lib/remote-sync";
-    createHome = true;
-    isSystemUser = true;
-    shell = pkgs.bashInteractive;
-    group = "nogroup";
+  nixfiles.bookdb.remoteSync.send.enable = true;
+  nixfiles.bookdb.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookdb_remote_sync/ssh_private_key".path;
+  nixfiles.bookdb.remoteSync.send.targets = [ "carcosa.barrucadu.co.uk" ];
+
+  sops.secrets."users/bookdb_remote_sync/ssh_private_key" = {
+    owner = config.users.extraUsers.bookdb-remote-sync-send.name;
+    key = "users/remote_sync/ssh_private_key";
   };
 
-  systemd.services.bookdb-sync = {
-    description = "Upload bookdb data to carcosa";
-    startAt = "*:15";
-    path = with pkgs; [ openssh rsync ];
-    serviceConfig = {
-      ExecStart = pkgs.writeShellScript "bookdb-sync" ''
-        set -ex
+  nixfiles.bookmarks.remoteSync.send.enable = true;
+  nixfiles.bookmarks.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookmarks_remote_sync/ssh_private_key".path;
+  nixfiles.bookmarks.remoteSync.send.targets = [ "carcosa.barrucadu.co.uk" ];
 
-        /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ~/bookdb-covers
-        trap "/run/wrappers/bin/sudo ${pkgs.coreutils}/bin/rm -rf ~/bookdb-covers" EXIT
-        rsync -az\
-              -e "ssh -i $SSH_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
-              ~/bookdb-covers/ \
-              nyarlathotep-remote-sync@carcosa.barrucadu.co.uk:~/bookdb-covers/
-        ssh -i "$SSH_KEY_FILE" \
-            -o UserKnownHostsFile=/dev/null \
-            -o StrictHostKeyChecking=no \
-            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
-            bookdb-receive-covers
-
-        env "ES_HOST=$ES_HOST" \
-            ${pkgs.nixfiles.bookdb}/bin/bookdb_ctl export-index | \
-        ssh -i "$SSH_KEY_FILE" \
-            -o UserKnownHostsFile=/dev/null \
-            -o StrictHostKeyChecking=no \
-            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
-            bookdb-receive-elasticsearch
-      '';
-      User = config.users.extraUsers.remote-sync.name;
-    };
-    environment = {
-      ES_HOST = config.systemd.services.bookdb.environment.ES_HOST;
-      SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
-    };
+  sops.secrets."users/bookmarks_remote_sync/ssh_private_key" = {
+    owner = config.users.extraUsers.bookmarks-remote-sync-send.name;
+    key = "users/remote_sync/ssh_private_key";
   };
-
-  systemd.services.bookmarks-sync = {
-    description = "Upload bookmarks data to carcosa";
-    startAt = "*:15";
-    path = with pkgs; [ openssh ];
-    serviceConfig = {
-      ExecStart = pkgs.writeShellScript "bookmarks-sync" ''
-        set -ex
-
-        env "ES_HOST=$ES_HOST" \
-            ${pkgs.nixfiles.bookmarks}/bin/bookmarks_ctl export-index | \
-        ssh -i "$SSH_KEY_FILE" \
-            -o UserKnownHostsFile=/dev/null \
-            -o StrictHostKeyChecking=no \
-            nyarlathotep-remote-sync@carcosa.barrucadu.co.uk \
-            bookmarks-receive-elasticsearch
-      '';
-      User = config.users.extraUsers.remote-sync.name;
-    };
-    environment = {
-      ES_HOST = config.systemd.services.bookmarks.environment.ES_HOST;
-      SSH_KEY_FILE = config.sops.secrets."users/remote_sync/ssh_private_key".path;
-    };
-  };
-
-  security.sudo.extraRules = [
-    {
-      users = [ config.users.extraUsers.remote-sync.name ];
-      commands = [
-        { command = "${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.coreutils}/bin/rm -rf ${config.users.extraUsers.remote-sync.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
-      ];
-    }
-  ];
-
-  sops.secrets."users/remote_sync/ssh_private_key".owner = config.users.extraUsers.remote-sync.name;
 
   ###############################################################################
   # RSS-to-Mastodon
