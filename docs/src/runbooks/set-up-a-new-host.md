@@ -56,9 +56,9 @@ nix run .#secrets
 Copy the host SSH keys to `/etc/persist`:
 
 ```bash
-mkdir /persist/etc/ssh
-cp /etc/ssh/ssh_host_rsa_key /persist/etc/ssh/ssh_host_rsa_key
-cp /etc/ssh/ssh_host_ed25519_key /persist/etc/ssh/ssh_host_ed25519_key
+sudo mkdir /persist/etc/ssh
+sudo cp /etc/ssh/ssh_host_rsa_key /persist/etc/ssh/ssh_host_rsa_key
+sudo cp /etc/ssh/ssh_host_ed25519_key /persist/etc/ssh/ssh_host_ed25519_key
 ```
 
 Enable `nixfiles.eraseYourDarlings`:
@@ -67,6 +67,17 @@ Enable `nixfiles.eraseYourDarlings`:
 nixfiles.eraseYourDarlings.enable = true;
 nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
 sops.secrets."users/barrucadu".neededForUsers = true;
+```
+
+Make the `/persist` volume available in early boot:
+
+```nix
+fileSystems."/persist" =
+  {
+    device = "local/persistent/persist";
+    fsType = "zfs";
+    neededForBoot = true;
+  };
 ```
 
 Then:
