@@ -121,19 +121,22 @@
                 modules = [
                   { config._module.args = { inherit pkgs; }; }
                   ./shared/options.nix
+                  # modules
+                  ./shared/bookdb/options.nix
                   ./shared/bookmarks/options.nix
-                  ./shared/umami/options.nix
                   ./shared/concourse/options.nix
-                  ./shared/torrents/options.nix
+                  ./shared/erase-your-darlings/options.nix
+                  ./shared/finder/options.nix
+                  ./shared/foundryvtt/options.nix
+                  ./shared/minecraft/options.nix
                   ./shared/oci-containers/options.nix
                   ./shared/pleroma/options.nix
                   ./shared/resolved/options.nix
-                  ./shared/bookdb/options.nix
-                  ./shared/minecraft/options.nix
-                  ./shared/erase-your-darlings/options.nix
-                  ./shared/foundryvtt/options.nix
-                  ./shared/finder/options.nix
                   ./shared/restic-backups/options.nix
+                  ./shared/torrents/options.nix
+                  ./shared/umami/options.nix
+                  # host templates
+                  ./shared/host-templates/website-mirror/options.nix
                 ];
               };
               optionsDoc = pkgs.nixosOptionsDoc {

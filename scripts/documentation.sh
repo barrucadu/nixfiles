@@ -41,14 +41,14 @@ import os
 print("# Host Templates")
 print("")
 
-templates = sorted([name for name in os.listdir("hosts/_templates")])
+templates = sorted([name for name in os.listdir("shared/host-templates") if name not in [".", ".."]])
 for template in templates:
-    source_file = f"hosts/_templates/{template}"
+    source_file = f"shared/host-templates/{template}/default.nix"
 
     if not os.path.isfile(source_file):
         continue
 
-    print(f"## {template.replace('.nix','')}")
+    print(f"## {template}")
 
     has_doc = False
     with open(source_file, "r") as f:
@@ -78,6 +78,8 @@ with open(os.getenv("NIXOS_OPTIONS_JSON"), "r") as f:
 modules = {}
 for key, defn in options.items():
     module_name = defn["declarations"][0].split("/shared/")[1].replace("/options.nix", "")
+    if module_name.startswith("host-templates/"):
+        continue
     if module_name == "options.nix":
         # this is the top-level `shared` file
         module_name = ""
