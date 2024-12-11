@@ -345,6 +345,8 @@ in
     isSystemUser = true;
     shell = pkgs.bashInteractive;
     group = "nogroup";
+    openssh.authorizedKeys.keys =
+      [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHFzMpx7QNSAb5tCbkzMRIG62PvBZysflwwCKchFDHtY nix@yuggoth" ];
   };
   nix.settings.trusted-users = [ config.users.extraUsers.nix-remote-builder.name ];
 
