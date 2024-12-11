@@ -334,6 +334,21 @@ in
   nixfiles.bookmarks.remoteSync.receive.authorizedKeys =
     [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
 
+
+  ###############################################################################
+  ## Remote Builds
+  ###############################################################################
+
+  users.extraUsers.nix-remote-builder = {
+    home = "/var/lib/nix-remote-builder";
+    createHome = true;
+    isSystemUser = true;
+    shell = pkgs.bashInteractive;
+    group = "nogroup";
+  };
+  nix.settings.trusted-users = [ config.users.extraUsers.nix-remote-builder.name ];
+
+
   ###############################################################################
   ## Miscellaneous
   ###############################################################################
