@@ -7,7 +7,7 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the [umami](https://umami.is/) service.
       '';
     };
@@ -15,7 +15,7 @@ with lib;
     port = mkOption {
       type = types.int;
       default = 46489;
-      description = mdDoc ''
+      description = ''
         Port (on 127.0.0.1) to expose umami on.
       '';
     };
@@ -23,7 +23,7 @@ with lib;
     postgresTag = mkOption {
       type = types.str;
       default = "16";
-      description = mdDoc ''
+      description = ''
         Tag to use of the `postgres` container image.
       '';
     };
@@ -31,14 +31,14 @@ with lib;
     umamiTag = mkOption {
       type = types.str;
       default = "postgresql-v2.9.0";
-      description = mdDoc ''
+      description = ''
         Tag to use of the `ghcr.io/umami-software/umami` container image.
       '';
     };
 
     environmentFile = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         Environment file to pass secrets into the service.  This is of the form:
 
         ```text

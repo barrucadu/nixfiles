@@ -7,7 +7,7 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the [bookmarks](https://github.com/barrucadu/bookmarks) service.
       '';
     };
@@ -15,7 +15,7 @@ with lib;
     port = mkOption {
       type = types.int;
       default = 48372;
-      description = mdDoc ''
+      description = ''
         Port (on 127.0.0.1) to expose bookmarks on.
       '';
     };
@@ -23,7 +23,7 @@ with lib;
     elasticsearchPort = mkOption {
       type = types.int;
       default = 43389;
-      description = mdDoc ''
+      description = ''
         Port (on 127.0.0.1) to expose the elasticsearch container on.
       '';
     };
@@ -31,7 +31,7 @@ with lib;
     elasticsearchTag = mkOption {
       type = types.str;
       default = "8.0.0";
-      description = mdDoc ''
+      description = ''
         Tag to use of the `elasticsearch` container image.
       '';
     };
@@ -39,7 +39,7 @@ with lib;
     readOnly = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Launch the service in "read-only" mode.  Enable this if exposing it to a
         public network.
       '';
@@ -48,7 +48,7 @@ with lib;
     logLevel = mkOption {
       type = types.str;
       default = "info";
-      description = mdDoc ''
+      description = ''
         Verbosity of the log messages.
       '';
     };
@@ -56,7 +56,7 @@ with lib;
     logFormat = mkOption {
       type = types.str;
       default = "json,no-time";
-      description = mdDoc ''
+      description = ''
         Format of the log messages.
       '';
     };
@@ -66,14 +66,14 @@ with lib;
         enable = mkOption {
           type = types.bool;
           default = false;
-          description = mdDoc ''
+          description = ''
             Enable receiving push-based remote sync from other hosts.
           '';
         };
         authorizedKeys = mkOption {
           type = types.listOf types.str;
           default = [ ];
-          description = mdDoc ''
+          description = ''
             SSH public keys to allow pushes from.
           '';
         };
@@ -83,20 +83,20 @@ with lib;
         enable = mkOption {
           type = types.bool;
           default = false;
-          description = mdDoc ''
+          description = ''
             Enable periodically pushing local state to other hosts.
           '';
         };
         sshKeyFile = mkOption {
           type = types.str;
-          description = mdDoc ''
+          description = ''
             Path to SSH private key.
           '';
         };
         targets = mkOption {
           type = types.listOf types.str;
           default = [ ];
-          description = mdDoc ''
+          description = ''
             Hosts to push to.
           '';
         };

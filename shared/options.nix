@@ -7,7 +7,7 @@ with lib;
     ipBlocklistFile = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = mdDoc ''
+      description = ''
         File containing IPs to block.  This is of the form:
 
         ```text

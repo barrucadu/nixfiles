@@ -7,7 +7,7 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the [Minecraft](https://www.minecraft.net/en-us) service.
       '';
     };
@@ -15,7 +15,7 @@ with lib;
     dataDir = mkOption {
       type = types.path;
       default = "/var/lib/minecraft";
-      description = mdDoc ''
+      description = ''
         Directory to store data files in.
 
         If the `erase-your-darlings` module is enabled, this is overridden to be
@@ -30,14 +30,14 @@ with lib;
             autoStart = mkOption {
               type = types.bool;
               default = true;
-              description = mdDoc ''
+              description = ''
                 Start the server automatically on boot.
               '';
             };
 
             port = mkOption {
               type = types.int;
-              description = mdDoc ''
+              description = ''
                 Port to open in the firewall.  This must match the port in the
                 `server.properties` file.
               '';
@@ -46,7 +46,7 @@ with lib;
             jar = mkOption {
               type = types.str;
               default = "minecraft-server.jar";
-              description = mdDoc ''
+              description = ''
                 Name of the JAR file to use.  This file must be in the working
                 directory.
               '';
@@ -55,7 +55,7 @@ with lib;
             jre = mkOption {
               type = types.package;
               default = pkgs.jdk17_headless;
-              description = mdDoc ''
+              description = ''
                 Java runtime package to use.
               '';
             };
@@ -63,7 +63,7 @@ with lib;
             jvmOpts = mkOption {
               type = types.separatedString " ";
               default = "-Xmx4G -Xms4G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
-              description = mdDoc ''
+              description = ''
                 Java runtime arguments.  Cargo cult these from a forum post and
                 then never think about them again.
               '';
@@ -72,7 +72,7 @@ with lib;
         }
       );
       default = { };
-      description = mdDoc ''
+      description = ''
         Attrset of minecraft server definitions.  Each server `{name}` is run in
         the working directory `''${dataDir}/{name}`.
       '';

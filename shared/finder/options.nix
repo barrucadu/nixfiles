@@ -7,14 +7,14 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the finder service.
       '';
     };
 
     image = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         Container image to run.
       '';
     };
@@ -22,7 +22,7 @@ with lib;
     port = mkOption {
       type = types.int;
       default = 44986;
-      description = mdDoc ''
+      description = ''
         Port (on 127.0.0.1) to expose finder on.
       '';
     };
@@ -30,7 +30,7 @@ with lib;
     elasticsearchTag = mkOption {
       type = types.str;
       default = "8.0.0";
-      description = mdDoc ''
+      description = ''
         Tag to use of the `elasticsearch` container image.
       '';
     };
@@ -38,7 +38,7 @@ with lib;
     mangaDir = mkOption {
       type = types.path;
       example = "/mnt/nas/manga";
-      description = mdDoc ''
+      description = ''
         Directory to serve manga files from.
       '';
     };

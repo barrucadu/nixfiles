@@ -7,7 +7,7 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the [Concourse CI](https://concourse-ci.org/) service.
       '';
     };
@@ -15,7 +15,7 @@ with lib;
     concourseTag = mkOption {
       type = types.str;
       default = "7.11.2";
-      description = mdDoc ''
+      description = ''
         Tag to use of the `concourse/concourse` container image.
       '';
     };
@@ -23,7 +23,7 @@ with lib;
     githubUser = mkOption {
       type = types.str;
       default = "barrucadu";
-      description = mdDoc ''
+      description = ''
         The GitHub user to authenticate with.
       '';
     };
@@ -31,7 +31,7 @@ with lib;
     port = mkOption {
       type = types.int;
       default = 46498;
-      description = mdDoc ''
+      description = ''
         Port (on 127.0.0.1) to expose Concourse CI on.
       '';
     };
@@ -39,7 +39,7 @@ with lib;
     metricsPort = mkOption {
       type = types.int;
       default = 45811;
-      description = mdDoc ''
+      description = ''
         Port (on 127.0.0.1) to expose the Prometheus metrics on.
       '';
     };
@@ -47,7 +47,7 @@ with lib;
     postgresTag = mkOption {
       type = types.str;
       default = "16";
-      description = mdDoc ''
+      description = ''
         Tag to use of the `postgres` container image.
       '';
     };
@@ -55,7 +55,7 @@ with lib;
     workerScratchDir = mkOption {
       type = types.nullOr types.path;
       default = null;
-      description = mdDoc ''
+      description = ''
         Mount a directory from the host into the worker container to use as
         temporary storage.  This is useful if the filesystem used for container
         volumes isn't very big.
@@ -64,7 +64,7 @@ with lib;
 
     environmentFile = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         Environment file to pass secrets into the service.  This is of the form:
 
         ```text
