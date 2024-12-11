@@ -48,4 +48,20 @@ with lib;
   nixfiles.bookmarks.remoteSync.receive.enable = true;
   nixfiles.bookmarks.remoteSync.receive.authorizedKeys =
     [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
+
+  ###############################################################################
+  ## Remote Builds
+  ###############################################################################
+
+  nix.distributedBuilds = true;
+  nix.buildMachines = [{
+    hostName = "carcosa.barrucadu.co.uk";
+    system = "x86_64-linux";
+    sshUser = "nix-remote-builder";
+    sshKey = config.sops.secrets."nix/build_machines/carcosa/ssh_key".path;
+    publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUlTa0x0bk11bUs3N1RYUHBSa0VCeGI1NEtZVHZMZzhHUmFOeGl6c2NoMSsgcm9vdEBjYXJjb3NhCg==";
+    protocol = "ssh-ng";
+    maxJobs = 8;
+  }];
+  sops.secrets."nix/build_machines/carcosa/ssh_key" = { };
 }
