@@ -7,7 +7,7 @@ let
     paths = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      description = mdDoc ''
+      description = ''
         List of paths to back up.
       '';
     };
@@ -15,7 +15,7 @@ let
     prepareCommand = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = mdDoc ''
+      description = ''
         A script to run before beginning the backup.
       '';
     };
@@ -23,7 +23,7 @@ let
     cleanupCommand = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = mdDoc ''
+      description = ''
         A script to run after taking the backup.
       '';
     };
@@ -31,7 +31,7 @@ let
     startAt = mkOption {
       type = types.str;
       default = "Mon, 04:00";
-      description = mdDoc ''
+      description = ''
         When to run the backup.
       '';
     };
@@ -40,7 +40,7 @@ let
   sudoRuleOptions = {
     command = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         The command for which the rule applies.
       '';
     };
@@ -48,7 +48,7 @@ let
     runAs = mkOption {
       type = types.str;
       default = "ALL:ALL";
-      description = mdDoc ''
+      description = ''
         The user / group under which the command is allowed to run.
 
         A user can be specified using just the username: `"foo"`. It is also
@@ -63,7 +63,7 @@ in
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the backup service.
       '';
     };
@@ -71,14 +71,14 @@ in
     backups = mkOption {
       type = types.attrsOf (types.submodule { options = backupOptions; });
       default = { };
-      description = mdDoc ''
+      description = ''
         Attrset of backup job definitions.
       '';
     };
 
     environmentFile = mkOption {
       type = types.nullOr types.str;
-      description = mdDoc ''
+      description = ''
         Environment file to pass secrets into the service.  This is of the form:
 
         ```text
@@ -103,7 +103,7 @@ in
     sudoRules = mkOption {
       type = types.listOf (types.submodule { options = sudoRuleOptions; });
       default = [ ];
-      description = mdDoc ''
+      description = ''
         List of additional sudo rules to grant the backup user.
       '';
     };
@@ -111,7 +111,7 @@ in
     checkRepositoryAt = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = mdDoc ''
+      description = ''
         If not null, when to run `restic check` to validate the repository
         metadata.
       '';

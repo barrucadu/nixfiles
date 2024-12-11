@@ -7,7 +7,7 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the [FoundryVTT](https://foundryvtt.com/) service.
       '';
     };
@@ -15,7 +15,7 @@ with lib;
     port = mkOption {
       type = types.int;
       default = 46885;
-      description = mdDoc ''
+      description = ''
         Port (on 127.0.0.1) to expose FoundryVTT on.
       '';
     };
@@ -23,7 +23,7 @@ with lib;
     dataDir = mkOption {
       type = types.str;
       default = "/var/lib/foundryvtt";
-      description = mdDoc ''
+      description = ''
         Directory to store data files in.
 
         The downloaded FoundryVTT program files must be in `''${dataDir}/bin`.

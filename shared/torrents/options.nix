@@ -7,7 +7,7 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the [Transmission](https://transmissionbt.com/) service.
       '';
     };
@@ -15,7 +15,7 @@ with lib;
     downloadDir = mkOption {
       type = types.str;
       example = "/mnt/nas/torrents/files";
-      description = mdDoc ''
+      description = ''
         Directory to download torrented files to.
       '';
     };
@@ -23,7 +23,7 @@ with lib;
     stateDir = mkOption {
       type = types.str;
       example = "/var/lib/torrents";
-      description = mdDoc ''
+      description = ''
         Directory to store service state in.
       '';
     };
@@ -31,21 +31,21 @@ with lib;
     watchDir = mkOption {
       type = types.str;
       example = "/mnt/nas/torrents/watch";
-      description = mdDoc ''
+      description = ''
         Directory to monitor for new .torrent files.
       '';
     };
 
     user = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         The user to run Transmission as.
       '';
     };
 
     group = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         The group to run Transmission as.
       '';
     };
@@ -53,7 +53,7 @@ with lib;
     logLevel = mkOption {
       type = types.ints.between 0 6;
       default = 2;
-      description = mdDoc ''
+      description = ''
         Verbosity of the log messages.
       '';
     };
@@ -61,7 +61,7 @@ with lib;
     openFirewall = mkOption {
       type = types.bool;
       default = true;
-      description = mdDoc ''
+      description = ''
         Allow connections from TCP and UDP ports `''${portRange.from}` to
         `''${portRange.to}`.
       '';
@@ -70,7 +70,7 @@ with lib;
     peerPort = mkOption {
       type = types.port;
       default = 50000;
-      description = mdDoc ''
+      description = ''
         Port to accept peer connections on.
       '';
     };
@@ -78,7 +78,7 @@ with lib;
     rpcPort = mkOption {
       type = types.port;
       default = 49528;
-      description = mdDoc ''
+      description = ''
         Port to accept RPC connections on.  Bound on 127.0.0.1.
       '';
     };

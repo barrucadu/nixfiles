@@ -7,7 +7,7 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Enable the [Pleroma](https://pleroma.social/) service.
       '';
     };
@@ -15,7 +15,7 @@ with lib;
     port = mkOption {
       type = types.int;
       default = 46283;
-      description = mdDoc ''
+      description = ''
         Port (on 127.0.0.1) to expose Pleroma on.
       '';
     };
@@ -23,7 +23,7 @@ with lib;
     postgresTag = mkOption {
       type = types.str;
       default = "16";
-      description = mdDoc ''
+      description = ''
         Tag to use of the `postgres` container image.
       '';
     };
@@ -31,7 +31,7 @@ with lib;
     domain = mkOption {
       type = types.str;
       example = "social.lainon.life";
-      description = mdDoc ''
+      description = ''
         Domain which Pleroma will be exposed on.
       '';
     };
@@ -39,7 +39,7 @@ with lib;
     faviconPath = mkOption {
       type = types.nullOr types.path;
       default = null;
-      description = mdDoc ''
+      description = ''
         File to use for the favicon.
       '';
     };
@@ -47,7 +47,7 @@ with lib;
     instanceName = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = mdDoc ''
+      description = ''
         Name of the instance, defaults to the `''${domain}` if not set.
       '';
     };
@@ -55,7 +55,7 @@ with lib;
     adminEmail = mkOption {
       type = types.str;
       default = "mike@barrucadu.co.uk";
-      description = mdDoc ''
+      description = ''
         Email address used to contact the server operator.
       '';
     };
@@ -63,7 +63,7 @@ with lib;
     notifyEmail = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = mdDoc ''
+      description = ''
         Email address used for notification, defaults to the `''${adminEmail}`
         if not set.
       '';
@@ -72,14 +72,14 @@ with lib;
     allowRegistration = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''
+      description = ''
         Allow new users to sign up.
       '';
     };
 
     secretsFile = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         File containing secret configuration.
 
         See the Pleroma documentation for what this needs to contain.

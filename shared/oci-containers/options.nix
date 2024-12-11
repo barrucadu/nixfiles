@@ -5,14 +5,14 @@ let
   portOptions = {
     host = mkOption {
       type = types.int;
-      description = mdDoc ''
+      description = ''
         Host port (on 127.0.0.1) to expose the container port on.
       '';
     };
 
     inner = mkOption {
       type = types.int;
-      description = mdDoc ''
+      description = ''
         The container port to expose to the hosti.
       '';
     };
@@ -22,7 +22,7 @@ let
     name = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = mdDoc ''
+      description = ''
         Name of the volume.  This is equivalent to:
 
         ```nix
@@ -36,7 +36,7 @@ let
     host = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = mdDoc ''
+      description = ''
         Directory on the host to bind-mount into the container.
 
         This option conflicts with `''${name}`.
@@ -45,7 +45,7 @@ let
 
     inner = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         Directory in the container to mount the volume to.
       '';
     };
@@ -56,7 +56,7 @@ let
     autoStart = mkOption {
       type = types.bool;
       default = true;
-      description = mdDoc ''
+      description = ''
         Start the container automatically on boot.
       '';
     };
@@ -64,7 +64,7 @@ let
     cmd = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      description = mdDoc ''
+      description = ''
         Command-line arguments to pass to the container image's entrypoint.
       '';
     };
@@ -73,7 +73,7 @@ let
       type = types.listOf types.str;
       default = [ ];
       example = [ "concourse-db" ];
-      description = mdDoc ''
+      description = ''
         Other containers that this one depends on, in `''${pod}-''${name}`
         format.
       '';
@@ -82,7 +82,7 @@ let
     environment = mkOption {
       type = types.attrsOf types.str;
       default = { };
-      description = mdDoc ''
+      description = ''
         Environment variables to set for this container.
       '';
     };
@@ -90,7 +90,7 @@ let
     environmentFiles = mkOption {
       type = types.listOf types.path;
       default = [ ];
-      description = mdDoc ''
+      description = ''
         List of environment files for this container.
       '';
     };
@@ -98,14 +98,14 @@ let
     extraOptions = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      description = mdDoc ''
+      description = ''
         Extra options to pass to `docker run` / `podman run`.
       '';
     };
 
     image = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         Container image to run.
       '';
     };
@@ -114,21 +114,21 @@ let
       username = mkOption {
         type = types.nullOr types.str;
         default = null;
-        description = mdDoc ''
+        description = ''
           Username for the container registry.
         '';
       };
       passwordFile = mkOption {
         type = types.nullOr types.str;
         default = null;
-        description = mdDoc ''
+        description = ''
           File containing the password for the container registry.
         '';
       };
       registry = mkOption {
         type = types.nullOr types.str;
         default = null;
-        description = mdDoc ''
+        description = ''
           Container registry to authenticate with.
         '';
       };
@@ -138,7 +138,7 @@ let
     ports = mkOption {
       type = types.listOf (types.submodule { options = portOptions; });
       default = [ ];
-      description = mdDoc ''
+      description = ''
         List of ports to expose.
       '';
     };
@@ -146,7 +146,7 @@ let
     volumes = mkOption {
       type = types.listOf (types.submodule { options = volumeOptions; });
       default = [ ];
-      description = mdDoc ''
+      description = ''
         List of volume definitions.
       '';
     };
@@ -155,7 +155,7 @@ let
     pullOnStart = mkOption {
       type = types.bool;
       default = true;
-      description = mdDoc ''
+      description = ''
         Pull the container image when starting (useful for `:latest` images).
       '';
     };
@@ -166,7 +166,7 @@ in
     backend = mkOption {
       type = types.enum [ "docker" "podman" ];
       default = "docker";
-      description = mdDoc ''
+      description = ''
         The container runtime.
       '';
     };
@@ -177,14 +177,14 @@ in
           containers = mkOption {
             type = types.attrsOf (types.submodule { options = containerOptions; });
             default = { };
-            description = mdDoc ''
+            description = ''
               Attrset of container definitions.
             '';
           };
           volumeSubDir = mkOption {
             type = types.str;
             default = name;
-            description = mdDoc ''
+            description = ''
               Subdirectory of the `''${volumeBaseDir}` to store bind-mounts
               under.
             '';
@@ -192,14 +192,14 @@ in
         };
       }));
       default = { };
-      description = mdDoc ''
+      description = ''
         Attrset of pod definitions.
       '';
     };
 
     volumeBaseDir = mkOption {
       type = types.str;
-      description = mdDoc ''
+      description = ''
         Directory to store volume bind-mounts under.
 
         If the `erase-your-darlings` module is enabled, this is overridden to be
