@@ -13,10 +13,6 @@
 
 with lib;
 {
-  imports = [
-    ../_templates/barrucadu-website-mirror.nix
-  ];
-
   ###############################################################################
   ## General
   ###############################################################################
@@ -38,16 +34,14 @@ with lib;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
   ###############################################################################
-  ## Nyarlathotep Sync
+  ## Website Mirror
   ###############################################################################
 
-  nixfiles.bookdb.remoteSync.receive.enable = true;
-  nixfiles.bookdb.remoteSync.receive.authorizedKeys =
-    [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
-
-  nixfiles.bookmarks.remoteSync.receive.enable = true;
-  nixfiles.bookmarks.remoteSync.receive.authorizedKeys =
-    [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
+  nixfiles.hostTemplates.websiteMirror = {
+    enable = true;
+    acmeEnvironmentFile = config.sops.secrets."services/acme/env".path;
+  };
+  sops.secrets."services/acme/env" = { };
 
   ###############################################################################
   ## Remote Builds

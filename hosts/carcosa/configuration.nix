@@ -24,10 +24,6 @@ let
   httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
 in
 {
-  imports = [
-    ../_templates/barrucadu-website-mirror.nix
-  ];
-
   ###############################################################################
   ## General
   ###############################################################################
@@ -98,10 +94,21 @@ in
 
 
   ###############################################################################
+  ## Website Mirror
+  ###############################################################################
+
+  nixfiles.hostTemplates.websiteMirror = {
+    enable = true;
+    acmeEnvironmentFile = config.sops.secrets."services/acme/env".path;
+  };
+  sops.secrets."services/acme/env" = { };
+
+
+  ###############################################################################
   ## Services
   ###############################################################################
 
-  # WWW - there are more websites, see barrucadu-website-mirror
+  # WWW - there are more websites, see website-mirror
   services.caddy.enable = true;
   services.caddy.extraConfig = ''
     (common_config) {
@@ -320,19 +327,6 @@ in
   nixfiles.pleroma.secretsFile = config.sops.secrets."nixfiles/pleroma/exc".path;
   nixfiles.pleroma.allowRegistration = true;
   sops.secrets."nixfiles/pleroma/exc".owner = config.users.users.pleroma.name;
-
-
-  ###############################################################################
-  ## Nyarlathotep Sync
-  ###############################################################################
-
-  nixfiles.bookdb.remoteSync.receive.enable = true;
-  nixfiles.bookdb.remoteSync.receive.authorizedKeys =
-    [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
-
-  nixfiles.bookmarks.remoteSync.receive.enable = true;
-  nixfiles.bookmarks.remoteSync.receive.authorizedKeys =
-    [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
 
 
   ###############################################################################

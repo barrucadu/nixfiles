@@ -30,6 +30,7 @@ in
     ./erase-your-darlings
     ./finder
     ./foundryvtt
+    ./host-templates
     ./minecraft
     ./oci-containers
     ./pleroma
