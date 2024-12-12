@@ -36,7 +36,6 @@ redir /bookdb   https://bookdb.barrucadu.co.uk permanent
 redir /bookdb/* https://bookdb.barrucadu.co.uk permanent
 
 # Removed files
-respond /sitemap.xml 410
 respond /now.html 410
 
 # Moved files
