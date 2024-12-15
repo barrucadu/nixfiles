@@ -334,6 +334,7 @@ in
   ###############################################################################
 
   users.users.nix-remote-builder = {
+    uid = 983;
     home = "/var/lib/nix-remote-builder";
     createHome = true;
     isSystemUser = true;
