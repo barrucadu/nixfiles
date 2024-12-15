@@ -8,6 +8,7 @@ in
 {
   config = mkIf cfg.enable {
     users.users.bookmarks-remote-sync-receive = {
+      uid = 984;
       home = "/var/lib/bookmarks-remote-sync-receive";
       createHome = true;
       isSystemUser = true;
