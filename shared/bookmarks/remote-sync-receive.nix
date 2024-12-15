@@ -7,7 +7,7 @@ let
 in
 {
   config = mkIf cfg.enable {
-    users.extraUsers.bookmarks-remote-sync-receive = {
+    users.users.bookmarks-remote-sync-receive = {
       home = "/var/lib/bookmarks-remote-sync-receive";
       createHome = true;
       isSystemUser = true;

@@ -232,7 +232,7 @@ in
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
     # Concourse access
-    users.extraUsers.concourse-deploy-robot = {
+    users.users.concourse-deploy-robot = {
       home = "/var/lib/concourse-deploy-robot";
       createHome = true;
       isSystemUser = true;

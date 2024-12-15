@@ -35,7 +35,7 @@ let
               bookdb-remote-sync-receive@${target} \
               receive-elasticsearch
         '';
-        User = config.users.extraUsers.bookdb-remote-sync-send.name;
+        User = config.users.users.bookdb-remote-sync-send.name;
       };
       environment = {
         ES_HOST = config.systemd.services.bookdb.environment.ES_HOST;
@@ -46,7 +46,7 @@ let
 in
 {
   config = mkIf cfg.enable {
-    users.extraUsers.bookdb-remote-sync-send = {
+    users.users.bookdb-remote-sync-send = {
       home = "/var/lib/bookdb-remote-sync-send";
       createHome = true;
       isSystemUser = true;
@@ -58,10 +58,10 @@ in
 
     security.sudo.extraRules = [
       {
-        users = [ config.users.extraUsers.bookdb-remote-sync-send.name ];
+        users = [ config.users.users.bookdb-remote-sync-send.name ];
         commands = [
-          { command = "${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ${config.users.extraUsers.bookdb-remote-sync-send.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
-          { command = "${pkgs.coreutils}/bin/rm -rf ${config.users.extraUsers.bookdb-remote-sync-send.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
+          { command = "${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ${config.users.users.bookdb-remote-sync-send.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
+          { command = "${pkgs.coreutils}/bin/rm -rf ${config.users.users.bookdb-remote-sync-send.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
         ];
       }
     ];

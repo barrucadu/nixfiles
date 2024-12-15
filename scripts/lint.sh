@@ -28,6 +28,10 @@ if git grep 'OnCalendar' | grep -vE 'scripts/lint.sh'; then
     exit 1
 fi
 
+if git grep 'users.extraUsers' | grep -vE 'scripts/lint.sh'; then
+    exit 1
+fi
+
 if git grep 'virtualisation.oci-containers' | grep -vE 'scripts/lint.sh|shared/oci-containers/'; then
     exit 1
 fi
