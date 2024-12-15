@@ -520,6 +520,7 @@ in
   ###############################################################################
 
   users.users.rss-to-mastodon = {
+    uid = 991;
     home = "/persist/var/lib/rss-to-mastodon";
     createHome = true;
     isSystemUser = true;
