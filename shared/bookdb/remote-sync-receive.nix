@@ -8,6 +8,7 @@ in
 {
   config = mkIf cfg.enable {
     users.users.bookdb-remote-sync-receive = {
+      uid = 985;
       home = "/var/lib/bookdb-remote-sync-receive";
       createHome = true;
       isSystemUser = true;

@@ -60,6 +60,7 @@ in
     };
 
     users.users.bookdb = {
+      uid = 998;
       description = "bookdb service user";
       home = cfg.dataDir;
       createHome = true;
