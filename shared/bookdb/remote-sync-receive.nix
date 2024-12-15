@@ -7,7 +7,8 @@ let
 in
 {
   config = mkIf cfg.enable {
-    users.extraUsers.bookdb-remote-sync-receive = {
+    users.users.bookdb-remote-sync-receive = {
+      uid = 985;
       home = "/var/lib/bookdb-remote-sync-receive";
       createHome = true;
       isSystemUser = true;
@@ -38,9 +39,9 @@ in
 
     security.sudo.extraRules = [
       {
-        users = [ config.users.extraUsers.bookdb-remote-sync-receive.name ];
+        users = [ config.users.users.bookdb-remote-sync-receive.name ];
         commands = [
-          { command = "${pkgs.rsync}/bin/rsync -a --delete ${config.users.extraUsers.bookdb-remote-sync-receive.home}/bookdb-covers/ ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}"; options = [ "NOPASSWD" ]; }
+          { command = "${pkgs.rsync}/bin/rsync -a --delete ${config.users.users.bookdb-remote-sync-receive.home}/bookdb-covers/ ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}"; options = [ "NOPASSWD" ]; }
           { command = "${pkgs.coreutils}/bin/chown -R ${config.users.users.bookdb.name}.nogroup ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}"; options = [ "NOPASSWD" ]; }
         ];
       }

@@ -15,6 +15,9 @@ let
   backend = config.nixfiles.oci-containers.backend;
   backendPkg = if backend == "docker" then pkgs.docker else pkgs.podman;
   dbSocketDir = "/var/run/pleroma/db";
+
+  pleromaUser = config.services.pleroma.user;
+  pleromaGroup = config.services.pleroma.group;
 in
 {
   imports = [
@@ -78,6 +81,9 @@ in
         [ "${toString (pkgs.copyPathToStore cfg.faviconPath)}:/var/lib/pleroma/static/favicon.png" ];
     };
 
+    users.users."${pleromaUser}".uid = 989;
+    users.groups."${pleromaGroup}".gid = 994;
+
     nixfiles.oci-containers.pods.pleroma.containers.db = {
       image = "postgres:${cfg.postgresTag}";
       environment = {
@@ -99,7 +105,7 @@ in
         /run/wrappers/bin/sudo ${backendPkg}/bin/${backend} exec -i pleroma-db pg_dump -U pleroma --no-owner -Fc pleroma > postgres.dump
       '';
       paths = [
-        config.users.users.pleroma.home
+        config.users.users."${pleromaUser}".home
         "postgres.dump"
       ];
     };

@@ -98,6 +98,9 @@ in
       };
     };
 
+    users.users.acme.uid = 986;
+    users.groups.acme.gid = 989;
+
 
     ###############################################################################
     ## Websites
@@ -232,7 +235,8 @@ in
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
     # Concourse access
-    users.extraUsers.concourse-deploy-robot = {
+    users.users.concourse-deploy-robot = {
+      uid = 997;
       home = "/var/lib/concourse-deploy-robot";
       createHome = true;
       isSystemUser = true;

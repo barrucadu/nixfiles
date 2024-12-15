@@ -333,7 +333,8 @@ in
   ## Remote Builds
   ###############################################################################
 
-  users.extraUsers.nix-remote-builder = {
+  users.users.nix-remote-builder = {
+    uid = 983;
     home = "/var/lib/nix-remote-builder";
     createHome = true;
     isSystemUser = true;
@@ -342,7 +343,7 @@ in
     openssh.authorizedKeys.keys =
       [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHFzMpx7QNSAb5tCbkzMRIG62PvBZysflwwCKchFDHtY nix@yuggoth" ];
   };
-  nix.settings.trusted-users = [ config.users.extraUsers.nix-remote-builder.name ];
+  nix.settings.trusted-users = [ config.users.users.nix-remote-builder.name ];
 
 
   ###############################################################################
@@ -361,7 +362,7 @@ in
   services.prometheus.webExternalUrl = "https://prometheus.carcosa.barrucadu.co.uk";
 
   # Extra packages
-  users.extraUsers.barrucadu.packages = with pkgs; [
+  users.users.barrucadu.packages = with pkgs; [
     irssi
     perl
   ];

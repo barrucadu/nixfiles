@@ -23,7 +23,7 @@ let
               bookmarks-remote-sync-receive@${target} \
               receive-elasticsearch
         '';
-        User = config.users.extraUsers.bookmarks-remote-sync-send.name;
+        User = config.users.users.bookmarks-remote-sync-send.name;
       };
       environment = {
         ES_HOST = config.systemd.services.bookmarks.environment.ES_HOST;
@@ -34,9 +34,8 @@ let
 in
 {
   config = mkIf cfg.enable {
-    users.extraUsers.bookmarks-remote-sync-send = {
-      home = "/var/lib/bookmarks-remote-sync-send";
-      createHome = true;
+    users.users.bookmarks-remote-sync-send = {
+      uid = 984;
       isSystemUser = true;
       shell = pkgs.bashInteractive;
       group = "nogroup";

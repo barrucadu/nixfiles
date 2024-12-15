@@ -37,6 +37,7 @@ in
     };
 
     users.users.foundryvtt = {
+      uid = 994;
       description = "Foundry VTT service user";
       home = cfg.dataDir;
       createHome = true;

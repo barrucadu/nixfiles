@@ -181,7 +181,7 @@ in
     (map (n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; }) shares);
 
   # Guest user for NFS / Samba
-  users.extraUsers.notbarrucadu = {
+  users.users.notbarrucadu = {
     uid = 1001;
     description = "Guest user";
     isNormalUser = true;
@@ -499,7 +499,7 @@ in
   ];
 
   sops.secrets."users/bookdb_remote_sync/ssh_private_key" = {
-    owner = config.users.extraUsers.bookdb-remote-sync-send.name;
+    owner = config.users.users.bookdb-remote-sync-send.name;
     key = "users/remote_sync/ssh_private_key";
   };
 
@@ -511,7 +511,7 @@ in
   ];
 
   sops.secrets."users/bookmarks_remote_sync/ssh_private_key" = {
-    owner = config.users.extraUsers.bookmarks-remote-sync-send.name;
+    owner = config.users.users.bookmarks-remote-sync-send.name;
     key = "users/remote_sync/ssh_private_key";
   };
 
@@ -519,7 +519,8 @@ in
   # RSS-to-Mastodon
   ###############################################################################
 
-  users.extraUsers.rss-to-mastodon = {
+  users.users.rss-to-mastodon = {
+    uid = 991;
     home = "/persist/var/lib/rss-to-mastodon";
     createHome = true;
     isSystemUser = true;

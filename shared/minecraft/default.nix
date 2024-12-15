@@ -30,6 +30,7 @@ in
   config = mkIf cfg.enable {
     # from https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/services/games/minecraft-server.nix
     users.users.minecraft = {
+      uid = 993;
       description = "Minecraft server service user";
       home = cfg.dataDir;
       createHome = true;

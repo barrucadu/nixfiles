@@ -120,6 +120,7 @@ in
 
   config = mkIf cfg.enable {
     users.users.backups = {
+      uid = 999;
       description = "backup service user";
       isSystemUser = true;
       group = "nogroup";

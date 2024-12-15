@@ -36,8 +36,8 @@ in
 
     # Switch back to immutable users
     users.mutableUsers = mkForce false;
-    users.extraUsers.barrucadu.initialPassword = mkForce null;
-    users.extraUsers.barrucadu.hashedPasswordFile = cfg.barrucaduPasswordFile;
+    users.users.barrucadu.initialPassword = mkForce null;
+    users.users.barrucadu.hashedPasswordFile = cfg.barrucaduPasswordFile;
 
     # Persist state in `cfg.persistDir`
     services.openssh.hostKeys = [
