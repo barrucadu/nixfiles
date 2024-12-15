@@ -36,8 +36,6 @@ in
   config = mkIf cfg.enable {
     users.users.bookmarks-remote-sync-send = {
       uid = 984;
-      home = "/var/lib/bookmarks-remote-sync-send";
-      createHome = true;
       isSystemUser = true;
       shell = pkgs.bashInteractive;
       group = "nogroup";
