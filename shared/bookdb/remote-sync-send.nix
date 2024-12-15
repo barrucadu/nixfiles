@@ -15,11 +15,13 @@ let
         ExecStart = pkgs.writeShellScript "bookdb-sync" ''
           set -ex
 
-          /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ~/bookdb-covers
-          trap "/run/wrappers/bin/sudo ${pkgs.coreutils}/bin/rm -rf ~/bookdb-covers" EXIT
+          cd $RUNTIME_DIRECTORY
+
+          /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ bookdb-covers
+          trap "/run/wrappers/bin/sudo ${pkgs.coreutils}/bin/rm -rf bookdb-covers" EXIT
           rsync -az\
                 -e "ssh -i $SSH_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
-                ~/bookdb-covers/ \
+                bookdb-covers/ \
                 bookdb-remote-sync-receive@${target}:~/bookdb-covers/
           ssh -i "$SSH_KEY_FILE" \
               -o UserKnownHostsFile=/dev/null \
@@ -36,6 +38,7 @@ let
               receive-elasticsearch
         '';
         User = config.users.users.bookdb-remote-sync-send.name;
+        RuntimeDirectory = "bookdb-sync-${target}";
       };
       environment = {
         ES_HOST = config.systemd.services.bookdb.environment.ES_HOST;
@@ -48,8 +51,6 @@ in
   config = mkIf cfg.enable {
     users.users.bookdb-remote-sync-send = {
       uid = 985;
-      home = "/var/lib/bookdb-remote-sync-send";
-      createHome = true;
       isSystemUser = true;
       shell = pkgs.bashInteractive;
       group = "nogroup";
@@ -61,8 +62,8 @@ in
       {
         users = [ config.users.users.bookdb-remote-sync-send.name ];
         commands = [
-          { command = "${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ ${config.users.users.bookdb-remote-sync-send.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
-          { command = "${pkgs.coreutils}/bin/rm -rf ${config.users.users.bookdb-remote-sync-send.home}/bookdb-covers"; options = [ "NOPASSWD" ]; }
+          { command = "${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ bookdb-covers"; options = [ "NOPASSWD" ]; }
+          { command = "${pkgs.coreutils}/bin/rm -rf bookdb-covers"; options = [ "NOPASSWD" ]; }
         ];
       }
     ];
