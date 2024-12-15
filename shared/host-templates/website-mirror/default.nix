@@ -233,6 +233,7 @@ in
 
     # Concourse access
     users.users.concourse-deploy-robot = {
+      uid = 997;
       home = "/var/lib/concourse-deploy-robot";
       createHome = true;
       isSystemUser = true;
