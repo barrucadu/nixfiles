@@ -158,8 +158,19 @@ in
       header /fonts/* Cache-Control "public, immutable, max-age=31536000"
       header /*.css   Cache-Control "public, immutable, max-age=31536000"
 
-      file_server {
-        root ${httpDir}/barrucadu.co.uk/www
+      root * ${httpDir}/barrucadu.co.uk/www
+      file_server
+
+      handle_errors {
+        @404 {
+          expression {http.error.status_code} == 404
+        }
+        @410 {
+          expression {http.error.status_code} == 410
+        }
+        rewrite @404 /404.html
+        rewrite @410 /410.html
+        file_server
       }
 
       ${fileContents ./resources/www-barrucadu-co-uk.caddyfile}
