@@ -1,42 +1,42 @@
 # Removed posts
-respond /posts/2013-05-27-a-gentle-introduction-to-parsec.html 410
-respond /posts/2014-01-07-garbage-collection.html 410
-respond /posts/2014-12-26-haskell-systematic-concurrency-testing.html 410
-respond /posts/2015-01-10-pre-emption-bounding.html 410
-respond /posts/2015-07-18-continuous-integration-with-jenkins-and-stack.html 410
-respond /posts/2015-07-26-erlang-gopher-server.html 410
-respond /posts/2015-08-01-debugging-an-allocation-issue.html 410
-respond /posts/2015-08-09-identity-monads-ahoy.html 410
-respond /posts/2015-09-23-icfp-retrospective.html 410
-respond /posts/2015-10-04-secure-communications-over-insecure-channels.html 410
-respond /posts/2015-12-15-finite-maps-in-isabelle.html 410
-respond /posts/2016-02-02-cabal-info.html 410
-respond /posts/2016-04-03-dejafu-0.3.0.0-release.html 410
-respond /posts/2016-05-18-some-thoughts-on-distributed-systems.html 410
-respond /posts/2016-09-10-dejafu-0.4.0.0-release.html 410
-respond /posts/2017-02-02-subconcurrency.html 410
-respond /posts/2017-02-21-concurrency-1.1.0.0-dejafu-0.5.0.1-release.html 410
+error /posts/2013-05-27-a-gentle-introduction-to-parsec.html 410
+error /posts/2014-01-07-garbage-collection.html 410
+error /posts/2014-12-26-haskell-systematic-concurrency-testing.html 410
+error /posts/2015-01-10-pre-emption-bounding.html 410
+error /posts/2015-07-18-continuous-integration-with-jenkins-and-stack.html 410
+error /posts/2015-07-26-erlang-gopher-server.html 410
+error /posts/2015-08-01-debugging-an-allocation-issue.html 410
+error /posts/2015-08-09-identity-monads-ahoy.html 410
+error /posts/2015-09-23-icfp-retrospective.html 410
+error /posts/2015-10-04-secure-communications-over-insecure-channels.html 410
+error /posts/2015-12-15-finite-maps-in-isabelle.html 410
+error /posts/2016-02-02-cabal-info.html 410
+error /posts/2016-04-03-dejafu-0.3.0.0-release.html 410
+error /posts/2016-05-18-some-thoughts-on-distributed-systems.html 410
+error /posts/2016-09-10-dejafu-0.4.0.0-release.html 410
+error /posts/2017-02-02-subconcurrency.html 410
+error /posts/2017-02-21-concurrency-1.1.0.0-dejafu-0.5.0.1-release.html 410
 
-respond /posts/concurrency/2014-12-26-haskell-systematic-concurrency-testing.html 410
-respond /posts/concurrency/2015-01-10-pre-emption-bounding.html 410
-respond /posts/concurrency/2016-05-18-some-thoughts-on-distributed-systems.html 410
-respond /posts/concurrency/2017-02-02-subconcurrency.html 410
-respond /posts/etc/2013-05-27-a-gentle-introduction-to-parsec.html 410
-respond /posts/etc/2015-08-01-debugging-an-allocation-issue.html 410
-respond /posts/etc/2015-09-23-icfp-retrospective.html 410
-respond /posts/etc/2016-02-02-cabal-info.html 410
-respond /posts/etc/2017-03-15-optimising-haskell.html 410
-respond /posts/etc/2017-04-16-representing-generating-comparing-typed-expressions.html 410
-respond /posts/relnotes/2016-04-03-dejafu-0.3.0.0-release.html 410
-respond /posts/relnotes/2016-09-10-dejafu-0.4.0.0-release.html 410
-respond /posts/relnotes/2017-02-21-concurrency-1.1.0.0-dejafu-0.5.0.1-release.html 410
+error /posts/concurrency/2014-12-26-haskell-systematic-concurrency-testing.html 410
+error /posts/concurrency/2015-01-10-pre-emption-bounding.html 410
+error /posts/concurrency/2016-05-18-some-thoughts-on-distributed-systems.html 410
+error /posts/concurrency/2017-02-02-subconcurrency.html 410
+error /posts/etc/2013-05-27-a-gentle-introduction-to-parsec.html 410
+error /posts/etc/2015-08-01-debugging-an-allocation-issue.html 410
+error /posts/etc/2015-09-23-icfp-retrospective.html 410
+error /posts/etc/2016-02-02-cabal-info.html 410
+error /posts/etc/2017-03-15-optimising-haskell.html 410
+error /posts/etc/2017-04-16-representing-generating-comparing-typed-expressions.html 410
+error /posts/relnotes/2016-04-03-dejafu-0.3.0.0-release.html 410
+error /posts/relnotes/2016-09-10-dejafu-0.4.0.0-release.html 410
+error /posts/relnotes/2017-02-21-concurrency-1.1.0.0-dejafu-0.5.0.1-release.html 410
 
 # Moved proxies
 redir /bookdb   https://bookdb.barrucadu.co.uk permanent
 redir /bookdb/* https://bookdb.barrucadu.co.uk permanent
 
 # Removed files
-respond /now.html 410
+error /now.html 410
 
 # Moved files
 redir /publications/coco-flops18-prelim.pdf /publications/coco-flops18.pdf permanent
