@@ -18,7 +18,9 @@ if not DRY_RUN:
 
     VICTORIAMETRICS_URI = os.environ["VICTORIAMETRICS_URI"]
 
-DOB = datetime.datetime(1991, 9, 9)
+YEAR_OFFSET = int(os.getenv("YEAR_OFFSET", "0"))
+
+DOB = datetime.datetime(1991 - YEAR_OFFSET, 9, 9)
 
 
 def hledger_command(args):
@@ -31,6 +33,34 @@ def hledger_command(args):
 
     proc = subprocess.run(real_args, check=True, capture_output=True)
     return proc.stdout.decode("utf-8")
+
+
+def offset_date(date, years):
+    """Subtract `365*years` days from `YYYY-MM-DD` and return a string.
+
+    This is useful for forecasting as VictoriaMetrics only allows data up to 2
+    days in the future, so instead a forecast can be shunted back so it fits
+    into the past.
+    """
+
+    date = datetime.datetime.strptime(date, "%Y-%m-%d")
+    delta = datetime.timedelta(days=365 * years)
+    return (date - delta).strftime("%Y-%m-%d")
+
+
+def offset_price_date(line, years):
+    """Apply a year offset to the date."""
+
+    p, date, cur, val = line.split()
+    date = offset_date(date, years)
+    return f"{p} {date} {cur} {val}"
+
+
+def offset_posting_date(posting, years):
+    """Apply a year offset to the date."""
+
+    posting["date"] = offset_date(posting["date"], years)
+    return posting
 
 
 def date_to_timestamp(date):
@@ -327,10 +357,14 @@ def metric_quantified_self_age(credits_debits):
     return pivot(ages_by_timestamp)
 
 
-raw_prices = hledger_command(["prices"]).splitlines()
-raw_postings = list(
-    csv.DictReader(io.StringIO(hledger_command(["print", "-O", "csv"])))
-)
+raw_prices = [
+    offset_price_date(line, YEAR_OFFSET)
+    for line in hledger_command(["prices"]).splitlines()
+]
+raw_postings = [
+    offset_posting_date(row, YEAR_OFFSET)
+    for row in csv.DictReader(io.StringIO(hledger_command(["print", "-O", "csv"])))
+]
 credits_debits = preprocess_group_credits_debits(raw_postings)
 
 metrics = {
