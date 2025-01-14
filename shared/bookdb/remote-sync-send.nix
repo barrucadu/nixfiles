@@ -17,7 +17,7 @@ let
 
           cd $RUNTIME_DIRECTORY
 
-          /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ bookdb-covers
+          /run/wrappers/bin/sudo ${pkgs.coreutils}/bin/cp --preserve=timestamps -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ bookdb-covers
           trap "/run/wrappers/bin/sudo ${pkgs.coreutils}/bin/rm -rf bookdb-covers" EXIT
           rsync -az\
                 -e "ssh -i $SSH_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
@@ -62,7 +62,7 @@ in
       {
         users = [ config.users.users.bookdb-remote-sync-send.name ];
         commands = [
-          { command = "${pkgs.coreutils}/bin/cp -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ bookdb-covers"; options = [ "NOPASSWD" ]; }
+          { command = "${pkgs.coreutils}/bin/cp --preserve=timestamps -r ${config.systemd.services.bookdb.environment.BOOKDB_UPLOADS_DIR}/ bookdb-covers"; options = [ "NOPASSWD" ]; }
           { command = "${pkgs.coreutils}/bin/rm -rf bookdb-covers"; options = [ "NOPASSWD" ]; }
         ];
       }
