@@ -29,7 +29,13 @@ let
     cp -a /var/lib/acme/${domain} ${toString config.nixfiles.eraseYourDarlings.persistDir}/var/lib/acme/${domain}
   '';
 
-  caddyConfigWithTlsCert = certDomain: ''
+  caddyTlsConfig = certDomain: ''
+    tls ${certDir}/${certDomain}/cert.pem ${certDir}/${certDomain}/key.pem {
+      protocols tls1.3
+    }
+  '';
+
+  caddyConfig = ''
     encode gzip
 
     header Permissions-Policy "interest-cohort=()"
@@ -39,10 +45,6 @@ let
     header X-Frame-Options "SAMEORIGIN"
 
     header -Server
-
-    tls ${certDir}/${certDomain}/cert.pem ${certDir}/${certDomain}/key.pem {
-      protocols tls1.3
-    }
   '';
 
   cfg = config.nixfiles.hostTemplates.websiteMirror;
@@ -108,117 +110,106 @@ in
 
     services.caddy.enable = true;
 
-    # redirects
-    services.caddy.virtualHosts."barrucadu.co.uk".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.co.uk"}
+    services.caddy.virtualHosts =
+      let
+        vhosts = {
+          "barrucadu.co.uk" = {
+            "" = ''
+              redir https://www.barrucadu.co.uk{uri}
+            '';
+            "bookdb" = ''
+              reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookdb.port}
+            '';
+            "bookmarks" = ''
+              reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookmarks.port}
+            '';
+            "memo" = ''
+              header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
+              header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
+              header /*.css     Cache-Control "public, immutable, max-age=31536000"
 
-      redir https://www.barrucadu.co.uk{uri}
-    '';
+              root * ${httpDir}/barrucadu.co.uk/memo
+              file_server
 
-    services.caddy.virtualHosts."barrucadu.com".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.com"}
+              handle_errors {
+                @410 {
+                  expression {http.error.status_code} == 410
+                }
+                rewrite @410 /410.html
+                file_server
+              }
 
-      redir https://www.barrucadu.co.uk{uri}
-    '';
+              ${fileContents ./resources/memo-barrucadu-co-uk.caddyfile}
+            '';
+            "weeknotes" = ''
+              header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
+              header /*.css     Cache-Control "public, immutable, max-age=31536000"
 
-    services.caddy.virtualHosts."www.barrucadu.com".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.com"}
+              file_server  {
+                root ${httpDir}/barrucadu.co.uk/weeknotes
+              }
+            '';
+            "www" = ''
+              header /fonts/* Cache-Control "public, immutable, max-age=31536000"
+              header /*.css   Cache-Control "public, immutable, max-age=31536000"
 
-      redir https://www.barrucadu.co.uk{uri}
-    '';
+              root * ${httpDir}/barrucadu.co.uk/www
+              file_server
 
-    services.caddy.virtualHosts."barrucadu.dev".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.dev"}
+              handle_errors {
+                @404 {
+                  expression {http.error.status_code} == 404
+                }
+                @410 {
+                  expression {http.error.status_code} == 410
+                }
+                rewrite @404 /404.html
+                rewrite @410 /410.html
+                file_server
+              }
 
-      redir https://www.barrucadu.co.uk
-    '';
-
-    services.caddy.virtualHosts."www.barrucadu.dev".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.dev"}
-
-      redir https://www.barrucadu.co.uk
-    '';
-
-    services.caddy.virtualHosts."barrucadu.uk".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.uk"}
-
-      redir https://www.barrucadu.co.uk{uri}
-    '';
-
-    services.caddy.virtualHosts."www.barrucadu.uk".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.uk"}
-
-      redir https://www.barrucadu.co.uk{uri}
-    '';
-
-    # real sites
-    services.caddy.virtualHosts."www.barrucadu.co.uk".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.co.uk"}
-
-      header /fonts/* Cache-Control "public, immutable, max-age=31536000"
-      header /*.css   Cache-Control "public, immutable, max-age=31536000"
-
-      root * ${httpDir}/barrucadu.co.uk/www
-      file_server
-
-      handle_errors {
-        @404 {
-          expression {http.error.status_code} == 404
-        }
-        @410 {
-          expression {http.error.status_code} == 410
-        }
-        rewrite @404 /404.html
-        rewrite @410 /410.html
-        file_server
-      }
-
-      ${fileContents ./resources/www-barrucadu-co-uk.caddyfile}
-    '';
-
-    services.caddy.virtualHosts."bookdb.barrucadu.co.uk".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.co.uk"}
-
-      reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookdb.port}
-    '';
-
-    services.caddy.virtualHosts."bookmarks.barrucadu.co.uk".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.co.uk"}
-
-      reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookmarks.port}
-    '';
-
-    services.caddy.virtualHosts."memo.barrucadu.co.uk".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.co.uk"}
-
-      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-      header /mathjax/* Cache-Control "public, immutable, max-age=7776000"
-      header /*.css     Cache-Control "public, immutable, max-age=31536000"
-
-      root * ${httpDir}/barrucadu.co.uk/memo
-      file_server
-
-      handle_errors {
-        @410 {
-          expression {http.error.status_code} == 410
-        }
-        rewrite @410 /410.html
-        file_server
-      }
-
-      ${fileContents ./resources/memo-barrucadu-co-uk.caddyfile}
-    '';
-
-    services.caddy.virtualHosts."weeknotes.barrucadu.co.uk".extraConfig = ''
-      ${caddyConfigWithTlsCert "barrucadu.co.uk"}
-
-      header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
-      header /*.css     Cache-Control "public, immutable, max-age=31536000"
-
-      file_server  {
-        root ${httpDir}/barrucadu.co.uk/weeknotes
-      }
-    '';
+              ${fileContents ./resources/www-barrucadu-co-uk.caddyfile}
+            '';
+          };
+          "barrucadu.com" = {
+            "" = ''
+              redir https://www.barrucadu.co.uk
+            '';
+            "www" = ''
+              redir https://www.barrucadu.co.uk
+            '';
+          };
+          "barrucadu.uk" = {
+            "" = ''
+              redir https://www.barrucadu.co.uk
+            '';
+            "www" = ''
+              redir https://www.barrucadu.co.uk
+            '';
+          };
+          "barrucadu.dev" = {
+            "" = ''
+              redir https://www.barrucadu.co.uk
+            '';
+            "www" = ''
+              redir https://www.barrucadu.co.uk
+            '';
+          };
+        };
+        mkVirtualHost = withTlsConfig: domain: subdomain: extraConfig: nameValuePair (if subdomain == "" then domain else "${subdomain}.${domain}") {
+          extraConfig = ''
+            ${caddyConfig}
+            ${optionalString withTlsConfig (caddyTlsConfig domain)}
+            ${extraConfig}
+          '';
+        };
+        mkVirtualHosts = domain: subdomains: mapAttrs' (mkVirtualHost true domain) subdomains;
+        mkPrefixedVirtualHosts = domain: subdomains: mapAttrs' (mkVirtualHost false "${config.networking.hostName}.${domain}") (filterAttrs (n: _: n != "") subdomains);
+      in
+      mkMerge [
+        (concatMapAttrs mkVirtualHosts vhosts)
+        (concatMapAttrs mkPrefixedVirtualHosts vhosts)
+      ];
 
 
     ###############################################################################
