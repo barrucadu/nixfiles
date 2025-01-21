@@ -47,7 +47,7 @@ in
         "http.host" = "0.0.0.0";
         "discovery.type" = "single-node";
         "xpack.security.enabled" = "false";
-        "ES_JAVA_OPTS" = "-Xms256M -Xmx256M";
+        "ES_JAVA_OPTS" = "-Xms512M -Xmx512M";
       };
       ports = [{ host = cfg.elasticsearchPort; inner = 9200; }];
       volumes = [{ name = "esdata"; inner = "/usr/share/elasticsearch/data"; }];
