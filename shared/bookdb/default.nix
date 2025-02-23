@@ -48,7 +48,7 @@ in
     };
 
     nixfiles.oci-containers.pods.bookdb.containers.db = {
-      image = "elasticsearch:${cfg.elasticsearchTag}";
+      image = "mirror.gcr.io/elasticsearch:${cfg.elasticsearchTag}";
       environment = {
         "http.host" = "0.0.0.0";
         "discovery.type" = "single-node";

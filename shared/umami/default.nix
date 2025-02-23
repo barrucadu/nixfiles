@@ -31,7 +31,7 @@ in
           ports = [{ host = cfg.port; inner = 3000; }];
         };
         db = {
-          image = "postgres:${cfg.postgresTag}";
+          image = "mirror.gcr.io/postgres:${cfg.postgresTag}";
           environment = {
             "POSTGRES_DB" = "umami";
             "POSTGRES_USER" = "umami";
