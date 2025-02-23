@@ -25,7 +25,7 @@ in
     nixfiles.oci-containers.pods.concourse = {
       containers = {
         web = {
-          image = "concourse/concourse:${cfg.concourseTag}";
+          image = "mirror.gcr.io/concourse/concourse:${cfg.concourseTag}";
           cmd = [ "web" ];
           environment = {
             "CONCOURSE_POSTGRES_HOST" = "concourse-db";
@@ -49,7 +49,7 @@ in
         };
 
         worker = {
-          image = "concourse/concourse:${cfg.concourseTag}";
+          image = "mirror.gcr.io/concourse/concourse:${cfg.concourseTag}";
           cmd = [ "worker" "--ephemeral" ];
           environment = {
             "CONCOURSE_TSA_HOST" = "concourse-web:2222";
@@ -66,7 +66,7 @@ in
         };
 
         db = {
-          image = "postgres:${cfg.postgresTag}";
+          image = "mirror.gcr.io/postgres:${cfg.postgresTag}";
           environment = {
             "POSTGRES_DB" = "concourse";
             "POSTGRES_USER" = "concourse";

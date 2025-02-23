@@ -85,7 +85,7 @@ in
     users.groups."${pleromaGroup}".gid = 994;
 
     nixfiles.oci-containers.pods.pleroma.containers.db = {
-      image = "postgres:${cfg.postgresTag}";
+      image = "mirror.gcr.io/postgres:${cfg.postgresTag}";
       environment = {
         "POSTGRES_DB" = "pleroma";
         "POSTGRES_USER" = "pleroma";
