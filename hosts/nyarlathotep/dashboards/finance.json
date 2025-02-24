@@ -2238,14 +2238,14 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "~£20",
+      "description": "~£10",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 100,
+          "max": 50,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2256,11 +2256,11 @@
               },
               {
                 "color": "yellow",
-                "value": 50
+                "value": 25
               },
               {
                 "color": "green",
-                "value": 75
+                "value": 37.5
               }
             ]
           },
@@ -2274,7 +2274,7 @@
         "x": 4,
         "y": 22
       },
-      "id": 33,
+      "id": 37,
       "options": {
         "displayMode": "lcd",
         "maxVizHeight": 300,
@@ -2302,14 +2302,14 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:phone\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:patreon\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "interval": "",
           "legendFormat": "",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Phone",
+      "title": "Patreon",
       "transparent": true,
       "type": "bargauge"
     },
@@ -2318,14 +2318,14 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "~£75",
+      "description": "~£350",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 500,
+          "max": 2000,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2336,11 +2336,11 @@
               },
               {
                 "color": "yellow",
-                "value": 250
+                "value": 1000
               },
               {
                 "color": "green",
-                "value": 375
+                "value": 1500
               }
             ]
           },
@@ -2354,7 +2354,7 @@
         "x": 8,
         "y": 22
       },
-      "id": 40,
+      "id": 36,
       "options": {
         "displayMode": "lcd",
         "maxVizHeight": 300,
@@ -2382,14 +2382,14 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:web\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:utilities\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "interval": "",
           "legendFormat": "",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Web",
+      "title": "Utilities",
       "transparent": true,
       "type": "bargauge"
     },
@@ -2715,15 +2715,14 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "~£1600",
+      "description": "~£20",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 1,
           "mappings": [],
-          "max": 6000,
+          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2734,11 +2733,11 @@
               },
               {
                 "color": "yellow",
-                "value": 3000
+                "value": 50
               },
               {
                 "color": "green",
-                "value": 4500
+                "value": 75
               }
             ]
           },
@@ -2752,7 +2751,7 @@
         "x": 4,
         "y": 24
       },
-      "id": 34,
+      "id": 33,
       "options": {
         "displayMode": "lcd",
         "maxVizHeight": 300,
@@ -2780,14 +2779,94 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:rent\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:phone\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "interval": "",
           "legendFormat": "",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Rent & Council Tax",
+      "title": "Phone",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "~£75",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 500,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 250
+              },
+              {
+                "color": "green",
+                "value": 375
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 4,
+        "x": 8,
+        "y": 24
+      },
+      "id": 40,
+      "options": {
+        "displayMode": "lcd",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.14",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:web\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Web",
       "transparent": true,
       "type": "bargauge"
     },
@@ -3115,14 +3194,15 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "~£100",
+      "description": "~£1600",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 1,
           "mappings": [],
-          "max": 500,
+          "max": 6000,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -3133,11 +3213,11 @@
               },
               {
                 "color": "yellow",
-                "value": 250
+                "value": 3000
               },
               {
                 "color": "green",
-                "value": 375
+                "value": 4500
               }
             ]
           },
@@ -3151,7 +3231,7 @@
         "x": 4,
         "y": 26
       },
-      "id": 35,
+      "id": 34,
       "options": {
         "displayMode": "lcd",
         "maxVizHeight": 300,
@@ -3179,14 +3259,14 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:travel\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:rent\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "interval": "",
           "legendFormat": "",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Travel",
+      "title": "Rent & Council Tax",
       "transparent": true,
       "type": "bargauge"
     },
@@ -3435,14 +3515,14 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "~£10",
+      "description": "~£75",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 50,
+          "max": 500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -3453,11 +3533,11 @@
               },
               {
                 "color": "yellow",
-                "value": 25
+                "value": 250
               },
               {
                 "color": "green",
-                "value": 37.5
+                "value": 375
               }
             ]
           },
@@ -3471,7 +3551,7 @@
         "x": 0,
         "y": 28
       },
-      "id": 37,
+      "id": 100,
       "options": {
         "displayMode": "lcd",
         "maxVizHeight": 300,
@@ -3499,14 +3579,14 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:patreon\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:huel\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "interval": "",
           "legendFormat": "",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Patreon",
+      "title": "Huel",
       "transparent": true,
       "type": "bargauge"
     },
@@ -3515,14 +3595,14 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "~£350",
+      "description": "~£100",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 2000,
+          "max": 500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -3533,11 +3613,11 @@
               },
               {
                 "color": "yellow",
-                "value": 1000
+                "value": 250
               },
               {
                 "color": "green",
-                "value": 1500
+                "value": 375
               }
             ]
           },
@@ -3551,7 +3631,7 @@
         "x": 4,
         "y": 28
       },
-      "id": 36,
+      "id": 35,
       "options": {
         "displayMode": "lcd",
         "maxVizHeight": 300,
@@ -3579,14 +3659,14 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:utilities\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:travel\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
           "interval": "",
           "legendFormat": "",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Utilities",
+      "title": "Travel",
       "transparent": true,
       "type": "bargauge"
     },
