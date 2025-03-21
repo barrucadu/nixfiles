@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     sops-nix = {
-      url = "github:Mic92/sops-nix";
+      url = "github:Mic92/sops-nix/e653d71e82575a43fe9d228def8eddb73887b866";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # my packages
@@ -24,7 +24,7 @@
       inputs.gitignore.follows = "gitignore";
     };
     resolved = {
-      url = "github:barrucadu/resolved";
+      url = "github:barrucadu/resolved/baf071f12e4a4410230b276eefc4458a98f71312";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.gitignore.follows = "gitignore";
       inputs.rust-overlay.follows = "rust-overlay";

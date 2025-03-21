@@ -13,11 +13,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741685251,
-        "narHash": "sha256-y6tuNRjKW+ZU4HhWuWFXCxsjY6cb3K+Ki2f7ew2ABzI=",
+        "lastModified": 1742428875,
+        "narHash": "sha256-JIU4EhNdza9XMOyQ/qK3qgX2bbWt5F/APAH3Wg7iV5I=",
         "owner": "barrucadu",
         "repo": "bookdb",
-        "rev": "4f04c6c32baa5ee3fb60152d81d2b6091c02b6c1",
+        "rev": "68fef5523667b5ddc7c0c2f4f5ed1fd2b637eb09",
         "type": "github"
       },
       "original": {
@@ -39,11 +39,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741640067,
-        "narHash": "sha256-c8KEDDzueGdrLrAiJgy4+wiRVMU7OSEJ0QomLczcmws=",
+        "lastModified": 1742332416,
+        "narHash": "sha256-WseerHGnytqYHqD6X1HTMxY4EpRYxTyNc3Qjl/qpaeI=",
         "owner": "barrucadu",
         "repo": "bookmarks",
-        "rev": "ac504c58f399a83ae8f66d5784eed1fbfd560830",
+        "rev": "20494f25384ad3f82447c21cecd6b88db0fe1e21",
         "type": "github"
       },
       "original": {
@@ -124,16 +124,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1741718023,
-        "narHash": "sha256-lU9Dzg74hfoVKSn8sAgNVZlXVtqvkoT68CoEQUBIVw8=",
+        "lastModified": 1741718534,
+        "narHash": "sha256-C1W+FmAsaWPv32mpfZfgXiAcLucKm1CILlg5IwUMJm8=",
         "owner": "barrucadu",
         "repo": "resolved",
-        "rev": "25a130aca79e6804b0fbfda8f1bd89ba8dd44640",
+        "rev": "baf071f12e4a4410230b276eefc4458a98f71312",
         "type": "github"
       },
       "original": {
         "owner": "barrucadu",
         "repo": "resolved",
+        "rev": "baf071f12e4a4410230b276eefc4458a98f71312",
         "type": "github"
       }
     },
@@ -156,11 +157,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741660300,
-        "narHash": "sha256-0jldJ58sC5RjqwpwE+ER+RPMeX4Moz5im/evQ3SU/dU=",
+        "lastModified": 1742524367,
+        "narHash": "sha256-KzTwk/5ETJavJZYV1DEWdCx05M4duFCxCpRbQSKWpng=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "ac2f556db0eb5cbba3c4f5f5989c46330f439b0b",
+        "rev": "70bf752d176b2ce07417e346d85486acea9040ef",
         "type": "github"
       },
       "original": {
@@ -186,6 +187,7 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "rev": "e653d71e82575a43fe9d228def8eddb73887b866",
         "type": "github"
       }
     }
