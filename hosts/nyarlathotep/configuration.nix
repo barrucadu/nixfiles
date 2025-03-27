@@ -136,8 +136,10 @@ in
 
     1.0.0    IN PTR router.lan.
     3.0.0    IN PTR nyarlathotep.lan.
-    187.20.0 IN PTR bedroom.awair.lan.
+
     117.20.0 IN PTR living-room.awair.lan.
+    187.20.0 IN PTR bedroom.awair.lan.
+    194.20.0 IN PTR office.awair.lan.
   '';
 
   environment.etc."dns/zones/lan".text = ''
@@ -157,6 +159,7 @@ in
 
     bedroom.awair     300 IN A     10.0.20.187
     living-room.awair 300 IN A     10.0.20.117
+    office.awair      300 IN A     10.0.20.194
   '';
 
 
@@ -389,7 +392,13 @@ in
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.nixfiles.prometheus-awair-exporter}/bin/prometheus-awair-exporter --address 127.0.0.1:${toString prometheusAwairExporterPort} --sensor living-room:10.0.20.117 --sensor bedroom:10.0.20.187";
+        ExecStart = concatStringsSep " " [
+          "${pkgs.nixfiles.prometheus-awair-exporter}/bin/prometheus-awair-exporter"
+          "--address 127.0.0.1:${toString prometheusAwairExporterPort}"
+          "--sensor bedroom:10.0.20.187"
+          "--sensor living-room:10.0.20.117"
+          "--sensor office:10.0.20.194"
+        ];
         DynamicUser = "true";
         Restart = "on-failure";
       };
