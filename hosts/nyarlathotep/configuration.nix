@@ -46,6 +46,7 @@ in
     8888
     111 # NFS
     2049 # NFS
+    32400 # Plex
     config.services.nfs.server.mountdPort
     config.services.nfs.server.lockdPort
     config.services.nfs.server.statdPort
@@ -270,6 +271,12 @@ in
     }
   '';
 
+  # don't restrict vlan as the port is open unrestricted anyway
+  services.caddy.virtualHosts."plex.nyarlathotep.lan:80".extraConfig = ''
+    encode gzip
+    reverse_proxy http://localhost:32400
+  '';
+
   services.caddy.virtualHosts."prometheus.nyarlathotep.lan:80".extraConfig = ''
     import restrict_vlan
     encode gzip
@@ -347,6 +354,14 @@ in
   nixfiles.torrents.watchDir = "/mnt/nas/torrents/watch";
   nixfiles.torrents.user = "barrucadu";
   nixfiles.torrents.group = "users";
+
+
+  ###############################################################################
+  ## Network Media
+  ###############################################################################
+
+  services.plex.enable = true;
+  services.plex.dataDir = "/persist/var/lib/plex";
 
 
   ###############################################################################
