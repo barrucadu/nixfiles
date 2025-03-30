@@ -122,6 +122,7 @@
                   { config._module.args = { inherit pkgs; }; }
                   ./shared/options.nix
                   # modules
+                  ./shared/acme/options.nix
                   ./shared/bookdb/options.nix
                   ./shared/bookmarks/options.nix
                   ./shared/concourse/options.nix
