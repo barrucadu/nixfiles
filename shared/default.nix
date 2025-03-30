@@ -24,6 +24,7 @@ in
   imports = [
     ./options.nix
     # modules
+    ./acme
     ./bookdb
     ./bookmarks
     ./concourse

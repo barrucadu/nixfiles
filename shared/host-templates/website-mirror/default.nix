@@ -23,12 +23,6 @@ let
   httpDir = "${baseDir}/srv/http";
   certDir = "${baseDir}/var/lib/acme";
 
-  copyCertsFor = domain: ''
-    mkdir -p ${toString config.nixfiles.eraseYourDarlings.persistDir}/var/lib/acme || true
-    rm -r ${toString config.nixfiles.eraseYourDarlings.persistDir}/var/lib/acme/${domain} || true
-    cp -a /var/lib/acme/${domain} ${toString config.nixfiles.eraseYourDarlings.persistDir}/var/lib/acme/${domain}
-  '';
-
   caddyTlsConfig = certDomain: ''
     tls ${certDir}/${certDomain}/cert.pem ${certDir}/${certDomain}/key.pem {
       protocols tls1.3
@@ -60,48 +54,14 @@ in
     ###############################################################################
 
     # Provision certificates via DNS challenge
-    security.acme = {
-      acceptTerms = true;
-
-      defaults = {
-        email = "mike@barrucadu.co.uk";
-        dnsProvider = "route53";
-        dnsPropagationCheck = true;
-        environmentFile = cfg.acmeEnvironmentFile;
-        reloadServices = [ "caddy" ];
-      };
-
-      certs."barrucadu.co.uk" = {
-        group = config.services.caddy.group;
-        domain = "barrucadu.co.uk";
-        extraDomainNames = [ "*.barrucadu.co.uk" ];
-        postRun = if config.nixfiles.eraseYourDarlings.enable then copyCertsFor "barrucadu.co.uk" else "";
-      };
-
-      certs."barrucadu.com" = {
-        group = config.services.caddy.group;
-        domain = "barrucadu.com";
-        extraDomainNames = [ "*.barrucadu.com" ];
-        postRun = if config.nixfiles.eraseYourDarlings.enable then copyCertsFor "barrucadu.com" else "";
-      };
-
-      certs."barrucadu.dev" = {
-        group = config.services.caddy.group;
-        domain = "barrucadu.dev";
-        extraDomainNames = [ "*.barrucadu.dev" ];
-        postRun = if config.nixfiles.eraseYourDarlings.enable then copyCertsFor "barrucadu.dev" else "";
-      };
-
-      certs."barrucadu.uk" = {
-        group = config.services.caddy.group;
-        domain = "barrucadu.uk";
-        extraDomainNames = [ "*.barrucadu.uk" ];
-        postRun = if config.nixfiles.eraseYourDarlings.enable then copyCertsFor "barrucadu.uk" else "";
-      };
+    nixfiles.acme = {
+      enable = true;
+      environmentFile = cfg.acmeEnvironmentFile;
+      domains."barrucadu.co.uk" = { extraDomainNames = [ "*.barrucadu.co.uk" ]; };
+      domains."barrucadu.com" = { extraDomainNames = [ "*.barrucadu.com" ]; };
+      domains."barrucadu.dev" = { extraDomainNames = [ "*.barrucadu.dev" ]; };
+      domains."barrucadu.uk" = { extraDomainNames = [ "*.barrucadu.uk" ]; };
     };
-
-    users.users.acme.uid = 986;
-    users.groups.acme.gid = 989;
 
 
     ###############################################################################
