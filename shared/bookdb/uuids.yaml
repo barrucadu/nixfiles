@@ -2,6 +2,8 @@
 locations:
 - name: London
   slug: be60be7b-a10f-42e1-8769-d43f12cad02d
+- name: Packed
+  slug: edd8cfea-820d-4b08-bbb7-b50687279ff5
 - name: Missing
   slug: 6a233e5e-3b64-4169-ac67-cf46113afd97
 
