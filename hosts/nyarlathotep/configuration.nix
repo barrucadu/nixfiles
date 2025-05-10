@@ -139,6 +139,7 @@ in
     3.0.0    IN PTR nyarlathotep.lan.
 
     117.20.0 IN PTR living-room.awair.lan.
+    130.20.0 IN PTR guest-bedroom.awair.lan.
     187.20.0 IN PTR bedroom.awair.lan.
     194.20.0 IN PTR office.awair.lan.
   '';
@@ -148,19 +149,20 @@ in
 
     @ 300 IN SOA @ @ 6 300 300 300 300
 
-    router            300 IN A     10.0.0.1
+    router              300 IN A     10.0.0.1
 
-    nyarlathotep      300 IN A     10.0.0.3
-    *.nyarlathotep    300 IN CNAME nyarlathotep
+    nyarlathotep        300 IN A     10.0.0.3
+    *.nyarlathotep      300 IN CNAME nyarlathotep
 
-    help              300 IN CNAME nyarlathotep
-    *.help            300 IN CNAME help
+    help                300 IN CNAME nyarlathotep
+    *.help              300 IN CNAME help
 
-    nas               300 IN CNAME nyarlathotep
+    nas                 300 IN CNAME nyarlathotep
 
-    bedroom.awair     300 IN A     10.0.20.187
-    living-room.awair 300 IN A     10.0.20.117
-    office.awair      300 IN A     10.0.20.194
+    bedroom.awair       300 IN A     10.0.20.187
+    guest-bedroom.awair 300 IN A     10.0.20.130
+    living-room.awair   300 IN A     10.0.20.117
+    office.awair        300 IN A     10.0.20.194
   '';
 
 
@@ -411,6 +413,7 @@ in
           "${pkgs.nixfiles.prometheus-awair-exporter}/bin/prometheus-awair-exporter"
           "--address 127.0.0.1:${toString prometheusAwairExporterPort}"
           "--sensor bedroom:10.0.20.187"
+          "--sensor guest-bedroom:10.0.20.130"
           "--sensor living-room:10.0.20.117"
           "--sensor office:10.0.20.194"
         ];
