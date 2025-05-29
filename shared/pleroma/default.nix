@@ -80,6 +80,7 @@ in
       serviceConfig.BindPaths =
         [ "${toString (pkgs.copyPathToStore cfg.faviconPath)}:/var/lib/pleroma/static/favicon.png" ];
     };
+    systemd.services.pleroma-migrations.environment = config.systemd.services.pleroma.environment;
 
     users.users."${pleromaUser}".uid = 989;
     users.groups."${pleromaGroup}".gid = 994;
@@ -98,7 +99,7 @@ in
       ];
     };
 
-    systemd.tmpfiles.rules = [ "d ${dbSocketDir} 0700 root root" ];
+    systemd.tmpfiles.rules = [ "d ${dbSocketDir} 0700 pleroma pleroma" ];
 
     nixfiles.restic-backups.backups.pleroma = {
       prepareCommand = ''

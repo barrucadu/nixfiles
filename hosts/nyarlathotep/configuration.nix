@@ -177,7 +177,7 @@ in
   # Samba
   services.samba.enable = true;
   services.samba.openFirewall = true;
-  services.samba.shares = listToAttrs
+  services.samba.settings = listToAttrs
     (map (n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; }) shares);
 
   # Guest user for NFS / Samba
@@ -483,7 +483,7 @@ in
   services.victoriametrics = {
     enable = true;
     listenAddress = "127.0.0.1:8428";
-    retentionPeriod = 1200;
+    retentionPeriod = "10y";
   };
 
 
