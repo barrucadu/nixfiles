@@ -29,7 +29,7 @@ in
       wantedBy = [ "multi-user.target" ];
       after = [ "network.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.nodejs-18_x}/bin/node resources/app/main.js --dataPath=${cfg.dataDir}/data --port=${toString cfg.port}";
+        ExecStart = "${pkgs.nodejs_24}/bin/node resources/app/main.js --dataPath=${cfg.dataDir}/data --port=${toString cfg.port}";
         Restart = "always";
         User = "foundryvtt";
         WorkingDirectory = "${cfg.dataDir}/bin";

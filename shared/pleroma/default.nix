@@ -80,7 +80,10 @@ in
       serviceConfig.BindPaths =
         [ "${toString (pkgs.copyPathToStore cfg.faviconPath)}:/var/lib/pleroma/static/favicon.png" ];
     };
-    systemd.services.pleroma-migrations.environment = config.systemd.services.pleroma.environment;
+    systemd.services.pleroma-migrations = {
+      after = [ "network-online.target" "${backend}-pleroma-db.service" ];
+      environment = config.systemd.services.pleroma.environment;
+    };
 
     users.users."${pleromaUser}".uid = 989;
     users.groups."${pleromaGroup}".gid = 994;
