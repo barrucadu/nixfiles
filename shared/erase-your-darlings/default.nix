@@ -23,7 +23,7 @@ in
 
   config = mkIf cfg.enable {
     # Wipe / on boot
-    boot.initrd.postDeviceCommands = mkAfter ''
+    boot.initrd.postResumeCommands = mkAfter ''
       zfs rollback -r ${cfg.rootSnapshot}
     '';
 
@@ -52,10 +52,10 @@ in
       }
     ];
 
-    services.samba.extraConfig = ''
-      log file = /var/log/samba/%m.log
-      private dir = ${toString cfg.persistDir}/var/lib/samba/private
-    '';
+    services.samba.settings.global = {
+      "log file" = "/var/log/samba/%m.log";
+      "private dir" = "${toString cfg.persistDir}/var/lib/samba/private";
+    };
 
     systemd.tmpfiles.rules = [
       "L+ /etc/nixos - - - - ${toString cfg.persistDir}/etc/nixos"
