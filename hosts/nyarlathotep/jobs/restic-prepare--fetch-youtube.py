@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-"""Youtube "backup" script - generates a script to download videos.
-"""
+"""Youtube "backup" script - generates a script to download videos."""
 
 import os
 import shlex
