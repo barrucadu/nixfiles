@@ -29,7 +29,7 @@ with lib;
 
     elasticsearchTag = mkOption {
       type = types.str;
-      default = "8.18.2";
+      default = "9.0.1";
       description = ''
         Tag to use of the `elasticsearch` container image.
       '';
