@@ -24,15 +24,11 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 5,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -58,8 +54,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -76,7 +71,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
+        "h": 5,
         "w": 24,
         "x": 0,
         "y": 1
@@ -87,6 +82,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -94,10 +90,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
+        "showPercentChange": false,
+        "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.6",
+      "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
           "datasource": {
@@ -133,6 +130,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -163,8 +161,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent",
-                "value": null
+                "color": "transparent"
               },
               {
                 "color": "orange",
@@ -181,10 +178,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 8,
         "x": 0,
-        "y": 13
+        "y": 6
       },
       "id": 50,
       "links": [
@@ -205,11 +202,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
           "datasource": {
@@ -244,6 +242,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -274,8 +273,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -300,10 +298,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 8,
         "x": 8,
-        "y": 13
+        "y": 6
       },
       "id": 44,
       "options": {
@@ -317,11 +315,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
           "expr": "awair_temp",
@@ -352,6 +351,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -382,8 +382,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -408,10 +407,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 8,
         "x": 16,
-        "y": 13
+        "y": 6
       },
       "id": 46,
       "options": {
@@ -425,11 +424,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
           "expr": "awair_humid",
@@ -460,6 +460,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -490,8 +491,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent",
-                "value": null
+                "color": "transparent"
               },
               {
                 "color": "orange",
@@ -508,10 +508,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 8,
         "x": 0,
-        "y": 22
+        "y": 18
       },
       "id": 45,
       "options": {
@@ -525,11 +525,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
           "expr": "awair_co2",
@@ -560,6 +561,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -590,8 +592,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent",
-                "value": null
+                "color": "transparent"
               },
               {
                 "color": "orange",
@@ -608,10 +609,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 8,
         "x": 8,
-        "y": 22
+        "y": 18
       },
       "id": 47,
       "options": {
@@ -625,11 +626,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
           "expr": "awair_voc",
@@ -660,6 +662,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -690,8 +693,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent",
-                "value": null
+                "color": "transparent"
               },
               {
                 "color": "orange",
@@ -708,10 +710,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 8,
         "x": 16,
-        "y": 22
+        "y": 18
       },
       "id": 48,
       "options": {
@@ -725,11 +727,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
           "expr": "awair_pm25",
@@ -744,9 +747,9 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "30s",
-  "revision": 1,
-  "schemaVersion": 39,
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": []
@@ -759,6 +762,5 @@
   "timezone": "",
   "title": "Smart Home",
   "uid": "Zo9UQLKAp",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }
