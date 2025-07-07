@@ -343,6 +343,7 @@ in
       lsof
       lynx
       man-pages
+      mtr
       ncdu
       psmisc
       python3
