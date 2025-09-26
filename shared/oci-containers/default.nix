@@ -26,8 +26,20 @@ let
 
   shouldPreStart = _name: container: container.pullOnStart;
   mkPreStart = name: container: nameValuePair "${cfg.backend}-${name}" {
-    preStart = if container.pullOnStart then "${cfg.backend} pull ${container.image}" else "";
+    preStart = "${cfg.backend} pull ${container.image}";
   };
+
+  shouldDependOnNetwork = _name: container: container.network != null;
+  mkDependOnNetwork = nameValuePair "${cfg.backend}-${name}" (
+    let u = "${cfg.backend}-net-${container.network}.service";
+    in { after = [u]; requires = [u]; }
+  );
+
+  shouldDependOnPod = _name: container: container.pod != null;
+  mkDependOnPod = name: container: nameValuePair "${cfg.backend}-${name}" (
+    let u = "${cfg.backend}-pod-${container.pod}.service";
+    in { after = [u]; requires = [u]; }
+  );
 
   shouldNetworkService = _name: container: container.network != null;
   mkNetworkService = _name: container:
@@ -68,11 +80,7 @@ let
       hasPod = container.pod != null;
     in
     {
-      inherit autoStart cmd environment environmentFiles image login;
-      dependsOn =
-        container.dependsOn ++
-        (if hasNetwork then [ "net-${container.network}" ] else [ ]) ++
-        (if hasPod then [ "pod-${container.pod}" ] else [ ]);
+      inherit autoStart cmd dependsOn environment environmentFiles image login;
       extraOptions =
         container.extraOptions ++
         (if hasNetwork then [ "--network=${container.network}" ] else [ ]) ++
@@ -116,6 +124,8 @@ in
 
     systemd.services = mkMerge [
       (mapAttrs' mkPreStart (filterAttrs shouldPreStart allContainers))
+      (mapAttrs' mkDependOnNetwork (filterAttrs shouldDependOnNetwork allContainers))
+      (mapAttrs' mkDependOnPod (filterAttrs shouldDependOnPod allContainers))
       (mapAttrs' mkNetworkService (filterAttrs shouldNetworkService allContainers))
       (if cfg.backend == "podman" then mapAttrs' mkPodService cfg.pods else { })
     ];
