@@ -20,7 +20,8 @@
 # Bring names from 'lib' into scope.
 with lib;
 let
-  shares = [ "anime" "manga" "misc" "music" "movies" "tv" "torrents" ];
+  sharesPublic = [ "anime" "misc" "music" "movies" "tv" "torrents" ];
+  sharesPrivate = [ "private" ];
 
   prometheusAwairExporterPort = 9517;
 
@@ -44,12 +45,7 @@ in
   networking.firewall.allowedTCPPorts = [
     80
     8888
-    111 # NFS
-    2049 # NFS
     32400 # Plex
-    config.services.nfs.server.mountdPort
-    config.services.nfs.server.lockdPort
-    config.services.nfs.server.statdPort
   ];
 
   # Wipe / on boot
@@ -170,23 +166,17 @@ in
   ## Network storage
   ###############################################################################
 
-  # NFS exports
-  services.nfs.server.enable = true;
-  services.nfs.server.mountdPort = 4002;
-  services.nfs.server.lockdPort = 4001;
-  services.nfs.server.statdPort = 4000;
-  services.nfs.server.exports = ''
-    /mnt/nas/ *(rw,fsid=root,no_subtree_check)
-    ${concatMapStringsSep "\n" (n: "/mnt/nas/${n} *(rw,no_subtree_check,nohide)") shares}
-  '';
 
   # Samba
   services.samba.enable = true;
   services.samba.openFirewall = true;
-  services.samba.settings = listToAttrs
-    (map (n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; }) shares);
+  services.samba.settings =
+    let
+      mkPublic = n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; };
+      mkPrivate = n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; "valid users" = ["barrucadu"]; };
+    in listToAttrs (map mkPublic sharesPublic ++ map mkPrivate sharesPrivate);
 
-  # Guest user for NFS / Samba
+  # Guest user for Samba
   users.users.notbarrucadu = {
     uid = 1001;
     description = "Guest user";
@@ -344,7 +334,7 @@ in
 
   nixfiles.finder.enable = true;
   nixfiles.finder.image = "localhost:${toString config.services.dockerRegistry.port}/finder:latest";
-  nixfiles.finder.mangaDir = "/mnt/nas/manga";
+  nixfiles.finder.mangaDir = "/mnt/nas/private";
 
 
   ###############################################################################
