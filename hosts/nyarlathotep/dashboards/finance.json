@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 10,
+  "id": 4,
   "links": [],
   "panels": [
     {
@@ -80,7 +80,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -151,7 +151,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -228,7 +228,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -304,7 +304,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -378,7 +378,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -454,7 +454,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -554,7 +554,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -834,7 +834,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -1132,7 +1132,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -1248,7 +1248,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -1389,7 +1389,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -1474,7 +1474,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -1559,7 +1559,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -1644,7 +1644,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -1796,7 +1796,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -1976,7 +1976,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -2176,7 +2176,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -2356,7 +2356,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -2542,7 +2542,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -2624,7 +2624,7 @@
         "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "title": "MONTHLY - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
       "transparent": true,
       "type": "text"
@@ -2694,7 +2694,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -2777,7 +2777,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -2862,7 +2862,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -2947,7 +2947,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3032,7 +3032,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3117,7 +3117,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3202,7 +3202,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3285,7 +3285,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3370,7 +3370,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3387,6 +3387,91 @@
         }
       ],
       "title": "Travel",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "~£20",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 75
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 4,
+        "x": 12,
+        "y": 33
+      },
+      "id": 110,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.0.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:twitch\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Twitch",
       "transparent": true,
       "type": "bargauge"
     },
@@ -3427,7 +3512,7 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 12,
+        "x": 16,
         "y": 33
       },
       "id": 36,
@@ -3455,7 +3540,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3512,7 +3597,7 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 16,
+        "x": 20,
         "y": 33
       },
       "id": 40,
@@ -3540,7 +3625,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3581,7 +3666,7 @@
         "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "title": "ANNUALLY - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
       "transparent": true,
       "type": "text"
@@ -3651,7 +3736,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3736,7 +3821,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3821,7 +3906,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3906,7 +3991,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -3947,7 +4032,7 @@
         "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "title": "SINKING - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
       "transparent": true,
       "type": "text"
@@ -4017,7 +4102,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -4102,7 +4187,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -4187,7 +4272,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -4272,7 +4357,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -4356,7 +4441,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -4440,7 +4525,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -4525,7 +4610,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -4609,7 +4694,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
@@ -4694,7 +4779,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2+security-01",
+      "pluginVersion": "12.0.7",
       "targets": [
         {
           "datasource": {
