@@ -29,6 +29,7 @@
       inputs.gitignore.follows = "gitignore";
       inputs.rust-overlay.follows = "rust-overlay";
     };
+    # dependencies
     gitignore = {
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
