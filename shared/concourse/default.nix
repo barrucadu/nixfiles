@@ -22,6 +22,8 @@ in
   ];
 
   config = mkIf cfg.enable {
+    boot.kernelModules = [ "iptable_filter" ];
+
     nixfiles.oci-containers.pods.concourse = {
       containers = {
         web = {
