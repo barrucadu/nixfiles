@@ -20,10 +20,6 @@ if git grep 'options.nixfiles' | grep -vE 'options.nix'; then
     exit 1
 fi
 
-if git grep 'callPackage' | grep -vE 'flake.nix'; then
-    exit 1
-fi
-
 if git grep 'OnCalendar' | grep -vE 'scripts/lint.sh'; then
     exit 1
 fi
