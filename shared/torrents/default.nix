@@ -28,7 +28,7 @@ in
       home = "${cfg.stateDir}/transmission";
       openPeerPorts = cfg.openFirewall;
       webHome = pkgs.flood-for-transmission;
-      package = pkgs.transmission_4;
+      package = pkgs.callPackage ./transmission_3 { };
       settings = {
         # paths
         download-dir = cfg.downloadDir;
