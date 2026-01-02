@@ -13,11 +13,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767050065,
-        "narHash": "sha256-K31ty6iExr07TcI4erAvv8mSKP/QUBBB+AIMmyFP9c0=",
+        "lastModified": 1767315676,
+        "narHash": "sha256-A3ud5mDdpzBfwUzDy3OXyYuqtr7DklRA6gS/nfSqHzo=",
         "owner": "barrucadu",
         "repo": "bookdb",
-        "rev": "a6727bc5ca9e7ffba247757e8d3a5c1080f13cea",
+        "rev": "48ad3d375fd543ec00c63c037f7295914668cd31",
         "type": "github"
       },
       "original": {
