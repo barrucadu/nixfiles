@@ -185,7 +185,7 @@ def metric_hledger_fx_rate(gbp_fx_rates, credits_debits):
         _, date, from_currency, gbp_exchange_rate = price.split()
         timestamp = date_to_timestamp(date)
         all_timestamps[timestamp] = True
-        gbp_exchange_rate = Decimal(gbp_exchange_rate[1:])
+        gbp_exchange_rate = Decimal(gbp_exchange_rate[1:].replace(",", ""))
 
         new_rates = gbp_fx_rates_by_timestamp.get(timestamp, {})
         new_rates[from_currency] = gbp_exchange_rate
