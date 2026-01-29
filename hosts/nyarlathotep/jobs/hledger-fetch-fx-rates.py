@@ -54,6 +54,7 @@ DATE = time.strftime("%Y-%m-%d")
 COMMODITIES = [
     ("EUR", get_financial_times_currency),
     ("JPY", get_financial_times_currency),
+    ("SEK", get_financial_times_currency),
     ("USD", get_financial_times_currency),
     ("VANEA", "GB00B41XG308", get_financial_times_fund),
 ]
