@@ -44,7 +44,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "green",
@@ -80,7 +81,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -115,7 +116,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "green",
@@ -151,7 +153,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -187,7 +189,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -228,7 +231,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -264,7 +267,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -304,7 +308,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -338,7 +342,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -378,7 +383,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -413,7 +418,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "#EAB839",
@@ -454,7 +460,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -512,7 +518,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46"
+                "color": "#299c46",
+                "value": 0
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -554,7 +561,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -606,6 +613,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -623,7 +631,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               }
             ]
           },
@@ -803,7 +812,7 @@
                 "id": "custom.hideFrom",
                 "value": {
                   "legend": false,
-                  "tooltip": false,
+                  "tooltip": true,
                   "viz": true
                 }
               }
@@ -834,7 +843,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1093,7 +1102,7 @@
                 "id": "custom.hideFrom",
                 "value": {
                   "legend": false,
-                  "tooltip": false,
+                  "tooltip": true,
                   "viz": true
                 }
               }
@@ -1126,13 +1135,14 @@
           "fields": "",
           "values": false
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1215,7 +1225,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               }
             ]
           },
@@ -1248,7 +1259,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1347,7 +1358,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46"
+                "color": "#299c46",
+                "value": 0
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -1389,7 +1401,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1432,7 +1444,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46"
+                "color": "#299c46",
+                "value": 0
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -1474,7 +1487,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1517,7 +1530,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46"
+                "color": "#299c46",
+                "value": 0
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -1559,7 +1573,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1602,7 +1616,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46"
+                "color": "#299c46",
+                "value": 0
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -1644,7 +1659,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1696,6 +1711,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1711,7 +1727,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1796,7 +1813,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1873,6 +1890,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1889,7 +1907,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1976,7 +1995,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2072,6 +2091,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -2087,7 +2107,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2176,7 +2197,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2252,6 +2273,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -2267,7 +2289,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2356,7 +2379,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2438,6 +2461,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -2453,7 +2477,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2542,21 +2567,8 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:mortgage\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "interval": "",
-          "legendFormat": "Put Aside",
-          "range": true,
-          "refId": "A"
-        },
         {
           "datasource": {
             "type": "prometheus",
@@ -2570,20 +2582,6 @@
           "legendFormat": "Liability",
           "range": true,
           "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:mortgage\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)\r\n+ on(target_currency)\r\nsum(sum(hledger_balance{account=~\"liabilities:mortgage:.*\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Delta",
-          "range": true,
-          "refId": "C"
         }
       ],
       "title": "Mortgage",
@@ -2624,93 +2622,10 @@
         "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "title": "MONTHLY - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
       "transparent": true,
       "type": "text"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "description": "~£5",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 50,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red"
-              },
-              {
-                "color": "yellow",
-                "value": 25
-              },
-              {
-                "color": "green",
-                "value": 37.5
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 4,
-        "x": 0,
-        "y": 31
-      },
-      "id": 77,
-      "options": {
-        "displayMode": "lcd",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "12.0.7",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "exemplar": true,
-          "expr": "sum(hledger_balance{account=\"assets:investments:ajbell:dealing\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "AJ Bell Fees",
-      "transparent": true,
-      "type": "bargauge"
     },
     {
       "datasource": {
@@ -2730,7 +2645,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -2749,7 +2665,7 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 4,
+        "x": 0,
         "y": 31
       },
       "id": 34,
@@ -2777,7 +2693,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2802,6 +2718,90 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "~£25",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 75
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 4,
+        "x": 4,
+        "y": 31
+      },
+      "id": 76,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "exemplar": true,
+          "expr": "sum(hledger_balance{account=\"assets:investments:fidelity:management\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Fidelity Fees",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "description": "~£100",
       "fieldConfig": {
         "defaults": {
@@ -2815,7 +2815,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -2862,7 +2863,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2900,7 +2901,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -2947,7 +2949,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2972,91 +2974,6 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "~£1300",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 5000,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red"
-              },
-              {
-                "color": "yellow",
-                "value": 2500
-              },
-              {
-                "color": "green",
-                "value": 3750
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 4,
-        "x": 16,
-        "y": 31
-      },
-      "id": 104,
-      "options": {
-        "displayMode": "lcd",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "12.0.7",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:house:mortgage\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "interval": "",
-          "legendFormat": "",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Mortgage",
-      "transparent": true,
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
       "description": "~£20",
       "fieldConfig": {
         "defaults": {
@@ -3070,7 +2987,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3089,7 +3007,7 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 20,
+        "x": 16,
         "y": 31
       },
       "id": 37,
@@ -3117,7 +3035,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3142,89 +3060,6 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "~£25",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red"
-              },
-              {
-                "color": "yellow",
-                "value": 50
-              },
-              {
-                "color": "green",
-                "value": 75
-              }
-            ]
-          },
-          "unit": "currencyGBP"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 4,
-        "x": 0,
-        "y": 33
-      },
-      "id": 76,
-      "options": {
-        "displayMode": "lcd",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "12.0.7",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "exemplar": true,
-          "expr": "sum(hledger_balance{account=\"assets:investments:fidelity:management\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Fidelity Fees",
-      "transparent": true,
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
       "description": "~£20",
       "fieldConfig": {
         "defaults": {
@@ -3238,7 +3073,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3257,8 +3093,8 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 4,
-        "y": 33
+        "x": 20,
+        "y": 31
       },
       "id": 33,
       "options": {
@@ -3285,7 +3121,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3323,7 +3159,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3342,7 +3179,7 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 8,
+        "x": 0,
         "y": 33
       },
       "id": 35,
@@ -3370,7 +3207,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3408,7 +3245,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3427,7 +3265,7 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 12,
+        "x": 4,
         "y": 33
       },
       "id": 110,
@@ -3455,7 +3293,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3493,7 +3331,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3512,7 +3351,7 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 16,
+        "x": 8,
         "y": 33
       },
       "id": 36,
@@ -3540,7 +3379,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3578,7 +3417,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3597,7 +3437,7 @@
       "gridPos": {
         "h": 2,
         "w": 4,
-        "x": 20,
+        "x": 12,
         "y": 33
       },
       "id": 40,
@@ -3625,7 +3465,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3666,7 +3506,7 @@
         "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "title": "ANNUALLY - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
       "transparent": true,
       "type": "text"
@@ -3689,7 +3529,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3736,7 +3577,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3774,7 +3615,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3821,7 +3663,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3859,7 +3701,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3906,7 +3749,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -3944,7 +3787,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -3991,7 +3835,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4032,7 +3876,7 @@
         "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "title": "SINKING - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
       "transparent": true,
       "type": "text"
@@ -4055,7 +3899,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4102,7 +3947,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4140,7 +3985,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4187,7 +4033,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4225,7 +4071,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4272,7 +4119,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4310,7 +4157,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4357,7 +4205,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4394,7 +4242,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4441,7 +4290,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4478,7 +4327,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4525,7 +4375,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4563,7 +4413,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4610,7 +4461,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4647,7 +4498,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4694,7 +4546,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4732,7 +4584,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -4779,7 +4632,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.7",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -4846,6 +4699,7 @@
                   "type": "linear"
                 },
                 "showPoints": "never",
+                "showValues": false,
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -4861,7 +4715,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   }
                 ]
               },
@@ -4889,7 +4744,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 102
+            "y": 44
           },
           "id": 81,
           "options": {
@@ -4910,7 +4765,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "12.0.2+security-01",
+          "pluginVersion": "12.3.1",
           "targets": [
             {
               "datasource": {
@@ -4924,7 +4779,7 @@
               "refId": "A"
             }
           ],
-          "title": "Euro Unit Value",
+          "title": "EUR",
           "transparent": true,
           "type": "timeseries"
         },
@@ -4965,6 +4820,7 @@
                   "type": "linear"
                 },
                 "showPoints": "never",
+                "showValues": false,
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -4980,7 +4836,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   }
                 ]
               },
@@ -5008,9 +4865,9 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 102
+            "y": 44
           },
-          "id": 82,
+          "id": 111,
           "options": {
             "legend": {
               "calcs": [
@@ -5029,21 +4886,23 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "12.0.2+security-01",
+          "pluginVersion": "12.3.1",
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "hledger_fx_rate{currency=\"USD\",target_currency=\"$currency\"}",
+              "expr": "hledger_fx_rate{currency=\"GBP\",target_currency=\"$currency\"}",
               "interval": "",
               "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "range": true,
               "refId": "A"
             }
           ],
-          "title": "US Dollar Unit Value",
+          "title": "GBP",
           "transparent": true,
           "type": "timeseries"
         },
@@ -5084,6 +4943,7 @@
                   "type": "linear"
                 },
                 "showPoints": "never",
+                "showValues": false,
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5099,7 +4959,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   }
                 ]
               },
@@ -5127,7 +4988,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 102
+            "y": 44
           },
           "id": 83,
           "options": {
@@ -5148,7 +5009,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "12.0.2+security-01",
+          "pluginVersion": "12.3.1",
           "targets": [
             {
               "datasource": {
@@ -5162,7 +5023,7 @@
               "refId": "A"
             }
           ],
-          "title": "Japanese Yen Unit Value",
+          "title": "JPY",
           "transparent": true,
           "type": "timeseries"
         },
@@ -5203,6 +5064,7 @@
                   "type": "linear"
                 },
                 "showPoints": "never",
+                "showValues": false,
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5218,7 +5080,253 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 52
+          },
+          "id": 112,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"SEK\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "SEK",
+          "transparent": true,
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "currencyGBP"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 52
+          },
+          "id": 82,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "exemplar": true,
+              "expr": "hledger_fx_rate{currency=\"USD\",target_currency=\"$currency\"}",
+              "interval": "",
+              "legendFormat": "Value of 1 {{currency}} in {{target_currency}}",
+              "refId": "A"
+            }
+          ],
+          "title": "USD",
+          "transparent": true,
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Vanguard LifeStrategy 100% (Acc)",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
                   }
                 ]
               },
@@ -5245,8 +5353,8 @@
           "gridPos": {
             "h": 8,
             "w": 8,
-            "x": 0,
-            "y": 110
+            "x": 16,
+            "y": 52
           },
           "id": 86,
           "options": {
@@ -5267,7 +5375,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "12.0.2+security-01",
+          "pluginVersion": "12.3.1",
           "targets": [
             {
               "datasource": {
@@ -5281,7 +5389,7 @@
               "refId": "A"
             }
           ],
-          "title": "Vanguard LifeStrategy 100% (Acc) Fund Unit Value",
+          "title": "VANEA",
           "transparent": true,
           "type": "timeseries"
         }
@@ -5292,7 +5400,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
