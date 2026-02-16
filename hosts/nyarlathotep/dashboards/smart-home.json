@@ -54,7 +54,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "yellow",
@@ -94,7 +95,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0+security-01",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -147,6 +148,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -161,7 +163,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -207,7 +210,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0+security-01",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -259,6 +262,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -273,7 +277,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -320,7 +325,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0+security-01",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "expr": "awair_temp",
@@ -368,6 +373,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -382,7 +388,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -429,7 +436,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0+security-01",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "expr": "awair_humid",
@@ -477,6 +484,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -491,7 +499,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -530,7 +539,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0+security-01",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "expr": "awair_co2",
@@ -578,6 +587,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -592,7 +602,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -631,7 +642,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0+security-01",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "expr": "awair_voc",
@@ -679,6 +690,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -693,7 +705,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -732,7 +745,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0+security-01",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "expr": "awair_pm25",
@@ -749,7 +762,7 @@
   ],
   "preload": false,
   "refresh": "30s",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": []
