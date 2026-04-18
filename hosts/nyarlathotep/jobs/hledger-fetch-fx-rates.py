@@ -52,6 +52,7 @@ def get_financial_times_fund(isin):
 DATE = time.strftime("%Y-%m-%d")
 
 COMMODITIES = [
+    ("CAD", get_financial_times_currency),
     ("EUR", get_financial_times_currency),
     ("JPY", get_financial_times_currency),
     ("SEK", get_financial_times_currency),
