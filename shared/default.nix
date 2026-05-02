@@ -30,6 +30,7 @@ in
     ./concourse
     ./erase-your-darlings
     ./finder
+    ./forgejo
     ./foundryvtt
     ./host-templates
     ./minecraft

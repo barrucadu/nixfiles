@@ -165,6 +165,11 @@ in
     }
   '';
 
+  services.caddy.virtualHosts."git.barrucadu.dev".extraConfig = ''
+    import common_config
+    reverse_proxy http://127.0.0.1:${toString config.nixfiles.forgejo.port}
+  '';
+
   services.caddy.virtualHosts."registry.barrucadu.dev".extraConfig = ''
     import common_config
     basicauth /v2/* {
@@ -297,6 +302,14 @@ in
 
   # Docker registry
   services.dockerRegistry.enable = true;
+
+  # Forgejo
+  nixfiles.forgejo.enable = true;
+  nixfiles.forgejo.domain = "git.barrucadu.dev";
+  nixfiles.forgejo.adminUserPasswordPath = config.sops.secrets."nixfiles/forgejo/admin_password".path;
+  nixfiles.forgejo.runnerTokenPath = config.sops.secrets."nixfiles/forgejo/runner_token".path;
+  sops.secrets."nixfiles/forgejo/admin_password" = { owner = "forgejo"; };
+  sops.secrets."nixfiles/forgejo/runner_token" = { };
 
   # concourse
   nixfiles.concourse.enable = true;
