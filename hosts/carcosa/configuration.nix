@@ -301,7 +301,6 @@ in
   # concourse
   nixfiles.concourse.enable = true;
   nixfiles.concourse.environmentFile = config.sops.secrets."nixfiles/concourse/env".path;
-  nixfiles.concourse.workerScratchDir = "/var/concourse-worker-scratch";
   sops.secrets."nixfiles/concourse/env" = { };
 
   # Look what the Shoggoth Dragged In
