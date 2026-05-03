@@ -14,7 +14,7 @@ let
   cfg = config.nixfiles.pleroma;
   backend = config.nixfiles.oci-containers.backend;
   backendPkg = if backend == "docker" then pkgs.docker else pkgs.podman;
-  dbSocketDir = "/var/run/pleroma/db";
+  dbSocketDir = "/run/pleroma-db";
 
   pleromaUser = config.services.pleroma.user;
   pleromaGroup = config.services.pleroma.group;
@@ -102,7 +102,7 @@ in
       ];
     };
 
-    systemd.tmpfiles.rules = [ "d ${dbSocketDir} 0700 pleroma pleroma" ];
+    systemd.tmpfiles.rules = [ "d ${dbSocketDir} 0700 ${pleromaUser} ${pleromaGroup}" ];
 
     nixfiles.restic-backups.backups.pleroma = {
       prepareCommand = ''
