@@ -2,7 +2,7 @@
 
 set -e
 
-# see https://nixfiles.docs.barrucadu.co.uk/runbooks/set-up-a-new-host.html
+# see https://nixfiles.docs.barrucadu.dev/runbooks/set-up-a-new-host.html
 
 MODE="$1"
 DEVICE="$2"
