@@ -1,6 +1,5 @@
-# ```admonish note title="To do"
-# Run podman containers run as a non-root user.
-# ```
+# > [!NOTE]
+# > **TODO:** Run podman containers run as a non-root user.
 #
 # An abstraction over running containers as systemd units, enforcing some good
 # practices:

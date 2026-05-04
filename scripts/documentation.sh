@@ -1,9 +1,5 @@
 set -e
 
-pushd docs
-mdbook-admonish install
-popd
-
 sed 's#See \[the documentation\].*##' < README.markdown > docs/src/README.md
 
 python3 - <<'EOF' > docs/src/hosts.md
@@ -142,7 +138,3 @@ EOF
 
 mdbook build docs
 mv docs/book _site
-
-chmod -c -R +rX _site | while read -r line; do
-    echo "::warning title=Invalid file permissions automatically fixed::$line"
-done

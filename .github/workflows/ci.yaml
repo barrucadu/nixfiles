@@ -17,12 +17,6 @@ jobs:
           nix run .#fmt
           nix run .#lint
           git diff --exit-code
-      - name: Check mdbook-admonish changes are not committed
-        run: |
-          if grep -q "do not edit: managed by \`mdbook-admonish install\`" docs/book.toml; then
-            echo "remove generated mdbook-admonish lines from docs/books.toml" >&2
-            exit 1
-          fi
 
   test:
     runs-on: ubuntu-latest
