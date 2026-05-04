@@ -146,7 +146,7 @@
               };
             in
             mkApp "documentation" ''
-              PATH=${with pkgs; lib.makeBinPath [ coreutils gnused mdbook mdbook-admonish python3 ]}
+              PATH=${with pkgs; lib.makeBinPath [ coreutils gnused mdbook python3 ]}
               export NIXOS_OPTIONS_JSON="${optionsDoc.optionsJSON}/share/doc/nixos/options.json"
 
               ${pkgs.lib.fileContents ./scripts/documentation.sh}

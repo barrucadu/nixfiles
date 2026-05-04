@@ -1,0 +1,25 @@
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  deploy_documentation:
+    runs-on: nix
+    steps:
+      - name: Install tools
+        run: |
+          nix-env -iA nixpkgs.nodejs_24 nixpkgs.rsync
+      - uses: https://code.forgejo.org/actions/checkout@v4
+      - name: Build
+        run: |
+          nix --extra-experimental-features "nix-command flakes" run .\#documentation
+      - name: Deploy carcosa
+        run: bash -e .forgejo/scripts/deploy-documentation.sh
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.CARCOSA_SSH_PRIVATE_KEY }}
+          TARGET: carcosa.barrucadu.co.uk
+      - name: Deploy yuggoth
+        run: bash -e .forgejo/scripts/deploy-documentation.sh
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.YUGGOTH_SSH_PRIVATE_KEY }}
+          TARGET: yuggoth.barrucadu.co.uk

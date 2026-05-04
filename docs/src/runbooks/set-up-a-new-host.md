@@ -1,9 +1,8 @@
 Set up a new host
 =================
 
-```admonish info
-See also [the NixOS installation instructions](https://nixos.org/manual/nixos/stable/index.html#ch-installation).
-```
+> [!NOTE]
+> See also [the NixOS installation instructions](https://nixos.org/manual/nixos/stable/index.html#ch-installation).
 
 Install NixOS
 -------------
