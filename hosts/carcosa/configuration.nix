@@ -213,7 +213,7 @@ in
   services.caddy.virtualHosts."www.lookwhattheshoggothdraggedin.com".extraConfig = ''
     import common_config
 
-    header Content-Security-Policy "default-src 'self' umami.lookwhattheshoggothdraggedin.com; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data:"
+    header Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' 'unsafe-inline' data:"
 
     header /files/*         Cache-Control "public, immutable, max-age=604800"
     header /fonts/*         Cache-Control "public, immutable, max-age=31536000"
@@ -237,11 +237,6 @@ in
     }
 
     ${fileContents ./caddy/www-lookwhattheshoggothdraggedin-com.caddyfile}
-  '';
-
-  services.caddy.virtualHosts."umami.lookwhattheshoggothdraggedin.com".extraConfig = ''
-    import common_config
-    reverse_proxy http://127.0.0.1:${toString config.nixfiles.umami.port}
   '';
 
   services.caddy.virtualHosts."uzbl.org".extraConfig = ''
@@ -315,11 +310,6 @@ in
   nixfiles.concourse.enable = true;
   nixfiles.concourse.environmentFile = config.sops.secrets."nixfiles/concourse/env".path;
   sops.secrets."nixfiles/concourse/env" = { };
-
-  # Look what the Shoggoth Dragged In
-  nixfiles.umami.enable = true;
-  nixfiles.umami.environmentFile = config.sops.secrets."nixfiles/umami/env".path;
-  sops.secrets."nixfiles/umami/env" = { };
 
   # minecraft
   nixfiles.minecraft.enable = true;
