@@ -41,6 +41,19 @@ let
     header -Server
   '';
 
+  mdBook = path: ''
+    root * ${httpDir}/${path}
+    file_server
+
+    handle_errors {
+      @404 {
+        expression {http.error.status_code} == 404
+      }
+      rewrite @404 /404.html
+      file_server
+    }
+  '';
+
   cfg = config.nixfiles.hostTemplates.websiteMirror;
 in
 {
@@ -59,7 +72,7 @@ in
       environmentFile = cfg.acmeEnvironmentFile;
       domains."barrucadu.co.uk" = { extraDomainNames = [ "*.barrucadu.co.uk" ]; };
       domains."barrucadu.com" = { extraDomainNames = [ "*.barrucadu.com" ]; };
-      domains."barrucadu.dev" = { extraDomainNames = [ "*.barrucadu.dev" ]; };
+      domains."barrucadu.dev" = { extraDomainNames = [ "*.barrucadu.dev" "*.docs.barrucadu.dev" ]; };
       domains."barrucadu.uk" = { extraDomainNames = [ "*.barrucadu.uk" ]; };
     };
 
@@ -154,6 +167,10 @@ in
             "www" = ''
               redir https://www.barrucadu.co.uk
             '';
+            "dejafu.docs" = mdBook "barrucadu.dev/docs/dejafu";
+            "nixfiles.docs" = mdBook "barrucadu.dev/docs/nixfiles";
+            "resolved.docs" = mdBook "barrucadu.dev/docs/resolved";
+            "thing-doer.docs" = mdBook "barrucadu.dev/docs/thing-doer";
           };
         };
         mkVirtualHost = withTlsConfig: domain: subdomain: extraConfig: nameValuePair (if subdomain == "" then domain else "${subdomain}.${domain}") {
@@ -219,6 +236,12 @@ in
       "d ${httpDir}/barrucadu.co.uk/memo - concourse-deploy-robot nogroup -"
       "d ${httpDir}/barrucadu.co.uk/weeknotes - concourse-deploy-robot nogroup -"
       "d ${httpDir}/barrucadu.co.uk/www - concourse-deploy-robot nogroup -"
+      "d ${httpDir}/barrucadu.dev - concourse-deploy-robot nogroup -"
+      "d ${httpDir}/barrucadu.dev/docs - concourse-deploy-robot nogroup -"
+      "d ${httpDir}/barrucadu.dev/docs/dejafu - concourse-deploy-robot nogroup -"
+      "d ${httpDir}/barrucadu.dev/docs/nixfiles - concourse-deploy-robot nogroup -"
+      "d ${httpDir}/barrucadu.dev/docs/resolved - concourse-deploy-robot nogroup -"
+      "d ${httpDir}/barrucadu.dev/docs/thing-doer - concourse-deploy-robot nogroup -"
       # docker volumes
       "d ${config.nixfiles.oci-containers.volumeBaseDir}/bookdb/esdata - 1000 100 -"
       "d ${config.nixfiles.oci-containers.volumeBaseDir}/bookmarks/esdata - 1000 100 -"
