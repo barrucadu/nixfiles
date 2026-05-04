@@ -83,7 +83,7 @@ in
         url = config.services.forgejo.settings.server.ROOT_URL;
         tokenFile = cfg.runnerTokenPath;
         labels = [
-          "ubuntu-latest:docker://node:25-trixie"
+          "nix:docker://mirror.gcr.io/nixos/nix:2.33.5"
         ];
       };
     };
