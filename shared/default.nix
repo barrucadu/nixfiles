@@ -39,7 +39,6 @@ in
     ./resolved
     ./restic-backups
     ./torrents
-    ./umami
   ];
 
   config = {
