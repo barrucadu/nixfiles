@@ -170,7 +170,6 @@ in
             "dejafu.docs" = mdBook "barrucadu.dev/docs/dejafu";
             "nixfiles.docs" = mdBook "barrucadu.dev/docs/nixfiles";
             "resolved.docs" = mdBook "barrucadu.dev/docs/resolved";
-            "thing-doer.docs" = mdBook "barrucadu.dev/docs/thing-doer";
           };
         };
         mkVirtualHost = withTlsConfig: domain: subdomain: extraConfig: nameValuePair (if subdomain == "" then domain else "${subdomain}.${domain}") {
@@ -241,7 +240,6 @@ in
       "d ${httpDir}/barrucadu.dev/docs/dejafu - concourse-deploy-robot nogroup -"
       "d ${httpDir}/barrucadu.dev/docs/nixfiles - concourse-deploy-robot nogroup -"
       "d ${httpDir}/barrucadu.dev/docs/resolved - concourse-deploy-robot nogroup -"
-      "d ${httpDir}/barrucadu.dev/docs/thing-doer - concourse-deploy-robot nogroup -"
       # docker volumes
       "d ${config.nixfiles.oci-containers.volumeBaseDir}/bookdb/esdata - 1000 100 -"
       "d ${config.nixfiles.oci-containers.volumeBaseDir}/bookmarks/esdata - 1000 100 -"
