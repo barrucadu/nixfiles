@@ -158,13 +158,6 @@ in
     reverse_proxy http://localhost:${toString config.services.prometheus.port}
   '';
 
-  services.caddy.virtualHosts."cd.barrucadu.dev".extraConfig = ''
-    import common_config
-    reverse_proxy http://127.0.0.1:${toString config.nixfiles.concourse.port} {
-      flush_interval -1
-    }
-  '';
-
   services.caddy.virtualHosts."git.barrucadu.dev".extraConfig = ''
     import common_config
     reverse_proxy http://127.0.0.1:${toString config.nixfiles.forgejo.port}
@@ -305,11 +298,6 @@ in
   nixfiles.forgejo.runnerTokenPath = config.sops.secrets."nixfiles/forgejo/runner_token".path;
   sops.secrets."nixfiles/forgejo/admin_password" = { owner = "forgejo"; };
   sops.secrets."nixfiles/forgejo/runner_token" = { };
-
-  # concourse
-  nixfiles.concourse.enable = true;
-  nixfiles.concourse.environmentFile = config.sops.secrets."nixfiles/concourse/env".path;
-  sops.secrets."nixfiles/concourse/env" = { };
 
   # minecraft
   nixfiles.minecraft.enable = true;
