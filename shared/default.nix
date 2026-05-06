@@ -27,7 +27,6 @@ in
     ./acme
     ./bookdb
     ./bookmarks
-    ./concourse
     ./erase-your-darlings
     ./finder
     ./forgejo

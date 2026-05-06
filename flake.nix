@@ -126,7 +126,6 @@
                   ./shared/acme/options.nix
                   ./shared/bookdb/options.nix
                   ./shared/bookmarks/options.nix
-                  ./shared/concourse/options.nix
                   ./shared/erase-your-darlings/options.nix
                   ./shared/finder/options.nix
                   ./shared/forgejo/options.nix
