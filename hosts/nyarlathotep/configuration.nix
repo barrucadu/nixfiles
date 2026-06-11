@@ -364,7 +364,11 @@ in
   sops.secrets."services/alertmanager/env" = { };
 
   services.grafana = {
-    settings.server.root_url = "http://grafana.nyarlathotep.lan";
+    settings = {
+      server.root_url = "http://grafana.nyarlathotep.lan";
+      security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}}";
+      security.secret_key = "$__file{${config.sops.secrets."services/grafana/secret_key".path}}";
+    };
     provision = {
       datasources.settings.datasources = [
         {
@@ -383,6 +387,8 @@ in
         ];
     };
   };
+  sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
+  sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
 
   services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
   services.prometheus.scrapeConfigs = [

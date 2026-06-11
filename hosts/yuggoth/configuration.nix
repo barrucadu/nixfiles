@@ -33,6 +33,8 @@ with lib;
   nixfiles.eraseYourDarlings.barrucaduPasswordFile = config.sops.secrets."users/barrucadu".path;
   sops.secrets."users/barrucadu".neededForUsers = true;
 
+  services.grafana.enable = mkForce false;
+
   ###############################################################################
   ## Website Mirror
   ###############################################################################
