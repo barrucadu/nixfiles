@@ -9,7 +9,7 @@
 #
 # ["erase your darlings"]: https://grahamc.com/blog/erase-your-darlings/
 # ["set up a new host"]: ./runbooks/set-up-a-new-host.md
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
 
@@ -23,9 +23,17 @@ in
 
   config = mkIf cfg.enable {
     # Wipe / on boot
-    boot.initrd.postResumeCommands = mkAfter ''
-      zfs rollback -r ${cfg.rootSnapshot}
-    '';
+    boot.initrd.systemd.services.zfs-rollback-root = {
+      wantedBy = ["initrd.target"];
+      after = ["zfs-import.target"];
+      before = ["sysroot.mount"];
+      path = [ pkgs.zfs ];
+      unitConfig.DefaultDependencies = "no";
+      serviceConfig.Type = "oneshot";
+      script = ''
+        zfs rollback -r ${cfg.rootSnapshot}
+      '';
+    };
 
     # Set /etc/machine-id, so that journalctl can access logs from
     # previous boots.

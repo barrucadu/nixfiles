@@ -128,6 +128,10 @@ in
     ## ZFS
     #############################################################################
 
+    # Do not force-import the root pool, if importing root fails add
+    # `zfs_force=1` to the kernel command line
+    boot.zfs.forceImportRoot = false;
+
     # Auto-trim is enabled per-pool:
     # run `sudo zpool set autotrim=on <pool>`
     services.zfs.trim.enable = thereAreZfsFilesystems;
