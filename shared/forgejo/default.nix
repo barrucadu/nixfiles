@@ -40,6 +40,8 @@ in
       dump = {
         enable = true;
         type = "tar.xz";
+        age = "1d";
+        interval = "02:00";
       };
       settings = {
         actions = {
