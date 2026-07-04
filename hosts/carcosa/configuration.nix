@@ -315,7 +315,7 @@ in
   nixfiles.pleroma.domain = "social.lainon.life";
   nixfiles.pleroma.faviconPath = ./pleroma-favicon.png;
   nixfiles.pleroma.secretsFile = config.sops.secrets."nixfiles/pleroma/exc".path;
-  nixfiles.pleroma.allowRegistration = true;
+  nixfiles.pleroma.allowRegistration = false;
   sops.secrets."nixfiles/pleroma/exc".owner = config.users.users.pleroma.name;
 
 
