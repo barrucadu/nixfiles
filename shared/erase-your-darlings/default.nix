@@ -24,9 +24,9 @@ in
   config = mkIf cfg.enable {
     # Wipe / on boot
     boot.initrd.systemd.services.zfs-rollback-root = {
-      wantedBy = ["initrd.target"];
-      after = ["zfs-import.target"];
-      before = ["sysroot.mount"];
+      wantedBy = [ "initrd.target" ];
+      after = [ "zfs-import.target" ];
+      before = [ "sysroot.mount" ];
       path = [ pkgs.zfs ];
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";

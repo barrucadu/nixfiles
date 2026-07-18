@@ -173,8 +173,9 @@ in
   services.samba.settings =
     let
       mkPublic = n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; };
-      mkPrivate = n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; "valid users" = ["barrucadu"]; };
-    in listToAttrs (map mkPublic sharesPublic ++ map mkPrivate sharesPrivate);
+      mkPrivate = n: nameValuePair n { path = "/mnt/nas/${n}"; writable = "yes"; "valid users" = [ "barrucadu" ]; };
+    in
+    listToAttrs (map mkPublic sharesPublic ++ map mkPrivate sharesPrivate);
 
   # Guest user for Samba
   users.users.notbarrucadu = {

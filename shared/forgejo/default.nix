@@ -70,12 +70,14 @@ in
     systemd.services.forgejo = {
       after = [ "${config.nixfiles.oci-containers.backend}-pleroma-db.service" ];
       requires = [ "${config.nixfiles.oci-containers.backend}-pleroma-db.service" ];
-      preStart = let 
-        cmd = "${lib.getExe config.services.forgejo.package} admin user";
-      in ''
-        ${cmd} create --admin --email "root@localhost" --username ${cfg.adminUserName} --password "$(tr -d '\n' < ${cfg.adminUserPasswordPath})" || true
-        ${cmd} change-password --username ${cfg.adminUserName} --password "$(tr -d '\n' < ${cfg.adminUserPasswordPath})" || true
-      '';
+      preStart =
+        let
+          cmd = "${lib.getExe config.services.forgejo.package} admin user";
+        in
+        ''
+          ${cmd} create --admin --email "root@localhost" --username ${cfg.adminUserName} --password "$(tr -d '\n' < ${cfg.adminUserPasswordPath})" || true
+          ${cmd} change-password --username ${cfg.adminUserName} --password "$(tr -d '\n' < ${cfg.adminUserPasswordPath})" || true
+        '';
     };
 
     services.gitea-actions-runner = {

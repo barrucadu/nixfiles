@@ -87,12 +87,13 @@ in
 
           for i in 1 2 3 4 5 6 7 8 9 10; do handle_page $i; done
         '';
-        paths = ["repositories"];
+        paths = [ "repositories" ];
       };
-    in {
+    in
+    {
       github = backupGitRepos "GITHUB_TOKEN" "https://api.github.com/user/repos?type=owner&";
       forgejo = backupGitRepos "FORGEJO_TOKEN" "https://git.barrucadu.dev/api/v1/user/repos?";
-      syncthing = { paths = ["/home/barrucadu/s"]; };
+      syncthing = { paths = [ "/home/barrucadu/s" ]; };
     };
   sops.secrets."nixfiles/restic-backups/env" = { };
 
