@@ -67,29 +67,33 @@ in
   nixfiles.restic-backups.enable = true;
   nixfiles.restic-backups.environmentFile = config.sops.secrets."nixfiles/restic-backups/env".path;
   nixfiles.restic-backups.checkRepositoryAt = "Wed, 12:00";
-  nixfiles.restic-backups.backups.github = {
-    # TODO: this will break when I have >100 github repos
-    # TODO: use a backup-specific SSH key?
-    prepareCommand = ''
-      ${pkgs.coreutils}/bin/mkdir repositories
-      cd repositories
+  nixfiles.restic-backups.backups =
+    let
+      backupGitRepos = envVar: apiPath: {
+        # TODO: this will break when I have >10 pages of results
+        # TODO: use a backup-specific SSH key?
+        prepareCommand = ''
+          ${pkgs.coreutils}/bin/mkdir repositories
+          cd repositories
 
-      ${pkgs.curl}/bin/curl -u "barrucadu:''${GITHUB_TOKEN}" 'https://api.github.com/user/repos?type=owner&per_page=100' 2>/dev/null | \
-        ${pkgs.jq}/bin/jq -r '.[].ssh_url' | \
-        while read url; do
-          env GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/barrucadu/.ssh/id_ed25519" \
-            ${pkgs.git}/bin/git clone --bare "$url"
-        done
-    '';
-    paths = [
-      "repositories"
-    ];
-  };
-  nixfiles.restic-backups.backups.syncthing = {
-    paths = [
-      "/home/barrucadu/s"
-    ];
-  };
+          handle_page() {
+            ${pkgs.curl}/bin/curl -u "barrucadu:''${${envVar}}" "${apiPath}page=''${1}" 2>/dev/null | \
+              ${pkgs.jq}/bin/jq -r '.[].ssh_url' | \
+              while read url; do
+                env GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/barrucadu/.ssh/id_ed25519" \
+                  ${pkgs.git}/bin/git clone --bare "$url"
+              done
+          }
+
+          for i in 1 2 3 4 5 6 7 8 9 10; do handle_page $i; done
+        '';
+        paths = ["repositories"];
+      };
+    in {
+      github = backupGitRepos "GITHUB_TOKEN" "https://api.github.com/user/repos?type=owner&";
+      forgejo = backupGitRepos "FORGEJO_TOKEN" "https://git.barrucadu.dev/api/v1/user/repos?";
+      syncthing = { paths = ["/home/barrucadu/s"]; };
+    };
   sops.secrets."nixfiles/restic-backups/env" = { };
 
 
