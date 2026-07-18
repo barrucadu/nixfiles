@@ -1,3 +1,3 @@
-nix fmt
+nix fmt -- .
 
 black .
