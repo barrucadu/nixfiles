@@ -31,13 +31,13 @@ let
   shouldDependOnNetwork = _name: container: container.network != null;
   mkDependOnNetwork = nameValuePair "${cfg.backend}-${name}" (
     let u = "${cfg.backend}-net-${container.network}.service";
-    in { after = [u]; requires = [u]; }
+    in { after = [ u ]; requires = [ u ]; }
   );
 
   shouldDependOnPod = _name: container: container.pod != null;
   mkDependOnPod = name: container: nameValuePair "${cfg.backend}-${name}" (
     let u = "${cfg.backend}-pod-${container.pod}.service";
-    in { after = [u]; requires = [u]; }
+    in { after = [ u ]; requires = [ u ]; }
   );
 
   shouldNetworkService = _name: container: container.network != null;
