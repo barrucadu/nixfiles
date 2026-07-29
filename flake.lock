@@ -13,11 +13,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782975552,
-        "narHash": "sha256-1t55CUgrXoKLNOXkUpT3U/Qk9/9N4+QSUAWFfTwZATg=",
+        "lastModified": 1785362801,
+        "narHash": "sha256-MrMY2jW9dr18BcysyBDFUqEYwp+wctLY/4BORMJ0syA=",
         "owner": "barrucadu",
         "repo": "bookdb",
-        "rev": "b10ab053d8cb46b0c8d33720b94c935e122e810c",
+        "rev": "f826376266380612386e7d8af063d9b25d984440",
         "type": "github"
       },
       "original": {
@@ -39,11 +39,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782512103,
-        "narHash": "sha256-VzGj3QIUlwdNbv41G2MsjJmBodndkxWlPm3A9Ui4shg=",
+        "lastModified": 1785364024,
+        "narHash": "sha256-NdC4bNILEJCidtr4TahYdr/Y9/i4zBAMo23FKnqLPJg=",
         "owner": "barrucadu",
         "repo": "bookmarks",
-        "rev": "e0e8dd79b0644745a6d6e61b65a4a889d732721d",
+        "rev": "a98fb5d3d252b29ebb739ad056e8bcadaa0a2bda",
         "type": "github"
       },
       "original": {
