@@ -89,6 +89,11 @@ in
 
   nixfiles.restic-backups.enable = true;
   nixfiles.restic-backups.environmentFile = config.sops.secrets."nixfiles/restic-backups/env".path;
+  nixfiles.restic-backups.backups.streaming = {
+    paths = [
+      "/mnt/nas/private/streaming"
+    ];
+  };
   nixfiles.restic-backups.backups.torrents = {
     prepareCommand = ''
       ${pkgs.python3}/bin/python3 ${./jobs/restic-prepare--hardlink-torrent-files.py} > hardlink-torrent-files.sh
