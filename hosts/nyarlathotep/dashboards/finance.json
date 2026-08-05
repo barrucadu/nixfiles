@@ -4,24 +4,10 @@
   "metadata": {
     "name": "H-xV7PFMz",
     "namespace": "default",
-    "uid": "6a1492e7-9353-410d-8fbd-87b1f4ebe697",
-    "resourceVersion": "1782913817934009",
+    "uid": "ef570837-f0df-4e3a-b7fe-4fa36710ce47",
+    "resourceVersion": "1785966486334012",
     "generation": 1,
-    "creationTimestamp": "2026-07-01T13:50:17Z",
-    "labels": {
-      "grafana.app/deprecatedInternalID": "661040071884800"
-    },
-    "annotations": {
-      "grafana.app/createdBy": "access-policy:service",
-      "grafana.app/folder": "cfqsv0plwz08wf",
-      "grafana.app/managedBy": "classic-file-provisioning",
-      "grafana.app/managerId": "finance.json",
-      "grafana.app/sourceChecksum": "3595413266c0a85a0bdd8f0eef938f87",
-      "grafana.app/sourcePath": "/nix/store/03gg6c939b7zw463abhmjv8y5q9ycq3k-finance.json",
-      "grafana.app/sourceTimestamp": "1000",
-      "grafana.app/folderTitle": "My Dashboards",
-      "grafana.app/folderUrl": "/dashboards/f/cfqsv0plwz08wf/my-dashboards"
-    }
+    "creationTimestamp": "2026-08-05T21:48:06Z"
   },
   "spec": {
     "annotations": [
@@ -76,7 +62,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:huel\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
+                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:food:huel\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
                         "interval": "",
                         "legendFormat": "",
                         "range": true
@@ -153,7 +139,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -240,7 +226,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -341,7 +327,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -442,7 +428,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -543,7 +529,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -768,7 +754,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -947,7 +933,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1048,7 +1034,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1190,7 +1176,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1332,7 +1318,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1433,7 +1419,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1537,7 +1523,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1641,7 +1627,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1745,7 +1731,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1849,7 +1835,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -1953,7 +1939,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -2168,7 +2154,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -2387,7 +2373,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -2488,7 +2474,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -2589,7 +2575,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -2690,7 +2676,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -2792,7 +2778,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -2893,7 +2879,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -2994,7 +2980,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -3095,7 +3081,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -3196,7 +3182,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -3297,7 +3283,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -3521,7 +3507,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -3610,7 +3596,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -3703,7 +3689,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -3794,7 +3780,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -4281,7 +4267,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -4559,7 +4545,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -4652,7 +4638,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -4751,7 +4737,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -4852,7 +4838,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -4992,7 +4978,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5132,7 +5118,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5272,7 +5258,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5365,7 +5351,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5505,7 +5491,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5680,7 +5666,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5718,7 +5704,7 @@
                 "mode": "markdown"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5756,7 +5742,7 @@
                 "mode": "markdown"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5794,7 +5780,7 @@
                 "mode": "markdown"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5895,7 +5881,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -5996,7 +5982,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -6097,7 +6083,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -6198,7 +6184,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -6299,7 +6285,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -6400,7 +6386,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       },
@@ -6501,7 +6487,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.0.2"
+            "version": "13.0.3"
           }
         }
       }
@@ -6828,7 +6814,7 @@
                           "kind": "ElementReference",
                           "name": "panel-34"
                         },
-                        "height": 2,
+                        "height": 3,
                         "width": 4,
                         "x": 0,
                         "y": 1
@@ -6909,7 +6895,7 @@
                         "height": 3,
                         "width": 4,
                         "x": 0,
-                        "y": 3
+                        "y": 4
                       }
                     },
                     {
