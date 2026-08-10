@@ -4,10 +4,10 @@
   "metadata": {
     "name": "H-xV7PFMz",
     "namespace": "default",
-    "uid": "ef570837-f0df-4e3a-b7fe-4fa36710ce47",
-    "resourceVersion": "1785966486334012",
+    "uid": "641958d3-e370-47bd-bbb3-564f38a7d483",
+    "resourceVersion": "1786365205246013",
     "generation": 1,
-    "creationTimestamp": "2026-08-05T21:48:06Z"
+    "creationTimestamp": "2026-08-10T12:33:25Z"
   },
   "spec": {
     "annotations": [
@@ -42,107 +42,6 @@
     "cursorSync": "Off",
     "editable": true,
     "elements": {
-      "panel-100": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:food:huel\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£75",
-          "id": 100,
-          "links": [],
-          "title": "Huel",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 500,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 250
-                      },
-                      {
-                        "color": "green",
-                        "value": 375
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
       "panel-101": {
         "kind": "Panel",
         "spec": {
@@ -224,309 +123,6 @@
                 "showPercentChange": false,
                 "textMode": "auto",
                 "wideLayout": true
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-102": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:house:insurance\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£500 (due April)",
-          "id": 102,
-          "links": [],
-          "title": "Home Insurance",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 500,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 250
-                      },
-                      {
-                        "color": "green",
-                        "value": 375
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-103": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:house:maintenance\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "",
-          "id": 103,
-          "links": [],
-          "title": "Home Maintenance",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 5000,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 2500
-                      },
-                      {
-                        "color": "green",
-                        "value": 3750
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-105": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:goals\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "Excluding money allocated towards specific goals.",
-          "id": 105,
-          "links": [],
-          "title": "Goals",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 250,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 125
-                      },
-                      {
-                        "color": "green",
-                        "value": 187.5
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
               }
             },
             "version": "13.0.3"
@@ -937,107 +533,6 @@
           }
         }
       },
-      "panel-110": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:twitch\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£25",
-          "id": 110,
-          "links": [],
-          "title": "Twitch",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 100,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 50
-                      },
-                      {
-                        "color": "green",
-                        "value": 75
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
       "panel-111": {
         "kind": "Panel",
         "spec": {
@@ -1322,7 +817,7 @@
           }
         }
       },
-      "panel-113": {
+      "panel-114": {
         "kind": "Panel",
         "spec": {
           "data": {
@@ -1341,15 +836,58 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:household\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
+                        "expr": "hledger_synthetic_balance{account=\"$syn_budget_month\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}",
+                        "instant": false,
+                        "legendFormat": "Budget",
                         "range": true
                       },
                       "version": "v0"
                     },
-                    "refId": "A"
+                    "refId": "Current"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "hledger_synthetic_balance_target{account=\"$syn_budget_month\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}",
+                        "instant": false,
+                        "legendFormat": "Target",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Target"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "clamp(\r\n    (\r\n        max(last_over_time(hledger_synthetic_balance{account=\"$syn_budget_month\"}[30d]) * on(currency) last_over_time(hledger_fx_rate{target_currency=\"$currency\"}[30d])) without(account, currency)\r\n        >=\r\n        max(last_over_time(hledger_synthetic_balance_target{account=\"$syn_budget_month\"}[30d]) * on(currency) last_over_time(hledger_fx_rate{target_currency=\"$currency\"}[30d])) without(account, currency)\r\n    ) and 1 or 0,\r\n    0, 1\r\n)",
+                        "instant": false,
+                        "legendFormat": "IsGood",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "IsGood"
                   }
                 }
               ],
@@ -1357,13 +895,13 @@
               "transformations": []
             }
           },
-          "description": "~£?",
-          "id": 113,
+          "description": "",
+          "id": 114,
           "links": [],
-          "title": "Grooming",
+          "title": "$syn_budget_month",
           "transparent": true,
           "vizConfig": {
-            "group": "bargauge",
+            "group": "stat",
             "kind": "VizConfig",
             "spec": {
               "fieldConfig": {
@@ -1371,42 +909,61 @@
                   "color": {
                     "mode": "thresholds"
                   },
-                  "max": 250,
-                  "min": 0,
+                  "decimals": 2,
+                  "fieldMinMax": false,
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "red",
+                        "color": "text",
                         "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 125
-                      },
-                      {
-                        "color": "green",
-                        "value": 187.5
                       }
                     ]
                   },
                   "unit": "currencyGBP"
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "IsGood",
+                      "scope": "series"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "0": {
+                                "color": "red",
+                                "index": 0,
+                                "text": "✗"
+                              },
+                              "1": {
+                                "color": "green",
+                                "index": 1,
+                                "text": "✓"
+                              }
+                            },
+                            "type": "value"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "⠀"
+                      }
+                    ]
+                  }
+                ]
               },
               "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
                 "reduceOptions": {
                   "calcs": [
                     "lastNotNull"
@@ -1414,9 +971,536 @@
                   "fields": "",
                   "values": false
                 },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.0.3"
+          }
+        }
+      },
+      "panel-117": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 117,
+          "links": [],
+          "title": "FLOATS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+          "transparent": true,
+          "vizConfig": {
+            "group": "text",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "",
+                "mode": "markdown"
+              }
+            },
+            "version": "13.0.3"
+          }
+        }
+      },
+      "panel-118": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "hledger_synthetic_balance{account=\"$syn_budget_year\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}",
+                        "instant": false,
+                        "legendFormat": "Budget",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Current"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "hledger_synthetic_balance_target{account=\"$syn_budget_year\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}",
+                        "instant": false,
+                        "legendFormat": "Target",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Target"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "clamp(\r\n    (\r\n        max(last_over_time(hledger_synthetic_balance{account=\"$syn_budget_year\"}[30d]) * on(currency) last_over_time(hledger_fx_rate{target_currency=\"$currency\"}[30d])) without(account, currency)\r\n        >=\r\n        max(last_over_time(hledger_synthetic_balance_target{account=\"$syn_budget_year\"}[30d]) * on(currency) last_over_time(hledger_fx_rate{target_currency=\"$currency\"}[30d])) without(account, currency)\r\n    ) and 1 or 0,\r\n    0, 1\r\n)",
+                        "instant": false,
+                        "legendFormat": "IsGood",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "IsGood"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 118,
+          "links": [],
+          "title": "$syn_budget_year",
+          "transparent": true,
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "decimals": 2,
+                  "fieldMinMax": false,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "text",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "currencyGBP"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "IsGood",
+                      "scope": "series"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "0": {
+                                "color": "red",
+                                "index": 0,
+                                "text": "✗"
+                              },
+                              "1": {
+                                "color": "green",
+                                "index": 1,
+                                "text": "✓"
+                              }
+                            },
+                            "type": "value"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "⠀"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.0.3"
+          }
+        }
+      },
+      "panel-119": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "hledger_synthetic_balance{account=\"$syn_budget_sinking\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}",
+                        "instant": false,
+                        "legendFormat": "Budget",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Current"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": true,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "hledger_synthetic_balance_target{account=\"$syn_budget_sinking\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}",
+                        "instant": false,
+                        "legendFormat": "Target",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Target"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": true,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "clamp(\r\n    (\r\n        max(last_over_time(hledger_synthetic_balance{account=\"$syn_budget_sinking\"}[30d]) * on(currency) last_over_time(hledger_fx_rate{target_currency=\"$currency\"}[30d])) without(account, currency)\r\n        >=\r\n        max(last_over_time(hledger_synthetic_balance_target{account=\"$syn_budget_sinking\"}[30d]) * on(currency) last_over_time(hledger_fx_rate{target_currency=\"$currency\"}[30d])) without(account, currency)\r\n    ) and 1 or 0,\r\n    0, 1\r\n)",
+                        "instant": false,
+                        "legendFormat": "IsGood",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "IsGood"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 119,
+          "links": [],
+          "title": "$syn_budget_sinking",
+          "transparent": true,
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "decimals": 2,
+                  "fieldMinMax": false,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "text",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "currencyGBP"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "IsGood",
+                      "scope": "series"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "0": {
+                                "color": "red",
+                                "index": 0,
+                                "text": "✗"
+                              },
+                              "1": {
+                                "color": "green",
+                                "index": 1,
+                                "text": "✓"
+                              }
+                            },
+                            "type": "value"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "⠀"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.0.3"
+          }
+        }
+      },
+      "panel-120": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "hledger_synthetic_balance{account=\"$syn_float\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}",
+                        "instant": false,
+                        "legendFormat": "Budget",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Current"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "hledger_synthetic_balance_target{account=\"$syn_float\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}",
+                        "instant": false,
+                        "legendFormat": "Target",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Target"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "clamp(\r\n    (\r\n        max(last_over_time(hledger_synthetic_balance{account=\"$syn_float\"}[30d]) * on(currency) last_over_time(hledger_fx_rate{target_currency=\"$currency\"}[30d])) without(account, currency)\r\n        >=\r\n        max(last_over_time(hledger_synthetic_balance_target{account=\"$syn_float\"}[30d]) * on(currency) last_over_time(hledger_fx_rate{target_currency=\"$currency\"}[30d])) without(account, currency)\r\n    ) and 1 or 0,\r\n    0, 1\r\n)",
+                        "instant": false,
+                        "legendFormat": "IsGood",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "IsGood"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 120,
+          "links": [],
+          "title": "$syn_float",
+          "transparent": true,
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "decimals": 2,
+                  "fieldMinMax": false,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "text",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "currencyGBP"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "IsGood",
+                      "scope": "series"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "0": {
+                                "color": "red",
+                                "index": 0,
+                                "text": "✗"
+                              },
+                              "1": {
+                                "color": "green",
+                                "index": 1,
+                                "text": "✓"
+                              }
+                            },
+                            "type": "value"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "⠀"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
               }
             },
             "version": "13.0.3"
@@ -1961,10 +2045,12 @@
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
+                        "editorMode": "code",
                         "exemplar": true,
                         "expr": "sum(hledger_balance{account=\"assets\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
                         "interval": "",
-                        "legendFormat": "Total Assets"
+                        "legendFormat": "Total Assets",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2371,916 +2457,6 @@
                   "mode": "multi",
                   "sort": "none"
                 }
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-31": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:health\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "",
-          "id": 31,
-          "links": [],
-          "title": "Health",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 2000,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 1000
-                      },
-                      {
-                        "color": "green",
-                        "value": 1500
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-32": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:household\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£100",
-          "id": 32,
-          "links": [],
-          "title": "Household",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 500,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 250
-                      },
-                      {
-                        "color": "green",
-                        "value": 375
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-33": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:phone\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£20",
-          "id": 33,
-          "links": [],
-          "title": "Phone",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 100,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 50
-                      },
-                      {
-                        "color": "green",
-                        "value": 75
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-34": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:house:counciltax\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£170",
-          "id": 34,
-          "links": [],
-          "title": "Council Tax",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 750,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 375
-                      },
-                      {
-                        "color": "green",
-                        "value": 563
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "manual",
-                "text": {},
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-35": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:travel\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£500",
-          "id": 35,
-          "links": [],
-          "title": "Travel",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 2500,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 1250
-                      },
-                      {
-                        "color": "green",
-                        "value": 1875
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-36": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:house:utilities\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£200",
-          "id": 36,
-          "links": [],
-          "title": "Utilities",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 1000,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 500
-                      },
-                      {
-                        "color": "green",
-                        "value": 750
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-37": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:patreon\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£20",
-          "id": 37,
-          "links": [],
-          "title": "Patreon",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 100,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 50
-                      },
-                      {
-                        "color": "green",
-                        "value": 75
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-38": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:protonmail\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~50 EUR (due July)",
-          "id": 38,
-          "links": [],
-          "title": "Protonmail",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 50,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 25
-                      },
-                      {
-                        "color": "green",
-                        "value": 37.5
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-40": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:web\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£75",
-          "id": 40,
-          "links": [],
-          "title": "Web",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 500,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 250
-                      },
-                      {
-                        "color": "green",
-                        "value": 375
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
               }
             },
             "version": "13.0.3"
@@ -4642,206 +3818,6 @@
           }
         }
       },
-      "panel-76": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "exemplar": true,
-                        "expr": "sum(hledger_balance{account=\"assets:investments:fidelity:management\"} * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": ""
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£25",
-          "id": 76,
-          "links": [],
-          "title": "Fidelity Fees",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 100,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 50
-                      },
-                      {
-                        "color": "green",
-                        "value": 75
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-78": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:gift\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "",
-          "id": 78,
-          "links": [],
-          "title": "Gift",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 250,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 125
-                      },
-                      {
-                        "color": "green",
-                        "value": 187.5
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
       "panel-81": {
         "kind": "Panel",
         "spec": {
@@ -5684,7 +4660,7 @@
           "description": "",
           "id": 88,
           "links": [],
-          "title": "ANNUALLY - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+          "title": "ANNUALLY - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
           "transparent": true,
           "vizConfig": {
             "group": "text",
@@ -5722,7 +4698,7 @@
           "description": "",
           "id": 90,
           "links": [],
-          "title": "MONTHLY - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+          "title": "MONTHLY - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
           "transparent": true,
           "vizConfig": {
             "group": "text",
@@ -5760,7 +4736,7 @@
           "description": "",
           "id": 91,
           "links": [],
-          "title": "SINKING - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+          "title": "SINKING - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
           "transparent": true,
           "vizConfig": {
             "group": "text",
@@ -5778,713 +4754,6 @@
                 },
                 "content": "",
                 "mode": "markdown"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-92": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:british_museum\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~£100 (due November)",
-          "id": 92,
-          "links": [],
-          "title": "British Museum",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 100,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 50
-                      },
-                      {
-                        "color": "green",
-                        "value": 75
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-93": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:obsidian\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "~50 USD (due April)",
-          "id": 93,
-          "links": [],
-          "title": "Obsidian",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 50,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 25
-                      },
-                      {
-                        "color": "green",
-                        "value": 37.5
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-95": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:holiday\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "",
-          "id": 95,
-          "links": [],
-          "title": "Holiday",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 10000,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 5000
-                      },
-                      {
-                        "color": "green",
-                        "value": 7500
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-96": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:invest\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "",
-          "id": 96,
-          "links": [],
-          "title": "Invest",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 8000,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 4000
-                      },
-                      {
-                        "color": "green",
-                        "value": 6000
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-97": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:investments:nsi:premium_bonds:emergency\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "",
-          "id": 97,
-          "links": [],
-          "title": "Emergency",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 10000,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 5000
-                      },
-                      {
-                        "color": "green",
-                        "value": 7500
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-98": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:clothes\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "",
-          "id": 98,
-          "links": [],
-          "title": "Clothes",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 300,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 150
-                      },
-                      {
-                        "color": "green",
-                        "value": 225
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-              }
-            },
-            "version": "13.0.3"
-          }
-        }
-      },
-      "panel-99": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": true,
-                        "expr": "sum(sum(hledger_balance{account=~\"assets:.*:saved:repairs\"}) by (currency) * on(currency) hledger_fx_rate{target_currency=\"$currency\"}) by(target_currency)",
-                        "interval": "",
-                        "legendFormat": "",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "",
-          "id": 99,
-          "links": [],
-          "title": "Repairs",
-          "transparent": true,
-          "vizConfig": {
-            "group": "bargauge",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "max": 500,
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 250
-                      },
-                      {
-                        "color": "green",
-                        "value": 375
-                      }
-                    ]
-                  },
-                  "unit": "currencyGBP"
-                },
-                "overrides": []
-              },
-              "options": {
-                "displayMode": "lcd",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
               }
             },
             "version": "13.0.3"
@@ -6812,142 +5081,18 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-34"
+                          "name": "panel-114"
                         },
-                        "height": 3,
-                        "width": 4,
+                        "height": 4,
+                        "repeat": {
+                          "direction": "h",
+                          "maxPerRow": 6,
+                          "mode": "variable",
+                          "value": "syn_budget_month"
+                        },
+                        "width": 24,
                         "x": 0,
                         "y": 1
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-76"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 4,
-                        "y": 1
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-113"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 8,
-                        "y": 1
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-32"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 12,
-                        "y": 1
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-100"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 16,
-                        "y": 1
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-37"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 20,
-                        "y": 1
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-33"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 0,
-                        "y": 4
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-35"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 4,
-                        "y": 4
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-110"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 8,
-                        "y": 4
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-36"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 12,
-                        "y": 4
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-40"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 16,
-                        "y": 4
                       }
                     },
                     {
@@ -6960,7 +5105,7 @@
                         "height": 1,
                         "width": 24,
                         "x": 0,
-                        "y": 7
+                        "y": 9
                       }
                     },
                     {
@@ -6968,51 +5113,18 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-92"
+                          "name": "panel-118"
                         },
-                        "height": 3,
-                        "width": 4,
+                        "height": 4,
+                        "repeat": {
+                          "direction": "h",
+                          "maxPerRow": 6,
+                          "mode": "variable",
+                          "value": "syn_budget_year"
+                        },
+                        "width": 24,
                         "x": 0,
-                        "y": 8
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-102"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 4,
-                        "y": 8
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-93"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 8,
-                        "y": 8
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-38"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 12,
-                        "y": 8
+                        "y": 10
                       }
                     },
                     {
@@ -7025,7 +5137,7 @@
                         "height": 1,
                         "width": 24,
                         "x": 0,
-                        "y": 11
+                        "y": 14
                       }
                     },
                     {
@@ -7033,88 +5145,16 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-98"
+                          "name": "panel-119"
                         },
-                        "height": 3,
-                        "width": 4,
-                        "x": 0,
-                        "y": 12
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-97"
+                        "height": 4,
+                        "repeat": {
+                          "direction": "h",
+                          "maxPerRow": 6,
+                          "mode": "variable",
+                          "value": "syn_budget_sinking"
                         },
-                        "height": 3,
-                        "width": 4,
-                        "x": 4,
-                        "y": 12
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-78"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 8,
-                        "y": 12
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-105"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 12,
-                        "y": 12
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-31"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 16,
-                        "y": 12
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-95"
-                        },
-                        "height": 3,
-                        "width": 4,
-                        "x": 20,
-                        "y": 12
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-103"
-                        },
-                        "height": 3,
-                        "width": 4,
+                        "width": 24,
                         "x": 0,
                         "y": 15
                       }
@@ -7124,12 +5164,12 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-96"
+                          "name": "panel-117"
                         },
-                        "height": 3,
-                        "width": 4,
-                        "x": 4,
-                        "y": 15
+                        "height": 1,
+                        "width": 24,
+                        "x": 0,
+                        "y": 23
                       }
                     },
                     {
@@ -7137,12 +5177,18 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-99"
+                          "name": "panel-120"
                         },
-                        "height": 3,
-                        "width": 4,
-                        "x": 8,
-                        "y": 15
+                        "height": 4,
+                        "repeat": {
+                          "direction": "h",
+                          "maxPerRow": 6,
+                          "mode": "variable",
+                          "value": "syn_float"
+                        },
+                        "width": 24,
+                        "x": 0,
+                        "y": 24
                       }
                     }
                   ]
@@ -7293,7 +5339,7 @@
             "text": "victoriametrics",
             "value": "PABDA7AB1AD2A1489"
           },
-          "hide": "dontHide",
+          "hide": "hideVariable",
           "includeAll": false,
           "multi": false,
           "name": "datasource",
@@ -7344,11 +5390,149 @@
             "text": "365",
             "value": "365"
           },
-          "hide": "dontHide",
+          "hide": "hideVariable",
           "label": "aggregation window (days)",
           "name": "agg_window",
           "query": "365",
           "skipUrlSync": false
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": false,
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "definition": "label_values(hledger_synthetic_balance,account)",
+          "hide": "hideVariable",
+          "includeAll": true,
+          "multi": true,
+          "name": "syn_budget_month",
+          "options": [],
+          "query": {
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "group": "prometheus",
+            "kind": "DataQuery",
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(hledger_synthetic_balance,account)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            },
+            "version": "v0"
+          },
+          "refresh": "onDashboardLoad",
+          "regex": "/^syn:budget:month:/",
+          "regexApplyTo": "value",
+          "skipUrlSync": false,
+          "sort": "disabled"
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": false,
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "definition": "label_values(hledger_synthetic_balance,account)",
+          "hide": "hideVariable",
+          "includeAll": true,
+          "multi": true,
+          "name": "syn_budget_year",
+          "options": [],
+          "query": {
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "group": "prometheus",
+            "kind": "DataQuery",
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(hledger_synthetic_balance,account)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            },
+            "version": "v0"
+          },
+          "refresh": "onDashboardLoad",
+          "regex": "/^syn:budget:year:/",
+          "regexApplyTo": "value",
+          "skipUrlSync": false,
+          "sort": "disabled"
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": false,
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "definition": "label_values(hledger_synthetic_balance,account)",
+          "hide": "hideVariable",
+          "includeAll": true,
+          "multi": true,
+          "name": "syn_budget_sinking",
+          "options": [],
+          "query": {
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "group": "prometheus",
+            "kind": "DataQuery",
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(hledger_synthetic_balance,account)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            },
+            "version": "v0"
+          },
+          "refresh": "onDashboardLoad",
+          "regex": "/^syn:budget:sinking:/",
+          "regexApplyTo": "value",
+          "skipUrlSync": false,
+          "sort": "disabled"
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": false,
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "definition": "label_values(hledger_synthetic_balance,account)",
+          "hide": "hideVariable",
+          "includeAll": true,
+          "multi": true,
+          "name": "syn_float",
+          "options": [],
+          "query": {
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "group": "prometheus",
+            "kind": "DataQuery",
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(hledger_synthetic_balance,account)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            },
+            "version": "v0"
+          },
+          "refresh": "onDashboardLoad",
+          "regex": "/^syn:float:/",
+          "regexApplyTo": "value",
+          "skipUrlSync": false,
+          "sort": "disabled"
         }
       }
     ]

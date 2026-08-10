@@ -35,6 +35,19 @@ def hledger_command(args):
     return proc.stdout.decode("utf-8")
 
 
+def synthetic_command(args):
+    """Wrapper for `hledger_command` that runs the command against the synthetic
+    balances file for this journal."""
+
+    dirname, fname = os.path.split(os.getenv("LEDGER_FILE"))
+    # there are no combined synthetic balances
+    if fname == "combined.journal":
+        fname = "current.journal"
+    args.extend(["-I", "-f", os.path.join(dirname, "synthetic-balances", fname)])
+
+    return hledger_command(args)
+
+
 def offset_date(date, years):
     """Subtract `365*years` days from `YYYY-MM-DD` and return a string.
 
@@ -107,13 +120,14 @@ def convert_samples(samples):
     ]
 
 
-def preprocess_group_credits_debits(postings):
+def preprocess_group_credits_debits(postings, only_leaves=False):
     """Group postings by date and work out the total debit / credit for
     each account.  This is then used to simplify other metrics.
 
     Accounts are projected forwards and backwards in time.
 
-    Postings are applied to an account and all of its superaccounts.
+    Postings are applied to an account and all of its superaccounts, unless
+    `only_leaves` is set.
     """
 
     key = lambda account, currency: (("account", account), ("currency", currency))
@@ -131,7 +145,10 @@ def preprocess_group_credits_debits(postings):
 
         credits_debits = credits_debits_by_date.get(posting["date"], {})
         account = None
-        for segment in posting["account"].split(":"):
+        segments = (
+            [posting["account"]] if only_leaves else posting["account"].split(":")
+        )
+        for segment in segments:
             if account is None:
                 account = segment
             else:
@@ -157,8 +174,8 @@ def preprocess_group_credits_debits(postings):
     return credits_debits_by_date
 
 
-def metric_hledger_fx_rate(gbp_fx_rates, credits_debits):
-    """`hledger_fx_rate{currency="xxx", target_currency="xxx"}`
+def preprocess_prices(gbp_prices, credits_debits):
+    """Determines FX rates between all currency pairs.
 
     - Every currency has an exchange rate of 1 with itself.
 
@@ -181,7 +198,7 @@ def metric_hledger_fx_rate(gbp_fx_rates, credits_debits):
 
     # gbp_fx_rates_by_timestamp :: timestamp => currency => gbp_exchange_rate
     gbp_fx_rates_by_timestamp = {}
-    for price in gbp_fx_rates:
+    for price in gbp_prices:
         _, date, from_currency, gbp_exchange_rate = price.split()
         timestamp = date_to_timestamp(date)
         all_timestamps[timestamp] = True
@@ -206,7 +223,45 @@ def metric_hledger_fx_rate(gbp_fx_rates, credits_debits):
                 fx_rates[key(currency, target_currency)] = from_fx / to_fx
         fx_rates_by_timestamp[timestamp] = fx_rates
 
-    return pivot(fx_rates_by_timestamp)
+    return fx_rates_by_timestamp
+
+
+def metric_hledger_fx_rate(fx_rates):
+    """`hledger_fx_rate{currency="xxx", target_currency="xxx"}`
+
+    - Every currency has an exchange rate of 1 with itself.
+
+    - Every currency has an exchange rate from GBP to itself at
+    1/rate.
+
+    - Every pair of currencies have exchange rates converting both
+    ways (via GBP).
+
+    Exchange rates are projected forwards if there are credits /
+    debits in a gap.
+    """
+
+    return pivot(fx_rates)
+
+
+def metric_hledger_synthetic_balance_target(raw_targets):
+    """`hledger_synthetic_balance_target{account="xxx", currency="xxx"}`"""
+
+    key = lambda account, currency: (
+        ("account", account),
+        ("currency", currency),
+    )
+
+    # throw out unnecessary FX rates & rename keys
+    targets = {}
+    for timestamp, rates in raw_targets.items():
+        targets[timestamp] = {
+            key(account, currency): value
+            for ((_, account), (_, currency)), value in rates.items()
+            if "syn:" in account and "syn:" not in currency
+        }
+
+    return pivot(targets)
 
 
 def metric_hledger_balance(credits_debits):
@@ -367,8 +422,24 @@ raw_postings = [
 ]
 credits_debits = preprocess_group_credits_debits(raw_postings)
 
+synthetic_prices = [
+    offset_price_date(line, YEAR_OFFSET)
+    for line in synthetic_command(["prices"]).splitlines()
+    if "syn:" in line
+]
+synthetic_postings = [
+    offset_posting_date(row, YEAR_OFFSET)
+    for row in csv.DictReader(io.StringIO(synthetic_command(["print", "-O", "csv"])))
+    if row["account"] != "syn:ignore"
+]
+synthetic_credits_debits = preprocess_group_credits_debits(
+    synthetic_postings, only_leaves=True
+)
+
 metrics = {
-    "hledger_fx_rate": metric_hledger_fx_rate(raw_prices, credits_debits),
+    "hledger_fx_rate": metric_hledger_fx_rate(
+        preprocess_prices(raw_prices, credits_debits)
+    ),
     "hledger_balance": metric_hledger_balance(credits_debits),
     "hledger_monthly_increase": metric_hledger_monthly_credits_debits(
         credits_debits, "debit"
@@ -378,6 +449,10 @@ metrics = {
     ),
     "hledger_age_of_money": metric_hledger_age_of_money(credits_debits),
     "hledger_transactions_total": metric_hledger_transactions_total(raw_postings),
+    "hledger_synthetic_balance": metric_hledger_balance(synthetic_credits_debits),
+    "hledger_synthetic_balance_target": metric_hledger_synthetic_balance_target(
+        preprocess_prices(synthetic_prices, synthetic_credits_debits)
+    ),
     "quantified_self_age": metric_quantified_self_age(credits_debits),
 }
 
