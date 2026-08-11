@@ -97,14 +97,14 @@
           '';
 
           fmt = mkApp "fmt" ''
-            PATH=${with pkgs; lib.makeBinPath [ nix git python3Packages.black ]}
+            PATH=${with pkgs; lib.makeBinPath [ nix git ruff ]}
 
             ${pkgs.lib.fileContents ./scripts/fmt.sh}
           '';
 
           lint = mkApp "lint" ''
             # TODO: add nix-linter back when the package is no longer broken
-            PATH=${with pkgs; lib.makeBinPath [ findutils shellcheck git gnugrep python3Packages.flake8 ]}
+            PATH=${with pkgs; lib.makeBinPath [ findutils shellcheck git gnugrep ruff ]}
 
             ${pkgs.lib.fileContents ./scripts/lint.sh}
           '';
