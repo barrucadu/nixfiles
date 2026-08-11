@@ -1,3 +1,3 @@
 nix fmt -- .
 
-black .
+ruff format .
