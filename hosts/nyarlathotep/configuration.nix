@@ -258,6 +258,10 @@ in
     reverse_proxy http://localhost:${toString config.nixfiles.bookmarks.port}
   '';
 
+  services.caddy.virtualHosts."chores.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+    reverse_proxy http://localhost:${toString config.nixfiles.donetick.port}
+  '';
+
   services.caddy.virtualHosts."torrents.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     reverse_proxy http://localhost:${toString config.nixfiles.torrents.rpcPort}
   '';
@@ -329,6 +333,16 @@ in
   ###############################################################################
 
   nixfiles.bookmarks.enable = true;
+
+
+  ###############################################################################
+  ## donetick
+  ###############################################################################
+
+  nixfiles.donetick.enable = true;
+  nixfiles.donetick.domain = "chores.lan.barrucadu.co.uk";
+  nixfiles.donetick.environmentFile = config.sops.secrets."nixfiles/donetick/env".path;
+  sops.secrets."nixfiles/donetick/env" = { };
 
 
   ###############################################################################
