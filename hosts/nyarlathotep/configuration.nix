@@ -280,6 +280,10 @@ in
     }
   '';
 
+  services.caddy.virtualHosts."todo.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+    reverse_proxy http://localhost:${toString config.nixfiles.vikunja.port}
+  '';
+
   # don't restrict vlan as the port is open unrestricted anyway
   services.caddy.virtualHosts."plex.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
     reverse_proxy http://localhost:32400
@@ -336,13 +340,19 @@ in
 
 
   ###############################################################################
-  ## donetick
+  ## todo management
   ###############################################################################
 
   nixfiles.donetick.enable = true;
   nixfiles.donetick.domain = "chores.lan.barrucadu.co.uk";
   nixfiles.donetick.environmentFile = config.sops.secrets."nixfiles/donetick/env".path;
   sops.secrets."nixfiles/donetick/env" = { };
+
+  nixfiles.vikunja.enable = true;
+  nixfiles.vikunja.domain = "todo.lan.barrucadu.co.uk";
+  nixfiles.vikunja.urlsAreHTTPS = true;
+  nixfiles.vikunja.environmentFile = config.sops.secrets."nixfiles/vikunja/env".path;
+  sops.secrets."nixfiles/vikunja/env" = { };
 
 
   ###############################################################################
