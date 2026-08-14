@@ -25,7 +25,18 @@ let
 
   prometheusAwairExporterPort = 9517;
 
-  httpdir = "${toString config.nixfiles.eraseYourDarlings.persistDir}/srv/http";
+  basedir = config.nixfiles.eraseYourDarlings.persistDir;
+  httpdir = "${basedir}/srv/http";
+  certdir = "${basedir}/var/lib/acme";
+
+  caddyVHost = restrict: cfg: ''
+    tls ${certdir}/lan.barrucadu.co.uk/cert.pem ${certdir}/lan.barrucadu.co.uk/key.pem {
+      protocols tls1.3
+    }
+    ${optionalString restrict "import restrict_vlan"}
+    encode gzip
+    ${cfg}
+  '';
 in
 {
   ###############################################################################
@@ -44,6 +55,7 @@ in
   # Firewall
   networking.firewall.allowedTCPPorts = [
     80
+    443
     8888
     32400 # Plex
   ];
@@ -82,6 +94,13 @@ in
 
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.allowedBridges = [ "br0" ];
+
+  # Make sure important directories exist
+  systemd.tmpfiles.rules = [
+    "d ${certdir} - root root -"
+    "d ${basedir}/var/lib/caddy 700 caddy caddy -"
+  ];
+
 
   ###############################################################################
   ## Backups
@@ -136,29 +155,26 @@ in
 
     @ IN SOA . . 3 3600 3600 3600 3600
 
-    1.0.0    IN PTR router.lan.
-    3.0.0    IN PTR nyarlathotep.lan.
+    1.0.0    IN PTR router.lan.barrucadu.co.uk.
+    3.0.0    IN PTR nyarlathotep.lan.barrucadu.co.uk.
 
-    117.20.0 IN PTR living-room.awair.lan.
-    130.20.0 IN PTR guest-bedroom.awair.lan.
-    187.20.0 IN PTR bedroom.awair.lan.
-    194.20.0 IN PTR office.awair.lan.
+    117.20.0 IN PTR living-room.awair.lan.barrucadu.co.uk.
+    130.20.0 IN PTR guest-bedroom.awair.lan.barrucadu.co.uk.
+    187.20.0 IN PTR bedroom.awair.lan.barrucadu.co.uk.
+    194.20.0 IN PTR office.awair.lan.barrucadu.co.uk.
   '';
 
   environment.etc."dns/zones/lan".text = ''
-    $ORIGIN lan.
+    $ORIGIN lan.barrucadu.co.uk.
 
     @ 300 IN SOA @ @ 6 300 300 300 300
 
     router              300 IN A     10.0.0.1
 
     nyarlathotep        300 IN A     10.0.0.3
-    *.nyarlathotep      300 IN CNAME nyarlathotep
-
     help                300 IN CNAME nyarlathotep
-    *.help              300 IN CNAME help
-
-    nas                 300 IN CNAME nyarlathotep
+    *.help              300 IN CNAME nyarlathotep
+    *                   300 IN CNAME nyarlathotep
 
     bedroom.awair       300 IN A     10.0.20.187
     guest-bedroom.awair 300 IN A     10.0.20.130
@@ -198,6 +214,13 @@ in
   ## Reverse proxy
   ###############################################################################
 
+  nixfiles.acme = {
+    enable = true;
+    environmentFile = config.sops.secrets."services/acme/env".path;
+    domains."lan.barrucadu.co.uk" = { extraDomainNames = [ "*.lan.barrucadu.co.uk" "*.help.lan.barrucadu.co.uk" ]; };
+  };
+  sops.secrets."services/acme/env" = { };
+
   services.caddy.enable = true;
   services.caddy.extraConfig = ''
     (vlan_matchers) {
@@ -213,110 +236,84 @@ in
 
     (restrict_vlan) {
       import vlan_matchers
-      redir @vlan20 http://help.lan 307
+      redir @vlan20 https://help.lan.barrucadu.co.uk 307
     }
   '';
 
-  services.caddy.virtualHosts."nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."nyarlathotep.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     file_server {
       root ${httpdir}/nyarlathotep.lan
     }
   '';
 
-  services.caddy.virtualHosts."alertmanager.nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."alerts.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     reverse_proxy http://localhost:${toString config.services.prometheus.alertmanager.port}
   '';
 
-  services.caddy.virtualHosts."bookdb.nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."bookdb.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     reverse_proxy http://localhost:${toString config.nixfiles.bookdb.port}
   '';
 
-  services.caddy.virtualHosts."bookmarks.nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."bookmarks.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     reverse_proxy http://localhost:${toString config.nixfiles.bookmarks.port}
   '';
 
-  services.caddy.virtualHosts."flood.nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."torrents.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     reverse_proxy http://localhost:${toString config.nixfiles.torrents.rpcPort}
   '';
 
-  services.caddy.virtualHosts."finder.nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."finder.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     reverse_proxy http://localhost:${toString config.nixfiles.finder.port}
   '';
 
-  services.caddy.virtualHosts."grafana.nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."grafana.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
   '';
 
-  services.caddy.virtualHosts."rpg-tools.nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."rpg-tools.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     file_server {
       root ${httpdir}/rpg-tools.nyarlathotep.lan
     }
   '';
 
   # don't restrict vlan as the port is open unrestricted anyway
-  services.caddy.virtualHosts."plex.nyarlathotep.lan:80".extraConfig = ''
-    encode gzip
+  services.caddy.virtualHosts."plex.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
     reverse_proxy http://localhost:32400
   '';
 
-  services.caddy.virtualHosts."prometheus.nyarlathotep.lan:80".extraConfig = ''
-    import restrict_vlan
-    encode gzip
+  services.caddy.virtualHosts."prometheus.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
     reverse_proxy http://localhost:${toString config.services.prometheus.port}
   '';
 
-  services.caddy.virtualHosts."help.lan:80".extraConfig = ''
+  services.caddy.virtualHosts."help.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
     import vlan_matchers
-    redir @vlan1 http://vlan1.help.lan 302
-    redir @vlan10 http://vlan10.help.lan 302
-    redir @vlan20 http://vlan20.help.lan 302
+    redir @vlan1 https://vlan1.help.lan.barrucadu.co.uk 302
+    redir @vlan10 https://vlan10.help.lan.barrucadu.co.uk 302
+    redir @vlan20 https://vlan20.help.lan.barrucadu.co.uk 302
   '';
 
-  services.caddy.virtualHosts."vlan1.help.lan:80".extraConfig = ''
+  services.caddy.virtualHosts."vlan1.help.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
     import vlan_matchers
-    encode gzip
-    redir @not_vlan1 http://help.lan 302
+    redir @not_vlan1 https://help.lan.barrucadu.co.uk 302
     file_server {
       root ${httpdir}/vlan1.help.lan
     }
   '';
 
-  services.caddy.virtualHosts."vlan10.help.lan:80".extraConfig = ''
+  services.caddy.virtualHosts."vlan10.help.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
     import vlan_matchers
-    encode gzip
-    redir @not_vlan10 http://help.lan 302
+    redir @not_vlan10 https://help.lan.barrucadu.co.uk 302
     file_server {
       root ${httpdir}/vlan10.help.lan
     }
   '';
 
-  services.caddy.virtualHosts."vlan20.help.lan:80".extraConfig = ''
+  services.caddy.virtualHosts."vlan20.help.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
     import vlan_matchers
-    encode gzip
-    redir @not_vlan20 http://help.lan 302
+    redir @not_vlan20 https://help.lan.barrucadu.co.uk 302
     file_server {
       root ${httpdir}/vlan20.help.lan
     }
-  '';
-
-  services.caddy.virtualHosts."*:80".extraConfig = ''
-    respond * 421
   '';
 
 
@@ -371,7 +368,7 @@ in
 
   services.grafana = {
     settings = {
-      server.root_url = "http://grafana.nyarlathotep.lan";
+      server.root_url = "https://grafana.lan.barrucadu.co.uk";
       security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}}";
       security.secret_key = "$__file{${config.sops.secrets."services/grafana/secret_key".path}}";
     };
@@ -396,7 +393,7 @@ in
   sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
   sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
 
-  services.prometheus.webExternalUrl = "http://prometheus.nyarlathotep.lan";
+  services.prometheus.webExternalUrl = "https://prometheus.lan.barrucadu.co.uk";
   services.prometheus.scrapeConfigs = [
     {
       job_name = "awair";
