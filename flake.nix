@@ -137,6 +137,7 @@
                   ./shared/resolved/options.nix
                   ./shared/restic-backups/options.nix
                   ./shared/torrents/options.nix
+                  ./shared/vikunja/options.nix
                   # host templates
                   ./shared/host-templates/website-mirror/options.nix
                 ];

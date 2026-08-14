@@ -39,6 +39,7 @@ in
     ./resolved
     ./restic-backups
     ./torrents
+    ./vikunja
   ];
 
   config = {
