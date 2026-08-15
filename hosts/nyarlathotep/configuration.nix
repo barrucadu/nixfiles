@@ -354,6 +354,9 @@ in
   nixfiles.vikunja.environmentFile = config.sops.secrets."nixfiles/vikunja/env".path;
   sops.secrets."nixfiles/vikunja/env" = { };
 
+  nixfiles.restic-backups.backups.donetick.startAt = "*-*-* 04:00:00";
+  nixfiles.restic-backups.backups.vikunja.startAt = "*-*-* 04:00:00";
+
 
   ###############################################################################
   ## finder
