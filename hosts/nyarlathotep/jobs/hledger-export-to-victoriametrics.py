@@ -37,13 +37,10 @@ def hledger_command(args):
 
 def synthetic_command(args):
     """Wrapper for `hledger_command` that runs the command against the synthetic
-    balances file for this journal."""
+    balances file."""
 
-    dirname, fname = os.path.split(os.getenv("LEDGER_FILE"))
-    # there are no combined synthetic balances
-    if fname == "combined.journal":
-        fname = "current.journal"
-    args.extend(["-I", "-f", os.path.join(dirname, "synthetic-balances", fname)])
+    dirname, _ = os.path.split(os.getenv("LEDGER_FILE"))
+    args.extend(["-I", "-f", os.path.join(dirname, "synthetic-balances.journal")])
 
     return hledger_command(args)
 
