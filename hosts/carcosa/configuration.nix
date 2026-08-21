@@ -33,7 +33,7 @@ in
 
   # Bootloader
   boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_10684483";
 
   # Networking
   networking.firewall.allowedTCPPorts = [ 80 443 ];
