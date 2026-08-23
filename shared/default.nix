@@ -32,6 +32,7 @@ in
     ./finder
     ./forgejo
     ./foundryvtt
+    ./hister
     ./host-templates
     ./minecraft
     ./oci-containers

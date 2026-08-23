@@ -288,6 +288,10 @@ in
     }
   '';
 
+  services.caddy.virtualHosts."search.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
+    reverse_proxy http://localhost:${toString config.nixfiles.hister.port}
+  '';
+
   services.caddy.virtualHosts."todo.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     reverse_proxy http://localhost:${toString config.nixfiles.vikunja.port}
   '';
@@ -421,6 +425,7 @@ in
   # see authelia_clients.yaml
   sops.secrets."services/authelia/oidc_client_secrets/donetick".owner = config.users.users.authelia.name;
   sops.secrets."services/authelia/oidc_client_secrets/grafana".owner = config.users.users.authelia.name;
+  sops.secrets."services/authelia/oidc_client_secrets/hister".owner = config.users.users.authelia.name;
   sops.secrets."services/authelia/oidc_client_secrets/vikunja".owner = config.users.users.authelia.name;
 
 
@@ -436,6 +441,17 @@ in
   ###############################################################################
 
   nixfiles.bookmarks.enable = true;
+
+  nixfiles.hister.enable = true;
+  nixfiles.hister.domain = "search.lan.barrucadu.co.uk";
+  nixfiles.hister.https = true;
+  nixfiles.hister.environmentFile = config.sops.secrets."nixfiles/hister/env".path;
+  nixfiles.hister.oidc = {
+    enable = true;
+    clientId = "_AM4pCMmJR67ZL~lnEFbZoECoHdndD5oJIYKtAOghMAnx1C_au_enqPjIPSH4v0xOxQhCj20";
+    authUrl = "https://auth.lan.barrucadu.co.uk";
+  };
+  sops.secrets."nixfiles/hister/env" = { };
 
 
   ###############################################################################
