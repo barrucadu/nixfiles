@@ -29,11 +29,12 @@ let
   httpdir = "${basedir}/srv/http";
   certdir = "${basedir}/var/lib/acme";
 
-  caddyVHost = restrict: cfg: ''
+  caddyVHost = { auth ? false, vlan ? true }: cfg: ''
     tls ${certdir}/lan.barrucadu.co.uk/cert.pem ${certdir}/lan.barrucadu.co.uk/key.pem {
       protocols tls1.3
     }
-    ${optionalString restrict "import restrict_vlan"}
+    ${optionalString auth "import auth"}
+    ${optionalString vlan "import restrict_vlan"}
     encode gzip
     ${cfg}
   '';
@@ -238,69 +239,76 @@ in
       import vlan_matchers
       redir @vlan20 https://help.lan.barrucadu.co.uk 307
     }
+
+    (auth) {
+      forward_auth 127.0.0.1:9091 {
+        uri /api/authz/forward-auth
+        copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+      }
+    }
   '';
 
-  services.caddy.virtualHosts."nyarlathotep.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."nyarlathotep.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     file_server {
       root ${httpdir}/nyarlathotep.lan
     }
   '';
 
-  services.caddy.virtualHosts."alerts.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."alerts.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     reverse_proxy http://localhost:${toString config.services.prometheus.alertmanager.port}
   '';
 
-  services.caddy.virtualHosts."bookdb.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."bookdb.lan.barrucadu.co.uk".extraConfig = caddyVHost { auth = true; } ''
     reverse_proxy http://localhost:${toString config.nixfiles.bookdb.port}
   '';
 
-  services.caddy.virtualHosts."bookmarks.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."bookmarks.lan.barrucadu.co.uk".extraConfig = caddyVHost { auth = true; } ''
     reverse_proxy http://localhost:${toString config.nixfiles.bookmarks.port}
   '';
 
-  services.caddy.virtualHosts."chores.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."chores.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     reverse_proxy http://localhost:${toString config.nixfiles.donetick.port}
   '';
 
-  services.caddy.virtualHosts."torrents.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."torrents.lan.barrucadu.co.uk".extraConfig = caddyVHost { auth = true; } ''
     reverse_proxy http://localhost:${toString config.nixfiles.torrents.rpcPort}
   '';
 
-  services.caddy.virtualHosts."finder.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."finder.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     reverse_proxy http://localhost:${toString config.nixfiles.finder.port}
   '';
 
-  services.caddy.virtualHosts."grafana.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."grafana.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     reverse_proxy http://localhost:${toString config.services.grafana.settings.server.http_port}
   '';
 
-  services.caddy.virtualHosts."rpg-tools.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."rpg-tools.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     file_server {
       root ${httpdir}/rpg-tools.nyarlathotep.lan
     }
   '';
 
-  services.caddy.virtualHosts."todo.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."todo.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     reverse_proxy http://localhost:${toString config.nixfiles.vikunja.port}
   '';
 
   # don't restrict vlan as the port is open unrestricted anyway
-  services.caddy.virtualHosts."plex.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
+  services.caddy.virtualHosts."plex.lan.barrucadu.co.uk".extraConfig = caddyVHost { vlan = false; } ''
     reverse_proxy http://localhost:32400
   '';
 
-  services.caddy.virtualHosts."prometheus.lan.barrucadu.co.uk".extraConfig = caddyVHost true ''
+  services.caddy.virtualHosts."prometheus.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     reverse_proxy http://localhost:${toString config.services.prometheus.port}
   '';
 
-  services.caddy.virtualHosts."help.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
+  services.caddy.virtualHosts."help.lan.barrucadu.co.uk".extraConfig = caddyVHost { vlan = false; } ''
     import vlan_matchers
     redir @vlan1 https://vlan1.help.lan.barrucadu.co.uk 302
     redir @vlan10 https://vlan10.help.lan.barrucadu.co.uk 302
     redir @vlan20 https://vlan20.help.lan.barrucadu.co.uk 302
   '';
 
-  services.caddy.virtualHosts."vlan1.help.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
+  services.caddy.virtualHosts."vlan1.help.lan.barrucadu.co.uk".extraConfig = caddyVHost { vlan = false; } ''
     import vlan_matchers
     redir @not_vlan1 https://help.lan.barrucadu.co.uk 302
     file_server {
@@ -308,7 +316,7 @@ in
     }
   '';
 
-  services.caddy.virtualHosts."vlan10.help.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
+  services.caddy.virtualHosts."vlan10.help.lan.barrucadu.co.uk".extraConfig = caddyVHost { vlan = false; } ''
     import vlan_matchers
     redir @not_vlan10 https://help.lan.barrucadu.co.uk 302
     file_server {
@@ -316,13 +324,104 @@ in
     }
   '';
 
-  services.caddy.virtualHosts."vlan20.help.lan.barrucadu.co.uk".extraConfig = caddyVHost false ''
+  services.caddy.virtualHosts."vlan20.help.lan.barrucadu.co.uk".extraConfig = caddyVHost { vlan = false; } ''
     import vlan_matchers
     redir @not_vlan20 https://help.lan.barrucadu.co.uk 302
     file_server {
       root ${httpdir}/vlan20.help.lan
     }
   '';
+
+  # SSO
+  services.caddy.virtualHosts."auth.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
+    reverse_proxy http://localhost:9091
+  '';
+
+  services.authelia.instances."" = {
+    enable = true;
+    settings = {
+      access_control = {
+        default_policy = "deny";
+        rules = [
+          {
+            domain = "*.lan.barrucadu.co.uk";
+            policy = "one_factor";
+          }
+        ];
+      };
+      authentication_backend.file.path = config.sops.secrets."services/authelia/users".path;
+      identity_providers.oidc = {
+        cors = {
+          allowed_origins_from_client_redirect_uris = true;
+          endpoints = [ "token" "userinfo" ];
+        };
+        authorization_policies.default = {
+          default_policy = "one_factor";
+          # at least one rule is required, even with a default policy
+          rules = [
+            {
+              policy = "deny";
+              subject = "group:deny";
+            }
+          ];
+        };
+      };
+      notifier.filesystem.filename = "${config.users.users.authelia.home}/notifications.txt";
+      server = {
+        address = "tcp://127.0.0.1:9091/";
+        endpoints.authz.forward-auth.implementation = "ForwardAuth";
+      };
+      session = {
+        redis.host = "/var/run/redis-authelia/redis.sock";
+        cookies = [
+          {
+            domain = "lan.barrucadu.co.uk";
+            authelia_url = "https://auth.lan.barrucadu.co.uk";
+            inactivity = "1M";
+            expiration = "3M";
+            remember_me = "1y";
+          }
+        ];
+      };
+      storage.local.path = "${config.users.users.authelia.home}/db.sqlite3";
+    };
+    settingsFiles = [ ./authelia_clients.yaml ];
+    secrets = with config.sops; {
+      jwtSecretFile = secrets."services/authelia/jwt_secret".path;
+      oidcHmacSecretFile = secrets."services/authelia/oidc_hmac_secret".path;
+      oidcIssuerPrivateKeyFile = secrets."services/authelia/oidc_issuer_private_key".path;
+      sessionSecretFile = secrets."services/authelia/session_secret".path;
+      storageEncryptionKeyFile = secrets."services/authelia/storage_encryption_key".path;
+    };
+  };
+  systemd.services.authelia.serviceConfig.ReadWritePaths = config.users.users.authelia.home;
+
+  services.redis.servers.authelia = {
+    enable = true;
+    user = "authelia";
+    settings.dir = mkForce "${basedir}/var/lib/authelia";
+  };
+  systemd.services.redis-authelia.serviceConfig.ReadWritePaths = config.users.users.authelia.home;
+
+  users.users.authelia = {
+    uid = 989;
+    description = "authelia service user";
+    home = "${basedir}/var/lib/authelia";
+    createHome = true;
+    isSystemUser = true;
+  };
+
+  sops.secrets."services/authelia/jwt_secret".owner = config.users.users.authelia.name;
+  sops.secrets."services/authelia/oidc_hmac_secret".owner = config.users.users.authelia.name;
+  sops.secrets."services/authelia/oidc_issuer_private_key".owner = config.users.users.authelia.name;
+  sops.secrets."services/authelia/session_secret".owner = config.users.users.authelia.name;
+  sops.secrets."services/authelia/storage_encryption_key".owner = config.users.users.authelia.name;
+  sops.secrets."services/authelia/users".owner = config.users.users.authelia.name;
+
+  # see authelia_clients.yaml
+  sops.secrets."services/authelia/oidc_client_secrets/donetick".owner = config.users.users.authelia.name;
+  sops.secrets."services/authelia/oidc_client_secrets/grafana".owner = config.users.users.authelia.name;
+  sops.secrets."services/authelia/oidc_client_secrets/vikunja".owner = config.users.users.authelia.name;
 
 
   ###############################################################################
@@ -345,12 +444,29 @@ in
 
   nixfiles.donetick.enable = true;
   nixfiles.donetick.domain = "chores.lan.barrucadu.co.uk";
+  nixfiles.donetick.https = true;
+  nixfiles.donetick.oidc = {
+    enable = true;
+    name = "Authelia";
+    clientId = "72XDyFgU5..QfR7Dkxtm0PdzlrGwbIME3tqTRXcYv~EXUSOpReYYPB6y5rs0ULcl4TMoH0fK";
+    authUrl = "https://auth.lan.barrucadu.co.uk/api/oidc/authorization";
+    tokenUrl = "https://auth.lan.barrucadu.co.uk/api/oidc/token";
+    userinfoUrl = "https://auth.lan.barrucadu.co.uk/api/oidc/userinfo";
+  };
+  nixfiles.donetick.allowUserCreation = false;
   nixfiles.donetick.environmentFile = config.sops.secrets."nixfiles/donetick/env".path;
   sops.secrets."nixfiles/donetick/env" = { };
 
   nixfiles.vikunja.enable = true;
   nixfiles.vikunja.domain = "todo.lan.barrucadu.co.uk";
-  nixfiles.vikunja.urlsAreHTTPS = true;
+  nixfiles.vikunja.https = true;
+  nixfiles.vikunja.oidc = {
+    enable = true;
+    name = "Authelia";
+    clientId = "s2gP.enw_uPywBizfxlJE4bw0HXZrQNpYTqwVZs9-9fsQmTAC.1UsmmkvYLM.Xt~BnpHnGCB";
+    authUrl = "https://auth.lan.barrucadu.co.uk";
+  };
+  nixfiles.vikunja.allowUserCreation = false;
   nixfiles.vikunja.environmentFile = config.sops.secrets."nixfiles/vikunja/env".path;
   sops.secrets."nixfiles/vikunja/env" = { };
 
@@ -398,6 +514,23 @@ in
       server.root_url = "https://grafana.lan.barrucadu.co.uk";
       security.admin_password = "$__file{${config.sops.secrets."services/grafana/admin_password".path}}";
       security.secret_key = "$__file{${config.sops.secrets."services/grafana/secret_key".path}}";
+      "auth.generic_oauth" = {
+        enabled = "true";
+        name = "Authelia";
+        icon = "signin";
+        client_id = "HhD1rWIVqoDvuwsu86hularC4oyayemB~Rs.bshTPXv3_Rhy9JJZh0kaFUuqMtbIEeRtz34l";
+        client_secret = "$__file{${config.sops.secrets."services/grafana/oidc_client_secret".path}}";
+        scopes = "openid profile email groups";
+        empty_scopes = "false";
+        allow_sign_up = "true";
+        auto_login = "true";
+        auth_url = "https://auth.lan.barrucadu.co.uk/api/oidc/authorization";
+        token_url = "https://auth.lan.barrucadu.co.uk/api/oidc/token";
+        api_url = "https://auth.lan.barrucadu.co.uk/api/oidc/userinfo";
+        auth_style = "InHeader";
+        role_attribute_path = "contains(groups[*], 'grafana_admin') && 'Admin' || contains(groups[*], 'grafana_editor') && 'Editor'";
+        role_attribute_strict = "false";
+      };
     };
     provision = {
       datasources.settings.datasources = [
@@ -419,6 +552,7 @@ in
   };
   sops.secrets."services/grafana/admin_password".owner = config.users.users.grafana.name;
   sops.secrets."services/grafana/secret_key".owner = config.users.users.grafana.name;
+  sops.secrets."services/grafana/oidc_client_secret".owner = config.users.users.grafana.name;
 
   services.prometheus.webExternalUrl = "https://prometheus.lan.barrucadu.co.uk";
   services.prometheus.scrapeConfigs = [

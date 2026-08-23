@@ -1,0 +1,38 @@
+# https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#how-do-i-generate-a-client-identifier-or-client-secret
+identity_providers:
+  oidc:
+    clients:
+      # https://docs.donetick.com/advance-settings/openid-connect-setup/
+      - client_name: "donetick"
+        client_id: "72XDyFgU5..QfR7Dkxtm0PdzlrGwbIME3tqTRXcYv~EXUSOpReYYPB6y5rs0ULcl4TMoH0fK"
+        client_secret: {{ secret "/run/secrets/services/authelia/oidc_client_secrets/donetick"  | mindent 10 "|" | msquote }}
+        authorization_policy: "one_factor"
+        redirect_uris:
+          - "https://chores.lan.barrucadu.co.uk/auth/oauth2"
+        scopes:
+          - "openid"
+          - "profile"
+          - "email"
+      # https://grafana.com/docs/grafana/latest/setup-grafana/configure-access/configure-authentication/generic-oauth/
+      - client_name: "grafana"
+        client_id: "HhD1rWIVqoDvuwsu86hularC4oyayemB~Rs.bshTPXv3_Rhy9JJZh0kaFUuqMtbIEeRtz34l"
+        client_secret: {{ secret "/run/secrets/services/authelia/oidc_client_secrets/grafana"  | mindent 10 "|" | msquote }}
+        authorization_policy: "one_factor"
+        redirect_uris:
+          - "https://grafana.lan.barrucadu.co.uk/login/generic_oauth"
+        scopes:
+          - "openid"
+          - "profile"
+          - "email"
+          - "groups"
+      # https://vikunja.io/docs/openid/
+      - client_name: "vikunja"
+        client_id: "s2gP.enw_uPywBizfxlJE4bw0HXZrQNpYTqwVZs9-9fsQmTAC.1UsmmkvYLM.Xt~BnpHnGCB"
+        client_secret: {{ secret "/run/secrets/services/authelia/oidc_client_secrets/vikunja"  | mindent 10 "|" | msquote }}
+        authorization_policy: "one_factor"
+        redirect_uris:
+          - "https://todo.lan.barrucadu.co.uk/auth/openid/default"
+        scopes:
+          - "openid"
+          - "profile"
+          - "email"

@@ -16,6 +16,17 @@
 with lib;
 let
   cfg = config.nixfiles.donetick;
+
+  publicurl = "http${optionalString cfg.https "s"}://${cfg.domain}";
+
+  oidcOptions = {
+    "DT_OAUTH2_CLIENT_ID" = cfg.oidc.clientId;
+    "DT_OAUTH2_REDIRECT_URL" = "${publicurl}/auth/oauth2";
+    "DT_OAUTH2_AUTH_URL" = cfg.oidc.authUrl;
+    "DT_OAUTH2_TOKEN_URL" = cfg.oidc.tokenUrl;
+    "DT_OAUTH2_USER_INFO_URL" = cfg.oidc.userinfoUrl;
+    "DT_OAUTH2_NAME" = cfg.oidc.name;
+  };
 in
 {
   imports = [
@@ -34,14 +45,15 @@ in
         "DT_JWT_SESSION_TIME" = "168h";
         "DT_JWT_MAX_REFRESH" = "168h";
         "DT_SERVER_PORT" = "2021";
-        "DT_SERVER_CORS_ALLOW_ORIGINS" = "http://${cfg.domain},https://${cfg.domain}";
+        "DT_SERVER_CORS_ALLOW_ORIGINS" = publicurl;
         "DT_SERVER_SERVE_FRONTEND" = "true";
         "DT_LOGGING_LEVEL" = "info";
         "DT_LOGGING_ENCODING" = "json";
         "DT_REALTIME_enabled" = "true";
         "DT_REALTIME_SSE_ENABLED" = "true";
         "DT_REALTIME_WEBSOCKET_ENABLED" = "false";
-      };
+        "DT_IS_USER_CREATION_DISABLED" = if cfg.allowUserCreation then "false" else "true";
+      } // (if cfg.oidc.enable then oidcOptions else { });
       environmentFiles = [ cfg.environmentFile ];
       ports = [{ host = cfg.port; inner = 2021; }];
       volumes = [
