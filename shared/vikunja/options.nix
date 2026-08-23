@@ -28,7 +28,7 @@ with lib;
       '';
     };
 
-    urlsAreHTTPS = mkOption {
+    https = mkOption {
       type = types.bool;
       default = false;
       description = ''
@@ -52,6 +52,48 @@ with lib;
       description = ''
         File containing secret configuration.
       '';
+    };
+
+    allowUserCreation = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Allow users to sign up.
+      '';
+    };
+
+    oidc = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Allow OIDC authentication.
+
+          If enabled, the environment file must include VIKUNJA_AUTH_OPENID_PROVIDERS_DEFAULT_CLIENTSECRET.
+        '';
+      };
+
+      name = mkOption {
+        type = types.str;
+        default = "OpenID Connect";
+        description = ''
+          Name of the OIDC provider, to show in the UI.
+        '';
+      };
+
+      clientId = mkOption {
+        type = types.str;
+        description = ''
+          OAuth client ID.
+        '';
+      };
+
+      authUrl = mkOption {
+        type = types.str;
+        description = ''
+          OAuth provider domain (for discovery).
+        '';
+      };
     };
   };
 }

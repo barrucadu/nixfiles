@@ -15,14 +15,29 @@ with lib;
 let
   cfg = config.nixfiles.vikunja;
 
+  oidc_provider = {
+    name = cfg.oidc.name;
+    authurl = cfg.oidc.authUrl;
+    clientid = cfg.oidc.clientId;
+    emailfallback = true;
+  };
+
   settings = {
+    auth = {
+      local.enabled = true;
+      openid = {
+        enabled = cfg.oidc.enable;
+        providers = if cfg.oidc.enable then { default = oidc_provider; } else { };
+      };
+    };
     database = {
       type = "sqlite";
       path = "${cfg.dataDir}/vikunja.db";
     };
     service = {
+      enableregistration = cfg.allowUserCreation;
       interface = "127.0.0.1:${toString cfg.port}";
-      publicurl = "http${optionalString cfg.urlsAreHTTPS "s"}://${cfg.domain}";
+      publicurl = "http${optionalString cfg.https "s"}://${cfg.domain}";
     };
     files = {
       basepath = "${cfg.dataDir}/files";
@@ -47,7 +62,7 @@ in
       serviceConfig = {
         ExecStart = "${pkgs.vikunja}/bin/vikunja";
         Restart = "always";
-        EnvironmentFiles = [ cfg.environmentFile ];
+        EnvironmentFile = [ cfg.environmentFile ];
         User = config.users.users.vikunja.name;
       };
     };
