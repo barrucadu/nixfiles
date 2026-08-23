@@ -289,7 +289,7 @@ in
   '';
 
   services.caddy.virtualHosts."search.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
-    reverse_proxy http://localhost:${toString config.services.hister.port}
+    reverse_proxy http://localhost:${toString config.nixfiles.hister.port}
   '';
 
   services.caddy.virtualHosts."todo.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
@@ -442,53 +442,16 @@ in
 
   nixfiles.bookmarks.enable = true;
 
-  services.hister.enable = true;
-  services.hister.port = 4433;
-  services.hister.group = "nogroup";
-  services.hister.environmentFile = config.sops.secrets."services/hister/env".path;
-  services.hister.settings = {
-    app = {
-      directory = config.users.users.hister.home;
-      public = true;
-      redirect_on_no_results = false;
-      user_handling = true;
-    };
-    server = {
-      base_url = "https://search.lan.barrucadu.co.uk";
-      oauth_only = true;
-      oauth.oidc = {
-        client_id = "_AM4pCMmJR67ZL~lnEFbZoECoHdndD5oJIYKtAOghMAnx1C_au_enqPjIPSH4v0xOxQhCj20";
-        configuration_url = "https://auth.lan.barrucadu.co.uk/.well-known/openid-configuration";
-      };
-    };
+  nixfiles.hister.enable = true;
+  nixfiles.hister.domain = "search.lan.barrucadu.co.uk";
+  nixfiles.hister.https = true;
+  nixfiles.hister.environmentFile = config.sops.secrets."nixfiles/hister/env".path;
+  nixfiles.hister.oidc = {
+    enable = true;
+    clientId = "_AM4pCMmJR67ZL~lnEFbZoECoHdndD5oJIYKtAOghMAnx1C_au_enqPjIPSH4v0xOxQhCj20";
+    authUrl = "https://auth.lan.barrucadu.co.uk";
   };
-  systemd.services.hister.serviceConfig.ReadWritePaths = config.users.users.hister.home;
-
-  sops.secrets."services/hister/env" = { };
-
-  users.users.hister = {
-    uid = 983;
-    group = "nogroup";
-    home = "${basedir}/var/lib/hister";
-    createHome = true;
-    isSystemUser = true;
-  };
-
-  nixfiles.restic-backups.backups.hister = {
-    prepareCommand = ''
-      /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl stop hister
-    '';
-    cleanupCommand = ''
-      /run/wrappers/bin/sudo ${pkgs.systemd}/bin/systemctl start hister
-    '';
-    paths = [
-      config.users.users.hister.home
-    ];
-  };
-  nixfiles.restic-backups.sudoRules = [
-    { command = "${pkgs.systemd}/bin/systemctl stop hister"; }
-    { command = "${pkgs.systemd}/bin/systemctl start hister"; }
-  ];
+  sops.secrets."nixfiles/hister/env" = { };
 
 
   ###############################################################################

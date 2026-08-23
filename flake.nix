@@ -141,6 +141,7 @@
                   ./shared/finder/options.nix
                   ./shared/forgejo/options.nix
                   ./shared/foundryvtt/options.nix
+                  ./shared/hister/options.nix
                   ./shared/minecraft/options.nix
                   ./shared/oci-containers/options.nix
                   ./shared/pleroma/options.nix
