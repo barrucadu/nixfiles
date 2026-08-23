@@ -1,6 +1,11 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05-small";
+    hister = {
+      url = "github:asciimoo/hister";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +35,10 @@
       inputs.rust-overlay.follows = "rust-overlay";
     };
     # dependencies
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     gitignore = {
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,7 +49,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, sops-nix, ... }@flakeInputs:
+  outputs = { self, nixpkgs, hister, sops-nix, ... }@flakeInputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -64,6 +73,7 @@
               ./shared
               (./hosts + "/${name}" + /configuration.nix)
               (./hosts + "/${name}" + /hardware.nix)
+              hister.nixosModules.default
               sops-nix.nixosModules.sops
             ] ++ extraModules;
           };

@@ -25,6 +25,18 @@ identity_providers:
           - "profile"
           - "email"
           - "groups"
+      # https://hister.org/docs/configuration#oauth
+      - client_name: "hister"
+        client_id: "_AM4pCMmJR67ZL~lnEFbZoECoHdndD5oJIYKtAOghMAnx1C_au_enqPjIPSH4v0xOxQhCj20"
+        client_secret: {{ secret "/run/secrets/services/authelia/oidc_client_secrets/hister"  | mindent 10 "|" | msquote }}
+        token_endpoint_auth_method: "client_secret_post"
+        authorization_policy: "one_factor"
+        redirect_uris:
+          - "https://search.lan.barrucadu.co.uk/api/oauth/callback?provider=oidc"
+        scopes:
+          - "openid"
+          - "profile"
+          - "email"
       # https://vikunja.io/docs/openid/
       - client_name: "vikunja"
         client_id: "s2gP.enw_uPywBizfxlJE4bw0HXZrQNpYTqwVZs9-9fsQmTAC.1UsmmkvYLM.Xt~BnpHnGCB"

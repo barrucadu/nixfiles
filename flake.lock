@@ -52,6 +52,26 @@
         "type": "github"
       }
     },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785627969,
+        "narHash": "sha256-4dtXQk/NMePegK/nWp5NSeuZKLATItOq61lpEvmXqGw=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "427bf4bd9435fdf21321c8cc628c24efc14c0f7a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "gitignore": {
       "inputs": {
         "nixpkgs": [
@@ -69,6 +89,29 @@
       "original": {
         "owner": "hercules-ci",
         "repo": "gitignore.nix",
+        "type": "github"
+      }
+    },
+    "hister": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787479666,
+        "narHash": "sha256-7mZiUovNAVN5TEafH4/0PlTT6RGc5RfoUr96+tRWZeo=",
+        "owner": "asciimoo",
+        "repo": "hister",
+        "rev": "8032c4cadf7fa3c98c4d02212bb65b17b667cf3c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "asciimoo",
+        "repo": "hister",
         "type": "github"
       }
     },
@@ -141,7 +184,9 @@
       "inputs": {
         "bookdb": "bookdb",
         "bookmarks": "bookmarks",
+        "flake-parts": "flake-parts",
         "gitignore": "gitignore",
+        "hister": "hister",
         "nixpkgs": "nixpkgs",
         "prometheus-awair-exporter": "prometheus-awair-exporter",
         "resolved": "resolved",
