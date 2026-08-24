@@ -1,8 +1,7 @@
 # This is my home server.
 #
-# It runs writable instances of the bookdb and bookmarks services, which have
-# any updates copied across to carcosa hourly; it acts as a NAS; and it runs a
-# few utility services.
+# It runs a writable instance of bookdb, which has any updates copied across to
+# carcosa hourly; it acts as a NAS; and it runs several utility services.
 #
 # Like carcosa, this host is set up in "erase your darlings" style but, unlike
 # carcosa, it automatically reboots to install updates: so that takes effect
@@ -262,10 +261,6 @@ in
     reverse_proxy http://localhost:${toString config.nixfiles.bookdb.port}
   '';
 
-  services.caddy.virtualHosts."bookmarks.lan.barrucadu.co.uk".extraConfig = caddyVHost { auth = true; } ''
-    reverse_proxy http://localhost:${toString config.nixfiles.bookmarks.port}
-  '';
-
   services.caddy.virtualHosts."chores.lan.barrucadu.co.uk".extraConfig = caddyVHost { } ''
     reverse_proxy http://localhost:${toString config.nixfiles.donetick.port}
   '';
@@ -434,13 +429,22 @@ in
   ###############################################################################
 
   nixfiles.bookdb.enable = true;
+  nixfiles.bookdb.remoteSync.send.enable = true;
+  nixfiles.bookdb.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookdb_remote_sync/ssh_private_key".path;
+  nixfiles.bookdb.remoteSync.send.targets = [
+    "carcosa.barrucadu.co.uk"
+    "yuggoth.barrucadu.co.uk"
+  ];
+
+  sops.secrets."users/bookdb_remote_sync/ssh_private_key" = {
+    owner = config.users.users.bookdb-remote-sync-send.name;
+    key = "users/remote_sync/ssh_private_key";
+  };
 
 
   ###############################################################################
-  ## bookmarks - https://github.com/barrucadu/bookmarks
+  ## hister
   ###############################################################################
-
-  nixfiles.bookmarks.enable = true;
 
   nixfiles.hister.enable = true;
   nixfiles.hister.domain = "search.lan.barrucadu.co.uk";
@@ -689,34 +693,6 @@ in
     retentionPeriod = "10y";
   };
 
-
-  ###############################################################################
-  # Remote Sync
-  ###############################################################################
-
-  nixfiles.bookdb.remoteSync.send.enable = true;
-  nixfiles.bookdb.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookdb_remote_sync/ssh_private_key".path;
-  nixfiles.bookdb.remoteSync.send.targets = [
-    "carcosa.barrucadu.co.uk"
-    "yuggoth.barrucadu.co.uk"
-  ];
-
-  sops.secrets."users/bookdb_remote_sync/ssh_private_key" = {
-    owner = config.users.users.bookdb-remote-sync-send.name;
-    key = "users/remote_sync/ssh_private_key";
-  };
-
-  nixfiles.bookmarks.remoteSync.send.enable = true;
-  nixfiles.bookmarks.remoteSync.send.sshKeyFile = config.sops.secrets."users/bookmarks_remote_sync/ssh_private_key".path;
-  nixfiles.bookmarks.remoteSync.send.targets = [
-    "carcosa.barrucadu.co.uk"
-    "yuggoth.barrucadu.co.uk"
-  ];
-
-  sops.secrets."users/bookmarks_remote_sync/ssh_private_key" = {
-    owner = config.users.users.bookmarks-remote-sync-send.name;
-    key = "users/remote_sync/ssh_private_key";
-  };
 
   ###############################################################################
   # RSS-to-Mastodon
