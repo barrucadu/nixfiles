@@ -36,14 +36,5 @@ with lib;
         SSH public keys to allow bookdb remots sync from.
       '';
     };
-
-    bookmarksRemoteSyncAuthorizedKeys = mkOption {
-      type = types.listOf types.str;
-      default =
-        [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChVw9DPLafA3lCLCI4Df9rYuxedFQTXAwDOOHUfZ0Ac remote-sync@nyarlathotep" ];
-      description = ''
-        SSH public keys to allow bookdb remots sync from.
-      '';
-    };
   };
 }

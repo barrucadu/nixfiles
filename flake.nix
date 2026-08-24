@@ -17,12 +17,6 @@
       inputs.gitignore.follows = "gitignore";
       inputs.rust-overlay.follows = "rust-overlay";
     };
-    bookmarks = {
-      url = "github:barrucadu/bookmarks";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.gitignore.follows = "gitignore";
-      inputs.rust-overlay.follows = "rust-overlay";
-    };
     prometheus-awair-exporter = {
       url = "github:barrucadu/prometheus-awair-exporter";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -87,7 +81,6 @@
       packages.${system} =
         {
           bookdb = flakeInputs.bookdb.packages.${system}.default;
-          bookmarks = flakeInputs.bookmarks.packages.${system}.default;
           prometheus-awair-exporter = flakeInputs.prometheus-awair-exporter.packages.${system}.default;
           resolved = flakeInputs.resolved.packages.${system}.default;
         };
@@ -135,7 +128,6 @@
                   # modules
                   ./shared/acme/options.nix
                   ./shared/bookdb/options.nix
-                  ./shared/bookmarks/options.nix
                   ./shared/donetick/options.nix
                   ./shared/erase-your-darlings/options.nix
                   ./shared/finder/options.nix

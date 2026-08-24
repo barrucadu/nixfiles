@@ -26,7 +26,6 @@ in
     # modules
     ./acme
     ./bookdb
-    ./bookmarks
     ./donetick
     ./erase-your-darlings
     ./finder

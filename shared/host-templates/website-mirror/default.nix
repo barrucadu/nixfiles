@@ -1,13 +1,13 @@
 # Configures a webserver for the following domains:
 #
-# - {www,bookdb,bookmarks,memos,weeknotes,}barrucadu.co.uk
+# - {www,bookdb,memos,weeknotes,}barrucadu.co.uk
 # - {www,}barrucadu.com
 # - {www,}barrucadu.dev
 # - {www,}barrucadu.uk
 #
 # Access is configured for push-based updates:
 #
-# - Remote sync (defaulting to the nyarlathotep SSH key) for bookdb and bookmarks
+# - Remote sync (defaulting to the nyarlathotep SSH key) for bookdb
 # - SSH and file ownership (defaulting to the concourse SSH key) for static websites
 #
 # Push needs to be configured in the appropriate places.
@@ -92,9 +92,6 @@ in
             '';
             "bookdb" = ''
               reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookdb.port}
-            '';
-            "bookmarks" = ''
-              reverse_proxy http://127.0.0.1:${toString config.nixfiles.bookmarks.port}
             '';
             "memo" = ''
               header /fonts/*   Cache-Control "public, immutable, max-age=31536000"
@@ -195,14 +192,8 @@ in
     nixfiles.bookdb.enable = true;
     nixfiles.bookdb.readOnly = true;
 
-    nixfiles.bookmarks.enable = true;
-    nixfiles.bookmarks.readOnly = true;
-
     nixfiles.bookdb.remoteSync.receive.enable = config.nixfiles.bookdb.enable;
     nixfiles.bookdb.remoteSync.receive.authorizedKeys = cfg.bookdbRemoteSyncAuthorizedKeys;
-
-    nixfiles.bookmarks.remoteSync.receive.enable = config.nixfiles.bookmarks.enable;
-    nixfiles.bookmarks.remoteSync.receive.authorizedKeys = cfg.bookmarksRemoteSyncAuthorizedKeys;
 
 
     ###############################################################################
@@ -242,7 +233,6 @@ in
       "d ${httpDir}/barrucadu.dev/docs/resolved - concourse-deploy-robot nogroup -"
       # docker volumes
       "d ${config.nixfiles.oci-containers.volumeBaseDir}/bookdb/esdata - 1000 100 -"
-      "d ${config.nixfiles.oci-containers.volumeBaseDir}/bookmarks/esdata - 1000 100 -"
     ];
   };
 }
