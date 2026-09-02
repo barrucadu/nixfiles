@@ -40,6 +40,7 @@ in
         email = "mike@barrucadu.co.uk";
         dnsProvider = "route53";
         dnsPropagationCheck = true;
+        dnsResolver = "1.1.1.1:53";
         environmentFile = cfg.environmentFile;
         reloadServices = [ "caddy" ];
       };
