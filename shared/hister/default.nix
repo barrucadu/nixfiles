@@ -28,10 +28,10 @@ in
       enable = true;
       port = cfg.port;
       group = "nogroup";
+      dataDir = config.users.users.hister.home;
       environmentFile = cfg.environmentFile;
       settings = {
         app = {
-          directory = config.users.users.hister.home;
           public = true;
           redirect_on_no_results = false;
           user_handling = true;
