@@ -58,6 +58,7 @@ COMMODITIES = [
     ("SEK", get_financial_times_currency),
     ("USD", get_financial_times_currency),
     ("VANEA", "GB00B41XG308", get_financial_times_fund),
+    ("VNGSA", "IE00B3X1NT05", get_financial_times_fund),
 ]
 
 with sys.stdout if DRY_RUN else open(os.environ["PRICE_FILE"], "a") as f:
